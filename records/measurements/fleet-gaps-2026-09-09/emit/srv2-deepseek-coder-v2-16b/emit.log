@@ -1,0 +1,7 @@
+srv2:8080/deepseek-coder-v2-16b/llama.cpp  gpu 0, 2 slots (written)  for probe_deepseek-coder-v2-16b
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09/emit/srv2-deepseek-coder-v2-16b/compose.srv2.yml
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+
+--- stderr ---

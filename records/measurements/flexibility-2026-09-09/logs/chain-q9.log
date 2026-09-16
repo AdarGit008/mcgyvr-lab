@@ -1,0 +1,44 @@
+
+=== q9-vllm-3b-srv1-1  units ['3b']
+    ARM FAILED: DOOR FAILED down/td-889931262 rc=1
+gate 1: round=r26-09-09-2026 product_sha256=ec531573f5402b84... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv1 is serving (gpu_procs=1430761,VLLM::EngineCore,3092MiB, containers=687f739d794d); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+gate 5: RUN_ID=2026-09-09-live-srv1-serve-down-td-889931262 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv1
+serve-down: docker compose down on srv1: mcgyvr-srv1-Qwen3.6-35B-A3B-UD-IQ3_XXS-8080
+gate 8: 1 artifact(s) parse
+gate 6: /home/adaramir/claude/mcgyvr/src/mcgyvr/serving/gate-scripts/serve-down.py --host srv1 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv1 (RUN_ID=2026-09-09-live-srv1-serve-down-td-889931262)
+gate 7: the step left containers up that gate 2 read none of before it — NOT named for this run (no 2026-09-09-live-srv1-serve-down-td-889931262- prefix): mcgyvr-srv1-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 — a run that leaves a container is not green, and one it did not name is still one it left (kill what you started: docker rm -f <name>)
+run.py: gate 7: no container named for this run is left, and the rig reads as it did before. A leftover container is NAMED and not removed — the kill is the operator's, with the name in hand
+
+
+=== q9-vllm-3b-srv1-2  units ['3b']
+    ARM FAILED: DOOR FAILED down/td-889932238 rc=1
+gate 1: round=r26-09-09-2026 product_sha256=ec531573f5402b84... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv1 is serving (gpu_procs=1430761,VLLM::EngineCore,3092MiB, containers=687f739d794d); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+gate 5: RUN_ID=2026-09-09-live-srv1-serve-down-td-889932238 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv1
+serve-down: docker compose down on srv1: mcgyvr-srv1-Qwen3.6-35B-A3B-UD-IQ3_XXS-8080
+gate 8: 1 artifact(s) parse
+gate 6: /home/adaramir/claude/mcgyvr/src/mcgyvr/serving/gate-scripts/serve-down.py --host srv1 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv1 (RUN_ID=2026-09-09-live-srv1-serve-down-td-889932238)
+gate 7: the step left containers up that gate 2 read none of before it — NOT named for this run (no 2026-09-09-live-srv1-serve-down-td-889932238- prefix): mcgyvr-srv1-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 — a run that leaves a container is not green, and one it did not name is still one it left (kill what you started: docker rm -f <name>)
+run.py: gate 7: no container named for this run is left, and the rig reads as it did before. A leftover container is NAMED and not removed — the kill is the operator's, with the name in hand
+
+
+=== q9-vllm-3b-srv1-3  units ['3b']
+    ARM FAILED: DOOR FAILED down/td-889932420 rc=1
+gate 1: round=r26-09-09-2026 product_sha256=ec531573f5402b84... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv1 is serving (gpu_procs=1430761,VLLM::EngineCore,3092MiB, containers=687f739d794d); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+gate 5: RUN_ID=2026-09-09-live-srv1-serve-down-td-889932420 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv1
+serve-down: docker compose down on srv1: mcgyvr-srv1-Qwen3.6-35B-A3B-UD-IQ3_XXS-8080
+gate 8: 1 artifact(s) parse
+gate 6: /home/adaramir/claude/mcgyvr/src/mcgyvr/serving/gate-scripts/serve-down.py --host srv1 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv1 (RUN_ID=2026-09-09-live-srv1-serve-down-td-889932420)
+gate 7: the step left containers up that gate 2 read none of before it — NOT named for this run (no 2026-09-09-live-srv1-serve-down-td-889932420- prefix): mcgyvr-srv1-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 — a run that leaves a container is not green, and one it did not name is still one it left (kill what you started: docker rm -f <name>)
+run.py: gate 7: no container named for this run is left, and the rig reads as it did before. A leftover container is NAMED and not removed — the kill is the operator's, with the name in hand
+
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/results-q9-vllm-srv1.json

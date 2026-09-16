@@ -1,0 +1,74 @@
+
+=== srv1-qwen-hi  (balloon 0.00 GiB, target clearance +1.90 GiB)
+    idle MemAvailable 14.22 GiB
+    balloon: none
+    MemAvailable 14.23 GiB -> actual clearance +1.93 GiB
+    wake 10941.1 s  (StartedAt 2026-09-09T04:03:17.991333437Z)
+    sample 1: 32.80 tok/s
+    sample 2: 32.68 tok/s
+    sample 3: 32.74 tok/s
+    decode majfaults 14   swapin 0   mean 32.74 tok/s
+
+=== srv1-deepseek-hi  (balloon 4.00 GiB, target clearance +1.90 GiB)
+    ARM FAILED: DOOR FAILED down/srv1-deepseek-hi-down rc=1
+gate 1: round=r10-08-09-2026 product_sha256=db756b3b06a51a5b... profile=live config=cfg-9d443d314015874aef3158444c038b800a2527befb22d0cee6fcad78630c56c9 (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv1 is serving (gpu_procs=975218,/app/llama-server,5104MiB, containers=6a5176ffdcac); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+gate 5: RUN_ID=2026-09-09-live-srv1-serve-down-srv1-deepseek-hi-down -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv1
+serve-down: docker compose down on srv1: mcgyvr-srv1-deepseek-coder-v2-16b-8080
+gate 8: 1 artifact(s) parse
+gate 6: /home/adaramir/claude/mcgyvr/src/mcgyvr/serving/gate-scripts/serve-down.py --host srv1 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv1 (RUN_ID=2026-09-09-live-srv1-serve-down-srv1-deepseek-hi-down)
+gate 7: the step left containers up that gate 2 read none of before it — NOT named for this run (no 2026-09-09-live-srv1-serve-down-srv1-deepseek-hi-down- prefix): mcgyvr-srv1-Qwen3.6-35B-A3B-UD-IQ3_XXS-8080 — a run that leaves a container is not green, and one it did not name is still one it left (kill what you started: docker rm -f <name>)
+run.py: gate 7: no container named for this run is left, and the rig reads as it did before. A leftover container is NAMED and not removed — the kill is the operator's, with the name in hand
+
+
+=== srv1-qwen-mid  (balloon 1.39 GiB, target clearance +0.50 GiB)
+    idle MemAvailable 14.22 GiB
+    balloon: /etc/sudoers.d/00-disable-requiretty:1:11: unknown setting: 'requiretty' | Defaults !requiretty |           ^~~~~~~~~~ | mlockall rc=0 errno=0 | READY 1.39
+    MemAvailable 12.82 GiB -> actual clearance +0.52 GiB
+    wake 10939.9 s  (StartedAt 2026-09-09T04:07:13.065678909Z)
+    sample 1: 32.71 tok/s
+    sample 2: 33.20 tok/s
+    sample 3: 33.19 tok/s
+    decode majfaults 111   swapin 0   mean 33.03 tok/s
+
+=== srv1-deepseek-mid  (balloon 5.40 GiB, target clearance +0.50 GiB)
+    ARM FAILED: DOOR FAILED down/srv1-deepseek-mid-down rc=1
+gate 1: round=r10-08-09-2026 product_sha256=db756b3b06a51a5b... profile=live config=cfg-9d443d314015874aef3158444c038b800a2527befb22d0cee6fcad78630c56c9 (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv1 is serving (gpu_procs=980675,/app/llama-server,5104MiB, containers=4f1e2c7842ce); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+gate 5: RUN_ID=2026-09-09-live-srv1-serve-down-srv1-deepseek-mid-down -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv1
+serve-down: docker compose down on srv1: mcgyvr-srv1-deepseek-coder-v2-16b-8080
+gate 8: 1 artifact(s) parse
+gate 6: /home/adaramir/claude/mcgyvr/src/mcgyvr/serving/gate-scripts/serve-down.py --host srv1 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv1 (RUN_ID=2026-09-09-live-srv1-serve-down-srv1-deepseek-mid-down)
+gate 7: the step left containers up that gate 2 read none of before it — NOT named for this run (no 2026-09-09-live-srv1-serve-down-srv1-deepseek-mid-down- prefix): mcgyvr-srv1-Qwen3.6-35B-A3B-UD-IQ3_XXS-8080 — a run that leaves a container is not green, and one it did not name is still one it left (kill what you started: docker rm -f <name>)
+run.py: gate 7: no container named for this run is left, and the rig reads as it did before. A leftover container is NAMED and not removed — the kill is the operator's, with the name in hand
+
+
+=== srv1-qwen-neg  (balloon 2.89 GiB, target clearance -1.00 GiB)
+    idle MemAvailable 14.23 GiB
+    balloon: /etc/sudoers.d/00-disable-requiretty:1:11: unknown setting: 'requiretty' | Defaults !requiretty |           ^~~~~~~~~~ | mlockall rc=0 errno=0 | READY 2.89
+    MemAvailable 11.33 GiB -> actual clearance -0.97 GiB
+    wake 10970.4 s  (StartedAt 2026-09-09T04:11:19.688123578Z)
+    sample 1: 33.13 tok/s
+    sample 2: 33.07 tok/s
+    sample 3: 33.06 tok/s
+    decode majfaults 110   swapin 0   mean 33.09 tok/s
+
+=== srv1-deepseek-neg  (balloon 6.90 GiB, target clearance -1.00 GiB)
+    ARM FAILED: DOOR FAILED down/srv1-deepseek-neg-down rc=1
+gate 1: round=r10-08-09-2026 product_sha256=db756b3b06a51a5b... profile=live config=cfg-9d443d314015874aef3158444c038b800a2527befb22d0cee6fcad78630c56c9 (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv1 is serving (gpu_procs=986247,/app/llama-server,5102MiB, containers=e6ebbe527dad); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+gate 5: RUN_ID=2026-09-09-live-srv1-serve-down-srv1-deepseek-neg-down -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv1
+serve-down: docker compose down on srv1: mcgyvr-srv1-deepseek-coder-v2-16b-8080
+gate 8: 1 artifact(s) parse
+gate 6: /home/adaramir/claude/mcgyvr/src/mcgyvr/serving/gate-scripts/serve-down.py --host srv1 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv1 (RUN_ID=2026-09-09-live-srv1-serve-down-srv1-deepseek-neg-down)
+gate 7: the step left containers up that gate 2 read none of before it — NOT named for this run (no 2026-09-09-live-srv1-serve-down-srv1-deepseek-neg-down- prefix): mcgyvr-srv1-Qwen3.6-35B-A3B-UD-IQ3_XXS-8080 — a run that leaves a container is not green, and one it did not name is still one it left (kill what you started: docker rm -f <name>)
+run.py: gate 7: no container named for this run is left, and the rig reads as it did before. A leftover container is NAMED and not removed — the kill is the operator's, with the name in hand
+
+
+wrote /tmp/claude-1000/-home-adaramir-claude-mcgyvr/e09feadf-705b-4161-9112-f9247a7eb1f4/scratchpad/logs/sweep-results.json

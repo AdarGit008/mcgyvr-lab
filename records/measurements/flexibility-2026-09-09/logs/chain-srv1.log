@@ -1,0 +1,58 @@
+
+=== q4-qwen-n28-1  blob 12.30 GiB
+    idle avail 14.27 -> before 14.26 GiB, clearance +1.96, card free 5727 MiB
+    wake 139.1 s   0.0884 GiB/s   decode cold 24.62844352883774 / warm 32.50049491595923   card peak 5470 / steady 5484 MiB   (165 samples)
+
+=== q4-qwen-n28-2  blob 12.30 GiB
+    idle avail 14.23 -> before 14.23 GiB, clearance +1.93, card free 5727 MiB
+    wake 141.3 s   0.0870 GiB/s   decode cold 25.878480838775275 / warm 34.05372840860249   card peak 5470 / steady 5484 MiB   (170 samples)
+
+=== q4-qwen-n32-1  blob 12.30 GiB
+    idle avail 14.25 -> before 14.24 GiB, clearance +1.94, card free 5727 MiB
+    wake 136.9 s   0.0898 GiB/s   decode cold 24.944306736531644 / warm 32.54859312484562   card peak 4422 / steady 4436 MiB   (168 samples)
+
+=== q4-qwen-n32-2  blob 12.30 GiB
+    idle avail 14.25 -> before 14.25 GiB, clearance +1.95, card free 5727 MiB
+    wake 141.0 s   0.0872 GiB/s   decode cold 24.766926091131072 / warm 32.387908053455355   card peak 4422 / steady 4436 MiB   (154 samples)
+
+=== q5-experts-0.50-1  blob 12.30 GiB
+    idle avail 14.25 -> before 8.70 GiB, clearance -3.60, card free 5727 MiB
+    wake 133.0 s   0.0925 GiB/s   decode cold 28.973934574669016 / warm 33.74584635203896   card peak 5222 / steady 5236 MiB   (147 samples)
+
+=== q5-experts-0.50-2  blob 12.30 GiB
+    idle avail 14.25 -> before 8.71 GiB, clearance -3.59, card free 5727 MiB
+    wake 136.9 s   0.0899 GiB/s   decode cold 29.02088463322256 / warm 33.618129666645075   card peak 5222 / steady 5236 MiB   (153 samples)
+
+=== q5-experts-0.65-1  blob 12.30 GiB
+    idle avail 14.26 -> before 8.54 GiB, clearance -3.76, card free 5727 MiB
+    wake 135.6 s   0.0907 GiB/s   decode cold 28.984181017330172 / warm 33.43785515673452   card peak 5222 / steady 5236 MiB   (160 samples)
+
+=== q5-experts-0.65-2  blob 12.30 GiB
+    idle avail 14.27 -> before 8.57 GiB, clearance -3.73, card free 5727 MiB
+    wake 135.7 s   0.0906 GiB/s   decode cold 28.515350943266288 / warm 33.57374045570135   card peak 5222 / steady 5236 MiB   (157 samples)
+
+=== q5-experts-0.80-1  blob 12.30 GiB
+    idle avail 14.24 -> before 8.41 GiB, clearance -3.89, card free 5727 MiB
+    wake 140.1 s   0.0878 GiB/s   decode cold 28.913112460187644 / warm 33.458376491697045   card peak 5222 / steady 5236 MiB   (156 samples)
+
+=== q5-experts-0.80-2  blob 12.30 GiB
+    idle avail 14.25 -> before 8.40 GiB, clearance -3.90, card free 5727 MiB
+    wake 140.4 s   0.0876 GiB/s   decode cold 28.083378313838637 / warm 33.56840148254687   card peak 5222 / steady 5236 MiB   (156 samples)
+
+=== q6-blob-2.50-1  blob 12.30 GiB
+    idle avail 14.27 -> before 9.86 GiB, clearance -2.44, card free 5727 MiB
+    wake 169.9 s   0.0724 GiB/s   decode cold 22.903379285578776 / warm 33.0699842518792   card peak 5200 / steady 5220 MiB   (197 samples)
+
+=== q6-blob-2.50-2  blob 12.30 GiB
+    idle avail 14.27 -> before 9.86 GiB, clearance -2.44, card free 5727 MiB
+    wake 168.3 s   0.0731 GiB/s   decode cold 23.16731933424992 / warm 33.515973277134925   card peak 5200 / steady 5220 MiB   (183 samples)
+
+=== q6-blob-3.03-1  blob 12.30 GiB
+    idle avail 14.26 -> before 9.31 GiB, clearance -2.99, card free 5727 MiB
+    wake 170.7 s   0.0721 GiB/s   decode cold 22.99411090450155 / warm 32.391747833453195   card peak 5200 / steady 5220 MiB   (182 samples)
+
+=== q6-blob-3.03-2  blob 12.30 GiB
+    idle avail 14.27 -> before 9.32 GiB, clearance -2.98, card free 5727 MiB
+    wake 171.5 s   0.0717 GiB/s   decode cold 21.806801884381983 / warm 31.75409043968789   card peak 5198 / steady 5220 MiB   (183 samples)
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/results-q4q5q6-srv1.json

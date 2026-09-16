@@ -1,0 +1,92 @@
+
+=== A-unmapped-1  (balloon 0.00 GiB, target clearance +1.89 GiB)
+    idle MemAvailable 14.23 GiB
+    balloon: none
+    MemAvailable 14.23 GiB -> actual clearance +1.93 GiB
+    wake 134.8 s  (StartedAt 2026-09-09T05:45:01.112301079Z)
+    sample 1: 32.92 tok/s
+    sample 2: 29.19 tok/s
+    sample 3: 33.10 tok/s
+    decode majfaults 0   swapin 0   swapout 0   wake swapin 13   balloon GONE   mean 31.74 tok/s
+
+=== A-mapped-1  (balloon 0.00 GiB, target clearance +1.89 GiB)
+    idle MemAvailable 14.23 GiB
+    balloon: none
+    MemAvailable 14.24 GiB -> actual clearance +1.94 GiB
+    wake 139.5 s  (StartedAt 2026-09-09T05:48:30.358158586Z)
+    sample 1: 33.01 tok/s
+    sample 2: 33.01 tok/s
+    sample 3: 33.03 tok/s
+    decode majfaults 20   swapin 12   swapout 0   wake swapin 5651   balloon GONE   mean 33.02 tok/s
+
+=== A-unmapped-2  (balloon 0.00 GiB, target clearance +1.89 GiB)
+    idle MemAvailable 14.25 GiB
+    balloon: none
+    MemAvailable 14.25 GiB -> actual clearance +1.95 GiB
+    wake 132.3 s  (StartedAt 2026-09-09T05:52:04.727546784Z)
+    sample 1: 33.21 tok/s
+    sample 2: 33.15 tok/s
+    sample 3: 33.20 tok/s
+    decode majfaults 6   swapin 1   swapout 0   wake swapin 145   balloon GONE   mean 33.19 tok/s
+
+=== A-mapped-2  (balloon 0.00 GiB, target clearance +1.89 GiB)
+    idle MemAvailable 14.24 GiB
+    balloon: none
+    MemAvailable 14.25 GiB -> actual clearance +1.95 GiB
+    wake 139.9 s  (StartedAt 2026-09-09T05:55:30.907330888Z)
+    sample 1: 33.22 tok/s
+    sample 2: 33.25 tok/s
+    sample 3: 33.25 tok/s
+    decode majfaults 40   swapin 16   swapout 0   wake swapin 7991   balloon GONE   mean 33.24 tok/s
+
+=== A-unmapped-3  (balloon 0.00 GiB, target clearance +1.89 GiB)
+    idle MemAvailable 14.20 GiB
+    balloon: none
+    MemAvailable 14.23 GiB -> actual clearance +1.93 GiB
+    wake 131.6 s  (StartedAt 2026-09-09T05:59:04.378545863Z)
+    sample 1: 33.25 tok/s
+    sample 2: 33.20 tok/s
+    sample 3: 33.20 tok/s
+    decode majfaults 2   swapin 0   swapout 0   wake swapin 111   balloon GONE   mean 33.22 tok/s
+
+=== A-mapped-3  (balloon 0.00 GiB, target clearance +1.89 GiB)
+    idle MemAvailable 14.21 GiB
+    balloon: none
+    MemAvailable 14.25 GiB -> actual clearance +1.95 GiB
+    wake 139.4 s  (StartedAt 2026-09-09T06:02:29.238270396Z)
+    sample 1: 33.07 tok/s
+    sample 2: 33.25 tok/s
+    sample 3: 33.26 tok/s
+    decode majfaults 100   swapin 74   swapout 0   wake swapin 7361   balloon GONE   mean 33.19 tok/s
+
+=== B-refusal-+20  (balloon 2.99 GiB, target clearance +2.00 GiB)
+    ARM FAILED: DOOR FAILED down/B-refusal-+20-down rc=2
+gate 1: round=r11-09-09-2026 product_sha256=234582d8fce48615... profile=live config=cfg-9d443d314015874aef3158444c038b800a2527befb22d0cee6fcad78630c56c9 (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv1 is serving (gpu_procs=1051090,/app/llama-server,5104MiB, containers=25b4dc12cc9b); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+05-envelope.py: gate 5: RUN_ID '2026-09-09-live-srv1-serve-down-B-refusal-+20-down' is not [A-Za-z0-9_.-]+; it names containers (<RUN_ID>-<role>) and must be legal as a docker name prefix
+run.py: REFUSED at 05-envelope.py — gate 5: the evidence directory is made, the step's declared artifacts are write-once, and RUN_ID is minted. Nothing recorded is overwritten
+
+
+=== B-refusal-+05  (balloon 4.49 GiB, target clearance +0.50 GiB)
+    ARM FAILED: DOOR FAILED down/B-refusal-+05-down rc=2
+gate 1: round=r11-09-09-2026 product_sha256=234582d8fce48615... profile=live config=cfg-9d443d314015874aef3158444c038b800a2527befb22d0cee6fcad78630c56c9 (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv1 is serving (gpu_procs=1051090,/app/llama-server,5104MiB, containers=25b4dc12cc9b); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+05-envelope.py: gate 5: RUN_ID '2026-09-09-live-srv1-serve-down-B-refusal-+05-down' is not [A-Za-z0-9_.-]+; it names containers (<RUN_ID>-<role>) and must be legal as a docker name prefix
+run.py: REFUSED at 05-envelope.py — gate 5: the evidence directory is made, the step's declared artifacts are write-once, and RUN_ID is minted. Nothing recorded is overwritten
+
+
+=== B-refusal--10  (balloon 5.99 GiB, target clearance -1.00 GiB)
+    idle MemAvailable 14.24 GiB
+    balloon: /etc/sudoers.d/00-disable-requiretty:1:11: unknown setting: 'requiretty' | Defaults !requiretty |           ^~~~~~~~~~ | mlockall rc=0 errno=0 | READY 5.99
+    MemAvailable 8.23 GiB -> actual clearance -4.07 GiB
+    wake 385.3 s  (StartedAt 2026-09-09T06:06:26.385848513Z)
+    sample 1: 2.08 tok/s
+    sample 2: 2.85 tok/s
+    sample 3: 27.40 tok/s
+    decode majfaults 760277   swapin 1131302   swapout 783210   wake swapin 3222549   balloon alive   mean 10.78 tok/s
+
+wrote /tmp/claude-1000/-home-adaramir-claude-mcgyvr/e09feadf-705b-4161-9112-f9247a7eb1f4/scratchpad/logs/sweep-results-arms-gate2.json

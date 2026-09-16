@@ -1,0 +1,3 @@
+
+--- stderr ---
+refused: srv2: m_a (24.00 GB mapped), m_b (24.00 GB mapped) fit host memory one at a time and not together — 48.00 GB summed with 2.0 GB held back, against 44.60 GB available. Serve one of them from another host, drop one, or narrow a window: context is paid for in host RAM, 1.1 GB of it per slot between 2048 and 32768 on srv1's Qwen3.6

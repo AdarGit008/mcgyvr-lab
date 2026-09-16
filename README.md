@@ -249,3 +249,30 @@ and the 320-file count stays what it was.
 ```text
 records/fleet/rigs/rig-0f7fc6ae2bf6f8bbed8ed774507ef94a04d7f18a0f81b4d7761ce5ae81d03eeb/
 ```
+
+### 2026-09-16 — the campaign logs that existed only on one machine
+
+- Source: the working checkout of `AdarGit008/mcgyvr` at `b9578aaa` (main).
+  These files were never tracked there: `.gitignore` ignores `*.log` outside
+  `records/evidence/`, so they lived on the machine that ran the campaigns and
+  nowhere else.
+- Content: 487 files, byte for byte, at the paths they held in mcgyvr. 11 MB,
+  all text — 479 plain, 6 JSON, 2 diffs.
+- Why: owner ruling 2026-09-16, uncommitted measurements go to the lab.
+  mcgyvr's own `.gitignore` states the principle these fall under — "lens 1:
+  record the unrecoverable. A campaign log that lives on one laptop is exactly
+  that" — and exempts `records/evidence/**/*.log` for it. These sit under
+  `records/measurements/`, so the exemption never reached them. They are kept
+  as data points; nothing here is a verdict on the runs that wrote them.
+- The measurements these logs belong to are still in mcgyvr under the same
+  campaign directories. Only the untracked logs moved.
+
+```text
+records/measurements/flexibility-2026-09-09/      201 files
+records/measurements/measuring-gaps-2026-09-10/   145 files
+records/measurements/fleet-gaps-2026-09-09/        92 files
+records/measurements/fleet-identity-2026-09-11/    34 files
+records/measurements/ram-headroom-2026-09-09/       7 files
+records/measurements/quick-check-2026-09-15/        6 files
+records/measurements/lock-fleets/                   2 files
+```

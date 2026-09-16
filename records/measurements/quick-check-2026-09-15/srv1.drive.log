@@ -1,0 +1,25 @@
+2026-09-15T01:46:30+03:00 STAMP start PL1=95000000 PL2=120000000 boot=2026-09-12 07:52:51 6144 MiB, 399 MiB, 5444 MiB, 302 MiB Mem:           15393        2940        1073         112       11830       12452 mcgyvr-srv1-deepseek 
+mcgyvr-srv1-deepseek
+2026-09-15T01:46:41+03:00 STOPPED docker stop mcgyvr-srv1-deepseek
+2026-09-15T01:46:43+03:00 STAMP after-stop PL1=95000000 PL2=120000000 boot=2026-09-12 07:52:51 6144 MiB, 399 MiB, 1 MiB, 5745 MiB Mem:           15393        3049         744           0       11938       12343 
+2026-09-15T01:46:46+03:00 LAUNCH Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF img=llamacpp:b10644-L3 ngl=99
+mcgyvr-srv1-deepseek
+2026-09-15T01:47:27+03:00 RESTART_ISSUED docker start mcgyvr-srv1-deepseek
+2026-09-15T01:48:23+03:00 LIVE_HEALTHY http://srv1:8080/health
+2026-09-15T01:48:25+03:00 STAMP end PL1=95000000 PL2=120000000 boot=2026-09-12 07:52:51 6144 MiB, 399 MiB, 5432 MiB, 314 MiB Mem:           15393        3302         788         112       11730       12090 mcgyvr-srv1-deepseek 
+2026-09-15T01:49:20+03:00 STAMP start PL1=95000000 PL2=120000000 boot=2026-09-12 07:52:51 6144 MiB, 399 MiB, 5432 MiB, 314 MiB Mem:           15393        1297        2698         112       11826       14095 mcgyvr-srv1-deepseek 
+mcgyvr-srv1-deepseek
+2026-09-15T01:49:22+03:00 STOPPED docker stop mcgyvr-srv1-deepseek
+2026-09-15T01:49:23+03:00 STAMP after-stop PL1=95000000 PL2=120000000 boot=2026-09-12 07:52:51 6144 MiB, 399 MiB, 1 MiB, 5745 MiB Mem:           15393         853        3032           0       11824       14539 
+2026-09-15T01:49:25+03:00 LAUNCH Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF img=llamacpp:b10644-L3 ngl=99
+2026-09-15T01:49:50+03:00 VRAM Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF 592 MiB, 5154 MiB
+2026-09-15T01:49:50+03:00 RUN Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF bench-py
+2026-09-15T01:49:51+03:00 EXIT Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF bench-py rc=2 measure.py: ssh to srv1 refused: this process was not started by the door — it was started outside mcgyvr.serving.run, and nothing reaches a rig or reads a run outside it (a RUN_* variable set by hand does not stand in for the door). Start the run as `python -m mcgyvr.serving.run --host H --campai
+2026-09-15T01:49:51+03:00 RUN Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF bench-ts
+2026-09-15T01:49:52+03:00 EXIT Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF bench-ts rc=2 measure.py: ssh to srv1 refused: this process was not started by the door — it was started outside mcgyvr.serving.run, and nothing reaches a rig or reads a run outside it (a RUN_* variable set by hand does not stand in for the door). Start the run as `python -m mcgyvr.serving.run --host H --campai
+2026-09-15T01:49:54+03:00 DOWN Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF
+2026-09-15T01:49:56+03:00 LAUNCH Qwen_Qwen2.5-Coder-1.5B-Instruct-GGUF img=llamacpp:b10644-L3 ngl=99
+mcgyvr-srv1-deepseek
+2026-09-15T01:50:12+03:00 RESTART_ISSUED docker start mcgyvr-srv1-deepseek
+2026-09-15T01:50:23+03:00 LIVE_HEALTHY http://srv1:8080/health
+2026-09-15T01:50:24+03:00 STAMP end PL1=95000000 PL2=120000000 boot=2026-09-12 07:52:51 6144 MiB, 399 MiB, 5432 MiB, 314 MiB Mem:           15393        1312        1268         112       13238       14080 mcgyvr-srv1-deepseek 

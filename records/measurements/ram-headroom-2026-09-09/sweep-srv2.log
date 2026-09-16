@@ -1,0 +1,32 @@
+
+=== srv2-80b-hi  (balloon 6.93 GiB, target clearance +1.90 GiB)
+    idle MemAvailable 44.67 GiB
+    balloon: mlockall rc=0 errno=0 | READY 6.93
+    MemAvailable 37.69 GiB -> actual clearance +2.02 GiB
+    wake 10902.9 s  (StartedAt 2026-09-09T04:06:07.484571425Z)
+    sample 1: 29.70 tok/s
+    sample 2: 29.72 tok/s
+    sample 3: 29.72 tok/s
+    decode majfaults 0   swapin 0   mean 29.71 tok/s
+
+=== srv2-80b-mid  (balloon 8.33 GiB, target clearance +0.50 GiB)
+    idle MemAvailable 44.44 GiB
+    balloon: mlockall rc=0 errno=0 | READY 8.33
+    MemAvailable 36.15 GiB -> actual clearance +0.48 GiB
+    wake 10903.7 s  (StartedAt 2026-09-09T04:09:35.699589431Z)
+    sample 1: 29.51 tok/s
+    sample 2: 29.47 tok/s
+    sample 3: 29.56 tok/s
+    decode majfaults 519   swapin 3   mean 29.51 tok/s
+
+=== srv2-80b-neg  (balloon 9.83 GiB, target clearance -1.00 GiB)
+    idle MemAvailable 44.69 GiB
+    balloon: mlockall rc=0 errno=0 | READY 9.83
+    MemAvailable 34.83 GiB -> actual clearance -0.84 GiB
+    wake 10908.0 s  (StartedAt 2026-09-09T04:13:06.988820562Z)
+    sample 1: 29.38 tok/s
+    sample 2: 28.97 tok/s
+    sample 3: 29.22 tok/s
+    decode majfaults 23   swapin 0   mean 29.19 tok/s
+
+wrote /tmp/claude-1000/-home-adaramir-claude-mcgyvr/e09feadf-705b-4161-9112-f9247a7eb1f4/scratchpad/logs/sweep-results-arms-srv2.json

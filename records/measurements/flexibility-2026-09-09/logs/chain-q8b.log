@@ -1,0 +1,39 @@
+
+=== q8b-clock-1
+    clock1 StartedAt 141.4s   clock2 door 134.8s   clock3 mcgyvr 153.4s   wall 153.6s   gate5-first=True   restarts=0   /v1/models 200
+    sleep rc=1 printed Nones gate5-first=False
+    ARM FAILED: mcgyvr serve sleep rc=1
+Traceback (most recent call last):
+  File "/home/adaramir/claude/mcgyvr/.venv/bin/mcgyvr", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/adaramir/claude/mcgyvr/src/mcgyvr/cli.py", line 3066, in main
+    result: int = args.func(args)
+                  ^^^^^^^^^^^^^^^
+  File "/home/adaramir/claude/mcgyvr/src/mcgyvr/cli.py", line 1982, in _serve
+    with capacity.drain(
+         ^^^^^^^^^^^^^^^
+  File "/home/adaramir/.local/share/uv/python/cpython-3.12-linux-x86_64-gnu/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/adaramir/claude/mcgyvr/src/mcgyvr/capacity.py", line 1288, in drain
+    wanted = sorted(bound for bound in self._bounds if bound[0] in set(named))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '<' not supported between instances of 'str' and 'NoneType'
+
+
+=== q8b-clock-2
+    ARM FAILED: mcgyvr serve wake rc=1
+02-rig.py: gate 2: srv1 is not idle — gpu_procs=1653395,/app/llama-server,5090MiB, containers=bdca261c7391. Nothing is measured on a card or a daemon something else is using, and the door does not clean a machine it found busy: kill what you started; okf/must-read/touching-rigs.md
+run.py: REFUSED at 02-rig.py — gate 2: the rig is leased to this run — a dev run yields to a held rig, a live run takes it and tears down what it displaced (R1) — and the live machine equals its declaration in hosts.json. The steps' own start==end check catches a rig that moves DURING a run and says nothing about one that moved before it — RAM swapped between these two rigs twice in six days with every artifact internally consistent
+error: the door exited 2 bringing srv1 up — read its envelope under records/evidence/live-srv1/
+
+
+=== q8b-clock-3
+    ARM FAILED: mcgyvr serve wake rc=1
+02-rig.py: gate 2: srv1 is not idle — gpu_procs=1653395,/app/llama-server,5090MiB, containers=bdca261c7391. Nothing is measured on a card or a daemon something else is using, and the door does not clean a machine it found busy: kill what you started; okf/must-read/touching-rigs.md
+run.py: REFUSED at 02-rig.py — gate 2: the rig is leased to this run — a dev run yields to a held rig, a live run takes it and tears down what it displaced (R1) — and the live machine equals its declaration in hosts.json. The steps' own start==end check catches a rig that moves DURING a run and says nothing about one that moved before it — RAM swapped between these two rigs twice in six days with every artifact internally consistent
+error: the door exited 2 bringing srv1 up — read its envelope under records/evidence/live-srv1/
+
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/results-q8-clocks.json

@@ -1,0 +1,21 @@
+
+=== A2-unmapped-1  (balloon 0.00 GiB, target clearance +8.83 GiB)
+    idle MemAvailable 44.66 GiB
+    balloon: none
+    MemAvailable 44.67 GiB -> actual clearance +9.00 GiB
+    ARM FAILED: DOOR FAILED up/A2-unmapped-1-up rc=1
+gate 1: round=r11-09-09-2026 product_sha256=234582d8fce48615... profile=live config=cfg-9d443d314015874aef3158444c038b800a2527befb22d0cee6fcad78630c56c9 (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv2 matches its declaration on 11 keys
+gate 3: docker on srv2 answers, 29.7.2 as declared
+gate 5: RUN_ID=2026-09-09-live-srv2-serve-up-A2-unmapped-1-up -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv2
+serve-up: docker compose up on srv2: mcgyvr-srv2-Qwen3-Next-80B-A3B-Instruct-Q3_K_M-8003
+serve-up: mcgyvr-srv2-Qwen3-Next-80B-A3B-Instruct-Q3_K_M-8003 :8003 NOT ANSWERING after 539.9s, models=[]
+gate 7: serving, as declared: mcgyvr-srv2-Qwen3-Next-80B-A3B-Instruct-Q3_K_M-8003
+gate 8: 1 artifact(s) parse
+gate 6: /home/adaramir/claude/mcgyvr/src/mcgyvr/serving/gate-scripts/serve-up.py --host srv2 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv2 (RUN_ID=2026-09-09-live-srv2-serve-up-A2-unmapped-1-up)
+
+
+=== A2-mapped-1  (balloon 0.00 GiB, target clearance +8.83 GiB)
+    idle MemAvailable 44.69 GiB
+    balloon: none
+    MemAvailable 44.71 GiB -> actual clearance +9.04 GiB

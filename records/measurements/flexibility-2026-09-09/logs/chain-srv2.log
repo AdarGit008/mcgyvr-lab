@@ -1,0 +1,26 @@
+
+=== q15-pair-sleepmode-1  units ['7b', '3b']
+    idle avail 44.64 GiB, card 1 used / 11911 free MiB
+    7b: /is_sleeping -> 200   decode 68.9528020665238 tok/s [69.15, 68.84, 68.87]
+    3b: /is_sleeping -> 200   decode 127.7787700558661 tok/s [127.73, 127.82, 127.78]
+    wake 143.8 s (door-complete minus earliest StartedAt)   card peak 10753 / steady 10753 MiB   avail 44.64 -> 39.18 GiB
+
+=== q15-pair-sleepmode-2  units ['7b', '3b']
+    idle avail 44.66 GiB, card 1 used / 11911 free MiB
+    7b: /is_sleeping -> 200   decode 68.89409712984481 tok/s [68.94, 68.93, 68.81]
+    3b: /is_sleeping -> 200   decode 127.69113378412487 tok/s [127.48, 127.75, 127.84]
+    wake 141.7 s (door-complete minus earliest StartedAt)   card peak 11369 / steady 11369 MiB   avail 44.66 -> 39.18 GiB
+
+=== q15-pair-sleepmode-3  units ['7b', '3b']
+    idle avail 44.67 GiB, card 1 used / 11911 free MiB
+    7b: /is_sleeping -> 200   decode 68.9328649550938 tok/s [68.83, 68.83, 69.14]
+    3b: /is_sleeping -> 200   decode 128.012125995819 tok/s [127.74, 127.51, 128.78]
+    wake 139.8 s (door-complete minus earliest StartedAt)   card peak 11369 / steady 11369 MiB   avail 44.67 -> 39.20 GiB
+
+=== q15-pair-sleepmode-4  units ['7b', '3b']
+    idle avail 44.63 GiB, card 1 used / 11911 free MiB
+    7b: /is_sleeping -> 200   decode 68.91609048846796 tok/s [68.91, 68.92, 68.93]
+    3b: /is_sleeping -> 200   decode 127.86850305461282 tok/s [127.92, 127.81, 127.88]
+    wake 142.4 s (door-complete minus earliest StartedAt)   card peak 11257 / steady 11257 MiB   avail 44.63 -> 39.21 GiB
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/results-q15-sleepmode.json

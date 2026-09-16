@@ -1,0 +1,26 @@
+
+=== r-srv1-ling-1  blob 4.57 GiB
+    idle avail 14.24 -> before 14.23 GiB, clearance +9.66, card free 5727 MiB
+    wake 71.1 s   0.0643 GiB/s   decode 113.95725527858608   card peak 4808 / steady 4834 MiB   (87 samples)
+
+=== r-srv1-ling-2  blob 4.57 GiB
+    idle avail 14.23 -> before 14.22 GiB, clearance +9.65, card free 5727 MiB
+    wake 74.1 s   0.0617 GiB/s   decode 114.08587437494934   card peak 4808 / steady 4834 MiB   (98 samples)
+
+=== r-srv1-gemma-1  blob 10.62 GiB
+    idle avail 14.23 -> before 14.23 GiB, clearance +3.61, card free 5727 MiB
+    wake 125.1 s   0.0849 GiB/s   decode 31.262399277071765   card peak 5546 / steady 5560 MiB   (152 samples)
+
+=== r-srv1-gemma-2  blob 10.62 GiB
+    idle avail 14.24 -> before 14.23 GiB, clearance +3.61, card free 5727 MiB
+    wake 125.3 s   0.0847 GiB/s   decode 30.878391185326276   card peak 5546 / steady 5560 MiB   (152 samples)
+
+=== r-srv1-qwen-mapped-1  blob 12.30 GiB
+    idle avail 14.24 -> before 14.23 GiB, clearance +1.93, card free 5727 MiB
+    wake 137.7 s   0.0893 GiB/s   decode 24.676711795561356   card peak 5110 / steady 5124 MiB   (155 samples)
+
+=== r-srv1-qwen-mapped-2  blob 12.30 GiB
+    idle avail 14.22 -> before 14.20 GiB, clearance +1.90, card free 5727 MiB
+    wake 141.5 s   0.0869 GiB/s   decode 25.311430084656383   card peak 5110 / steady 5124 MiB   (255 samples)
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09/results-arms-srv1-rate.json

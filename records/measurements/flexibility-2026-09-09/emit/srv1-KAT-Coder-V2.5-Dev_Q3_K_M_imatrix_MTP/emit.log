@@ -1,0 +1,3 @@
+
+--- stderr ---
+refused: srv1: KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP: needs 13.8 GB of RAM for the experts it spills (--n-cpu-moe 32: 8 of 40 expert blocks on the card) with 2.0 GB held back, or 16.9 GB to hold its blob mapped with 0.5 GB held back, against 14.2 GB available. No loading mode fits this host

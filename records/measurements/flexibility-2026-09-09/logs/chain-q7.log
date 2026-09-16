@@ -1,0 +1,18 @@
+
+=== q7-gemma-alone
+    idle avail 14.23 GiB  Shmem 0.00  card 17 used
+    wake 129.1 s   avail 14.23 -> 5.04   Shmem 0.00 -> 8.56   card 3814 MiB   decode {8080: 26.28498879168402}
+    swap used 0.36 -> 0.41 GiB   pswpout +69196   majflt +34505   warm decode {8080: 25.57}
+
+=== q7-ling-q6k-alone
+    idle avail 14.25 GiB  Shmem 0.00  card 17 used
+    wake 86.7 s   avail 14.25 -> 8.49   Shmem 0.00 -> 5.00   card 1854 MiB   decode {8081: 59.524299765871085}
+    swap used 0.41 -> 0.17 GiB   pswpout +0   majflt +22332   warm decode {8081: 60.2}
+
+=== q7-both-1
+    idle avail 14.21 GiB  Shmem 0.00  card 17 used
+    wake 184.4 s   avail 14.21 -> 0.13   Shmem 0.00 -> 13.56   card 5648 MiB   decode {8080: 25.637726349681174, 8081: 58.84135814736318}
+    swap used 0.17 -> 1.32 GiB   pswpout +565534   majflt +187671   warm decode {8080: 23.26, 8081: 60.25}
+
+=== q7-both-2
+    idle avail 14.22 GiB  Shmem 0.00  card 17 used

@@ -1,0 +1,22 @@
+
+=== B-refusal-p20  (balloon 2.99 GiB, target clearance +2.00 GiB)
+    idle MemAvailable 14.27 GiB
+    balloon: /etc/sudoers.d/00-disable-requiretty:1:11: unknown setting: 'requiretty' | Defaults !requiretty |           ^~~~~~~~~~ | mlockall rc=0 errno=0 | READY 2.99
+    MemAvailable 11.29 GiB -> actual clearance -1.01 GiB
+    wake 127.6 s  (StartedAt 2026-09-09T06:18:09.015421906Z)
+    sample 1: 33.05 tok/s
+    sample 2: 33.17 tok/s
+    sample 3: 33.14 tok/s
+    decode majfaults 43   swapin 59   swapout 0   wake swapin 6969   balloon alive   mean 33.12 tok/s
+
+=== B-refusal-p05  (balloon 4.49 GiB, target clearance +0.50 GiB)
+    idle MemAvailable 14.26 GiB
+    balloon: /etc/sudoers.d/00-disable-requiretty:1:11: unknown setting: 'requiretty' | Defaults !requiretty |           ^~~~~~~~~~ | mlockall rc=0 errno=0 | READY 4.49
+    MemAvailable 9.75 GiB -> actual clearance -2.55 GiB
+    wake 131.5 s  (StartedAt 2026-09-09T06:21:35.634968076Z)
+    sample 1: 33.26 tok/s
+    sample 2: 33.26 tok/s
+    sample 3: 33.27 tok/s
+    decode majfaults 3   swapin 0   swapout 0   wake swapin 277   balloon alive   mean 33.26 tok/s
+
+wrote /tmp/claude-1000/-home-adaramir-claude-mcgyvr/e09feadf-705b-4161-9112-f9247a7eb1f4/scratchpad/logs/sweep-results-arms-gate2b.json

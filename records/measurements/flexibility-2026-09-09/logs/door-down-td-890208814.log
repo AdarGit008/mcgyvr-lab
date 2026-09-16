@@ -1,0 +1,8 @@
+gate 1: round=r26-09-09-2026 product_sha256=ec531573f5402b84... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv1 is serving (gpu_procs=1635355,VLLM::EngineCore,3092MiB, containers=c6eac379b2ac); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+
+--- stderr ---
+05-envelope.py: gate 5: serve-down.json already exists under records/evidence/2026-09-10-live-srv1/; an artifact is written once. Move it aside deliberately if this is a re-run — the door does not overwrite evidence
+run.py: REFUSED at 05-envelope.py — gate 5: the evidence directory is made, the step's declared artifacts are write-once, and RUN_ID is minted. Nothing recorded is overwritten

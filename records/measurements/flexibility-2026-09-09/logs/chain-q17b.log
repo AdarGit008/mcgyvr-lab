@@ -1,0 +1,14 @@
+
+=== m2-deepseek-alone
+    idle avail 44.68 GiB  Shmem 0.00  card 1 used
+    wake 48.5 s   avail 44.68 -> 36.45   Shmem 0.00 -> 7.47   card 3413 MiB   decode {8080: 25.293314960948074}
+
+=== m2-qwen36-alone
+    idle avail 44.65 GiB  Shmem 0.00  card 1 used
+    wake 85.0 s   avail 44.65 -> 32.95   Shmem 0.00 -> 10.76   card 2299 MiB   decode {8081: 14.572212092956416}
+
+=== m2-both
+    idle avail 44.64 GiB  Shmem 0.00  card 1 used
+    wake 94.0 s   avail 44.64 -> 24.76   Shmem 0.00 -> 18.23   card 5711 MiB   decode {8080: 24.505935676696733, 8081: 14.564934416573614}
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/m2-coresidency.json

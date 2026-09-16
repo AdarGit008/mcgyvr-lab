@@ -1,0 +1,183 @@
+2026-09-15T14:40:52Z srv2 window date 2026-09-15; the dev fleet's compose files go to /tmp/tmp.gdOTiGfbJS
+wrote /tmp/tmp.gdOTiGfbJS/compose.srv1.a-solo.yml
+wrote /tmp/tmp.gdOTiGfbJS/compose.srv1.b-big.yml
+wrote /tmp/tmp.gdOTiGfbJS/compose.srv1.b-small.yml
+wrote /tmp/tmp.gdOTiGfbJS/compose.srv2.a-solo.yml
+wrote /tmp/tmp.gdOTiGfbJS/compose.srv2.b-big.yml
+wrote /tmp/tmp.gdOTiGfbJS/compose.srv2.b-small.yml
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+2026-09-15T14:40:52Z srv2 compose compose.srv2.b-small.yml is the live file /home/adaramir/.local/state/mcgyvr/compose/b-small/compose.srv2.b-small.yml
+2026-09-15T14:40:56Z srv2 srv2-01 unit: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/16-rig-id-relock-srv2-c1-srv2_35b_256k.sh --model /models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 1 --ctx-per-slot 262144 --date 2026-09-15
+2026-09-15T14:41:50Z srv2 srv2-01 exited 1 (logged, not decided on)
+2026-09-15T14:41:50Z srv2 STOP srv2-01: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-srv2_35b_256k exited before /health said ok: 0.00.845.472 I srv         start: binding port with default address family 0.00.847.209 I srv  llama_server: loading model 0.00.847.253 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.847.559 I common_init_result: fitting params to device memory ... 0.00.847.560 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.960.822 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.15.452.647 I
+the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-srv2_35b_256k exited before /health said ok: 0.00.845.472 I srv         start: binding port with default address family 0.00.847.209 I srv  llama_server: loading model 0.00.847.253 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.847.559 I common_init_result: fitting params to device memory ... 0.00.847.560 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.960.822 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.15.452.647 I
+the harness on the rig could not measure: None
+the load on the rig could not run: None
+srv2_35b_256k's restarts were not read
+stopped srv2 2026-09-15T14:41:50Z
+2026-09-15T17:28:11Z srv2 window date 2026-09-15; the dev fleet's compose files go to /tmp/tmp.a5YoxNAy6y
+wrote /tmp/tmp.a5YoxNAy6y/compose.srv1.a-solo.yml
+wrote /tmp/tmp.a5YoxNAy6y/compose.srv1.b-big.yml
+wrote /tmp/tmp.a5YoxNAy6y/compose.srv1.b-small.yml
+wrote /tmp/tmp.a5YoxNAy6y/compose.srv2.a-solo.yml
+wrote /tmp/tmp.a5YoxNAy6y/compose.srv2.b-big.yml
+wrote /tmp/tmp.a5YoxNAy6y/compose.srv2.b-small.yml
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+2026-09-15T17:28:12Z srv2 compose compose.srv2.b-small.yml is the live file /home/adaramir/.local/state/mcgyvr/compose/b-small/compose.srv2.b-small.yml
+2026-09-15T17:28:12Z srv2 checked again: srv2-01 failed, retried by srv2-01-retry1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-srv2_35b_256k exited before /health said ok: 0.00.845.472 I srv         start: binding port with default address family 0.00.847.209 I srv  llama_server: loading model 0.00.847.253 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.847.559 I common_init_result: fitting params to device memory ... 0.00.847.560 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.960.822 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.15.452.647 I; the harness on the rig could not measure: None; the load on the rig could not run: None; srv2_35b_256k's restarts were not read
+2026-09-15T17:28:16Z srv2 srv2-01 already logged; not run again
+2026-09-15T17:28:16Z srv2 srv2-01-retry1 unit: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/16-rig-id-relock-srv2-c1-srv2_35b_256k-retry1.sh --model /models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 1 --ctx-per-slot 262144 --date 2026-09-15
+2026-09-15T17:28:58Z srv2 srv2-01-retry1 exited 1 (logged, not decided on)
+2026-09-15T17:28:58Z srv2 STOP srv2-01-retry1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-retry1-srv2_35b_256k exited before /health said ok: 0.00.314.526 I srv         start: binding port with default address family 0.00.315.714 I srv  llama_server: loading model 0.00.315.719 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.315.766 I common_init_result: fitting params to device memory ... 0.00.315.769 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.353.855 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.03.305.632 I; its whole docker logs: rig-id-relock-srv2-c1-srv2_35b_256k-retry1.srv2_35b_256k.docker.log
+the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-retry1-srv2_35b_256k exited before /health said ok: 0.00.314.526 I srv         start: binding port with default address family 0.00.315.714 I srv  llama_server: loading model 0.00.315.719 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.315.766 I common_init_result: fitting params to device memory ... 0.00.315.769 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.353.855 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.03.305.632 I; its whole docker logs: rig-id-relock-srv2-c1-srv2_35b_256k-retry1.srv2_35b_256k.docker.log
+the harness on the rig could not measure: None
+the load on the rig could not run: None
+srv2_35b_256k's restarts were not read
+stopped srv2 2026-09-15T17:28:59Z
+2026-09-15T20:35:07Z srv2 window date 2026-09-15; the dev fleet's compose files go to /tmp/tmp.nDmpDYe4mE
+wrote /tmp/tmp.nDmpDYe4mE/compose.srv1.a-solo.yml
+wrote /tmp/tmp.nDmpDYe4mE/compose.srv1.b-big.yml
+wrote /tmp/tmp.nDmpDYe4mE/compose.srv1.b-small.yml
+wrote /tmp/tmp.nDmpDYe4mE/compose.srv2.a-solo.yml
+wrote /tmp/tmp.nDmpDYe4mE/compose.srv2.b-big.yml
+wrote /tmp/tmp.nDmpDYe4mE/compose.srv2.b-small.yml
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+2026-09-15T20:35:08Z srv2 compose compose.srv2.b-small.yml is the live file /home/adaramir/.local/state/mcgyvr/compose/b-small/compose.srv2.b-small.yml
+2026-09-15T20:35:09Z srv2 checked again: srv2-01 failed, retried by srv2-01-retry1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-srv2_35b_256k exited before /health said ok: 0.00.845.472 I srv         start: binding port with default address family 0.00.847.209 I srv  llama_server: loading model 0.00.847.253 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.847.559 I common_init_result: fitting params to device memory ... 0.00.847.560 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.960.822 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.15.452.647 I; the harness on the rig could not measure: None; the load on the rig could not run: None; srv2_35b_256k's restarts were not read
+2026-09-15T20:35:09Z srv2 checked again: srv2-01-retry1 failed, diagnosed by srv2-01-diag1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-retry1-srv2_35b_256k exited before /health said ok: 0.00.314.526 I srv         start: binding port with default address family 0.00.315.714 I srv  llama_server: loading model 0.00.315.719 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.315.766 I common_init_result: fitting params to device memory ... 0.00.315.769 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.353.855 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.03.305.632 I; its whole docker logs: rig-id-relock-srv2-c1-srv2_35b_256k-retry1.srv2_35b_256k.docker.log; the harness on the rig could not measure: None; the load on the rig could not run: None; srv2_35b_256k's restarts were not read
+2026-09-15T20:35:13Z srv2 srv2-01 already logged; not run again
+2026-09-15T20:35:14Z srv2 srv2-01-retry1 already logged; not run again
+2026-09-15T20:35:14Z srv2 srv2-01-diag1 unit: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/16-rig-id-relock-srv2-c1-srv2_35b_256k-diag1.sh --model /models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 1 --ctx-per-slot 262144 --date 2026-09-15
+2026-09-15T20:36:05Z srv2 srv2-01-diag1 exited 1 (logged, not decided on)
+2026-09-15T20:36:05Z srv2 STOP srv2-01-diag1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-diag1-srv2_35b_256k exited before /health said ok: 0.00.318.777 I srv         start: binding port with default address family 0.00.319.922 I srv  llama_server: loading model 0.00.319.926 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.319.958 I common_init_result: fitting params to device memory ... 0.00.319.959 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.399.047 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.03.351.639 I; its whole docker logs: rig-id-relock-srv2-c1-srv2_35b_256k-diag1.srv2_35b_256k.docker.log; exit code 139, OOMKilled false; the rig's kernel log since START read; both filed in the artifact's exit
+the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-diag1-srv2_35b_256k exited before /health said ok: 0.00.318.777 I srv         start: binding port with default address family 0.00.319.922 I srv  llama_server: loading model 0.00.319.926 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.319.958 I common_init_result: fitting params to device memory ... 0.00.319.959 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.399.047 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.03.351.639 I; its whole docker logs: rig-id-relock-srv2-c1-srv2_35b_256k-diag1.srv2_35b_256k.docker.log; exit code 139, OOMKilled false; the rig's kernel log since START read; both filed in the artifact's exit
+the harness on the rig could not measure: None
+the load on the rig could not run: None
+srv2_35b_256k's restarts were not read
+stopped srv2 2026-09-15T20:36:05Z
+2026-09-16T06:26:03Z srv2 window date 2026-09-16; the dev fleet's compose files go to /tmp/tmp.0r5DmwMdRW
+wrote /tmp/tmp.0r5DmwMdRW/compose.srv1.a-solo.yml
+wrote /tmp/tmp.0r5DmwMdRW/compose.srv1.b-big.yml
+wrote /tmp/tmp.0r5DmwMdRW/compose.srv1.b-small.yml
+wrote /tmp/tmp.0r5DmwMdRW/compose.srv2.a-solo.yml
+wrote /tmp/tmp.0r5DmwMdRW/compose.srv2.b-big.yml
+wrote /tmp/tmp.0r5DmwMdRW/compose.srv2.b-small.yml
+wrote /tmp/tmp.0r5DmwMdRW/io-uring.json
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+2026-09-16T06:26:03Z srv2 compose compose.srv2.b-small.yml is the live file /home/adaramir/.local/state/mcgyvr/compose/b-small/compose.srv2.b-small.yml
+2026-09-16T06:26:04Z srv2 checked again: srv2-01 failed, retried by srv2-01-retry1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-srv2_35b_256k exited before /health said ok: 0.00.845.472 I srv         start: binding port with default address family 0.00.847.209 I srv  llama_server: loading model 0.00.847.253 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.847.559 I common_init_result: fitting params to device memory ... 0.00.847.560 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.960.822 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.15.452.647 I; the harness on the rig could not measure: None; the load on the rig could not run: None; srv2_35b_256k's restarts were not read
+2026-09-16T06:26:05Z srv2 checked again: srv2-01-retry1 failed, diagnosed by srv2-01-diag1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-retry1-srv2_35b_256k exited before /health said ok: 0.00.314.526 I srv         start: binding port with default address family 0.00.315.714 I srv  llama_server: loading model 0.00.315.719 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.315.766 I common_init_result: fitting params to device memory ... 0.00.315.769 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.353.855 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.03.305.632 I; its whole docker logs: rig-id-relock-srv2-c1-srv2_35b_256k-retry1.srv2_35b_256k.docker.log; the harness on the rig could not measure: None; the load on the rig could not run: None; srv2_35b_256k's restarts were not read
+2026-09-16T06:26:05Z srv2 checked again: srv2-01-diag1 failed, relaunched by srv2-01-relaunch1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-diag1-srv2_35b_256k exited before /health said ok: 0.00.318.777 I srv         start: binding port with default address family 0.00.319.922 I srv  llama_server: loading model 0.00.319.926 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.319.958 I common_init_result: fitting params to device memory ... 0.00.319.959 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.399.047 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.03.351.639 I; its whole docker logs: rig-id-relock-srv2-c1-srv2_35b_256k-diag1.srv2_35b_256k.docker.log; exit code 139, OOMKilled false; the rig's kernel log since START read; both filed in the artifact's exit; the harness on the rig could not measure: None; the load on the rig could not run: None; srv2_35b_256k's restarts were not read
+2026-09-16T06:26:09Z srv2 srv2-01 already logged; not run again
+2026-09-16T06:26:09Z srv2 srv2-01-retry1 already logged; not run again
+2026-09-16T06:26:09Z srv2 srv2-01-diag1 already logged; not run again
+2026-09-16T06:26:09Z srv2 srv2-01-relaunch1 unit: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/16-rig-id-relock-srv2-c1-srv2_35b_256k-relaunch1.sh --model /models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 1 --ctx-per-slot 262144 --date 2026-09-16
+2026-09-16T06:28:10Z srv2 srv2-01-relaunch1 exited 0 (logged, not decided on)
+2026-09-16T06:28:10Z srv2 STOP srv2-01-relaunch1: pswpout rose during the run (91686 -> 91786)
+pswpout rose during the run (91686 -> 91786)
+stopped srv2 2026-09-16T06:28:10Z
+2026-09-16T07:08:09Z srv2 window date 2026-09-16; the dev fleet's compose files go to /tmp/tmp.8KGZZysu56
+wrote /tmp/tmp.8KGZZysu56/compose.srv1.a-solo.yml
+wrote /tmp/tmp.8KGZZysu56/compose.srv1.b-big.yml
+wrote /tmp/tmp.8KGZZysu56/compose.srv1.b-small.yml
+wrote /tmp/tmp.8KGZZysu56/compose.srv2.a-solo.yml
+wrote /tmp/tmp.8KGZZysu56/compose.srv2.b-big.yml
+wrote /tmp/tmp.8KGZZysu56/compose.srv2.b-small.yml
+wrote /tmp/tmp.8KGZZysu56/io-uring.json
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+2026-09-16T07:08:10Z srv2 compose compose.srv2.b-small.yml is the live file /home/adaramir/.local/state/mcgyvr/compose/b-small/compose.srv2.b-small.yml
+2026-09-16T07:08:11Z srv2 checked again: srv2-01 failed, retried by srv2-01-retry1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-srv2_35b_256k exited before /health said ok: 0.00.845.472 I srv         start: binding port with default address family 0.00.847.209 I srv  llama_server: loading model 0.00.847.253 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.847.559 I common_init_result: fitting params to device memory ... 0.00.847.560 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.960.822 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.15.452.647 I; the harness on the rig could not measure: None; the load on the rig could not run: None; srv2_35b_256k's restarts were not read
+2026-09-16T07:08:11Z srv2 checked again: srv2-01-retry1 failed, diagnosed by srv2-01-diag1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-retry1-srv2_35b_256k exited before /health said ok: 0.00.314.526 I srv         start: binding port with default address family 0.00.315.714 I srv  llama_server: loading model 0.00.315.719 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.315.766 I common_init_result: fitting params to device memory ... 0.00.315.769 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.353.855 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.03.305.632 I; its whole docker logs: rig-id-relock-srv2-c1-srv2_35b_256k-retry1.srv2_35b_256k.docker.log; the harness on the rig could not measure: None; the load on the rig could not run: None; srv2_35b_256k's restarts were not read
+2026-09-16T07:08:11Z srv2 checked again: srv2-01-diag1 failed, relaunched by srv2-01-relaunch1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-diag1-srv2_35b_256k exited before /health said ok: 0.00.318.777 I srv         start: binding port with default address family 0.00.319.922 I srv  llama_server: loading model 0.00.319.926 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.319.958 I common_init_result: fitting params to device memory ... 0.00.319.959 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.399.047 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.03.351.639 I; its whole docker logs: rig-id-relock-srv2-c1-srv2_35b_256k-diag1.srv2_35b_256k.docker.log; exit code 139, OOMKilled false; the rig's kernel log since START read; both filed in the artifact's exit; the harness on the rig could not measure: None; the load on the rig could not run: None; srv2_35b_256k's restarts were not read
+2026-09-16T07:08:12Z srv2 checked again: ok srv2-01-relaunch1
+2026-09-16T07:08:15Z srv2 srv2-01 already logged; not run again
+2026-09-16T07:08:15Z srv2 srv2-01-retry1 already logged; not run again
+2026-09-16T07:08:16Z srv2 srv2-01-diag1 already logged; not run again
+2026-09-16T07:08:16Z srv2 srv2-01-relaunch1 already logged; not run again
+2026-09-16T07:08:16Z srv2 srv2-02 serve-up: python -m mcgyvr.serving.run serve up --host srv2 --compose /tmp/tmp.8KGZZysu56/compose.srv2.b-small.yml --suffix rig-id-relock-srv2-02 --date 2026-09-16
+2026-09-16T07:11:23Z srv2 srv2-02 exited 0 (logged, not decided on)
+2026-09-16T07:11:24Z srv2 srv2-03 read: python -m mcgyvr.serving.run read --host srv2 --probe srv2_3b srv2_7b --run-id run-20260916T071124-887502d1
+2026-09-16T07:12:02Z srv2 srv2-03 exited 1 (logged, not decided on)
+2026-09-16T07:12:03Z srv2 STOP srv2-03: srv2_3b reported no attention_backend
+srv2_3b reported no attention_backend
+srv2_7b reported no attention_backend
+stopped srv2 2026-09-16T07:12:03Z
+2026-09-16T09:44:05Z srv2 window date 2026-09-16; the dev fleet's compose files go to /tmp/tmp.j1C1rstwuV
+wrote /tmp/tmp.j1C1rstwuV/compose.srv1.a-solo.yml
+wrote /tmp/tmp.j1C1rstwuV/compose.srv1.b-big.yml
+wrote /tmp/tmp.j1C1rstwuV/compose.srv1.b-small.yml
+wrote /tmp/tmp.j1C1rstwuV/compose.srv2.a-solo.yml
+wrote /tmp/tmp.j1C1rstwuV/compose.srv2.b-big.yml
+wrote /tmp/tmp.j1C1rstwuV/compose.srv2.b-small.yml
+wrote /tmp/tmp.j1C1rstwuV/io-uring.json
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+2026-09-16T09:44:06Z srv2 compose compose.srv2.b-small.yml is the live file /home/adaramir/.local/state/mcgyvr/compose/b-small/compose.srv2.b-small.yml
+2026-09-16T09:44:06Z srv2 checked again: srv2-01 failed, retried by srv2-01-retry1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-srv2_35b_256k exited before /health said ok: 0.00.845.472 I srv         start: binding port with default address family 0.00.847.209 I srv  llama_server: loading model 0.00.847.253 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.847.559 I common_init_result: fitting params to device memory ... 0.00.847.560 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.960.822 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.15.452.647 I; the harness on the rig could not measure: None; the load on the rig could not run: None; srv2_35b_256k's restarts were not read
+2026-09-16T09:44:06Z srv2 checked again: srv2-01-retry1 failed, diagnosed by srv2-01-diag1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-retry1-srv2_35b_256k exited before /health said ok: 0.00.314.526 I srv         start: binding port with default address family 0.00.315.714 I srv  llama_server: loading model 0.00.315.719 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.315.766 I common_init_result: fitting params to device memory ... 0.00.315.769 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.353.855 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.03.305.632 I; its whole docker logs: rig-id-relock-srv2-c1-srv2_35b_256k-retry1.srv2_35b_256k.docker.log; the harness on the rig could not measure: None; the load on the rig could not run: None; srv2_35b_256k's restarts were not read
+2026-09-16T09:44:07Z srv2 checked again: srv2-01-diag1 failed, relaunched by srv2-01-relaunch1: the step failed: 2026-09-15-lock-fleets-rig-id-relock-srv2-c1-srv2_35b_256k-diag1-srv2_35b_256k exited before /health said ok: 0.00.318.777 I srv         start: binding port with default address family 0.00.319.922 I srv  llama_server: loading model 0.00.319.926 I srv    load_model: loading model '/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf' 0.00.319.958 I common_init_result: fitting params to device memory ... 0.00.319.959 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on) 0.02.399.047 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance 0.03.351.639 I; its whole docker logs: rig-id-relock-srv2-c1-srv2_35b_256k-diag1.srv2_35b_256k.docker.log; exit code 139, OOMKilled false; the rig's kernel log since START read; both filed in the artifact's exit; the harness on the rig could not measure: None; the load on the rig could not run: None; srv2_35b_256k's restarts were not read
+2026-09-16T09:44:07Z srv2 checked again: ok srv2-01-relaunch1
+2026-09-16T09:44:08Z srv2 checked again: ok srv2-02
+2026-09-16T09:44:08Z srv2 checked again: srv2-03 failed, retried by srv2-03-retry1: srv2_3b reported no attention_backend; srv2_7b reported no attention_backend
+2026-09-16T09:44:11Z srv2 srv2-01 already logged; not run again
+2026-09-16T09:44:11Z srv2 srv2-01-retry1 already logged; not run again
+2026-09-16T09:44:11Z srv2 srv2-01-diag1 already logged; not run again
+2026-09-16T09:44:11Z srv2 srv2-01-relaunch1 already logged; not run again
+2026-09-16T09:44:12Z srv2 srv2-02 already logged; not run again
+2026-09-16T09:44:12Z srv2 srv2-03 already logged; not run again
+2026-09-16T09:44:12Z srv2 srv2-03-retry1 read: python -m mcgyvr.serving.run read --host srv2 --probe srv2_3b srv2_7b --run-id run-20260916T094412-f1baad3c
+2026-09-16T09:44:50Z srv2 srv2-03-retry1 exited 1 (logged, not decided on)
+2026-09-16T09:44:50Z srv2 srv2-04 load: python -m mcgyvr.serving.run read --host srv2 --probe srv2_3b --load 8x4096 --run-id run-20260916T094450-b4c02af8
+2026-09-16T09:45:09Z srv2 srv2-04 exited 1 (logged, not decided on)
+2026-09-16T09:45:10Z srv2 srv2-05 load: python -m mcgyvr.serving.run read --host srv2 --probe srv2_7b --load 8x4096 --run-id run-20260916T094510-c7cfd268
+2026-09-16T09:45:41Z srv2 srv2-05 exited 1 (logged, not decided on)
+2026-09-16T09:45:41Z srv2 srv2-06 serve-down: python -m mcgyvr.serving.run serve down --host srv2 --compose /tmp/tmp.j1C1rstwuV/compose.srv2.b-small.yml --suffix rig-id-relock-srv2-06 --date 2026-09-16
+2026-09-16T09:46:00Z srv2 srv2-06 exited 0 (logged, not decided on)
+2026-09-16T09:46:00Z srv2 srv2-07 unit: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/17-rig-id-relock-srv2-c1-srv2_80b.sh --model /home/adaramir/models/moe/Qwen3-Next-80B-A3B-Instruct-Q3_K_M.gguf --parallel 4 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-16
+2026-09-16T09:50:47Z srv2 srv2-07 exited 0 (logged, not decided on)
+2026-09-16T09:50:48Z srv2 srv2-08 unit: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/18-rig-id-relock-srv2-c2-srv2_35b_256k.sh --model /models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 1 --ctx-per-slot 262144 --date 2026-09-16
+2026-09-16T09:52:59Z srv2 srv2-08 exited 0 (logged, not decided on)
+2026-09-16T09:53:00Z srv2 srv2-09 serve-up: python -m mcgyvr.serving.run serve up --host srv2 --compose /tmp/tmp.j1C1rstwuV/compose.srv2.b-small.yml --suffix rig-id-relock-srv2-09 --date 2026-09-16
+2026-09-16T09:56:24Z srv2 srv2-09 exited 0 (logged, not decided on)
+2026-09-16T09:56:25Z srv2 srv2-10 read: python -m mcgyvr.serving.run read --host srv2 --probe srv2_3b srv2_7b --run-id run-20260916T095625-722c82d0
+2026-09-16T09:57:03Z srv2 srv2-10 exited 1 (logged, not decided on)
+2026-09-16T09:57:04Z srv2 srv2-11 load: python -m mcgyvr.serving.run read --host srv2 --probe srv2_3b --load 8x4096 --run-id run-20260916T095704-e32c7aa7
+2026-09-16T09:57:23Z srv2 srv2-11 exited 1 (logged, not decided on)
+2026-09-16T09:57:23Z srv2 srv2-12 load: python -m mcgyvr.serving.run read --host srv2 --probe srv2_7b --load 8x4096 --run-id run-20260916T095723-2a239154
+2026-09-16T09:57:54Z srv2 srv2-12 exited 1 (logged, not decided on)
+2026-09-16T09:57:55Z srv2 srv2-13 serve-down: python -m mcgyvr.serving.run serve down --host srv2 --compose /tmp/tmp.j1C1rstwuV/compose.srv2.b-small.yml --suffix rig-id-relock-srv2-13 --date 2026-09-16
+2026-09-16T09:58:13Z srv2 srv2-13 exited 0 (logged, not decided on)
+2026-09-16T09:58:14Z srv2 srv2-14 unit: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/19-rig-id-relock-srv2-c2-srv2_80b.sh --model /home/adaramir/models/moe/Qwen3-Next-80B-A3B-Instruct-Q3_K_M.gguf --parallel 4 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-16
+2026-09-16T10:03:38Z srv2 srv2-14 exited 0 (logged, not decided on)
+2026-09-16T10:03:39Z srv2 srv2-15 unit: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/20-rig-id-relock-srv2-c3-srv2_35b_256k.sh --model /models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 1 --ctx-per-slot 262144 --date 2026-09-16
+2026-09-16T10:05:51Z srv2 srv2-15 exited 0 (logged, not decided on)
+2026-09-16T10:05:52Z srv2 srv2-16 serve-up: python -m mcgyvr.serving.run serve up --host srv2 --compose /tmp/tmp.j1C1rstwuV/compose.srv2.b-small.yml --suffix rig-id-relock-srv2-16 --date 2026-09-16
+2026-09-16T10:09:16Z srv2 srv2-16 exited 0 (logged, not decided on)
+2026-09-16T10:09:17Z srv2 srv2-17 read: python -m mcgyvr.serving.run read --host srv2 --probe srv2_3b srv2_7b --run-id run-20260916T100917-a6d13c9e
+2026-09-16T10:09:56Z srv2 srv2-17 exited 1 (logged, not decided on)
+2026-09-16T10:09:56Z srv2 srv2-18 load: python -m mcgyvr.serving.run read --host srv2 --probe srv2_3b --load 8x4096 --run-id run-20260916T100956-6fcf9ac7
+2026-09-16T10:10:15Z srv2 srv2-18 exited 1 (logged, not decided on)
+2026-09-16T10:10:16Z srv2 srv2-19 load: python -m mcgyvr.serving.run read --host srv2 --probe srv2_7b --load 8x4096 --run-id run-20260916T101016-2b19824b
+2026-09-16T10:10:47Z srv2 srv2-19 exited 1 (logged, not decided on)
+2026-09-16T10:10:47Z srv2 srv2-20 serve-down: python -m mcgyvr.serving.run serve down --host srv2 --compose /tmp/tmp.j1C1rstwuV/compose.srv2.b-small.yml --suffix rig-id-relock-srv2-20 --date 2026-09-16
+2026-09-16T10:11:06Z srv2 srv2-20 exited 0 (logged, not decided on)
+2026-09-16T10:11:07Z srv2 srv2-21 unit: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/21-rig-id-relock-srv2-c3-srv2_80b.sh --model /home/adaramir/models/moe/Qwen3-Next-80B-A3B-Instruct-Q3_K_M.gguf --parallel 4 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-16
+2026-09-16T10:16:22Z srv2 srv2-21 exited 0 (logged, not decided on)
+2026-09-16T10:16:22Z srv2 srv2-22 move: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/22-rig-id-relock-srv2-r1-b-small-to-b-big.sh --model /home/adaramir/models/moe/Qwen3-Next-80B-A3B-Instruct-Q3_K_M.gguf --parallel 4 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-16 -- /tmp/tmp.j1C1rstwuV/compose.srv2.b-small.yml
+2026-09-16T10:21:35Z srv2 srv2-22 exited 0 (logged, not decided on)
+2026-09-16T10:21:36Z srv2 srv2-23 move: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/23-rig-id-relock-srv2-r1-b-big-to-b-small.sh --model /home/adaramir/models/moe/Qwen3-Next-80B-A3B-Instruct-Q3_K_M.gguf --parallel 4 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-16 -- /tmp/tmp.j1C1rstwuV/compose.srv2.b-small.yml
+2026-09-16T10:26:17Z srv2 srv2-23 exited 0 (logged, not decided on)
+2026-09-16T10:26:18Z srv2 srv2-24 move: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/24-rig-id-relock-srv2-r2-b-small-to-b-big.sh --model /home/adaramir/models/moe/Qwen3-Next-80B-A3B-Instruct-Q3_K_M.gguf --parallel 4 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-16 -- /tmp/tmp.j1C1rstwuV/compose.srv2.b-small.yml
+2026-09-16T10:31:19Z srv2 srv2-24 exited 0 (logged, not decided on)
+2026-09-16T10:31:20Z srv2 srv2-25 move: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/25-rig-id-relock-srv2-r2-b-big-to-b-small.sh --model /home/adaramir/models/moe/Qwen3-Next-80B-A3B-Instruct-Q3_K_M.gguf --parallel 4 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-16 -- /tmp/tmp.j1C1rstwuV/compose.srv2.b-small.yml
+2026-09-16T10:36:03Z srv2 srv2-25 exited 0 (logged, not decided on)
+2026-09-16T10:36:04Z srv2 srv2-26 move: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/26-rig-id-relock-srv2-r3-b-small-to-b-big.sh --model /home/adaramir/models/moe/Qwen3-Next-80B-A3B-Instruct-Q3_K_M.gguf --parallel 4 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-16 -- /tmp/tmp.j1C1rstwuV/compose.srv2.b-small.yml
+2026-09-16T10:41:06Z srv2 srv2-26 exited 0 (logged, not decided on)
+2026-09-16T10:41:06Z srv2 srv2-27 move: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/27-rig-id-relock-srv2-r3-b-big-to-b-small.sh --model /home/adaramir/models/moe/Qwen3-Next-80B-A3B-Instruct-Q3_K_M.gguf --parallel 4 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-16 -- /tmp/tmp.j1C1rstwuV/compose.srv2.b-small.yml
+2026-09-16T10:45:47Z srv2 srv2-27 exited 0 (logged, not decided on)
+2026-09-16T10:45:47Z srv2 finished_at 2026-09-16T10:45:47Z; finished srv2 2026-09-16T10:45:47Z srv1 idle 978.0

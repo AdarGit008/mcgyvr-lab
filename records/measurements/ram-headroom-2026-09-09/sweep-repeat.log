@@ -1,0 +1,42 @@
+
+=== srv1-qwen-hi-r1  (balloon 0.00 GiB, target clearance +1.90 GiB)
+    idle MemAvailable 14.23 GiB
+    balloon: none
+    MemAvailable 14.24 GiB -> actual clearance +1.94 GiB
+    wake 141.3 s  (StartedAt 2026-09-09T04:24:57.949842495Z)
+    sample 1: 33.30 tok/s
+    sample 2: 33.31 tok/s
+    sample 3: 33.30 tok/s
+    decode majfaults 5   swapin 0   mean 33.30 tok/s
+
+=== srv1-qwen-neg-r2  (balloon 2.89 GiB, target clearance -1.00 GiB)
+    idle MemAvailable 14.20 GiB
+    balloon: /etc/sudoers.d/00-disable-requiretty:1:11: unknown setting: 'requiretty' | Defaults !requiretty |           ^~~~~~~~~~ | mlockall rc=0 errno=0 | READY 2.89
+    MemAvailable 11.31 GiB -> actual clearance -0.99 GiB
+    wake 166.8 s  (StartedAt 2026-09-09T04:28:35.009850023Z)
+    sample 1: 31.40 tok/s
+    sample 2: 31.37 tok/s
+    sample 3: 31.35 tok/s
+    decode majfaults 18   swapin 0   mean 31.37 tok/s
+
+=== srv1-qwen-hi-r3  (balloon 0.00 GiB, target clearance +1.90 GiB)
+    idle MemAvailable 14.21 GiB
+    balloon: none
+    MemAvailable 14.23 GiB -> actual clearance +1.93 GiB
+    wake 140.0 s  (StartedAt 2026-09-09T04:32:39.495135011Z)
+    sample 1: 33.36 tok/s
+    sample 2: 33.34 tok/s
+    sample 3: 33.38 tok/s
+    decode majfaults 8   swapin 0   mean 33.36 tok/s
+
+=== srv1-qwen-neg-r4  (balloon 2.89 GiB, target clearance -1.00 GiB)
+    idle MemAvailable 14.22 GiB
+    balloon: /etc/sudoers.d/00-disable-requiretty:1:11: unknown setting: 'requiretty' | Defaults !requiretty |           ^~~~~~~~~~ | mlockall rc=0 errno=0 | READY 2.89
+    MemAvailable 11.32 GiB -> actual clearance -0.98 GiB
+    wake 166.5 s  (StartedAt 2026-09-09T04:36:16.255254997Z)
+    sample 1: 31.86 tok/s
+    sample 2: 31.89 tok/s
+    sample 3: 31.88 tok/s
+    decode majfaults 15   swapin 1   mean 31.88 tok/s
+
+wrote /tmp/claude-1000/-home-adaramir-claude-mcgyvr/e09feadf-705b-4161-9112-f9247a7eb1f4/scratchpad/logs/sweep-results-arms-repeat.json

@@ -1,0 +1,140 @@
++ cd /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09
++ uv run --no-sync python vllm_arms.py arms-vllm-2.json
+
+=== v-pair-plainB-1  units ['7b', '3b']
+    idle avail 44.66 GiB, card 1 used / 11911 free MiB
+    7b: /is_sleeping -> 404   decode 68.86867749050049 tok/s [68.91, 68.81, 68.89]
+    3b: /is_sleeping -> 404   decode 128.21315558756228 tok/s [128.08, 128.43, 128.13]
+    wake 91.7 s (door-complete minus earliest StartedAt)   card peak 10271 / steady 9445 MiB   avail 44.66 -> 39.17 GiB
+
+=== v-pair-sleepB-1  units ['7b', '3b']
+    idle avail 44.67 GiB, card 1 used / 11911 free MiB
+    7b: /is_sleeping -> 200   decode 68.87042036112432 tok/s [68.89, 68.9, 68.82]
+    3b: /is_sleeping -> 200   decode 127.9051731259129 tok/s [127.8, 128.1, 127.82]
+    wake 142.9 s (door-complete minus earliest StartedAt)   card peak 10641 / steady 10641 MiB   avail 44.67 -> 39.12 GiB
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09/results-vllm.json
++ uv run --no-sync python sleep_matrix.py
+=== baseline ===
+  [baseline-both-serving         ] card 10641 used /  1271 free   avail  39.12G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":false}'}   decode_3b=129.23 decode_7b=68.87
+
+=== M6: level 2, every combination ===
+    sleep 3b L2:   0.27 s   http 200  
+  [L2-3b-alone-asleep            ] card  7059 used /  4853 free   avail  39.12G   {'3b': '200:{"is_sleeping":true}', '7b': '200:{"is_sleeping":false}'}   sleep_s=0.27
+  [L2-3b-asleep-7b-serving       ] card  7059 used /  4853 free   avail  39.12G   {'3b': '200:{"is_sleeping":true}', '7b': '200:{"is_sleeping":false}'}   decode_other=68.97
+    wake 3b:   0.25 s   http 200  
+  [L2-3b-alone-awake             ] card 10621 used /  1291 free   avail  39.12G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":false}'}   wake_s=0.25 decode=127.99
+    sleep 7b L2:   0.32 s   http 200  
+  [L2-7b-alone-asleep            ] card  4039 used /  7873 free   avail  39.11G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":true}'}   sleep_s=0.32
+  [L2-7b-asleep-3b-serving       ] card  4039 used /  7873 free   avail  39.10G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":true}'}   decode_other=127.5
+    wake 7b:   0.32 s   http 200  
+  [L2-7b-alone-awake             ] card 10601 used /  1311 free   avail  39.10G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":false}'}   wake_s=0.32 decode=69.03
+
+=== M6: both asleep at level 2 — the case that funds an 80B ===
+    sleep 3b L2:   0.24 s   http 200  
+    sleep 7b L2:   0.29 s   http 200  
+  [L2-both-asleep                ] card   477 used / 11435 free   avail  39.09G   {'3b': '200:{"is_sleeping":true}', '7b': '200:{"is_sleeping":true}'}   sleep_s={'3b': 0.24, '7b': 0.29}
+
+>>> both asleep: 11435 MiB free. `emit` asks 11,960 at --n-cpu-moe 35; one expert block is 732 MiB.
+
+  [L2-both-asleep-probe-3b       ] card   477 used / 11435 free   avail  39.10G   {'3b': '200:{"is_sleeping":true}', '7b': '200:{"is_sleeping":true}'}   v1_models_http=200
+  [L2-both-asleep-probe-7b       ] card   477 used / 11435 free   avail  39.09G   {'3b': '200:{"is_sleeping":true}', '7b': '200:{"is_sleeping":true}'}   v1_models_http=200
+    wake 3b:   0.25 s   http 200  
+    wake 7b:   0.31 s   http 200  
+  [L2-both-awake                 ] card 10601 used /  1311 free   avail  39.07G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":false}'}   wake_s={'3b': 0.25, '7b': 0.31} decode_3b=128.22 decode_7b=68.61
+
+=== M7: level 1 ===
+  [L1-3b-before                  ] card 10601 used /  1311 free   avail  39.06G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":false}'}   
+    sleep 3b L1:   1.37 s   http 200  
+  [L1-3b-asleep                  ] card  7045 used /  4867 free   avail  35.94G   {'3b': '200:{"is_sleeping":true}', '7b': '200:{"is_sleeping":false}'}   sleep_s=1.37
+    wake 3b:   0.42 s   http 200  
+  [L1-3b-awake                   ] card 10607 used /  1305 free   avail  35.92G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":false}'}   wake_s=0.42 decode=128.47
+    >>> 3b: avail 39.06 -> 35.94 asleep -> 35.92 awake  (kept +3.14 GiB)
+  [L1-7b-before                  ] card 10607 used /  1305 free   avail  35.92G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":false}'}   
+    sleep 7b L1:   3.78 s   http 200  
+  [L1-7b-asleep                  ] card  4065 used /  7847 free   avail  25.57G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":true}'}   sleep_s=3.78
+    wake 7b:   0.79 s   http 200  
+  [L1-7b-awake                   ] card 10627 used /  1285 free   avail  25.60G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":false}'}   wake_s=0.79 decode=69.03
+    >>> 7b: avail 35.92 -> 25.57 asleep -> 25.6 awake  (kept +10.32 GiB)
+
+=== M7: does a level-2 sleep release what level 1 took? ===
+    sleep 3b L2:   0.33 s   http 200  
+  [L1then2-3b-asleep-L2          ] card  7065 used /  4847 free   avail  25.59G   {'3b': '200:{"is_sleeping":true}', '7b': '200:{"is_sleeping":false}'}   sleep_s=0.33
+    sleep 7b L2:   0.40 s   http 200  
+  [L1then2-7b-asleep-L2          ] card   503 used / 11409 free   avail  25.58G   {'3b': '200:{"is_sleeping":true}', '7b': '200:{"is_sleeping":true}'}   sleep_s=0.4
+  [L1then2-both-asleep-L2        ] card   503 used / 11409 free   avail  25.59G   {'3b': '200:{"is_sleeping":true}', '7b': '200:{"is_sleeping":true}'}   
+  [L1then2-both-asleep-L2-after-60s-idle] card   503 used / 11409 free   avail  25.64G   {'3b': '200:{"is_sleeping":true}', '7b': '200:{"is_sleeping":true}'}   
+    wake 3b:   0.33 s   http 200  
+    wake 7b:   0.31 s   http 200  
+  [L1then2-both-awake            ] card 10627 used /  1285 free   avail  25.63G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":false}'}   decode_3b=127.82 decode_7b=68.68
+
+=== M7: a second level-1 cycle — bounded buffer, or a leak? ===
+    sleep 3b L1 (2nd):   0.40 s   http 200  
+    wake 3b:   0.42 s   http 200  
+    sleep 7b L1 (2nd):   0.75 s   http 200  
+    wake 7b:   0.80 s   http 200  
+  [L1-second-cycle-both-awake    ] card 10627 used /  1285 free   avail  25.62G   {'3b': '200:{"is_sleeping":false}', '7b': '200:{"is_sleeping":false}'}   decode_3b=128.64 decode_7b=67.74
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09/m6-m7-sleep-matrix.json
++ MCG_OUT=results-arms-srv2-rate.json
++ uv run --no-sync python wake_rate.py arms-srv2-rate.json
+
+=== r-srv2-deepseek-1  blob 8.29 GiB
+    idle avail 44.68 -> before 44.67 GiB, clearance +36.38, card free 11911 MiB
+    wake 51.9 s   0.1598 GiB/s   decode 67.53424814631232   card peak 10751 / steady 10751 MiB   (83 samples)
+
+=== r-srv2-deepseek-2  blob 8.29 GiB
+    idle avail 44.67 -> before 44.67 GiB, clearance +36.38, card free 11911 MiB
+    wake 50.1 s   0.1655 GiB/s   decode 67.29013729727258   card peak 10751 / steady 10751 MiB   (78 samples)
+
+=== r-srv2-qwen36-1  blob 12.29 GiB
+    idle avail 44.67 -> before 44.66 GiB, clearance +32.37, card free 11911 MiB
+    wake 80.4 s   0.1528 GiB/s   decode 17.723784516234318   card peak 11001 / steady 11015 MiB   (109 samples)
+
+=== r-srv2-qwen36-2  blob 12.29 GiB
+    idle avail 44.65 -> before 44.64 GiB, clearance +32.35, card free 11911 MiB
+    wake 79.5 s   0.1547 GiB/s   decode 17.713633381486932   card peak 11001 / steady 11015 MiB   (94 samples)
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09/results-arms-srv2-rate.json
++ uv run --no-sync python coresidency.py
+
+=== m2-deepseek-alone
+    idle avail 44.65 GiB  Shmem 0.00  card 1 used
+    wake 52.0 s   avail 44.65 -> 36.34   Shmem 0.00 -> 7.47   card 3413 MiB   decode {8080: 23.17305932186592}
+
+=== m2-qwen36-alone
+    idle avail 44.68 GiB  Shmem 0.00  card 1 used
+    wake 84.8 s   avail 44.68 -> 32.84   Shmem 0.00 -> 10.76   card 2299 MiB   decode {8081: 14.60452597015386}
+
+=== m2-both
+    idle avail 44.67 GiB  Shmem 0.00  card 1 used
+    wake 89.9 s   avail 44.67 -> 24.63   Shmem 0.00 -> 18.23   card 5711 MiB   decode {8080: 23.57650895959238, 8081: 14.406126463501625}
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09/m2-coresidency.json
++ MCG_OUT=results-arms-srv2-m1-80b.json
++ uv run --no-sync python wake_rate.py arms-srv2-m1-80b.json
+
+=== m1-80b-mapped-n36-1  blob 35.67 GiB
+    idle avail 44.68 -> before 44.67 GiB, clearance +9.00, card free 11911 MiB
+    wake 105.5 s   0.3381 GiB/s   decode 13.017815330581687   card peak 11165 / steady 11167 MiB   (119 samples)
+
+=== m1-80b-unmapped-n36-1  blob 35.67 GiB
+    idle avail 44.67 -> before 44.64 GiB, clearance +8.97, card free 11911 MiB
+    wake 117.3 s   0.3041 GiB/s   decode 13.463790405872313   card peak 11217 / steady 11219 MiB   (131 samples)
+
+=== m1-80b-unmapped-n40-1  blob 35.67 GiB
+    idle avail 44.68 -> before 44.66 GiB, clearance +8.99, card free 11911 MiB
+    wake 118.4 s   0.3013 GiB/s   decode 12.80786296456596   card peak 8311 / steady 8313 MiB   (133 samples)
+
+=== m1-80b-mapped-n40-1  blob 35.67 GiB
+    idle avail 44.65 -> before 44.65 GiB, clearance +8.98, card free 11911 MiB
+    wake 104.2 s   0.3423 GiB/s   decode 12.298201214041297   card peak 8253 / steady 8255 MiB   (118 samples)
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09/results-arms-srv2-m1-80b.json
++ echo 'CHAIN DONE'
+CHAIN DONE
++ MCG_RESTORE=1
++ uv run --no-sync python -
+srv2 restored: {'total': 12288, 'used': 9613, 'reserved': 377, 'free': 2299} 39.22688293457031
++ echo 'SRV2 CHAIN DONE'
+SRV2 CHAIN DONE

@@ -1,0 +1,11 @@
+gate 1: round=r25-09-09-2026 product_sha256=1953b0bbc9692ba1... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv2 matches its declaration on 11 keys
+gate 3: docker on srv2 answers, 29.7.2 as declared
+gate 5: RUN_ID=2026-09-09-live-srv2-serve-up-m1-80b-mapped-n36-1-up -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv2
+serve-up: docker compose up on srv2: mcgyvr-srv2-Qwen3-Next-80B-A3B-Instruct-Q3_K_M-8003
+serve-up: mcgyvr-srv2-Qwen3-Next-80B-A3B-Instruct-Q3_K_M-8003 :8003 up after 98.7s, models=['/home/adaramir/models/moe/Qwen3-Next-80B-A3B-Instruct-Q3_K_M.gguf']
+gate 7: serving, as declared: mcgyvr-srv2-Qwen3-Next-80B-A3B-Instruct-Q3_K_M-8003
+gate 8: 1 artifact(s) parse
+
+--- stderr ---
+gate 6: /home/adaramir/claude/mcgyvr/src/mcgyvr/serving/gate-scripts/serve-up.py --host srv2 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-09-live-srv2 (RUN_ID=2026-09-09-live-srv2-serve-up-m1-80b-mapped-n36-1-up)

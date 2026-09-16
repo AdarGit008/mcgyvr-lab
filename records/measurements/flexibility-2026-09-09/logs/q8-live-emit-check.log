@@ -1,0 +1,19 @@
+mismatch: /home/adaramir/.mcgyvr/config/compose.srv2.yml is not what this config emits. The file was written from an older config, so the rig is serving argv nobody is reading any more. Run `mcgyvr emit` and then restart the unit — the file alone changes nothing that is already up.
+  --- compose.srv2.yml (on disk)
+  +++ compose.srv2.yml (this config)
+  @@ -15,3 +15,3 @@
+         Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002:
+  -        condition: service_started
+  +        condition: service_healthy
+       deploy:
+  @@ -56,2 +56,10 @@
+         HF_HUB_OFFLINE: '1'
+  +    healthcheck:
+  +      interval: 5s
+  +      retries: 3
+  +      start_period: 600s
+  +      test:
+  +      - CMD-SHELL
+  +      - curl -sf http://localhost:8002/v1/models >/dev/null 2>&1 || wget -q -O- http://localhost:8002/v1/models >/dev/null 2>&1
+  +      timeout: 3s
+       image: vllm/vllm-openai@sha256:ffb2d59b1c059a5bd8d781320c9f5189de8293693b7d95da54befddaa54abf52

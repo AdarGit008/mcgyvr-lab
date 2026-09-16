@@ -1,0 +1,8 @@
+srv2:8080/m_a/llama.cpp  gpu 0, 2 slots (written)  for t_a
+srv2:8081/m_b/llama.cpp  gpu 0, 2 slots (written)  for t_b
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09/m2/B-declared-fits/compose.srv2.yml
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+
+--- stderr ---

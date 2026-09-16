@@ -1,0 +1,7 @@
+80B up at width 4
+width  ok fail  per-stream t/s  aggregate t/s   p50 lat   max lat
+    1   1    0            6.63           6.63      38.6      38.6
+    2   2    0           14.56          29.08      17.6      17.6
+    4   4    0            8.96          35.80      28.6      28.6
+
+wrote results-q12-lambda.json

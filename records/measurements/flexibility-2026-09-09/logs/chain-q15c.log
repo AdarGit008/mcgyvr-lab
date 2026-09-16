@@ -1,0 +1,38 @@
+
+=== q15c-sleepmode-1
+    [serving-0  ] card 11257 used /   655 free   per-unit {'7b': 7432, '3b': 3810}   avail 39.19G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   decode={'3b': 127.72, '7b': 68.85}
+    [asleep-1   ] card   477 used / 11435 free   per-unit {'7b': 234, '3b': 228}   avail 39.17G   sleeping {'3b': '{"is_sleeping":true}', '7b': '{"is_sleeping":true}'}   sleep_s={'3b': 0.252, '7b': 0.323} sleep_http={'3b': '200', '7b': '200'}
+    [serving-1  ] card 11217 used /   695 free   per-unit {'7b': 7412, '3b': 3790}   avail 39.15G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   wake_s={'3b': 0.24, '7b': 0.312} wake_http={'3b': '200', '7b': '200'} decode={'3b': 127.75, '7b': 68.85}
+    [asleep-2   ] card   477 used / 11435 free   per-unit {'7b': 234, '3b': 228}   avail 39.16G   sleeping {'3b': '{"is_sleeping":true}', '7b': '{"is_sleeping":true}'}   sleep_s={'3b': 0.238, '7b': 0.289} sleep_http={'3b': '200', '7b': '200'}
+    [serving-2  ] card 11217 used /   695 free   per-unit {'7b': 7412, '3b': 3790}   avail 39.15G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   wake_s={'3b': 0.243, '7b': 0.322} wake_http={'3b': '200', '7b': '200'} decode={'3b': 127.78, '7b': 68.87}
+    [asleep-3   ] card   477 used / 11435 free   per-unit {'7b': 234, '3b': 228}   avail 39.16G   sleeping {'3b': '{"is_sleeping":true}', '7b': '{"is_sleeping":true}'}   sleep_s={'3b': 0.238, '7b': 0.313} sleep_http={'3b': '200', '7b': '200'}
+    [serving-3  ] card 11217 used /   695 free   per-unit {'7b': 7412, '3b': 3790}   avail 39.16G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   wake_s={'3b': 0.241, '7b': 0.317} wake_http={'3b': '200', '7b': '200'} decode={'3b': 127.72, '7b': 68.89}
+
+=== q15c-sleepmode-2
+    [serving-0  ] card 10753 used /  1159 free   per-unit {'7b': 6928, '3b': 3810}   avail 39.14G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   decode={'3b': 127.53, '7b': 68.87}
+    [asleep-1   ] card   477 used / 11435 free   per-unit {'7b': 234, '3b': 228}   avail 39.16G   sleeping {'3b': '{"is_sleeping":true}', '7b': '{"is_sleeping":true}'}   sleep_s={'3b': 0.249, '7b': 0.315} sleep_http={'3b': '200', '7b': '200'}
+    [serving-1  ] card 10713 used /  1199 free   per-unit {'7b': 6908, '3b': 3790}   avail 39.16G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   wake_s={'3b': 0.243, '7b': 0.304} wake_http={'3b': '200', '7b': '200'} decode={'3b': 127.78, '7b': 68.86}
+    [asleep-2   ] card   477 used / 11435 free   per-unit {'7b': 234, '3b': 228}   avail 39.14G   sleeping {'3b': '{"is_sleeping":true}', '7b': '{"is_sleeping":true}'}   sleep_s={'3b': 0.3, '7b': 0.351} sleep_http={'3b': '200', '7b': '200'}
+    [serving-2  ] card 10713 used /  1199 free   per-unit {'7b': 6908, '3b': 3790}   avail 39.17G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   wake_s={'3b': 0.252, '7b': 0.319} wake_http={'3b': '200', '7b': '200'} decode={'3b': 129.58, '7b': 68.67}
+    [asleep-3   ] card   477 used / 11435 free   per-unit {'7b': 234, '3b': 228}   avail 39.16G   sleeping {'3b': '{"is_sleeping":true}', '7b': '{"is_sleeping":true}'}   sleep_s={'3b': 0.247, '7b': 0.306} sleep_http={'3b': '200', '7b': '200'}
+    [serving-3  ] card 10713 used /  1199 free   per-unit {'7b': 6908, '3b': 3790}   avail 39.15G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   wake_s={'3b': 0.245, '7b': 0.296} wake_http={'3b': '200', '7b': '200'} decode={'3b': 127.44, '7b': 68.95}
+
+=== q15c-sleepmode-3
+    [serving-0  ] card 10641 used /  1271 free   per-unit {'7b': 6816, '3b': 3810}   avail 39.20G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   decode={'3b': 127.75, '7b': 68.89}
+    [asleep-1   ] card   477 used / 11435 free   per-unit {'7b': 234, '3b': 228}   avail 39.20G   sleeping {'3b': '{"is_sleeping":true}', '7b': '{"is_sleeping":true}'}   sleep_s={'3b': 0.24, '7b': 0.308} sleep_http={'3b': '200', '7b': '200'}
+    [serving-1  ] card 10601 used /  1311 free   per-unit {'7b': 6796, '3b': 3790}   avail 39.20G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   wake_s={'3b': 0.244, '7b': 0.302} wake_http={'3b': '200', '7b': '200'} decode={'3b': 127.32, '7b': 68.97}
+    [asleep-2   ] card   477 used / 11435 free   per-unit {'7b': 234, '3b': 228}   avail 39.20G   sleeping {'3b': '{"is_sleeping":true}', '7b': '{"is_sleeping":true}'}   sleep_s={'3b': 0.24, '7b': 0.298} sleep_http={'3b': '200', '7b': '200'}
+    [serving-2  ] card 10601 used /  1311 free   per-unit {'7b': 6796, '3b': 3790}   avail 39.19G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   wake_s={'3b': 0.24, '7b': 0.321} wake_http={'3b': '200', '7b': '200'} decode={'3b': 127.78, '7b': 68.94}
+    [asleep-3   ] card   477 used / 11435 free   per-unit {'7b': 234, '3b': 228}   avail 39.19G   sleeping {'3b': '{"is_sleeping":true}', '7b': '{"is_sleeping":true}'}   sleep_s={'3b': 0.244, '7b': 0.304} sleep_http={'3b': '200', '7b': '200'}
+    [serving-3  ] card 10601 used /  1311 free   per-unit {'7b': 6796, '3b': 3790}   avail 39.19G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   wake_s={'3b': 0.239, '7b': 0.31} wake_http={'3b': '200', '7b': '200'} decode={'3b': 127.71, '7b': 68.92}
+
+=== q15c-sleepmode-4
+    [serving-0  ] card 11369 used /   543 free   per-unit {'7b': 7544, '3b': 3810}   avail 39.15G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   decode={'3b': 127.52, '7b': 68.9}
+    [asleep-1   ] card   477 used / 11435 free   per-unit {'7b': 234, '3b': 228}   avail 39.15G   sleeping {'3b': '{"is_sleeping":true}', '7b': '{"is_sleeping":true}'}   sleep_s={'3b': 0.253, '7b': 0.312} sleep_http={'3b': '200', '7b': '200'}
+    [serving-1  ] card 11329 used /   583 free   per-unit {'7b': 7524, '3b': 3790}   avail 39.17G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   wake_s={'3b': 0.244, '7b': 0.314} wake_http={'3b': '200', '7b': '200'} decode={'3b': 127.73, '7b': 68.89}
+    [asleep-2   ] card   477 used / 11435 free   per-unit {'7b': 234, '3b': 228}   avail 39.17G   sleeping {'3b': '{"is_sleeping":true}', '7b': '{"is_sleeping":true}'}   sleep_s={'3b': 0.245, '7b': 0.301} sleep_http={'3b': '200', '7b': '200'}
+    [serving-2  ] card 11329 used /   583 free   per-unit {'7b': 7524, '3b': 3790}   avail 39.16G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   wake_s={'3b': 0.242, '7b': 0.317} wake_http={'3b': '200', '7b': '200'} decode={'3b': 127.83, '7b': 68.91}
+    [asleep-3   ] card   477 used / 11435 free   per-unit {'7b': 234, '3b': 228}   avail 39.15G   sleeping {'3b': '{"is_sleeping":true}', '7b': '{"is_sleeping":true}'}   sleep_s={'3b': 0.246, '7b': 0.299} sleep_http={'3b': '200', '7b': '200'}
+    [serving-3  ] card 11329 used /   583 free   per-unit {'7b': 7524, '3b': 3790}   avail 39.16G   sleeping {'3b': '{"is_sleeping":false}', '7b': '{"is_sleeping":false}'}   wake_s={'3b': 0.242, '7b': 0.315} wake_http={'3b': '200', '7b': '200'} decode={'3b': 127.82, '7b': 68.93}
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/results-q15-cycles.json

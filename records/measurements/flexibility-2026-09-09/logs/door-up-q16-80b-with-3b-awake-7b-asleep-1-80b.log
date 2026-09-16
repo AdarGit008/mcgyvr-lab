@@ -1,0 +1,5 @@
+gate 1: round=r26-09-09-2026 product_sha256=ec531573f5402b84... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+
+--- stderr ---
+02-rig.py: gate 2: srv2 is not idle — gpu_procs=1204812,VLLM::EngineCore,234MiB;1206333,VLLM::EngineCore,3810MiB, containers=4a3c4d8eb02c;e79599c58b3b. Nothing is measured on a card or a daemon something else is using, and the door does not clean a machine it found busy: kill what you started; okf/must-read/touching-rigs.md
+run.py: REFUSED at 02-rig.py — gate 2: the rig is leased to this run — a dev run yields to a held rig, a live run takes it and tears down what it displaced (R1) — and the live machine equals its declaration in hosts.json. The steps' own start==end check catches a rig that moves DURING a run and says nothing about one that moved before it — RAM swapped between these two rigs twice in six days with every artifact internally consistent

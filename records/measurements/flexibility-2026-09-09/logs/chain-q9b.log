@@ -1,0 +1,27 @@
+
+=== q9b-vllm-3b-srv1-1  units ['3b']
+    idle avail 14.19 GiB, card 17 used / 5727 free MiB
+    3b: /is_sleeping -> 404   decode 22.859835928420598 tok/s [22.95, 22.85, 22.78]
+    wake 109.3 s (door-complete minus earliest StartedAt)   card peak 3112 / steady 3112 MiB   avail 14.19 -> 11.62 GiB
+
+=== q9b-vllm-3b-srv1-2  units ['3b']
+    ARM FAILED: DOOR FAILED down/td-890208718 rc=2
+gate 1: round=r26-09-09-2026 product_sha256=ec531573f5402b84... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv1 is serving (gpu_procs=1635355,VLLM::EngineCore,3092MiB, containers=c6eac379b2ac); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+05-envelope.py: gate 5: serve-down.json already exists under records/evidence/2026-09-10-live-srv1/; an artifact is written once. Move it aside deliberately if this is a re-run — the door does not overwrite evidence
+run.py: REFUSED at 05-envelope.py — gate 5: the evidence directory is made, the step's declared artifacts are write-once, and RUN_ID is minted. Nothing recorded is overwritten
+
+
+=== q9b-vllm-3b-srv1-3  units ['3b']
+    ARM FAILED: DOOR FAILED down/td-890208814 rc=2
+gate 1: round=r26-09-09-2026 product_sha256=ec531573f5402b84... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv1 is serving (gpu_procs=1635355,VLLM::EngineCore,3092MiB, containers=c6eac379b2ac); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+05-envelope.py: gate 5: serve-down.json already exists under records/evidence/2026-09-10-live-srv1/; an artifact is written once. Move it aside deliberately if this is a re-run — the door does not overwrite evidence
+run.py: REFUSED at 05-envelope.py — gate 5: the evidence directory is made, the step's declared artifacts are write-once, and RUN_ID is minted. Nothing recorded is overwritten
+
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/results-q9-vllm-srv1.json

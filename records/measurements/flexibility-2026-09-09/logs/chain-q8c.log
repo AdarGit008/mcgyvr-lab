@@ -1,0 +1,10 @@
+
+=== q8c-clock-1
+    clock1 StartedAt 140.2s   clock2 door 133.9s   clock3 mcgyvr 153.1s   wall 153.4s   gate5-first=False   restarts=0   /v1/models 200
+    door down rc=0
+
+=== q8c-clock-2
+    clock1 StartedAt 140.2s   clock2 door 133.5s   clock3 mcgyvr 152.3s   wall 152.5s   gate5-first=False   restarts=0   /v1/models 200
+    left up: srv1 is back on the live ladder
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/results-q8-clocks.json

@@ -1,0 +1,14 @@
+
+=== m2-deepseek-alone
+    idle avail 44.65 GiB  Shmem 0.00  card 1 used
+    ARM FAILED: door up rc=2; see crash-m2-deepseek-alone.log
+
+=== m2-qwen36-alone
+    idle avail 44.65 GiB  Shmem 0.00  card 1 used
+    ARM FAILED: door up rc=2; see crash-m2-qwen36-alone.log
+
+=== m2-both
+    idle avail 44.67 GiB  Shmem 0.00  card 1 used
+    ARM FAILED: door up rc=2; see crash-m2-both.log
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/m2-coresidency.json

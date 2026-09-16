@@ -1,0 +1,19 @@
+warn: LLAMA_ARG_HOST environment variable is set, but will be overwritten by command line argument --host
+0.00.164.255 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.164.693 W srv  llama_server: -----------------
+0.00.164.695 W srv  llama_server: CORS is set to allow all origins ('*') and no API key is set
+0.00.164.696 W srv  llama_server: this can be a security risk (cross-origin attacks)
+0.00.164.696 W srv  llama_server: more info: https://github.com/ggml-org/llama.cpp/pull/25655
+0.00.164.696 W srv  llama_server: -----------------
+0.00.165.945 I srv    load_model: loading model '/home/adaramir/models/.incoming/yuxinlu1_gemma-4-12B-coder-fable5-composer2.5-v1-GGUF/gemma4-coding-Q4_K_M.gguf'
+0.01.595.440 W load: control-looking token:    212 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.01.595.910 W load: control-looking token:     50 '<|tool_response>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.01.620.305 W load: special_eog_ids contains '<|tool_response>', removing '</s>' token from EOG list
+0.08.628.357 I cmn          init: llama threadpool init, n_threads = 10
+0.08.750.771 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+0.08.760.323 I srv  llama_server: model loaded
+0.08.760.330 I srv  llama_server: listening on http://0.0.0.0:8090
+2026-09-15T01:50:48+03:00 RESTART_ISSUED docker compose -f ~/measurements-srv2/compose-pair.yml -p mcgyvr up -d
+2026-09-15T01:50:48+03:00 LIVE_HEALTHY http://srv2:8001/v1/models
+2026-09-15T01:51:29+03:00 LIVE_HEALTHY http://srv2:8002/v1/models
+2026-09-15T01:51:30+03:00 STAMP end PL1=65000000 PL2=0 boot=2026-09-12 08:58:44 12288 MiB, 377 MiB, 11003 MiB, 909 MiB Mem:           47078        7135         380          26       40174       39942 mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 

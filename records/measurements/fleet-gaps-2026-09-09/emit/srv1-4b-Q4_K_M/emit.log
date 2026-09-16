@@ -1,0 +1,3 @@
+
+--- stderr ---
+refused: srv1: 4b-Q4_K_M: the cache cannot be sized, so nothing is placed from an invented split: gpt-oss declares sliding_window 128 but no per-layer sliding_window_pattern, so which of layers 0...23 slide is unknown and the cache cannot be sized. Read the split from the engine's own `llama_kv_cache_iswa: creating non-SWA/SWA KV cache` lines and pass the rows as kv_bytes(layers=...)

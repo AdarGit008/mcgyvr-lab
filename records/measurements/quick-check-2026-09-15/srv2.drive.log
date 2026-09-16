@@ -1,0 +1,54 @@
+2026-09-15T01:46:39+03:00 STAMP start PL1=65000000 PL2=0 boot=2026-09-12 08:58:44 12288 MiB, 377 MiB, 11239 MiB, 673 MiB Mem:           47078        7282        4473          26       35934       39795 mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 Stopping 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 Stopped 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 Stopping 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 Stopped 
+2026-09-15T01:46:42+03:00 STOPPED docker compose -f ~/measurements-srv2/compose-pair.yml -p mcgyvr stop
+2026-09-15T01:46:44+03:00 STAMP after-stop PL1=65000000 PL2=0 boot=2026-09-12 08:58:44 12288 MiB, 377 MiB, 1 MiB, 11911 MiB Mem:           47078        1722        9867           2       35934       45355 
+2026-09-15T01:46:46+03:00 LAUNCH apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF img=ghcr.io/ggml-org/llama.cpp:server-cuda-b10644 ngl=99
+2026-09-15T01:47:00+03:00 VRAM apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF 5553 MiB, 6359 MiB
+2026-09-15T01:47:00+03:00 RUN apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF bench-py
+2026-09-15T01:47:02+03:00 EXIT apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF bench-py rc=2   uv run --no-sync python tools/bench/product.py --open <id> --opened <YYYY-MM-DD> --why "what this boundary is for" --adopted "#N what landed" Opening a round re-baselines: arms measured under the old one are not comparable with arms measured under the new one, so every identity change waiting on a
+2026-09-15T01:47:02+03:00 RUN apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF bench-ts
+2026-09-15T01:47:05+03:00 EXIT apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF bench-ts rc=2   uv run --no-sync python tools/bench/product.py --open <id> --opened <YYYY-MM-DD> --why "what this boundary is for" --adopted "#N what landed" Opening a round re-baselines: arms measured under the old one are not comparable with arms measured under the new one, so every identity change waiting on a
+2026-09-15T01:47:07+03:00 DOWN apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 Starting 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 Started 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 Waiting 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 Healthy 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 Starting 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 Started 
+2026-09-15T01:48:13+03:00 RESTART_ISSUED docker compose -f ~/measurements-srv2/compose-pair.yml -p mcgyvr up -d
+2026-09-15T01:48:13+03:00 LIVE_HEALTHY http://srv2:8001/v1/models
+2026-09-15T01:49:04+03:00 LIVE_HEALTHY http://srv2:8002/v1/models
+2026-09-15T01:49:05+03:00 STAMP end PL1=65000000 PL2=0 boot=2026-09-12 08:58:44 12288 MiB, 377 MiB, 11003 MiB, 909 MiB Mem:           47078        7145         410          26       40135       39933 mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 
+2026-09-15T01:49:29+03:00 STAMP start PL1=65000000 PL2=0 boot=2026-09-12 08:58:44 12288 MiB, 377 MiB, 11003 MiB, 909 MiB Mem:           47078        7090         461          26       40138       39988 mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 Stopping 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 Stopped 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 Stopping 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 Stopped 
+2026-09-15T01:49:32+03:00 STOPPED docker compose -f ~/measurements-srv2/compose-pair.yml -p mcgyvr stop
+2026-09-15T01:49:33+03:00 STAMP after-stop PL1=65000000 PL2=0 boot=2026-09-12 08:58:44 12288 MiB, 377 MiB, 1 MiB, 11911 MiB Mem:           47078        1697        5730           2       40097       45381 
+2026-09-15T01:49:34+03:00 LAUNCH apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF img=ghcr.io/ggml-org/llama.cpp:server-cuda-b10644 ngl=99
+2026-09-15T01:49:48+03:00 VRAM apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF 5553 MiB, 6359 MiB
+2026-09-15T01:49:48+03:00 RUN apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF bench-py
+2026-09-15T01:49:49+03:00 EXIT apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF bench-py rc=2 measure.py: ssh to srv2 refused: this process was not started by the door — it was started outside mcgyvr.serving.run, and nothing reaches a rig or reads a run outside it (a RUN_* variable set by hand does not stand in for the door). Start the run as `python -m mcgyvr.serving.run --host H --campai
+2026-09-15T01:49:49+03:00 RUN apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF bench-ts
+2026-09-15T01:49:50+03:00 EXIT apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF bench-ts rc=2 measure.py: ssh to srv2 refused: this process was not started by the door — it was started outside mcgyvr.serving.run, and nothing reaches a rig or reads a run outside it (a RUN_* variable set by hand does not stand in for the door). Start the run as `python -m mcgyvr.serving.run --host H --campai
+2026-09-15T01:49:52+03:00 DOWN apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF
+2026-09-15T01:49:54+03:00 LAUNCH yuxinlu1_gemma-4-12B-coder-fable5-composer2.5-v1-GGUF img=ghcr.io/ggml-org/llama.cpp:server-cuda-b10644 ngl=99
+2026-09-15T01:50:07+03:00 VRAM yuxinlu1_gemma-4-12B-coder-fable5-composer2.5-v1-GGUF 7903 MiB, 4009 MiB
+2026-09-15T01:50:07+03:00 RUN yuxinlu1_gemma-4-12B-coder-fable5-composer2.5-v1-GGUF bench-py
+2026-09-15T01:50:09+03:00 EXIT yuxinlu1_gemma-4-12B-coder-fable5-composer2.5-v1-GGUF bench-py rc=2 measure.py: ssh to srv2 refused: this process was not started by the door — it was started outside mcgyvr.serving.run, and nothing reaches a rig or reads a run outside it (a RUN_* variable set by hand does not stand in for the door). Start the run as `python -m mcgyvr.serving.run --host H --campai
+2026-09-15T01:50:09+03:00 RUN yuxinlu1_gemma-4-12B-coder-fable5-composer2.5-v1-GGUF bench-ts
+2026-09-15T01:50:10+03:00 EXIT yuxinlu1_gemma-4-12B-coder-fable5-composer2.5-v1-GGUF bench-ts rc=2 measure.py: ssh to srv2 refused: this process was not started by the door — it was started outside mcgyvr.serving.run, and nothing reaches a rig or reads a run outside it (a RUN_* variable set by hand does not stand in for the door). Start the run as `python -m mcgyvr.serving.run --host H --campai
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 Starting 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 Started 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 Waiting 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 Healthy 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 Starting 
+ Container mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 Started 
+2026-09-15T01:50:48+03:00 RESTART_ISSUED docker compose -f ~/measurements-srv2/compose-pair.yml -p mcgyvr up -d
+2026-09-15T01:50:48+03:00 LIVE_HEALTHY http://srv2:8001/v1/models
+2026-09-15T01:51:29+03:00 LIVE_HEALTHY http://srv2:8002/v1/models
+2026-09-15T01:51:30+03:00 STAMP end PL1=65000000 PL2=0 boot=2026-09-12 08:58:44 12288 MiB, 377 MiB, 11003 MiB, 909 MiB Mem:           47078        7135         380          26       40174       39942 mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002 mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001 

@@ -1,0 +1,5 @@
+gate 1: round=r27-10-09-2026 product_sha256=3ca400675f647abf... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+
+--- stderr ---
+02-rig.py: gate 2: THIS MACHINE IS NOT THE DECLARED srv1 — driver: declared '580.173.02', reads '580.178.04'; gpu_reserve_mib: declared '401', reads '399'. tools/runs/hosts.json[srv1].rig is what the rig was read as on 2026-09-03; either the wrong --host was named, or the rig moved before this run. Fix the machine or re-declare it deliberately
+run.py: REFUSED at 02-rig.py — gate 2: the rig is leased to this run — a dev run yields to a held rig, a live run takes it and tears down what it displaced (R1) — and the live machine equals its declaration in hosts.json. The steps' own start==end check catches a rig that moves DURING a run and says nothing about one that moved before it — RAM swapped between these two rigs twice in six days with every artifact internally consistent

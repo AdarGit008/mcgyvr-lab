@@ -1,0 +1,57 @@
+2026-09-15T14:40:34Z srv1 window date 2026-09-15; the dev fleet's compose files go to /tmp/tmp.mPHgFoIkoS
+wrote /tmp/tmp.mPHgFoIkoS/compose.srv1.a-solo.yml
+wrote /tmp/tmp.mPHgFoIkoS/compose.srv1.b-big.yml
+wrote /tmp/tmp.mPHgFoIkoS/compose.srv1.b-small.yml
+wrote /tmp/tmp.mPHgFoIkoS/compose.srv2.a-solo.yml
+wrote /tmp/tmp.mPHgFoIkoS/compose.srv2.b-big.yml
+wrote /tmp/tmp.mPHgFoIkoS/compose.srv2.b-small.yml
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+2026-09-15T14:40:37Z srv1 srv1-01 unit: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/01-rig-id-relock-srv1-c1-srv1_35b_maxctx.sh --model /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 1 --ctx-per-slot 32768 --ubatch 512 --date 2026-09-15
+2026-09-15T14:46:36Z srv1 srv1-01 exited 0 (logged, not decided on)
+2026-09-15T14:46:36Z srv1 STOP srv1-01: pswpout rose during the run (264920 -> 312345)
+pswpout rose during the run (264920 -> 312345)
+srv1_35b_maxctx did not read idle after the 30-s close on this rig's first long-context run
+stopped srv1 2026-09-15T14:46:36Z
+2026-09-15T17:28:09Z srv1 window date 2026-09-15; the dev fleet's compose files go to /tmp/tmp.AH2pbLJ6go
+wrote /tmp/tmp.AH2pbLJ6go/compose.srv1.a-solo.yml
+wrote /tmp/tmp.AH2pbLJ6go/compose.srv1.b-big.yml
+wrote /tmp/tmp.AH2pbLJ6go/compose.srv1.b-small.yml
+wrote /tmp/tmp.AH2pbLJ6go/compose.srv2.a-solo.yml
+wrote /tmp/tmp.AH2pbLJ6go/compose.srv2.b-big.yml
+wrote /tmp/tmp.AH2pbLJ6go/compose.srv2.b-small.yml
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+2026-09-15T17:28:10Z srv1 checked again: ok srv1-01; its one extra cold start for room, srv1-01-rerun1, runs next
+2026-09-15T17:28:12Z srv1 srv1-01 already logged; not run again
+2026-09-15T17:28:12Z srv1 srv1-01-rerun1 unit: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/01-rig-id-relock-srv1-c1-srv1_35b_maxctx-rerun1.sh --model /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 1 --ctx-per-slot 32768 --ubatch 512 --date 2026-09-15
+2026-09-15T17:33:04Z srv1 srv1-01-rerun1 exited 0 (logged, not decided on)
+2026-09-15T17:33:04Z srv1 srv1-02 unit: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/02-rig-id-relock-srv1-c1-srv1_deepseek.sh --model /home/adaramir/models/moe/deepseek-coder-v2-16b.gguf --parallel 2 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-15
+2026-09-15T17:37:40Z srv1 srv1-02 exited 0 (logged, not decided on)
+2026-09-15T17:37:40Z srv1 srv1-03 unit: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/03-rig-id-relock-srv1-c1-srv1_35b_b.sh --model /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 2 --ctx-per-slot 8192 --ubatch 512 --date 2026-09-15
+2026-09-15T17:42:15Z srv1 srv1-03 exited 0 (logged, not decided on)
+2026-09-15T17:42:16Z srv1 srv1-04 unit: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/04-rig-id-relock-srv1-c2-srv1_35b_maxctx.sh --model /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 1 --ctx-per-slot 32768 --ubatch 512 --date 2026-09-15
+2026-09-15T17:47:02Z srv1 srv1-04 exited 0 (logged, not decided on)
+2026-09-15T17:47:02Z srv1 srv1-05 unit: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/05-rig-id-relock-srv1-c2-srv1_deepseek.sh --model /home/adaramir/models/moe/deepseek-coder-v2-16b.gguf --parallel 2 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-15
+2026-09-15T17:51:38Z srv1 srv1-05 exited 0 (logged, not decided on)
+2026-09-15T17:51:39Z srv1 srv1-06 unit: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/06-rig-id-relock-srv1-c2-srv1_35b_b.sh --model /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 2 --ctx-per-slot 8192 --ubatch 512 --date 2026-09-15
+2026-09-15T17:56:09Z srv1 srv1-06 exited 0 (logged, not decided on)
+2026-09-15T17:56:10Z srv1 srv1-07 unit: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/07-rig-id-relock-srv1-c3-srv1_35b_maxctx.sh --model /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 1 --ctx-per-slot 32768 --ubatch 512 --date 2026-09-15
+2026-09-15T18:00:58Z srv1 srv1-07 exited 0 (logged, not decided on)
+2026-09-15T18:00:58Z srv1 srv1-08 unit: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/08-rig-id-relock-srv1-c3-srv1_deepseek.sh --model /home/adaramir/models/moe/deepseek-coder-v2-16b.gguf --parallel 2 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-15
+2026-09-15T18:05:37Z srv1 srv1-08 exited 0 (logged, not decided on)
+2026-09-15T18:05:38Z srv1 srv1-09 unit: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/09-rig-id-relock-srv1-c3-srv1_35b_b.sh --model /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 2 --ctx-per-slot 8192 --ubatch 512 --date 2026-09-15
+2026-09-15T18:10:17Z srv1 srv1-09 exited 0 (logged, not decided on)
+2026-09-15T18:10:17Z srv1 srv1-10 move: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/10-rig-id-relock-srv1-r1-b-small-to-b-big.sh --model /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 2 --ctx-per-slot 8192 --ubatch 512 --date 2026-09-15
+2026-09-15T18:14:03Z srv1 srv1-10 exited 0 (logged, not decided on)
+2026-09-15T18:14:03Z srv1 srv1-11 move: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/11-rig-id-relock-srv1-r1-b-big-to-b-small.sh --model /home/adaramir/models/moe/deepseek-coder-v2-16b.gguf --parallel 2 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-15
+2026-09-15T18:16:39Z srv1 srv1-11 exited 0 (logged, not decided on)
+2026-09-15T18:16:39Z srv1 srv1-12 move: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/12-rig-id-relock-srv1-r2-b-small-to-b-big.sh --model /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 2 --ctx-per-slot 8192 --ubatch 512 --date 2026-09-15
+2026-09-15T18:19:35Z srv1 srv1-12 exited 0 (logged, not decided on)
+2026-09-15T18:19:36Z srv1 srv1-13 move: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/13-rig-id-relock-srv1-r2-b-big-to-b-small.sh --model /home/adaramir/models/moe/deepseek-coder-v2-16b.gguf --parallel 2 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-15
+2026-09-15T18:22:13Z srv1 srv1-13 exited 0 (logged, not decided on)
+2026-09-15T18:22:13Z srv1 srv1-14 move: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/14-rig-id-relock-srv1-r3-b-small-to-b-big.sh --model /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 2 --ctx-per-slot 8192 --ubatch 512 --date 2026-09-15
+2026-09-15T18:25:10Z srv1 srv1-14 exited 0 (logged, not decided on)
+2026-09-15T18:25:10Z srv1 srv1-15 move: python -m mcgyvr.serving.run --host srv1 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/rig-id-relock/15-rig-id-relock-srv1-r3-b-big-to-b-small.sh --model /home/adaramir/models/moe/deepseek-coder-v2-16b.gguf --parallel 2 --ctx-per-slot 4096 --ubatch 512 --date 2026-09-15
+2026-09-15T18:27:46Z srv1 srv1-15 exited 0 (logged, not decided on)
+2026-09-15T18:27:46Z srv1 finished_at 2026-09-15T18:27:46Z; finished srv1 2026-09-15T18:27:46Z the other rig is still running

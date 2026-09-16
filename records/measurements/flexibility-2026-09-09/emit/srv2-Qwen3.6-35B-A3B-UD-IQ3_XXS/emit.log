@@ -1,0 +1,7 @@
+srv2:8080/Qwen3.6-35B-A3B-UD-IQ3_XXS/llama.cpp  gpu 0, 2 slots (written)  for probe_qwen3.6-35b-a3b-ud-iq3_xxs
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/emit/srv2-Qwen3.6-35B-A3B-UD-IQ3_XXS/compose.srv2.yml
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+
+--- stderr ---

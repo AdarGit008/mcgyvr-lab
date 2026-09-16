@@ -1,0 +1,12 @@
+
+=== q9c-vllm-3b-srv1-1  units ['3b']
+    idle avail 14.20 GiB, card 17 used / 5727 free MiB
+    3b: /is_sleeping -> 404   decode 22.94519165894486 tok/s [22.94, 22.94, 22.95]
+    wake 110.9 s (door-complete minus earliest StartedAt)   card peak 3112 / steady 3112 MiB   avail 14.20 -> 11.63 GiB
+
+=== q9c-vllm-3b-srv1-2  units ['3b']
+    idle avail 14.21 GiB, card 17 used / 5727 free MiB
+    3b: /is_sleeping -> 404   decode 22.94594378425097 tok/s [22.95, 22.94, 22.94]
+    wake 111.1 s (door-complete minus earliest StartedAt)   card peak 3112 / steady 3112 MiB   avail 14.21 -> 11.61 GiB
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/results-q9-vllm-srv1.json

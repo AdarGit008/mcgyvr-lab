@@ -1,0 +1,71 @@
+=== A-geometry-pair ===
+warning: srv2: Qwen3.6-35B-A3B-UD-IQ3_XXS (compose.srv2.Qwen3.6-35B-A3B-UD-IQ3_XXS.yml), deepseek-coder-v2-16b (compose.srv2.deepseek-coder-v2-16b.yml) do not sum onto the card and were emitted as 2 alternatives — one launch spec each, and only one of them is ever up. `serve up` takes one file, and mcgyvr will not guess which: bring the one you mean up, and delete the compose.srv2.yml an earlier emit may have left behind
+compose.srv2.Qwen3.6-35B-A3B-UD-IQ3_XXS.yml is what this config emits
+compose.srv2.deepseek-coder-v2-16b.yml is what this config emits
+exit=0
+=== B-declared-fits ===
+mismatch: records/measurements/fleet-gaps-2026-09-09/m2/B-declared-fits/compose.srv2.yml is not what this config emits. The file was written from an older config, so the rig is serving argv nobody is reading any more. Run `mcgyvr emit` and then restart the unit — the file alone changes nothing that is already up.
+  --- compose.srv2.yml (on disk)
+  +++ compose.srv2.yml (this config)
+  @@ -33,2 +33,10 @@
+         LLAMA_ARG_HOST: 0.0.0.0
+  +    healthcheck:
+  +      interval: 5s
+  +      retries: 3
+  +      start_period: 600s
+  +      test:
+  +      - CMD-SHELL
+  +      - curl -sf http://localhost:8080/v1/models >/dev/null 2>&1 || wget -q -O- http://localhost:8080/v1/models >/dev/null 2>&1
+  +      timeout: 3s
+       image: llamacpp:b10644-L3
+  @@ -62,3 +70,3 @@
+         m_a-8080:
+  -        condition: service_started
+  +        condition: service_healthy
+       deploy:
+exit=4
+=== C-declared-ram-refused ===
+mismatch: records/measurements/fleet-gaps-2026-09-09/m2/C-declared-ram-refused/compose.srv2.yml is not what this config emits. The file was written from an older config, so the rig is serving argv nobody is reading any more. Run `mcgyvr emit` and then restart the unit — the file alone changes nothing that is already up.
+  --- compose.srv2.yml (on disk)
+  +++ compose.srv2.yml (this config)
+  @@ -33,2 +33,10 @@
+         LLAMA_ARG_HOST: 0.0.0.0
+  +    healthcheck:
+  +      interval: 5s
+  +      retries: 3
+  +      start_period: 600s
+  +      test:
+  +      - CMD-SHELL
+  +      - curl -sf http://localhost:8080/v1/models >/dev/null 2>&1 || wget -q -O- http://localhost:8080/v1/models >/dev/null 2>&1
+  +      timeout: 3s
+       image: llamacpp:b10644-L3
+  @@ -62,3 +70,3 @@
+         m_a-8080:
+  -        condition: service_started
+  +        condition: service_healthy
+       deploy:
+exit=4
+=== D-each-alone-passes ===
+mismatch: records/measurements/fleet-gaps-2026-09-09/m2/D-each-alone-passes/compose.srv2.yml is not what this config emits. The file was written from an older config, so the rig is serving argv nobody is reading any more. Run `mcgyvr emit` and then restart the unit — the file alone changes nothing that is already up.
+  --- compose.srv2.yml (on disk)
+  +++ compose.srv2.yml (this config)
+  @@ -33,2 +33,10 @@
+         LLAMA_ARG_HOST: 0.0.0.0
+  +    healthcheck:
+  +      interval: 5s
+  +      retries: 3
+  +      start_period: 600s
+  +      test:
+  +      - CMD-SHELL
+  +      - curl -sf http://localhost:8080/v1/models >/dev/null 2>&1 || wget -q -O- http://localhost:8080/v1/models >/dev/null 2>&1
+  +      timeout: 3s
+       image: llamacpp:b10644-L3
+  @@ -62,3 +70,3 @@
+         m_a-8080:
+  -        condition: service_started
+  +        condition: service_healthy
+       deploy:
+exit=4
+=== E-blob-sum-refused ===
+refused: srv2: m_a (24.00 GB mapped), m_b (24.00 GB mapped) fit host memory one at a time and not together — 48.00 GB summed with 2.0 GB held back, against 44.60 GB available. Serve one of them from another host, drop one, or narrow a window: context is paid for in host RAM, 1.1 GB of it per slot between 2048 and 32768 on srv1's Qwen3.6
+exit=3

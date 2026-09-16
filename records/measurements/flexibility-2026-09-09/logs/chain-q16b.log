@@ -1,0 +1,22 @@
+
+=== q16b-80b-with-3b-awake-7b-asleep-1
+    pair up: card 11369 used {'7b': 7544, '3b': 3810}; 7b asleep (http 200): 4059 used / 7853 free {'7b': 234, '3b': 3810}
+    vramfit floor for 7853 MiB free: ncmoe 41, predicts 7526 MiB
+    80B up in 98.2 s at ncmoe 41: added 7521 MiB against 7526 predicted (-5); card 11580 used / 332 free; 3b http 200; 7b sleeping {"is_sleeping":true}
+
+=== q16b-80b-with-3b-awake-7b-asleep-2
+    pair up: card 11369 used {'7b': 7544, '3b': 3810}; 7b asleep (http 200): 4059 used / 7853 free {'7b': 234, '3b': 3810}
+    vramfit floor for 7853 MiB free: ncmoe 41, predicts 7526 MiB
+    80B up in 99.8 s at ncmoe 41: added 7521 MiB against 7526 predicted (-5); card 11580 used / 332 free; 3b http 200; 7b sleeping {"is_sleeping":true}
+
+=== q16b-80b-with-7b-awake-3b-asleep-1
+    pair up: card 11369 used {'7b': 7544, '3b': 3810}; 3b asleep (http 200): 7787 used / 4125 free {'7b': 7544, '3b': 228}
+    vramfit floor for 4125 MiB free: ncmoe 46, predicts 3886 MiB
+    80B up in 100.3 s at ncmoe 46: added 3879 MiB against 3886 predicted (-7); card 11666 used / 246 free; 7b http 200; 3b sleeping {"is_sleeping":true}
+
+=== q16b-80b-with-7b-awake-3b-asleep-2
+    pair up: card 11369 used {'7b': 7544, '3b': 3810}; 3b asleep (http 200): 7787 used / 4125 free {'7b': 7544, '3b': 228}
+    vramfit floor for 4125 MiB free: ncmoe 46, predicts 3886 MiB
+    80B up in 99.4 s at ncmoe 46: added 3879 MiB against 3886 predicted (-7); card 11666 used / 246 free; 7b http 200; 3b sleeping {"is_sleeping":true}
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/results-q16b-offdoor.json

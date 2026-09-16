@@ -1,0 +1,7 @@
+srv1:8080/Ling-3.0-tiny-Q4_K_M/llama.cpp  gpu 0, 2 slots (written)  for probe_ling-3.0-tiny-q4_k_m
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09/emit/srv1-Ling-3.0-tiny-Q4_K_M/compose.srv1.yml
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+
+--- stderr ---

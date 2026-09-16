@@ -1,0 +1,17 @@
+
+=== q8-clock-1
+    ARM FAILED: mcgyvr serve wake rc=3
+error: srv1: this config holds no launch spec for that card. `asleep` is `down` plus a file mcgyvr wrote, and there is no file: set `serving.compose_dir` to where `mcgyvr emit --out` wrote, and emit if it has not been emitted
+
+
+=== q8-clock-2
+    ARM FAILED: mcgyvr serve wake rc=3
+error: srv1: this config holds no launch spec for that card. `asleep` is `down` plus a file mcgyvr wrote, and there is no file: set `serving.compose_dir` to where `mcgyvr emit --out` wrote, and emit if it has not been emitted
+
+
+=== q8-clock-3
+    ARM FAILED: mcgyvr serve wake rc=3
+error: srv1: this config holds no launch spec for that card. `asleep` is `down` plus a file mcgyvr wrote, and there is no file: set `serving.compose_dir` to where `mcgyvr emit --out` wrote, and emit if it has not been emitted
+
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/flexibility-2026-09-09/results-q8-clocks.json

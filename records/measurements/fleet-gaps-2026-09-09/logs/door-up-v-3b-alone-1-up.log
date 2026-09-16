@@ -1,0 +1,5 @@
+gate 1: round=r25-09-09-2026 product_sha256=1953b0bbc9692ba1... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+
+--- stderr ---
+02-rig.py: lease: the lease on srv2 could not be read: ssh: connect to host 100.69.72.51 port 22: Connection timed out. A rig whose lease cannot be read is not entered
+run.py: REFUSED at 02-rig.py — gate 2: the rig is leased to this run — a dev run yields to a held rig, a live run takes it and tears down what it displaced (R1) — and the live machine equals its declaration in hosts.json. The steps' own start==end check catches a rig that moves DURING a run and says nothing about one that moved before it — RAM swapped between these two rigs twice in six days with every artifact internally consistent

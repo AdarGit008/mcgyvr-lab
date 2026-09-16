@@ -1,0 +1,48 @@
++ cd /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09
++ uv run --no-sync python wake_rate.py arms-srv1-m1-m3.json
+
+=== m1-qwen-unmapped-1  blob 12.30 GiB
+    idle avail 14.20 -> before 14.18 GiB, clearance +1.88, card free 5727 MiB
+    wake 132.3 s   0.0930 GiB/s   decode 28.533655446599266   card peak 5126 / steady 5140 MiB   (245 samples)
+
+=== m1-qwen-unmapped-2  blob 12.30 GiB
+    idle avail 14.21 -> before 14.19 GiB, clearance +1.89, card free 5727 MiB
+    wake 133.7 s   0.0920 GiB/s   decode 28.962877605793743   card peak 5126 / steady 5140 MiB   (250 samples)
+
+=== m3-qwen-mapped-neg2.0-1  blob 12.30 GiB
+    idle avail 14.20 -> before 10.24 GiB, clearance -2.06, card free 5727 MiB
+    wake 169.2 s   0.0727 GiB/s   decode 22.133539578944905   card peak 5102 / steady 5122 MiB   (277 samples)
+
+=== m3-qwen-mapped-neg2.0-2  blob 12.30 GiB
+    idle avail 14.24 -> before 10.30 GiB, clearance -2.00, card free 5727 MiB
+    wake 171.3 s   0.0718 GiB/s   decode 22.195615402752008   card peak 5102 / steady 5122 MiB   (279 samples)
+
+=== m3-qwen-mapped-neg3.0-1  blob 12.30 GiB
+    idle avail 14.23 -> before 9.27 GiB, clearance -3.03, card free 5727 MiB
+    wake 169.8 s   0.0725 GiB/s   decode 5.085773001032124   card peak 5102 / steady 5122 MiB   (351 samples)
+
+=== m3-qwen-mapped-restore-1  blob 12.30 GiB
+    idle avail 14.24 -> before 14.22 GiB, clearance +1.92, card free 5727 MiB
+    wake 142.7 s   0.0862 GiB/s   decode 25.196756559397155   card peak 5110 / steady 5124 MiB   (157 samples)
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09/results-arms-srv1-m1-m3.json
++ uv run --no-sync python wake_rate.py arms-srv1-m3-experts.json
+
+=== m3x-experts-p0.20-1  blob 12.30 GiB
+    idle avail 14.23 -> before 9.37 GiB, clearance -2.93, card free 5727 MiB
+    wake 134.0 s   0.0918 GiB/s   decode 28.499480825495528   card peak 5126 / steady 5140 MiB   (192 samples)
+
+=== m3x-experts-n0.30-1  blob 12.30 GiB
+    idle avail 14.21 -> before 8.86 GiB, clearance -3.44, card free 5727 MiB
+    wake 135.7 s   0.0907 GiB/s   decode 26.822554630711622   card peak 5126 / steady 5140 MiB   (191 samples)
+
+=== m3x-restore-mapped-1  blob 12.30 GiB
+    idle avail 14.21 -> before 14.22 GiB, clearance +1.92, card free 5727 MiB
+    wake 141.1 s   0.0872 GiB/s   decode 24.42286766860841   card peak 5110 / steady 5124 MiB   (233 samples)
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/fleet-gaps-2026-09-09/results-arms-srv1-m3-experts.json
++ uv run --no-sync python -
+srv1 left on: /home/adaramir/.mcgyvr/config/compose.srv1.yml
+card: {'total': 6144, 'used': 5124, 'reserved': 401, 'free': 620} avail: 13.511222839355469
++ echo 'SRV1 CHAIN DONE'
+SRV1 CHAIN DONE

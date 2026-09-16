@@ -1,0 +1,117 @@
+[09:49:18] === preflight: verify rigs empty ===
+[09:49:19] srv1 empty (0 running containers)
+[09:49:20] srv2 empty (0 running containers)
+[09:49:20] === Q1 kv_q8_ab (srv1) ===
+
+=== q1-deepseek-f16-1  cache_type f16  blob 8.29 GiB
+    card free 5727 MiB
+    wake 87.2 s   decode cold 32.22560354603245 / warm 32.28070211977779   card peak 5446 / steady 5460 MiB   K (f16): 1296.0 MiB, V (f16): 864.0 MiB
+
+=== q1-deepseek-f16-2  cache_type f16  blob 8.29 GiB
+    card free 5727 MiB
+    wake 86.1 s   decode cold 31.22504083312337 / warm 31.098996976198787   card peak 5446 / steady 5460 MiB   K (f16): 1296.0 MiB, V (f16): 864.0 MiB
+
+=== q1-deepseek-q8-1  cache_type q8_0  blob 8.29 GiB
+    card free 5727 MiB
+    wake 86.2 s   decode cold 32.79337021178124 / warm 33.18368025924958   card peak 4432 / steady 4446 MiB   K (q8_0): 688.5 MiB, V (q8_0): 459.0 MiB
+
+=== q1-deepseek-q8-2  cache_type q8_0  blob 8.29 GiB
+    card free 5727 MiB
+    wake 86.4 s   decode cold 34.0196385317124 / warm 34.41759766368677   card peak 4432 / steady 4446 MiB   K (q8_0): 688.5 MiB, V (q8_0): 459.0 MiB
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/results-arms-q1-kv-q8.json
+[09:59:45] Q1 kv_q8_ab (srv1) exit rc=0
+[09:59:45] === Q5 mla_absorbed_v (srv1) ===
+
+=== q5-ling-1
+    wake 70.7s  card peak 4808/steady 4808 MiB (net 4791)  KV lines 2  V=0.0
+
+=== q5-ling-2
+    wake 73.5s  card peak 4808/steady 4808 MiB (net 4791)  KV lines 2  V=0.0
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/results-arms-q5-mla.json
+[10:03:45] Q5 mla_absorbed_v (srv1) exit rc=0
+[10:03:45] === Q3 scratch_curve (both) ===
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/results-arms-q3-scratch.json
+[10:36:51] Q3 scratch_curve (both) exit rc=0
+[10:36:51] === Q2 vllm_fp8_kv (srv2) ===
+
+=== q2-q34b-fp16-1  thewimo/Qwen3-4B-AWQ  kv=fp16
+    idle avail 44.70 GiB, card 1 used / 11911 free MiB
+    wake 111.2 s  pool 52192 tok  maxconc 25.48  card 10943 MiB  decode 103.83189045651727 tok/s
+
+=== q2-q34b-fp16-2  thewimo/Qwen3-4B-AWQ  kv=fp16
+    idle avail 44.70 GiB, card 1 used / 11911 free MiB
+    wake 111.0 s  pool 52192 tok  maxconc 25.48  card 10943 MiB  decode 103.87222959236743 tok/s
+
+=== q2-q34b-fp8-1  thewimo/Qwen3-4B-AWQ  kv=fp8
+    idle avail 44.69 GiB, card 1 used / 11911 free MiB
+    wake 110.3 s  pool 104400 tok  maxconc 50.98  card 11503 MiB  decode 100.36737896737576 tok/s
+
+=== q2-q34b-fp8-2  thewimo/Qwen3-4B-AWQ  kv=fp8
+    idle avail 44.68 GiB, card 1 used / 11911 free MiB
+    wake 111.1 s  pool 104400 tok  maxconc 50.98  card 11503 MiB  decode 100.17878200518118 tok/s
+
+wrote /home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/results-q2-vllm-fp8.json
+[10:47:41] Q2 vllm_fp8_kv (srv2) exit rc=0
+[10:47:41] === Q4 c_drift_deepseek (srv2) ===
+wrote /home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/results-arms-q4-c-drift.json
+[10:56:51] Q4 c_drift_deepseek (srv2) exit rc=0
+[10:56:51] === offline reports ===
+[10:56:51] === Q4 c_drift_report ===
+Traceback (most recent call last):
+  File "/home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/c_drift_report.py", line 116, in <module>
+    main()
+  File "/home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/c_drift_report.py", line 48, in main
+    rows = [r for r in json.loads(in_path.read_text()) if not r.get("failed")]
+                                  ^^^^^^^^^^^^^^^^^^^
+  File "/home/adaramir/.local/share/uv/python/cpython-3.12-linux-x86_64-gnu/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adaramir/.local/share/uv/python/cpython-3.12-linux-x86_64-gnu/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/results-q4-c-drift.json'
+[10:56:51] Q4 c_drift_report exit rc=1
+[10:56:51] === Q3 scratch_report ===
+Traceback (most recent call last):
+  File "/home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/scratch_report.py", line 169, in <module>
+    main()
+  File "/home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/scratch_report.py", line 79, in main
+    rows = json.loads(results_path.read_text())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adaramir/.local/share/uv/python/cpython-3.12-linux-x86_64-gnu/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adaramir/.local/share/uv/python/cpython-3.12-linux-x86_64-gnu/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/results-q3-scratch.json'
+[10:56:51] Q3 scratch_report exit rc=1
+[10:56:51] === final teardown (both rigs empty again) ===
+srv1: tore down /home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/compose.srv1-q3-gemma-ub1024.yml (rc=0)
+gate 1: round=r27-10-09-2026 product_sha256=3ca400675f647abf... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv1 is serving (gpu_procs=1825723,/app/llama-server,5526MiB, containers=b0f0e0f2c55c); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+gate 5: RUN_ID=2026-09-10-live-srv1-serve-down-final-srv1 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-10-live-srv1
+serve-down: docker compose down on srv1: mcgyvr-srv1-gemma-4-26B-A4B-it-UD-IQ3_XXS-8080
+gate 8: 1 artifact(s) parse
+
+srv2: tore down /home/adaramir/claude/mcgyvr/records/measurements/measuring-gaps-2026-09-10/compose.srv2-q4-deepseek-n26.yml (rc=0)
+gate 1: round=r27-10-09-2026 product_sha256=3ca400675f647abf... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv2 is serving (gpu_procs=1392225,/app/llama-server,3390MiB, containers=f49b57630056); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv2 matches its declaration on 11 keys
+gate 3: docker on srv2 answers, 29.7.2 as declared
+gate 5: RUN_ID=2026-09-10-live-srv2-serve-down-final-srv2 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-10-live-srv2
+serve-down: docker compose down on srv2: mcgyvr-srv2-deepseek-coder-v2-16b-8080
+gate 8: 1 artifact(s) parse
+
+[10:57:29] === summary ===
+results-arms-q1-kv-q8.json: 4 rows, 0 failed
+results-arms-q5-mla.json: 2 rows, 0 failed
+results-arms-q3-scratch.json: 14 rows, 0 failed
+results-arms-q2-vllm-fp8.json: MISSING
+results-arms-q4-c-drift.json: 6 rows, 0 failed
+[10:57:29] === DONE (fail=1) ===

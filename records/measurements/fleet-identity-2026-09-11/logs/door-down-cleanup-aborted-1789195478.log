@@ -1,0 +1,11 @@
+gate 1: round=r27-10-09-2026 product_sha256=3ca400675f647abf... profile=live config=cfg-4e57b7bc13aa66f6c032129cf46a502ae87e131b7a7bb68383321c585d697ebb (/home/adaramir/.mcgyvr/config/mcgyvr.yaml)
+gate 2: srv2 is serving (gpu_procs=301913,VLLM::EngineCore,11370MiB, containers=06ea00af3b61;392414d3c764); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv2 matches its declaration on 11 keys
+gate 3: docker on srv2 answers, 29.7.2 as declared
+gate 5: RUN_ID=2026-09-12-live-srv2-serve-down-cleanup-aborted-1789195478 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-12-live-srv2
+serve-down: docker compose down on srv2: mcgyvr-srv2-Qwen-Qwen2.5-Coder-3B-Instruct-AWQ-8001, mcgyvr-srv2-Qwen-Qwen2.5-Coder-7B-Instruct-AWQ-8002
+gate 8: 1 artifact(s) parse
+
+--- stderr ---
+gate 2: a stale lease on srv2: adaramir@vps (pid 3898244 on 103e619f4318, profile live, live-srv2/serve-up, run 2026-09-12-live-srv2-serve-up-s2-pair-prefill-2-up-1789195072, since 2026-09-12T06:37:53Z) — that run is gone from this machine, so it died without releasing. Taken over; nothing of it is torn down unasked
+gate 6: /home/adaramir/claude/mcgyvr/src/mcgyvr/serving/gate-scripts/serve-down.py --host srv2 -> /home/adaramir/claude/mcgyvr/records/evidence/2026-09-12-live-srv2 (RUN_ID=2026-09-12-live-srv2-serve-down-cleanup-aborted-1789195478)
