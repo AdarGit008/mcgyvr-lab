@@ -227,3 +227,25 @@ records/plans/measuring-gaps-2026-09-10.md
 records/plans/sleep-wake.md
 records/plans/wake-timeout.md
 ```
+
+## Later moves
+
+The import above is one commit's files. Anything moved out of mcgyvr after it
+is listed here, with the commit it came from, so no entry above is restated
+and the 320-file count stays what it was.
+
+### 2026-09-16 — srv1's superseded fleet lock records
+
+- Source: `AdarGit008/mcgyvr@6022805c` (main), the commit the re-lock was
+  assembled from.
+- Content: 3 files, byte for byte, at the path they held in mcgyvr.
+- Why: srv1's rig id changed, so `mcgyvr fleet lock` wrote srv1's three
+  combination records afresh under `rig-3c89f35d…` and left the old
+  directory behind. The lock tree keeps one source of truth; these are the
+  2026-09-13 approvals it replaced, kept as data points, not deleted.
+- They carry one field the current records do not: `card_steady_mib`
+  (5430, 5094, 5602).
+
+```text
+records/fleet/rigs/rig-0f7fc6ae2bf6f8bbed8ed774507ef94a04d7f18a0f81b4d7761ce5ae81d03eeb/
+```
