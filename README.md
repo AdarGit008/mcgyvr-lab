@@ -276,3 +276,13 @@ records/measurements/ram-headroom-2026-09-09/       7 files
 records/measurements/quick-check-2026-09-15/        6 files
 records/measurements/lock-fleets/                   2 files
 ```
+
+### 2026-09-16 — the quick-check files that were untracked but not ignored
+
+The earlier 2026-09-16 move swept files git *ignored*. These 21 are the
+complement: untracked and un-ignored, so no ignore rule ever matched them and
+the first sweep did not see them. They are the `.bench-py.stdout`,
+`.bench-ts.stdout`, `.launch.txt` and `run.json` artifacts of the same
+quick-check campaign, plus the campaign's own `drive.sh` and `summarise.py`.
+Screened for credentials before publishing: the only matches were token
+*counts* and a gate rung named `secrets`.
