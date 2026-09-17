@@ -286,3 +286,156 @@ the first sweep did not see them. They are the `.bench-py.stdout`,
 quick-check campaign, plus the campaign's own `drive.sh` and `summarise.py`.
 Screened for credentials before publishing: the only matches were token
 *counts* and a gate rung named `secrets`.
+
+### 2026-09-17 — the prose nothing in mcgyvr reads
+
+- Source: `AdarGit008/mcgyvr@1e9a47f1` (main).
+- Content: 134 files, byte for byte, at the paths they held in mcgyvr:
+  decision records, evidence and measurement write-ups, corpus and header
+  READMEs, one plan, and one repository note.
+- Why: owner ruling 2026-09-17, mcgyvr goes prose-light. A rule or guideline
+  lives in mcgyvr's `okf/`; every other piece of prose that no code, test or
+  packaging step opens lives here. The measurements these files describe
+  (JSON, JSONL, TSV, logs, model output) stayed in mcgyvr under the same
+  directories.
+- A citation in mcgyvr reads `mcgyvr-lab/<path>`; a citation inside a data
+  file was left as written and resolves here at the same path.
+- Screened before publishing: no credentials; the addresses that appear are
+  private-range and tailnet addresses mcgyvr's own source already prints.
+
+```text
+archive/docs/archive/decisions/0001-founding-scope-and-boundaries.md
+archive/docs/archive/decisions/0002-merge-protection-on-the-default-branch.md
+archive/docs/archive/decisions/0003-binding-names-carry-no-role.md
+archive/docs/archive/decisions/0004-inherited-research-is-re-verified-before-it-is-adopted.md
+archive/docs/archive/decisions/0005-gate-checks-never-run-target-code-on-the-host.md
+archive/docs/archive/decisions/0006-the-type-checker-is-the-target-repositorys.md
+archive/docs/archive/decisions/0007-dependency-signatures-come-from-the-index-not-from-a-model.md
+archive/docs/archive/decisions/0008-sampling-breadth-is-policy-and-selection-is-the-first-gate-pass.md
+archive/docs/archive/decisions/0009-output-discipline-is-a-cap-not-a-stop-sequence.md
+archive/docs/archive/decisions/0010-environment-resolved-checks-run-in-the-sandbox.md
+archive/docs/archive/decisions/0011-the-semantic-resolver-is-staged-not-installed.md
+archive/docs/archive/decisions/0012-re-entry-is-refused-by-what-the-caller-holds.md
+archive/docs/archive/decisions/0013-decomposition-is-api-tier-only.md
+archive/docs/archive/decisions/0014-the-acceptance-boundary-is-never-mocked.md
+archive/docs/archive/decisions/0015-a-failed-verifier-never-promotes.md
+archive/docs/archive/decisions/0016-fixtures-capture-what-the-parser-reads.md
+archive/docs/archive/decisions/0017-the-floor-is-the-product.md
+archive/docs/archive/decisions/0018-one-bench-every-lever-and-the-whole-system.md
+archive/docs/archive/decisions/0019-the-bar-is-a-reality-floor-and-a-per-lever-rule.md
+archive/docs/archive/decisions/0020-retire-the-rulers.md
+archive/docs/archive/decisions/0021-the-benchs-obligation-is-the-floor-unit.md
+archive/docs/archive/decisions/0022-a-lever-is-never-a-difficulty-knob.md
+archive/docs/archive/decisions/0023-difficulty-is-behaviour-count.md
+archive/docs/archive/decisions/0024-comparable-measurements-come-from-one-rig-and-one-build.md
+archive/docs/archive/decisions/0025-the-javascript-lint-bar-is-the-projects-and-it-mirrors-pythons.md
+archive/docs/archive/decisions/0026-four-lenses-record-mutate-state-the-property-and-price-the-axes.md
+archive/docs/archive/decisions/0027-run-identity-is-one-block-and-an-unreadable-field-is-a-refusal.md
+archive/docs/archive/decisions/0028-a-routing-policy-is-adopted-only-if-it-is-inspectable-here-and-measured-here.md
+archive/docs/archive/decisions/0029-the-gate-is-the-scorer-so-there-is-no-answer-to-extract.md
+archive/docs/archive/decisions/0030-throughput-is-not-the-ceiling-and-the-serving-bench-is-already-in-the-table.md
+archive/docs/archive/decisions/0031-the-pre-gate-heuristic-verifier-is-refuted-by-our-own-replies.md
+archive/docs/archive/decisions/0032-a-round-boundary-is-drained-not-taken-and-the-pin-covers-the-bars-configuration.md
+archive/docs/archive/decisions/0033-the-bar-the-prompt-and-the-weights-are-hashed-where-they-are-resolved.md
+archive/docs/archive/decisions/0034-a-rung-that-cannot-say-what-bar-it-applied-is-a-refusal.md
+archive/docs/archive/decisions/0035-the-bar-is-recorded-as-content-and-there-is-one-acceptance-ceiling.md
+archive/docs/archive/decisions/0036-the-bare-word-bar-is-banned-adoption-bar-and-scoring-bar.md
+archive/docs/archive/decisions/0037-a-finding-is-a-check-and-closing-without-fixing-is-a-dated-xfail.md
+archive/docs/archive/decisions/0038-a-machine-has-no-role-and-the-question-approves-its-own-scope.md
+archive/docs/archive/decisions/0039-a-serving-memory-declaration-is-bytes-not-a-fraction-of-the-card.md
+archive/docs/archive/decisions/0040-a-placement-fraction-needs-an-engine-that-spills.md
+archive/docs/archive/decisions/0041-placement-is-semantic-until-a-null-shows-it-neutral.md
+archive/docs/archive/decisions/INDEX.md
+archive/docs/archive/evidence-prose/2026-08-22-coresidency-feasibility/README.md
+archive/docs/archive/evidence-prose/2026-08-23-phase0-refit/README.md
+archive/docs/archive/evidence-prose/2026-08-23-sole-client-counters/README.md
+archive/docs/archive/evidence-prose/2026-08-24-config-sweep/session-report-2026-08-24.md
+archive/docs/archive/evidence-prose/2026-08-24-engine-sweep/CORRECTIONS.md
+archive/docs/archive/evidence-prose/2026-08-24-engine-sweep/README.md
+archive/docs/archive/evidence-prose/2026-08-24-knob-surface/README.md
+archive/docs/archive/evidence-prose/2026-08-24-resolved-config/README.md
+archive/docs/archive/evidence-prose/2026-08-25-moe-expert-offload/README.md
+archive/docs/archive/evidence-prose/2026-08-25-moe-expert-offload/width-sweep/README.md
+archive/docs/archive/evidence-prose/2026-08-26-capability-boundaries/README.md
+archive/docs/archive/evidence-prose/2026-08-26-claim-verification/CLAIMS.md
+archive/docs/archive/evidence-prose/2026-08-26-claim-verification/REPORT.md
+archive/docs/archive/evidence-prose/2026-08-26-claim-verification/REVIEW-QUEUE.md
+archive/docs/archive/evidence-prose/2026-08-26-claim-verification/srv1-findings.md
+archive/docs/archive/evidence-prose/2026-08-26-claim-verification/srv1-llama-sweep-restore.md
+archive/docs/archive/evidence-prose/2026-08-26-claim-verification/srv2-findings.md
+archive/docs/archive/evidence-prose/README.md
+archive/docs/archive/evidence-prose/bench-resolution-2026-08-14/norule.md
+archive/docs/archive/evidence-prose/calibration-2026-08-19/README.md
+archive/docs/archive/evidence-prose/calibration-2026-08-19/d7-sleep.aborted-run.README.md
+archive/docs/archive/evidence-prose/calibration-2026-08-19/step0-gaps.md
+archive/docs/archive/evidence-prose/calibration-2026-08-19/step0-readiness.md
+archive/docs/archive/evidence-prose/calibration-2026-08-19/step1-review.md
+archive/docs/archive/evidence-prose/gate-rescore-2026-08-15/findings.md
+archive/docs/archive/evidence-prose/gate-rescore-2026-08-15/per-stratum.md
+archive/docs/archive/evidence-prose/gate-rescore-2026-08-15/rescore-summaries.md
+archive/docs/archive/evidence-prose/local-ai-2026-08-02/README.md
+archive/docs/archive/evidence-prose/local-ai-2026-08-02/instrument/README.md
+archive/docs/archive/evidence-prose/responsive-fraction-2026-08-15/per-stratum.md
+archive/docs/archive/evidence-prose/responsive-fraction-2026-08-15/proposed-224-amendment.md
+archive/docs/archive/evidence-prose/serving-surface-2026-08-18/README.md
+archive/docs/archive/sessions/lane/225/2026-08-11-floor-band-f1-brief.md
+archive/docs/bench-design-2026-08-10.md
+archive/docs/srv1-kernel-arms-PLAN.md
+archive/forensic-ollama/bench/bench-records.txt
+archive/forensic-ollama/removed-lines.txt
+archive/forensic-ollama/runner-cav01-excerpt.md
+docs/conflicts.md
+records/corpora/reach-2026-08-02/README.md
+records/corpora/training-release-2026-08-10/README.md
+records/corpora/worker-replies/README.md
+records/evidence/2026-08-27-spec-decoding/README.md
+records/evidence/2026-08-27-spec-decoding/store/README.md
+records/evidence/2026-08-28-august-rollup/README.md
+records/evidence/2026-08-28-august-rollup/drivers/BRIEF.md
+records/evidence/2026-08-28-kat-coder/README.md
+records/evidence/2026-08-28-mtp-ornith/README.md
+records/evidence/2026-08-28-north-mini-code/README.md
+records/evidence/2026-08-28-setup-selection/README.md
+records/evidence/2026-09-02-srv1-kernel-arms/B2-CHECKPOINT.md
+records/evidence/2026-09-02-srv1-kernel-arms/MMVQ-PATCH.md
+records/headers/README.md
+records/measurements/acceptance-ceiling-2026-08-17/README.md
+records/measurements/breadth-2026-08-06/README.md
+records/measurements/breadth-batch-b-2026-08-06/README.md
+records/measurements/breadth-campaign-2026-08-06/README.md
+records/measurements/finetune-pilot-2026-08-07/summary.md
+records/measurements/fleet-gaps-2026-09-09/METHOD.md
+records/measurements/fleet-gaps-2026-09-09/README.md
+records/measurements/fleet-identity-2026-09-11/README.md
+records/measurements/fleet-identity-prefill-2026-09-12/README.md
+records/measurements/fleet-setup-2026-09-13/srv1/README.md
+records/measurements/flexibility-2026-09-09/README.md
+records/measurements/floor-probe-2026-08-09/README.md
+records/measurements/jsts-bundle-2026-08-04/README.md
+records/measurements/kv-dtype-2026-09-11/README.md
+records/measurements/lidenburg-expert-cache-2026-09-13/README.md
+records/measurements/lidenburg-expert-cache-2026-09-13/srv1-leverage-research.md
+records/measurements/load-mode-2026-09-08/README.md
+records/measurements/mbpp-plus-1.5b-2026-08-11/summary.md
+records/measurements/mbpp-plus-3b-2026-08-10/summary.md
+records/measurements/measuring-gaps-2026-09-10/README.md
+records/measurements/measuring-gaps-2026-09-10/SPEC-run-mechanics.md
+records/measurements/measuring-gaps-2026-09-10/live-state-before-teardown.md
+records/measurements/pool-probe-2026-08-07/README.md
+records/measurements/pool-sweep-14b-2026-08-07/README.md
+records/measurements/pool-sweep-14b-cap2048-2026-08-08/README.md
+records/measurements/pool-sweep-2026-08-07/README.md
+records/measurements/pool-sweep-7b-batch67-2026-08-08/README.md
+records/measurements/python-bundle-2026-08-07/README.md
+records/measurements/ram-headroom-2026-09-09/README.md
+records/measurements/reach-2026-08-03/README.md
+records/measurements/reach-jsts-2026-08-03/README.md
+records/measurements/serving-concurrency-2026-09-06/README.md
+records/measurements/serving-sweep-2026-08-25/README.md
+records/measurements/serving-sweep-2026-08-25/rig-reality-2026-08-25.md
+records/measurements/srv1-ncmoe-sweep-2026-09-13/README.md
+records/measurements/tokens-2026-08-03/README.md
+records/measurements/vllm-sleep-2026-09-09/README.md
+records/measurements/wake-2026-09-08/README.md
+records/plans/fleet-identity-measurements-2026-09-11.md
+```
