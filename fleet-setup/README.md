@@ -13,3 +13,28 @@ byte for byte; neither replaces the other.
   (committed 2026-09-15). It is the same file the product added in commit
   `7daebd79` (committed 2026-09-14) and removed in commit `4c73896d`, when that
   material moved to the lab.
+
+## Which fleet file is which
+
+After the cards moved (srv1 now holds two RTX 3060, srv2 a GTX 1660 SUPER), the
+owner ruled "Lock only what fits now". The fleet files that held every fleet
+made for the earlier cards are kept beside the files now in use, byte for byte;
+neither replaces the other. Each copy is named for the day its content was last
+changed, which is in the product's history: the lab copied these files from the
+product unchanged in commit `7c74b351`.
+
+- `fleet.2026-09-28.yaml` is `fleet.yaml` with fleets a-solo, b-small, b-big,
+  c-mtp and d-srv2-35b and their units. Last changed in the product in commit
+  `9eee8def` (committed 2026-09-28).
+- `policy.2026-09-16.yaml` is `policy.yaml` with the ladder over those units.
+  Last changed in the product in commit `d27b265a` (committed 2026-09-16).
+- `digests-srv1.2026-09-16.json` is `digests-srv1.json` as it was then. Last
+  changed in the product in commit `d27b265a` (committed 2026-09-16).
+- `digests-srv2.2026-09-28.json` is `digests-srv2.json` as it was then. Last
+  changed in the product in commit `9eee8def` (committed 2026-09-28).
+- `evidence.2026-09-16.json` is `evidence.json` as it was then (the product's
+  version described above). Last changed in the product in commit `16bcd6d8`
+  (committed 2026-09-16).
+
+`fleet.yaml`, `policy.yaml`, both digests files and `evidence.json` without a
+date are the files in use.
