@@ -1,17 +1,24 @@
 # Words that must never reach the product (AdarGit008/mcgyvr).
 #
-# One pattern per line. Blank lines and lines starting with `#` are ignored.
-# Each pattern is a Python regular expression, matched case-insensitively
-# against every line the guard scans. `\b` is added where the bare word could
-# otherwise match inside an ordinary word or a longer number.
+# One pattern per line: a Python regular expression, matched
+# case-insensitively after the text is normalised (Unicode NFKC, zero-width
+# characters removed, lines ending in a backslash joined with the next).
+# Blank lines and lines starting with `#` are ignored; a `#` that follows
+# whitespace starts a comment; write `\#` for a literal `#`. Leading and
+# trailing whitespace is not part of a pattern.
+#
+# Boundaries are chosen per word. `\b` is not used: it does not split at `_`
+# or inside camelCase, so `my_srv1_x` and `camelSrv1Host` would pass. Every
+# pattern here has a sample in tests/guard/test_check_outgoing.py (SAMPLES).
 #
 # These are the owner's private identifiers. They live here, in the lab, on
 # purpose: the lab is where they belong, and the guard reads them from here.
 
-# Host names
-\bsrv1\b
-\bsrv2\b
-\bb-small\b
+# Host names: any left side; on the right, anything but a digit
+# (srv1, my_srv1_x, camelSrv1Host match; srv10, srv12 do not).
+srv1(?![0-9])
+srv2(?![0-9])
+(?<![a-z0-9])b-small(?![a-z0-9])
 
 # User name and home directory
 adaramir
@@ -19,21 +26,22 @@ adaramir
 
 # Tailnet name and address
 tailbaf744
-\b100\.69\.72\.51\b
+(?<![0-9])100\.69\.72\.51(?![0-9])
 
-# Card models
-RTX ?3060
-\bGTX ?1660
-\b1660 ?SUPER\b
-\bGTX ?1080
-\b1080 ?Ti\b
+# Card models: never followed by another digit (RTX3060, rtx3060ti match;
+# RTX30600 does not)
+RTX ?3060(?![0-9])
+GTX ?1660(?![0-9])
+(?<![0-9])1660 ?SUPER
+GTX ?1080(?![0-9])
+(?<![0-9])1080 ?Ti(?![a-z])
 
 # Board
-\bZ490\b
+(?<![0-9])Z490(?![0-9])
 
 # Unit and fleet names
-\bsrv[12]_[a-z0-9_]+
-\bd-srv[12]-[a-z0-9-]+
+srv[12]_[a-z0-9_]+
+d-srv[12]-[a-z0-9-]+
 
 # The lab itself: the product must not point at the lab. The one README line
 # the owner allows goes in guard/allowed.txt.
