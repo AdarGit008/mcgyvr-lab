@@ -4,20 +4,22 @@ Two modes, both over a git repository (``--repo``, the product checkout):
 
 ``--diff BASE..HEAD``
     The pre-pull-request check. Every commit reachable from HEAD and not from
-    BASE is scanned on its own: the lines it adds (and the lines next to a
-    deletion, which a deletion can join to a trailing backslash), the path
-    names it adds, its commit message, and its author and committer lines
-    (name and e-mail, not the timestamp). A word added in one commit and
-    removed in a later one is still found, because it still leaves in the
-    pushed history. ``--branch NAME`` scans the branch name too. Tags, tag
-    messages and git notes are not scanned. The output always says how many
-    commits were scanned.
+    BASE is scanned on its own: the lines it adds, what a deletion creates
+    (a backslash join or a word wrapped over the new line break, and nothing
+    else next to it), the path names it adds, its commit message, and its
+    author and committer lines (name and e-mail; not the timestamp or time
+    zone, and no other header). A word added in one commit and removed in a
+    later one is still found, because it still leaves in the pushed history.
+    ``--branch NAME`` scans the branch name too. Tags, tag messages and git
+    notes are not scanned. Every completed scan says how many commits it
+    scanned.
 
     Refused with exit 2: staged, modified or untracked (non-ignored) files
     (they are in no range); a side of the range that starts with ``^`` or
     holds range syntax itself; a range given backwards (HEAD an ancestor of
-    BASE); and a HEAD given as ``HEAD`` that is detached while local branches
-    hold commits outside the range, which the scan would otherwise miss.
+    BASE); and, when the range is empty however it is spelled or HEAD is
+    given as ``HEAD`` while detached, local branches holding commits that
+    neither end of the range nor any remote-tracking ref contains.
 
 ``--tree``
     Scan every tracked file and every path name at HEAD. This measures how far
@@ -31,8 +33,9 @@ The guard fails closed.
   against blob, where no ``.gitattributes`` rule applies. Replace objects are
   switched off, and a shallow or grafted repository is refused.
 * A blob is *text* when the whole of it decodes, strictly, in a recognised
-  encoding and holds no control characters (other than tab, line feed,
-  vertical tab, form feed, carriage return and escape): UTF-8 (with or without
+  encoding and holds none of U+0000-U+0008, U+000E-U+001A, U+001C-U+001F and
+  U+007F (tab, line feed, vertical tab, form feed, carriage return and escape
+  are allowed): UTF-8 (with or without
   a BOM), UTF-16 or UTF-32 with a BOM, UTF-32 without one, or UTF-16 without
   one whose NUL bytes all sit on one side of each code unit and make up at
   least 30% of it. There is no allowance for a few odd bytes.
@@ -41,10 +44,14 @@ The guard fails closed.
   as *not scanned as text*, which exits 2 unless its exact path is listed in
   ``binary-ok.txt``. Compressed or encoded content is never read through.
 * Before matching, text is normalised: format characters (Unicode category
-  Cf, such as soft hyphens, zero-width and direction marks), variation
-  selectors, tag characters, U+034F and U+180E are removed; Unicode NFKC is
-  applied; dashes and minus signs become ``-``; and a line ending in a
-  backslash is joined with the next.
+  Cf, such as soft hyphens, zero-width and direction marks), C1 controls
+  U+0080-U+009F, U+2028, U+2029, variation selectors, tag characters, U+034F
+  and U+180E are removed; Unicode NFKC is applied; every character of
+  category Pd (dashes) and U+2212 (minus) becomes ``-``; a line ending in a
+  backslash is joined with the next; and two neighbouring lines are also
+  matched joined by one space, the lower one without its leading whitespace
+  and comment markers (``#``, ``//``, ``*``, ``--``, ``>``, ``|``), keeping
+  only matches that cross the join.
 
 Output: one finding per line, ``path:line: pattern: matching text`` (followed
 by ``(commit <id>)`` in ``--diff`` mode; a path name is line 0), the files not
@@ -62,6 +69,7 @@ from __future__ import annotations
 
 import argparse
 import functools
+import io
 import os
 import re
 import subprocess
@@ -104,7 +112,10 @@ GIT_BASE = [
 GIT_ENV = {**os.environ, "GIT_ATTR_NOSYSTEM": "1", "GIT_NO_REPLACE_OBJECTS": "1"}
 GIT_ENV.pop("GIT_EXTERNAL_DIFF", None)
 
-DASHES = "\u2010\u2011\u2012\u2013\u2014\u2015\u2212\ufe58\ufe63\uff0d"
+# A continuation line's leading whitespace and comment markers, removed before
+# a line is joined to the one above it.
+MARKERS = re.compile(r"^\s*(?:(?:#|//|\*|--|>|\|)\s*)*")
+BREAKS = re.compile(r"\s*\n\s*(?:(?:#|//|\*|--|>|\|)\s*)*")
 # Characters text does not hold: C0 controls other than tab, line feed,
 # vertical tab, form feed, carriage return and escape; and DEL.
 CONTROL = re.compile(r"[\x00-\x08\x0e-\x1a\x1c-\x1f\x7f]")
@@ -235,18 +246,32 @@ def load_exact_paths(path: Path) -> set[str]:
 
 @functools.cache
 def _normal_table() -> dict[int, str | None]:
-    """Characters removed before matching, and dashes mapped to `-`."""
-    table: dict[int, str | None] = {
-        cp: None
-        for cp in range(sys.maxunicode + 1)
-        if unicodedata.category(chr(cp)) == "Cf"
-    }
-    for cp in (0x034F, 0x180E, *range(0xFE00, 0xFE10), *range(0xE0000, 0xE0080)):
+    """Characters removed before matching, and dashes mapped to `-`.
+
+    Removed: Unicode category Cf (format characters), C1 controls
+    U+0080-U+009F, U+2028, U+2029, U+034F, U+180E, variation selectors and
+    tag characters. Mapped to `-`: every character of category Pd, and U+2212.
+    """
+    table: dict[int, str | None] = {}
+    for cp in range(sys.maxunicode + 1):
+        category = unicodedata.category(chr(cp))
+        if category == "Cf":
+            table[cp] = None
+        elif category == "Pd":
+            table[cp] = "-"
+    table[0x2212] = "-"
+    removed = [
+        *range(0x80, 0xA0),
+        0x2028,
+        0x2029,
+        0x034F,
+        0x180E,
+        *range(0xFE00, 0xFE10),
+        *range(0xE0000, 0xE0080),
+        *range(0xE0100, 0xE01F0),
+    ]
+    for cp in removed:
         table[cp] = None
-    for cp in range(0xE0100, 0xE01F0):
-        table[cp] = None
-    for dash in DASHES:
-        table[ord(dash)] = "-"
     return table
 
 
@@ -340,44 +365,121 @@ class Scanner:
         except re.error as exc:
             raise GuardError(f"the patterns do not combine: {exc}") from exc
 
-    def match(self, path: str, number: int, text: str, commit: str) -> list[Finding]:
-        text = normalise(text)
+    def _find(self, text: str) -> list[tuple[str, re.Match[str]]]:
+        """(pattern, match) in `text`, which is already normalised."""
         if not self.any.search(text):
             return []
+        return [(p.source, m) for p in self.patterns for m in p.regex.finditer(text)]
+
+    def match(self, path: str, number: int, text: str, commit: str) -> list[Finding]:
         return [
-            Finding(path, number, pattern.source, m.group(0), commit)
-            for pattern in self.patterns
-            for m in pattern.regex.finditer(text)
+            Finding(path, number, source, m.group(0), commit)
+            for source, m in self._find(normalise(text))
         ]
 
     def path_name(self, path: str, commit: str = "") -> list[Finding]:
         return self.match(path, 0, path, commit)
 
+    def _worth_scanning(self, text: str) -> bool:
+        flat = normalise(text.replace("\\\r\n", "").replace("\\\n", ""))
+        return bool(self.any.search(flat) or self.any.search(BREAKS.sub(" ", flat)))
+
     def lines(
-        self, path: str, text: str, wanted: set[int] | None, commit: str = ""
+        self,
+        path: str,
+        text: str,
+        wanted: set[int] | None,
+        commit: str = "",
+        joins: frozenset[int] = frozenset(),
     ) -> list[Finding]:
         """Scan the lines numbered in `wanted` (1-based; None = every line).
 
-        A line joined to its neighbours by trailing backslashes is scanned as
-        one, reported at its first line, whenever any part of it is wanted.
+        A line joined to its neighbours by trailing backslashes is one
+        logical line, scanned whole and reported at its first line whenever
+        any part of it is wanted. Two neighbouring logical lines are also
+        matched joined by one space (the lower one without its leading
+        whitespace and comment markers), keeping only matches that cross the
+        join, when either is wanted: a word wrapped over a line break.
+
+        `joins` holds the lines c whose neighbour c + 1 was brought next to
+        them by a deletion. There only what crosses the new boundary is
+        reported: a backslash join or a wrapped word the deletion created.
         """
-        if wanted is None:
-            joined = text.replace("\\\r\n", "").replace("\\\n", "")
-            if not self.any.search(normalise(joined)):
-                return []
-        lines = text.split("\n")
-        found: list[Finding] = []
-        for first, last in logical_lines(lines):
-            if wanted is not None and not any(
+        if wanted is None and not self._worth_scanning(text):
+            return []
+        raw = [line.rstrip("\r") for line in text.split("\n")]
+        spans = logical_lines(raw)
+        cache: dict[int, tuple[str, list[int]]] = {}
+
+        def span_text(k: int) -> tuple[str, list[int]]:
+            """Normalised text of span k, and the offsets of its inner joins."""
+            if k not in cache:
+                first, last = spans[k]
+                pieces, offsets, size = [], [], 0
+                for index in range(first, last + 1):
+                    piece = raw[index][:-1] if index < last else raw[index]
+                    piece = normalise(piece)
+                    pieces.append(piece)
+                    size += len(piece)
+                    offsets.append(size)
+                cache[k] = ("".join(pieces), offsets[:-1])
+            return cache[k]
+
+        def is_wanted(k: int) -> bool:
+            first, last = spans[k]
+            return wanted is None or any(
                 n in wanted for n in range(first + 1, last + 2)
-            ):
+            )
+
+        found: list[Finding] = []
+        for k, (first, last) in enumerate(spans):
+            if is_wanted(k):
+                if first == last and (path, raw[first]) in self.allowed:
+                    continue
+                joined, _ = span_text(k)
+                found.extend(
+                    Finding(path, first + 1, source, m.group(0), commit)
+                    for source, m in self._find(joined)
+                )
                 continue
-            if first == last and (path, lines[first].rstrip("\r")) in self.allowed:
+            made = [c - (first + 1) for c in joins if first + 1 <= c <= last]
+            if made:
+                joined, offsets = span_text(k)
+                cuts = [offsets[i] for i in made]
+                found.extend(
+                    Finding(path, first + 1, source, m.group(0), commit)
+                    for source, m in self._find(joined)
+                    if any(m.start() < cut < m.end() for cut in cuts)
+                )
+        for k in range(len(spans) - 1):
+            if not (is_wanted(k) or is_wanted(k + 1) or spans[k][1] + 1 in joins):
                 continue
-            parts = [line.rstrip("\r") for line in lines[first : last + 1]]
-            joined = "".join(p[:-1] for p in parts[:-1]) + parts[-1]
-            found.extend(self.match(path, first + 1, joined, commit))
+            left = span_text(k)[0].rstrip()
+            right = MARKERS.sub("", span_text(k + 1)[0])
+            if not left or not right:
+                continue
+            cut = len(left)
+            found.extend(
+                Finding(path, spans[k][0] + 1, source, m.group(0), commit)
+                for source, m in self._find(f"{left} {right}")
+                if m.start() < cut and m.end() > cut + 1
+            )
         return found
+
+    def texts(
+        self,
+        path: str,
+        texts: Sequence[str],
+        wanted: set[int] | None,
+        commit: str = "",
+        joins: frozenset[int] = frozenset(),
+    ) -> list[Finding]:
+        """Scan several decodings of one content. The same occurrence found in
+        two decodings is one finding; two occurrences on one line are two."""
+        merged: Counter[Finding] = Counter()
+        for text in texts:
+            merged |= Counter(self.lines(path, text, wanted, commit, joins))
+        return list(merged.elements())
 
     def blob(
         self,
@@ -386,17 +488,13 @@ class Scanner:
         blob: bytes,
         wanted: set[int] | None,
         commit: str = "",
+        joins: frozenset[int] = frozenset(),
     ) -> None:
-        """Scan a blob's content in every decoding; see below for duplicates."""
+        """Scan a blob's content in every decoding."""
         texts, text_like, aligned = decodings(blob)
         if not text_like or not aligned:
-            wanted = None  # line numbers do not apply; scan the whole blob
-        # The same occurrence found in two decodings is one finding; two
-        # occurrences on one line are two. Keep each finding's highest count.
-        merged: Counter[Finding] = Counter()
-        for text in texts:
-            merged |= Counter(self.lines(path, text, wanted, commit))
-        report.findings.extend(merged.elements())
+            wanted, joins = None, frozenset()  # scan the whole blob
+        report.findings.extend(self.texts(path, texts, wanted, commit, joins))
         if not text_like and path not in self.binary_ok:
             report.not_scanned[path] = len(blob)
 
@@ -512,20 +610,28 @@ def iter_blobs(repo: Path, shas: Sequence[str]) -> Iterator[tuple[str, bytes]]:
         raise GuardError(f"git cat-file exited {code}")
 
 
+@dataclass(frozen=True)
+class Wanted:
+    sha: str
+    lines: set[int] | None = None  # None: every line
+    joins: frozenset[int] = frozenset()  # lines a deletion put next to c + 1
+
+
 def scan_blobs(
     repo: Path,
     scanner: Scanner,
     report: Report,
-    wanted: dict[str, tuple[str, set[int] | None]],
+    wanted: dict[str, Wanted],
     commit: str = "",
 ) -> None:
-    """Scan path -> (blob sha, wanted lines), reading each blob once."""
+    """Scan each path's blob, reading each blob once."""
     by_sha: dict[str, list[str]] = {}
-    for path, (sha, _) in wanted.items():
-        by_sha.setdefault(sha, []).append(path)
+    for path, item in wanted.items():
+        by_sha.setdefault(item.sha, []).append(path)
     for sha, blob in iter_blobs(repo, list(by_sha)):
         for path in by_sha[sha]:
-            scanner.blob(report, path, blob, wanted[path][1], commit)
+            item = wanted[path]
+            scanner.blob(report, path, blob, item.lines, commit, item.joins)
 
 
 # --- tree mode ----------------------------------------------------------------
@@ -552,7 +658,7 @@ def scan_tree(
     repo: Path, scanner: Scanner, only: Sequence[str], report: Report
 ) -> None:
     listing = git(repo, "ls-tree", "-r", "-z", "--full-tree", "HEAD")
-    wanted: dict[str, tuple[str, set[int] | None]] = {}
+    wanted: dict[str, Wanted] = {}
     for entry in listing.split(b"\0"):
         if not entry:
             continue
@@ -563,7 +669,7 @@ def scan_tree(
             continue
         report.findings.extend(scanner.path_name(path))  # every entry, gitlinks too
         if kind == "blob":
-            wanted[path] = (sha, None)
+            wanted[path] = Wanted(sha)
     scan_blobs(repo, scanner, report, wanted)
 
 
@@ -615,11 +721,13 @@ def changes(repo: Path, parent: str, commit: str) -> dict[str, Change]:
     return result
 
 
-def added_lines(repo: Path, old_sha: str, new_sha: str) -> set[int]:
-    """Line numbers of blob `new_sha` that are not in blob `old_sha`.
+def added_lines(repo: Path, old_sha: str, new_sha: str) -> tuple[set[int], set[int]]:
+    """(lines of blob `new_sha` not in `old_sha`, lines a deletion joined).
 
-    Diffed blob to blob: with no path, no attribute applies, and `--text
-    --no-textconv --no-ext-diff` rule out the rest.
+    The second set holds each line c after which lines were deleted, so that
+    c and c + 1 are neighbours now. Diffed blob to blob: with no path, no
+    attribute applies, and `--text --no-textconv --no-ext-diff` rule out the
+    rest.
     """
     out = git(
         repo,
@@ -633,45 +741,50 @@ def added_lines(repo: Path, old_sha: str, new_sha: str) -> set[int]:
         old_sha,
         new_sha,
     )
-    lines: set[int] = set()
-    for match in HUNK.finditer(out):  # a line is changed or next to a deletion
+    added: set[int] = set()
+    joins: set[int] = set()
+    for match in HUNK.finditer(out):
         start = int(match.group(1))
         count = int(match.group(2)) if match.group(2) is not None else 1
         if count == 0:
-            # A pure deletion after line `start`: the lines on either side
-            # are now neighbours, and a trailing backslash can join them.
-            lines.update({start, start + 1} - {0})
+            joins.add(start)  # a pure deletion after line `start`
         else:
-            lines.update(range(start, start + count))
-    return lines
+            added.update(range(start, start + count))
+    return added, joins
 
 
 def is_null(sha: str) -> bool:
     return set(sha) == {"0"}
 
 
-def check_detached(repo: Path, base: str, head: str) -> None:
-    """Refuse a detached HEAD while local branches hold commits outside the range.
+def check_elsewhere(repo: Path, base: str, head: str, why: str) -> None:
+    """Refuse when local branches hold work the range does not contain.
 
-    With HEAD detached at the base, `BASE..HEAD` is empty and would read as
-    clean while the work to be sent sits on a branch.
+    Work is a commit on a local branch that is reachable from neither the
+    base, the head, nor any remote-tracking ref (so not already pushed).
     """
-    if git_yes(repo, "symbolic-ref", "--quiet", "HEAD"):
-        return
+    remotes = git(repo, "for-each-ref", "--format=%(objectname)", "refs/remotes/")
+    exclude = [f"^{sha}" for sha in remotes.decode().split()]
     refs = git(repo, "for-each-ref", "--format=%(refname)", "refs/heads/")
     outside = []
     for ref in refs.decode("utf-8", "replace").split():
         count = git(
-            repo, "rev-list", "--count", "--end-of-options", ref, f"^{base}", f"^{head}"
+            repo,
+            "rev-list",
+            "--count",
+            "--end-of-options",
+            ref,
+            f"^{base}",
+            f"^{head}",
+            *exclude,
         )
         if int(count) > 0:
             outside.append(f"{ref.removeprefix('refs/heads/')} ({int(count)} commits)")
     if outside:
         raise GuardError(
-            f"HEAD is detached at {head[:7]}, and local branches hold commits "
-            f"outside the range: {', '.join(outside)}. Check out the branch to "
-            "send (git switch <branch>) and run the guard again, or pass its "
-            "range explicitly"
+            f"{why}, while local branches hold commits outside the range: "
+            f"{', '.join(outside)}. Check out the branch to send "
+            "(git switch <branch>) and run the guard again, or pass its range"
         )
 
 
@@ -702,8 +815,10 @@ def scan_diff(
         raise GuardError(
             f"--diff {spec}: {head_rev} is behind {base_rev}; the range is backwards"
         )
-    if head_rev in {"HEAD", "@"}:
-        check_detached(repo, base, head)
+    if head_rev in {"HEAD", "@"} and not git_yes(
+        repo, "symbolic-ref", "--quiet", "HEAD"
+    ):
+        check_elsewhere(repo, base, head, f"HEAD is detached at {head[:7]}")
     if branch is not None:
         report.findings.extend(scanner.match(BRANCH, 0, branch, ""))
     commits = git(
@@ -715,6 +830,8 @@ def scan_diff(
         head,
         f"^{base}",
     ).split()
+    if not commits:
+        check_elsewhere(repo, base, head, f"--diff {spec} holds no commits")
     report.commits = len(commits)
     empty_tree = git(repo, "hash-object", "-t", "tree", "/dev/null").decode().strip()
     for raw_commit in commits:
@@ -725,8 +842,7 @@ def scan_diff(
         )
         report.findings.extend(scanner.lines(IDENTITY, identity, None, short))
         texts, is_text, _ = decodings(message)
-        for text in texts:
-            report.findings.extend(scanner.lines(MESSAGE, text, None, short))
+        report.findings.extend(scanner.texts(MESSAGE, texts, None, short))
         if not is_text:
             report.not_scanned[f"{MESSAGE} {short}"] = len(message)
         scan_commit(repo, scanner, commit, short, parents or [empty_tree], only, report)
@@ -748,7 +864,7 @@ def scan_commit(
     """
     per_parent = [changes(repo, parent, commit) for parent in parents]
     paths = set(per_parent[0]).intersection(*per_parent[1:])
-    wanted: dict[str, tuple[str, set[int] | None]] = {}
+    wanted: dict[str, Wanted] = {}
     for path in sorted(paths):
         if not selected(path, only):
             continue
@@ -761,12 +877,14 @@ def scan_commit(
         if new.new_mode == GITLINK_MODE or is_null(new.new_sha):
             continue
         lines: set[int] | None = None
+        joins: set[int] | None = None
         for entry in entries:
             if entry.status == "A" or is_null(entry.old_sha):
                 continue  # everything is new relative to this parent
-            added = added_lines(repo, entry.old_sha, entry.new_sha)
+            added, joined = added_lines(repo, entry.old_sha, entry.new_sha)
             lines = added if lines is None else lines & added
-        wanted[path] = (new.new_sha, lines)
+            joins = joined if joins is None else joins & joined
+        wanted[path] = Wanted(new.new_sha, lines, frozenset(joins or ()))
     scan_blobs(repo, scanner, report, wanted, short)
 
 
@@ -790,6 +908,11 @@ def summarise(report: Report, quiet: bool) -> list[str]:
         if not quiet:
             for path, size in sorted(report.not_scanned.items()):
                 lines.append(f"  {path} ({size} bytes)")
+        lines.append(
+            "  what to do: convert a text file to UTF-8 (without control "
+            "characters); for a real binary, list its exact path in "
+            "guard/binary-ok.txt"
+        )
     files = {f.path for f in findings}
     lines.append(f"summary: {len(findings)} findings in {len(files)} files")
     if not findings:
@@ -841,6 +964,16 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _silence_stdout() -> None:
+    """Send whatever is still buffered for stdout nowhere, so that the
+    interpreter's own flush at exit cannot fail again and change the code."""
+    try:
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, sys.stdout.fileno())
+    except (OSError, ValueError):
+        pass
+
+
 def run(argv: Sequence[str] | None) -> int:
     parser = build_parser()
     try:
@@ -849,6 +982,9 @@ def run(argv: Sequence[str] | None) -> int:
         return int(exc.code) if isinstance(exc.code, int) else EXIT_ERROR
     report = Report()
     try:
+        if isinstance(sys.stdout, io.TextIOWrapper):
+            # A path that is not UTF-8 is printed escaped, never a crash.
+            sys.stdout.reconfigure(errors="backslashreplace")
         if args.branch is not None and not args.diff:
             raise GuardError("--branch goes with --diff")
         if args.count_only and not args.tree:
@@ -864,17 +1000,22 @@ def run(argv: Sequence[str] | None) -> int:
             scan_tree(repo, scanner, args.only, report)
         else:
             scan_diff(repo, scanner, args.diff, args.only, args.branch, report)
+        if not args.quiet:
+            for finding in report.findings:
+                print(finding.render())
+        for line in summarise(report, args.quiet):
+            print(line)
+        sys.stdout.flush()
     except GuardError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return EXIT_ERROR
-    except Exception as exc:  # anything unforeseen must not read as clean
-        print(f"error: {type(exc).__name__}: {exc}", file=sys.stderr)
+    except BaseException as exc:  # anything unforeseen must not read as clean
+        _silence_stdout()
+        if isinstance(exc, KeyboardInterrupt):
+            print("error: interrupted", file=sys.stderr)
+        else:
+            print(f"error: {type(exc).__name__}: {exc}", file=sys.stderr)
         return EXIT_ERROR
-    if not args.quiet:
-        for finding in report.findings:
-            print(finding.render())
-    for line in summarise(report, args.quiet):
-        print(line)
     if args.count_only:
         return EXIT_CLEAN
     if report.not_scanned:

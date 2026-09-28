@@ -5,6 +5,7 @@ from __future__ import annotations
 import gzip
 import os
 import re
+import shutil
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -278,16 +279,22 @@ def findings(out: str) -> list[tuple[str, int, str]]:
 SAMPLES: dict[str, list[str]] = {
     "srv1(?![0-9])": ["srv1", "my_srv1_thing", "camelSrv1Host", "LIVE_SRV1"],
     "srv2(?![0-9])": ["read_srv2", "SRV2", "local_srv2"],
-    "(?<![a-z0-9])b[-_]small(?![a-z0-9])": [
+    r"(?<![a-z0-9])b[ \t_-]+small(?![a-z0-9])": [
         "b-small",
         "the_b-small box",
         "units.b_small",
+        "b  small",
+        "b\tsmall",
     ],
     "adaramir": ["adaramir"],
     "/home/adaramir": ["/home/adaramir/x"],
+    "/home/adar(?![a-z0-9])": ["/home/adar/x", "/home/adar"],
     "tailbaf744": ["tailbaf744.ts.net"],
-    r"(?<![0-9])100\.69\.72\.51(?![0-9])": ["100.69.72.51"],
-    "RTX[ _-]?3060(?![0-9])|(?<![0-9])3060[ _-]?Ti(?![a-z])": [
+    (
+        r"(?<![0-9.])100\.(?:6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])"
+        r"\.[0-9]{1,3}\.[0-9]{1,3}(?![0-9])"
+    ): ["100.69.72.51", "100.64.0.1", "100.127.255.255", "100.100.100.100"],
+    r"RTX[ \t_|-]*3060(?![0-9])|(?<![0-9])3060[ \t_|-]*Ti(?![a-z])": [
         "RTX 3060",
         "RTX3060",
         "rtx3060ti",
@@ -295,22 +302,32 @@ SAMPLES: dict[str, list[str]] = {
         "RTX-3060",
         "3060 Ti",
         "3060Ti",
+        "RTX  3060",
+        "RTX\t3060",
+        "| RTX | 3060 |",
     ],
-    "GTX[ _-]?1660(?![0-9])": ["GTX1660", "GTX 1660", "GTX-1660", "GTX_1660_SUPER"],
-    "(?<![0-9])1660[ _-]?(?:SUPER|S)(?![a-z])": [
+    r"GTX[ \t_|-]*1660(?![0-9])": [
+        "GTX1660",
+        "GTX 1660",
+        "GTX-1660",
+        "GTX_1660_SUPER",
+        "GTX \t 1660",
+    ],
+    r"(?<![0-9])1660[ \t_|-]*(?:SUPER|S)(?![a-z])": [
         "1660 SUPER",
         "1660SUPER",
         "1660_SUPER",
         "1660S",
         "1660s",
         "1660 Super",
+        "1660  SUPER",
     ],
-    "GTX[ _-]?1080(?![0-9])": ["GTX 1080", "gtx1080", "GTX_1080"],
-    "(?<![0-9])1080[ _-]?Ti(?![a-z])": ["1080Ti", "1080 Ti", "1080-Ti"],
+    r"GTX[ \t_|-]*1080(?![0-9])": ["GTX 1080", "gtx1080", "GTX_1080", "GTX\t1080"],
+    r"(?<![0-9])1080[ \t_|-]*Ti(?![a-z])": ["1080Ti", "1080 Ti", "1080-Ti", "1080  Ti"],
     "(?<![0-9])Z490(?![0-9])": ["Z490", "boardZ490"],
     "srv[12]_[a-z0-9_]+": ["srv2_35b_32k", "my_srv1_x"],
     "d-srv[12]-[a-z0-9-]+": ["d-srv1-dense"],
-    "mcgyvr[-_]lab": ["mcgyvr-lab", "import mcgyvr_lab"],
+    r"mcgyvr[ \t_-]+lab": ["mcgyvr-lab", "import mcgyvr_lab", "mcgyvr  lab"],
 }
 
 # Ordinary text that must pass. `b-smaller` passes by choice: the b-small
@@ -334,6 +351,14 @@ ORDINARY = [
     "1080p",
     "1660 Series",
     "3060 Timer",
+    "/home/adarsh",
+    "/home/adar2",
+    "100.63.0.1",
+    "100.128.0.1",
+    "1100.70.1.1",
+    "100.70.1",
+    "bsmall",
+    "mcgyvrlab",
 ]
 
 
@@ -938,6 +963,13 @@ def test_detached_head_at_base_with_work_on_a_branch_exits_2(
         "mcgyvr\u2014lab",
         "b\ufe63small",
         "b\uff0dsmall",
+        "b\u2e3asmall",  # two-em dash (Pd)
+        "b\u058asmall",  # Armenian hyphen (Pd)
+        "b\u301csmall",  # wave dash (Pd)
+        "sr\x85v1",  # next line (C1)
+        "sr\x9bv1",  # C1 control
+        "sr\u2028v1",  # line separator
+        "sr\u2029v1",  # paragraph separator
     ],
 )
 def test_format_characters_and_dashes_are_normalised(repo: Repo, text: str) -> None:
@@ -1048,11 +1080,207 @@ def test_ci_failure_of_a_git_command_exits_2(ci_lab: CiLab) -> None:
     move_pointer(ci_lab, "a clean change\n")
     lab = ci_lab.lab
     lab.git("submodule", "deinit", "-q", "-f", "product")
-    subprocess.run(
-        ["rm", "-rf", str(lab.root / ".git" / "modules" / "product")], check=True
-    )
+    shutil.rmtree(lab.root / ".git" / "modules" / "product")
     lab.git("config", "-f", ".gitmodules", "submodule.product.url", "/nonexistent")
     lab.git("add", ".gitmodules")
     lab.git("commit", "-q", "-m", "break the url")
     result = ci(lab, base)
     assert result.code == 2, result
+
+
+# --- round 3, R1: a word wrapped over a line break --------------------------
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "runs on the RTX\n3060 with 12 GB\n",
+        "# runs on the RTX\n#   3060 card\n",
+        "// RTX\n// 3060\n",
+        "  * the GTX\n  * 1660 SUPER\n",
+        "> RTX\n> 3060\n",
+        "-- on b\n-- small\n",
+        "| RTX |\n| 3060 |\n",
+    ],
+)
+def test_a_word_wrapped_over_a_line_break_is_caught(repo: Repo, text: str) -> None:
+    base = repo.git("rev-parse", "HEAD")
+    repo.write("a.txt", text)
+    repo.commit("wrapped")
+    tree = guard(repo.root, REAL_WORDS, REAL_ALLOWED, "--tree")
+    assert tree.code == 1, tree
+    diff = guard(repo.root, REAL_WORDS, REAL_ALLOWED, "--diff", f"{base}..HEAD")
+    assert diff.code == 1, diff
+
+
+def test_a_word_wrapped_in_a_commit_message_is_caught(repo: Repo) -> None:
+    base = repo.git("rev-parse", "HEAD")
+    repo.write("a.txt", "fine\n")
+    repo.commit("tune the sizing\n\nmeasured on the RTX\n3060 today")
+    result = guard(repo.root, REAL_WORDS, REAL_ALLOWED, "--diff", f"{base}..HEAD")
+    assert result.code == 1, result
+
+
+# --- round 3, R2: what a deletion does and does not create ------------------
+
+
+def test_a_deletion_that_brings_a_split_word_together_is_caught(repo: Repo) -> None:
+    repo.write("a.txt", "on the RTX\nzzz\n3060 card\n")
+    base = repo.commit("apart")
+    assert guard(repo.root, REAL_WORDS, REAL_ALLOWED, "--tree").code == 0
+    repo.write("a.txt", "on the RTX\n3060 card\n")
+    repo.commit("delete the middle line")
+    result = guard(repo.root, REAL_WORDS, REAL_ALLOWED, "--diff", f"{base}..HEAD")
+    assert result.code == 1, result
+
+
+def test_a_deletion_next_to_a_legacy_line_creates_nothing(
+    repo: Repo, words: Path, allowed: Path
+) -> None:
+    repo.write("a.txt", "a row on srv1\n-------\nnext row secrethost\n")
+    base = repo.commit("legacy")
+    repo.write("a.txt", "a row on srv1\nnext row secrethost\n")
+    repo.commit("delete a clean line")
+    result = guard(repo.root, words, allowed, "--diff", f"{base}..HEAD")
+    assert result.code == 0, result
+
+
+def test_a_clean_line_added_next_to_a_legacy_split_word_passes(repo: Repo) -> None:
+    repo.write("a.txt", "on the RTX\n3060 card\n")
+    base = repo.commit("legacy split word")
+    repo.write("a.txt", "on the RTX\n3060 card\nand a clean line\n")
+    repo.commit("add a clean line")
+    result = guard(repo.root, REAL_WORDS, REAL_ALLOWED, "--diff", f"{base}..HEAD")
+    assert result.code == 0, result
+
+
+# --- round 3, R3: an empty range while work sits on another branch ----------
+
+
+def test_empty_range_on_a_branch_while_another_holds_work_exits_2(
+    repo: Repo, words: Path, allowed: Path
+) -> None:
+    base = repo.git("rev-parse", "HEAD")
+    repo.git("switch", "-q", "-c", "work")
+    repo.write("a.txt", "srv1\n")
+    repo.commit("leak")
+    repo.git("switch", "-q", "main")
+    result = guard(repo.root, words, allowed, "--diff", f"{base}..HEAD")
+    assert result.code == 2, result
+    assert "work" in result.err
+
+
+@pytest.mark.parametrize("head", ["HEAD~0", "HEAD^0", "HEAD@{0}", "FULL"])
+def test_empty_range_however_spelled_exits_2(
+    repo: Repo, words: Path, allowed: Path, head: str
+) -> None:
+    base = repo.git("rev-parse", "HEAD")
+    repo.git("switch", "-q", "-c", "work")
+    repo.write("a.txt", "srv1\n")
+    repo.commit("leak")
+    repo.git("switch", "-q", "--detach", base)
+    head = base if head == "FULL" else head
+    result = guard(repo.root, words, allowed, "--diff", f"{base}..{head}")
+    assert result.code == 2, result
+    assert "work" in result.err
+
+
+# --- round 3, R4: a crash exits 2 --------------------------------------------
+
+
+def test_a_non_utf8_path_does_not_crash(repo: Repo, words: Path, allowed: Path) -> None:
+    (repo.root / os.fsdecode(b"bad\xff.bin")).write_bytes(bytes(range(256)) * 4)
+    repo.commit("odd name")
+    done = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--repo",
+            str(repo.root),
+            "--words",
+            str(words),
+            "--allowed",
+            str(allowed),
+            "--tree",
+        ],
+        env={
+            k: v
+            for k, v in {**os.environ, "LANG": "en_US.UTF-8"}.items()
+            if k != "PYTHONIOENCODING"
+        },
+        capture_output=True,
+        check=False,
+    )
+    assert done.returncode == 2, done
+    assert b"Traceback" not in done.stderr
+
+
+def test_a_broken_pipe_exits_2(repo: Repo, words: Path, allowed: Path) -> None:
+    repo.write("a.txt", "srv1\n" * 50000)
+    repo.commit("many")
+    process = subprocess.Popen(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--repo",
+            str(repo.root),
+            "--words",
+            str(words),
+            "--allowed",
+            str(allowed),
+            "--tree",
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    assert process.stdout is not None and process.stderr is not None
+    process.stdout.close()
+    err = process.stderr.read()
+    assert process.wait() == 2, err
+    assert b"Traceback" not in err
+
+
+def test_writing_to_a_full_device_exits_2(
+    repo: Repo, words: Path, allowed: Path
+) -> None:
+    repo.write("a.txt", "srv1\n")
+    repo.commit("one")
+    with open("/dev/full", "w") as full:
+        done = subprocess.run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "--repo",
+                str(repo.root),
+                "--words",
+                str(words),
+                "--allowed",
+                str(allowed),
+                "--tree",
+            ],
+            stdout=full,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    assert done.returncode == 2, done
+
+
+# --- round 3, R5 and R6 -------------------------------------------------------
+
+
+def test_one_word_in_a_message_is_one_finding(
+    repo: Repo, words: Path, allowed: Path
+) -> None:
+    base = repo.git("rev-parse", "HEAD")
+    repo.write("a.txt", "fine\n")
+    repo.commit("measured on srv1")
+    result = guard(repo.root, words, allowed, "--diff", f"{base}..HEAD")
+    assert "summary: 1 findings" in result.out, result
+
+
+def test_not_scanned_says_what_to_do(repo: Repo, words: Path, allowed: Path) -> None:
+    repo.write("blob.bin", bytes(range(256)) * 4)
+    repo.commit("binary")
+    result = guard(repo.root, words, allowed, "--tree")
+    assert result.code == 2
+    assert "UTF-8" in result.out and "binary-ok.txt" in result.out
