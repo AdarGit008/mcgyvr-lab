@@ -54,6 +54,8 @@ d-srv[12]-[a-z0-9-]+
 
 # The lab itself: the product must not point at the lab. A separator is
 # required: any run of spaces, tabs, `_` or `-` (mcgyvr-lab, mcgyvr_lab,
-# mcgyvr lab); `mcgyvrlab` with none passes, as does `bsmall` above. The one
-# README line the owner allows goes in guard/allowed.txt.
-mcgyvr[ \t_-]+lab
+# mcgyvr lab); `mcgyvrlab` with none passes, as does `bsmall` above. No letter
+# may follow, so `mcgyvr labels` and `mcgyvr laboratory` pass; the accepted
+# cost is that `mcgyvr-labs` passes too. The one README line the owner allows
+# goes in guard/allowed.txt.
+mcgyvr[ \t_-]+lab(?![a-z])
