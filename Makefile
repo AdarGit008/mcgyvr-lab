@@ -1,6 +1,6 @@
 # The lab's entry points. Run them from the lab's root.
 #   make check           the lab's own gate: lint, format, types, tests (guard self-tests included)
-#   make product-check   the product's full gate, run inside product/ exactly as its CI runs it
+#   make product-check   the product's own `make check`, run inside product/ (see below for what it does not set up)
 #   make guard           the outgoing gate: what product/'s branch adds on top of origin/main
 #   make guard-baseline  informational: private words left in the product, staying paths and whole tree
 #   make product-sync    move product/ to the latest origin/main (refuses over work on no branch)
@@ -28,12 +28,20 @@ check: setup  ## the lab's own gate
 product-present:
 	@test -e $(PRODUCT)/.git || { echo "$(PRODUCT)/ is not checked out: run 'git submodule update --init product'" >&2; exit 2; }
 
-product-check: product-present  ## the product's full gate, inside product/
+# Runs `make check` inside product/ (uv sync --frozen, ruff check, ruff format
+# --check, mypy, docgen --check, pytest) with this shell's PATH and tools. The
+# product's CI does more first, and this target does NOT: it does not install
+# Node 24, run `npm ci`, or put product/node_modules/.bin on PATH (the pinned
+# JS toolchain some product tests use), and it does not pin uv 0.11.28 or
+# Python 3.12. Lab CI's product-check job sets all of that up.
+product-check: product-present  ## the product's `make check`, inside product/
 	$(MAKE) -C $(PRODUCT) check
 
-# The gate before a pull request: its exit code is the verdict (0 clean,
-# 1 findings, 2 could not scan or uncommitted work). The branch name is
-# scanned too when product/ is on a branch.
+# The gate before a pull request. The script exits 0 clean, 1 findings, 2
+# could not scan or refused (uncommitted work, a detached HEAD with work on a
+# branch, a wrong range); make turns any non-zero into its own failure (exit
+# 2), so `make guard` passes or fails and the printed summary says why. The
+# branch name is scanned too when product/ is on a branch.
 guard: setup product-present  ## the outgoing gate over product/
 	@branch=$$(git -C $(PRODUCT) symbolic-ref --quiet --short HEAD || true); \
 	$(GUARD) --diff $(GUARD_BASE)..HEAD $${branch:+--branch "$$branch"}
