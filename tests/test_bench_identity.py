@@ -23,7 +23,7 @@ from typing import Any
 
 import pytest
 
-from tests._helpers import by_path
+from tests._helpers import PRODUCT, by_path
 
 REPO = Path(__file__).resolve().parent.parent
 
@@ -486,7 +486,7 @@ def _js_ready() -> bool:
     return (
         shutil.which("eslint") is not None
         and shutil.which("prettier") is not None
-        and (REPO / "node_modules" / "typescript-eslint").is_dir()
+        and (PRODUCT / "node_modules" / "typescript-eslint").is_dir()
     )
 
 

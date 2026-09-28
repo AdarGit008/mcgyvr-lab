@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import ast
 import importlib.util
+import re
 import shutil
 import sys
 import tempfile
@@ -35,7 +36,7 @@ from mcgyvr.gate.adapters.python import DEFAULT_RUFF_SELECT
 from mcgyvr.gate.changeset import ChangeSet
 from mcgyvr.gate.runner import Gate
 from mcgyvr.sandbox.tempdir import TempDirSandbox
-from tests._helpers import by_path
+from tests._helpers import PRODUCT, by_path
 
 REPO = Path(__file__).resolve().parent.parent
 
@@ -69,7 +70,7 @@ def _js_toolchain_ready() -> bool:
     """
     if shutil.which("eslint") is None or shutil.which("prettier") is None:
         return False
-    if not (REPO / "node_modules" / "typescript-eslint").is_dir():
+    if not (PRODUCT / "node_modules" / "typescript-eslint").is_dir():
         return False
     spec = importlib.util.spec_from_file_location(
         "bundle_measure_js", REPO / "tools" / "bundle" / "measure.py"
@@ -102,7 +103,11 @@ def test_ci_installs_the_js_toolchain_so_the_skip_cannot_become_permanent() -> N
     the one job that must have it, from any machine, with nothing to install.
     """
     workflow = (REPO / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
-    test_job = workflow[workflow.index("\n  test:") :]
+    # In the lab, the job that runs this suite is `check` (`make check`). It is
+    # read up to the next job, so another job's steps cannot stand in for it.
+    job = workflow[workflow.index("\n  check:") + 1 :]
+    following = re.search(r"\n  [A-Za-z_-]+:\n", job)
+    test_job = job[: following.start()] if following else job
     assert "npm ci" in test_job, "the test job must install the pinned toolchain"
     assert "node_modules/.bin" in test_job and "GITHUB_PATH" in test_job, (
         "installing is not enough — `require_tool` resolves linters with "

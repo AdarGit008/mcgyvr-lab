@@ -20,6 +20,21 @@ jobs:
         with:
           submodules: true
           fetch-depth: 1
+      # The lab's tests of the bench scorer run the product's pinned JS
+      # toolchain (eslint, prettier, typescript-eslint) and skip where it is
+      # absent; this job installs it the way product-check below does, so the
+      # skip cannot become permanent here
+      # (tests/test_bench_score.py holds this job to it).
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: product/package-lock.json
+      - name: install the product's pinned JS toolchain
+        working-directory: product
+        run: |
+          npm ci
+          echo "$GITHUB_WORKSPACE/product/node_modules/.bin" >> "$GITHUB_PATH"
       # Same action, pin and versions as the product's workflow.
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
