@@ -1,0 +1,56 @@
+### WORKLOAD digest=none comparable_with=microbenchmark-only
+### START uptime_since=2026-09-26T14:02:38Z pl1_uw=95000000 pl2_uw=120000000 pl1_source=constraint_0_power_limit_uw cpu_max_mhz=4600 ram_mt_s=3600 run_id=2026-09-27-srv1-multi-gpu-link-v2
+### ROUND id=r35-24-09-2026 product_sha256=ae3bc3350b1c04ffb36ed857feb0ed83872b5abe10c7866ef02b279b2a4373b4
+### RIG cpu_max_mhz=4600 ram_mt_s=3600 pl1_uw=95000000 pl2_uw=120000000 driver=580.178.04 gpu_reserve_mib=381 gpu_name=NVIDIA_GeForce_RTX_3060 gpu_vram_mib=12288 gpu_cc=8.6 cpu_model=Intel(R)_Core(TM)_i5-9600K_CPU_@_3.70GHz
+srv1	gpu0	GPU	index=0	name=NVIDIA_GeForce_RTX_3060	bus=00000000:01:00.0	vram_mib=12288	cc=8.6	power_limit_w=170.00	pcie_gen_max=3	pcie_width_max=16	driver=580.178.04
+srv1	gpu1	GPU	index=1	name=NVIDIA_GeForce_RTX_3060	bus=00000000:02:00.0	vram_mib=12288	cc=8.6	power_limit_w=170.00	pcie_gen_max=3	pcie_width_max=16	driver=580.178.04
+### TOOL name=mgpu_link img=vllm/vllm-openai@sha256:ffb2d59b1c059a5bd8d781320c9f5189de8293693b7d95da54befddaa54abf52
+srv1	pair	TOPO	gpu0_gpu1=PHB
+srv1	pair	P2P	mode=r	gpu0_gpu1=CNS
+srv1	pair	P2P	mode=w	gpu0_gpu1=CNS
+srv1	gpu0	BAR1	index=0	total_mib=256
+srv1	gpu1	BAR1	index=1	total_mib=256
+srv1	host	IOMMU	cmdline=none
+srv1	link-p2p-on	ENV	p2p=on	nccl_via=SHM/direct/direct	cards=2	nccl_p2p_disable=unset	torch=2.11.0+cu130	nccl=2.28.9
+srv1	link-p2p-on	PEER	p2p=on	nccl_via=SHM/direct/direct	p2p_0_to_1=False	p2p_1_to_0=False	copy_0_to_1_gibs=2.95
+srv1	link-p2p-on gpu=0	H2D	p2p=on	nccl_via=SHM/direct/direct	gpu=0	gibs=6.06
+srv1	link-p2p-on gpu=1	H2D	p2p=on	nccl_via=SHM/direct/direct	gpu=1	gibs=6.01
+srv1	link-p2p-on gpu=0	LINK	p2p=on	nccl_via=SHM/direct/direct	gpu=0	gen_max=3	width_max=16	gen_loaded=3	width_loaded=8
+srv1	link-p2p-on gpu=1	LINK	p2p=on	nccl_via=SHM/direct/direct	gpu=1	gen_max=3	width_max=16	gen_loaded=3	width_loaded=8
+srv1	link-p2p-on bytes=4096	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=4096	reps=300	lat_ms_p50=0.0611	lat_ms_p90=0.0657	busbw_gibs=0.062
+srv1	link-p2p-on bytes=8192	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=8192	reps=300	lat_ms_p50=0.0602	lat_ms_p90=0.0645	busbw_gibs=0.127
+srv1	link-p2p-on bytes=16384	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=16384	reps=300	lat_ms_p50=0.0607	lat_ms_p90=0.065	busbw_gibs=0.251
+srv1	link-p2p-on bytes=32768	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=32768	reps=300	lat_ms_p50=0.0609	lat_ms_p90=0.0651	busbw_gibs=0.501
+srv1	link-p2p-on bytes=65536	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=65536	reps=300	lat_ms_p50=0.0747	lat_ms_p90=0.0773	busbw_gibs=0.817
+srv1	link-p2p-on bytes=131072	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=131072	reps=300	lat_ms_p50=0.0964	lat_ms_p90=0.0993	busbw_gibs=1.266
+srv1	link-p2p-on bytes=262144	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=262144	reps=300	lat_ms_p50=0.1316	lat_ms_p90=0.1358	busbw_gibs=1.856
+srv1	link-p2p-on bytes=524288	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=524288	reps=300	lat_ms_p50=0.1981	lat_ms_p90=0.2052	busbw_gibs=2.464
+srv1	link-p2p-on bytes=1048576	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=1048576	reps=300	lat_ms_p50=0.34	lat_ms_p90=0.3479	busbw_gibs=2.872
+srv1	link-p2p-on bytes=2097152	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=2097152	reps=30	lat_ms_p50=0.6249	lat_ms_p90=0.6313	busbw_gibs=3.125
+srv1	link-p2p-on bytes=4194304	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=4194304	reps=30	lat_ms_p50=1.1686	lat_ms_p90=1.1818	busbw_gibs=3.343
+srv1	link-p2p-on bytes=8388608	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=8388608	reps=30	lat_ms_p50=2.294	lat_ms_p90=2.3095	busbw_gibs=3.406
+srv1	link-p2p-on bytes=16777216	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=16777216	reps=30	lat_ms_p50=4.5134	lat_ms_p90=4.5352	busbw_gibs=3.462
+srv1	link-p2p-on bytes=33554432	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=33554432	reps=30	lat_ms_p50=8.8945	lat_ms_p90=8.9675	busbw_gibs=3.513
+srv1	link-p2p-on bytes=67108864	AR	p2p=on	nccl_via=SHM/direct/direct	bytes=67108864	reps=30	lat_ms_p50=17.3977	lat_ms_p90=17.5194	busbw_gibs=3.592
+srv1	link-p2p-off	ENV	p2p=off	nccl_via=SHM/direct/direct	cards=2	nccl_p2p_disable=1	torch=2.11.0+cu130	nccl=2.28.9
+srv1	link-p2p-off	PEER	p2p=off	nccl_via=SHM/direct/direct	p2p_0_to_1=False	p2p_1_to_0=False	copy_0_to_1_gibs=2.95
+srv1	link-p2p-off gpu=0	H2D	p2p=off	nccl_via=SHM/direct/direct	gpu=0	gibs=6.06
+srv1	link-p2p-off gpu=1	H2D	p2p=off	nccl_via=SHM/direct/direct	gpu=1	gibs=6.01
+srv1	link-p2p-off gpu=0	LINK	p2p=off	nccl_via=SHM/direct/direct	gpu=0	gen_max=3	width_max=16	gen_loaded=3	width_loaded=8
+srv1	link-p2p-off gpu=1	LINK	p2p=off	nccl_via=SHM/direct/direct	gpu=1	gen_max=3	width_max=16	gen_loaded=3	width_loaded=8
+srv1	link-p2p-off bytes=4096	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=4096	reps=300	lat_ms_p50=0.0613	lat_ms_p90=0.0656	busbw_gibs=0.062
+srv1	link-p2p-off bytes=8192	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=8192	reps=300	lat_ms_p50=0.061	lat_ms_p90=0.0654	busbw_gibs=0.125
+srv1	link-p2p-off bytes=16384	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=16384	reps=300	lat_ms_p50=0.0629	lat_ms_p90=0.0659	busbw_gibs=0.242
+srv1	link-p2p-off bytes=32768	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=32768	reps=300	lat_ms_p50=0.0604	lat_ms_p90=0.064	busbw_gibs=0.506
+srv1	link-p2p-off bytes=65536	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=65536	reps=300	lat_ms_p50=0.0744	lat_ms_p90=0.077	busbw_gibs=0.821
+srv1	link-p2p-off bytes=131072	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=131072	reps=300	lat_ms_p50=0.0961	lat_ms_p90=0.0984	busbw_gibs=1.27
+srv1	link-p2p-off bytes=262144	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=262144	reps=300	lat_ms_p50=0.1312	lat_ms_p90=0.1353	busbw_gibs=1.861
+srv1	link-p2p-off bytes=524288	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=524288	reps=300	lat_ms_p50=0.1984	lat_ms_p90=0.2051	busbw_gibs=2.461
+srv1	link-p2p-off bytes=1048576	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=1048576	reps=300	lat_ms_p50=0.3394	lat_ms_p90=0.3478	busbw_gibs=2.878
+srv1	link-p2p-off bytes=2097152	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=2097152	reps=30	lat_ms_p50=0.6217	lat_ms_p90=0.6303	busbw_gibs=3.141
+srv1	link-p2p-off bytes=4194304	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=4194304	reps=30	lat_ms_p50=1.1735	lat_ms_p90=1.1807	busbw_gibs=3.329
+srv1	link-p2p-off bytes=8388608	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=8388608	reps=30	lat_ms_p50=2.2878	lat_ms_p90=2.2988	busbw_gibs=3.415
+srv1	link-p2p-off bytes=16777216	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=16777216	reps=30	lat_ms_p50=4.5038	lat_ms_p90=4.5353	busbw_gibs=3.469
+srv1	link-p2p-off bytes=33554432	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=33554432	reps=30	lat_ms_p50=8.8812	lat_ms_p90=8.9491	busbw_gibs=3.519
+srv1	link-p2p-off bytes=67108864	AR	p2p=off	nccl_via=SHM/direct/direct	bytes=67108864	reps=30	lat_ms_p50=17.386	lat_ms_p90=17.4698	busbw_gibs=3.595
+### END uptime_since=2026-09-26T14:02:38Z pl1_uw=95000000 pl2_uw=120000000 cpu_max_mhz=4600 ram_mt_s=3600 run_id=2026-09-27-srv1-multi-gpu-link-v2

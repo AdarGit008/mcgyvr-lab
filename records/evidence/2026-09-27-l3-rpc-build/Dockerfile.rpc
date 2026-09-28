@@ -1,0 +1,40 @@
+# llama.cpp b10644 (d7a207411) L3 + GGML_RPC=ON.
+# Derived from records/evidence/2026-09-02-srv1-kernel-arms/Dockerfile.v3 (image llamacpp:b10644-L3).
+# The ONLY change from Dockerfile.v3 is the added -DGGML_RPC=ON line; the CUDA arch list,
+# FORCE_MMQ, the mmvq patch, CPU variants, toolkit and runtime base are identical, so
+# non-RPC results stay comparable with L3.
+# CUDA arch coverage: 61-virtual;80-virtual PTX is JIT-compiled by the driver for
+#   sm_61 (1080 Ti), sm_75 (1660 SUPER; L3 deliberately runs the sm_61 PTX there, no Turing MMA),
+#   sm_86 (3060; JITs the compute_80 PTX).
+FROM nvidia/cuda:12.8.0-devel-ubuntu24.04 AS build
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      git cmake build-essential libcurl4-openssl-dev ca-certificates ninja-build python3-minimal \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /src
+RUN git clone https://github.com/ggml-org/llama.cpp.git . && git checkout d7a207411
+COPY patch_mmvq.py /tmp/patch_mmvq.py
+RUN python3 /tmp/patch_mmvq.py
+RUN cmake -B build -G Ninja \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DGGML_CUDA=ON \
+      -DGGML_CUDA_FORCE_MMQ=ON \
+      -DCMAKE_CUDA_ARCHITECTURES="61-virtual;80-virtual" \
+      -DGGML_NATIVE=OFF \
+      -DGGML_BACKEND_DL=ON \
+      -DGGML_CPU_ALL_VARIANTS=ON \
+      -DGGML_RPC=ON \
+      -DLLAMA_CURL=ON \
+      -DBUILD_SHARED_LIBS=ON \
+      -DLLAMA_BUILD_TESTS=OFF \
+      -DCMAKE_EXE_LINKER_FLAGS=-Wl,--allow-shlib-undefined \
+ && cmake --build build --config Release -j 20 \
+ && git rev-parse HEAD > build/bin/LLAMA_CPP_COMMIT
+FROM nvidia/cuda:12.8.0-runtime-ubuntu24.04
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libgomp1 libcurl4 curl ca-certificates && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY --from=build /src/build/bin/ /app/
+ENV LD_LIBRARY_PATH=/app:$LD_LIBRARY_PATH
+ENV GGML_BACKEND_PATH=/app
+EXPOSE 8080
+ENTRYPOINT ["/app/llama-server"]

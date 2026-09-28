@@ -1,0 +1,25 @@
+{
+  "run_id": "2026-09-27-live-srv2-serve-up",
+  "host": "srv2",
+  "mode": "up",
+  "compose_file": "/tmp/claude-1000/-home-adaramir-claude-mcgyvr/7972b937-7463-49e6-9de8-9af3c44cff99/scratchpad/emit-srv2/compose.srv2.d-srv2-35b.yml",
+  "compose": "services:\n  srv2_35b_32k:\n    command:\n    - --model\n    - /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf\n    - --n-cpu-moe\n    - '28'\n    - --parallel\n    - '1'\n    - --port\n    - '8080'\n    - -b\n    - '512'\n    - -ub\n    - '512'\n    - -c\n    - '32768'\n    - -fa\n    - 'on'\n    - -ctk\n    - q8_0\n    - -ctv\n    - q8_0\n    - -ngl\n    - '99'\n    - -t\n    - '6'\n    container_name: mcgyvr-srv2-35b-32k\n    deploy:\n      resources:\n        reservations:\n          devices:\n          - capabilities:\n            - gpu\n            device_ids:\n            - '0'\n            driver: nvidia\n    environment:\n      LLAMA_ARG_HOST: 0.0.0.0\n    image: llamacpp:b10644-L3\n    network_mode: host\n    restart: unless-stopped\n    volumes:\n    - /home/adaramir/models:/models:ro\n    - /home/adaramir/models:/home/adaramir/models:ro\n",
+  "compose_up_exit": 0,
+  "units": [
+    {
+      "container": "mcgyvr-srv2-35b-32k",
+      "port": 8080,
+      "healthy": true,
+      "sleeping": null,
+      "seconds": 35.0,
+      "models": [
+        "/home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf"
+      ],
+      "restarts": 0
+    }
+  ],
+  "card_after": {
+    "used_mib": 5618,
+    "free_mib": 128
+  }
+}

@@ -1,0 +1,3 @@
+0.00.666.993 E load_backend: failed to load /app: /app: cannot read file data: Is a directory
+version: 0.3.0-dev (build 10644, commit d7a207411)
+built with GNU 13.3.0 for Linux x86_64

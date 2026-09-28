@@ -1,0 +1,12 @@
+ggml_cuda_init: found 1 CUDA devices (Total VRAM: 5747 MiB):
+  Device 0: NVIDIA GeForce GTX 1660 SUPER, compute capability 7.5, VMM: yes, VRAM: 5747 MiB
+load_backend: loaded CUDA backend from /app/libggml-cuda.so
+load_backend: loaded RPC backend from /app/libggml-rpc.so
+load_backend: loaded CPU backend from /app/libggml-cpu-haswell.so
+load_backend: failed to load /app: /app: cannot read file data: Is a directory
+| model                          |       size |     params | backend    | ngl | dev          |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------------ | --------------: | -------------------: |
+| qwen2 1.5B Q4_K - Medium       | 934.69 MiB |     1.54 B | CUDA,RPC   |  99 | RPC0         |           pp512 |      2266.05 ± 50.74 |
+| qwen2 1.5B Q4_K - Medium       | 934.69 MiB |     1.54 B | CUDA,RPC   |  99 | RPC0         |           tg128 |        143.07 ± 0.43 |
+
+build: d7a207411 (10644)

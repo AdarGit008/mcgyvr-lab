@@ -1,0 +1,6 @@
+0.00.064.972 E load_backend: failed to load /app: /app: cannot read file data: Is a directory
+0.00.073.830 E load_backend: failed to load /app: /app: cannot read file data: Is a directory
+0.00.083.073 E load_backend: failed to load /app: /app: cannot read file data: Is a directory
+Available devices:
+  CUDA0: NVIDIA GeForce GTX 1660 SUPER (5747 MiB, 5589 MiB free)
+  RPC0: 127.0.0.1:50052 (5747 MiB, 5589 MiB free)

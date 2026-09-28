@@ -1,0 +1,6 @@
+### WORKLOAD digest=2f2bb7932a0b660653def819 driver=tools/runs/workload.py
+### START uptime_since=2026-09-27T17:14:36Z pl1_uw=95000000 pl2_uw=120000000 pl1_source=constraint_0_power_limit_uw cpu_max_mhz=4600 ram_mt_s=3600 run_id=2026-09-27-srv1-multi-gpu-pcie-v2
+### ROUND id=r35-24-09-2026 product_sha256=ae3bc3350b1c04ffb36ed857feb0ed83872b5abe10c7866ef02b279b2a4373b4
+### RIG cpu_max_mhz=4600 ram_mt_s=3600 pl1_uw=95000000 pl2_uw=120000000 driver=580.178.04 gpu_reserve_mib=379 gpu_name=NVIDIA_GeForce_RTX_3060 gpu_vram_mib=12288 gpu_cc=8.6 cpu_model=Intel(R)_Core(TM)_i5-9600K_CPU_@_3.70GHz
+srv1	gpu0	GPU	index=0	name=NVIDIA_GeForce_RTX_3060	bus=00000000:01:00.0	vram_mib=12288	cc=8.6	power_limit_w=170.00	pcie_gen_max=3	pcie_width_max=16	driver=580.178.04
+srv1	gpu1	GPU	index=1	name=NVIDIA_GeForce_RTX_3060	bus=00000000:02:00.0	vram_mib=12288	cc=8.6	power_limit_w=170.00	pcie_gen_max=3	pcie_width_max=16	driver=580.178.04

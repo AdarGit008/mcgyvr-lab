@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-09-27-live-srv2-serve-up",
+  "campaign": "live-srv2",
+  "step": "serve-up",
+  "host": "srv2",
+  "date": "2026-09-27",
+  "round": "r35-24-09-2026",
+  "product_sha256": "ae3bc3350b1c04ffb36ed857feb0ed83872b5abe10c7866ef02b279b2a4373b4",
+  "profile": "dev",
+  "config": "/home/adaramir/claude/mcgyvr/fleet-setup",
+  "mcgyvr_version": "0.1.1.dev424+g86572bdf.d20260927",
+  "started_at": "2026-09-27T18:23:24Z"
+}

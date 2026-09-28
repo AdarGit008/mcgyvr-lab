@@ -1,0 +1,5 @@
+0.00.275.263 E load_backend: failed to load /app: /app: cannot read file data: Is a directory
+0.00.282.946 E load_backend: failed to load /app: /app: cannot read file data: Is a directory
+Available devices:
+  CUDA0: NVIDIA GeForce RTX 3060 (11907 MiB, 11794 MiB free)
+  CUDA1: NVIDIA GeForce RTX 3060 (11909 MiB, 11796 MiB free)
