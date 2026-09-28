@@ -17,11 +17,18 @@ STAYING = --only src --only tests --only data --only examples --only skills --on
 setup:  ## install the lab's environment, frozen against uv.lock
 	uv sync --frozen --project $(LAB)
 
+# The lab gate checks guard/ and tests/guard/, and lints pyproject.toml. The
+# tests and tools copied from the product (tests/ outside tests/guard/,
+# tools/) are not yet part of it; making them part of it is the next step.
+# --confcutdir keeps pytest from loading the copied tests/conftest.py around
+# the guard's self-tests.
+LAB_GATE_PATHS = guard tests/guard
+
 check: setup  ## the lab's own gate
-	uv run --no-sync ruff check .
-	uv run --no-sync ruff format --check .
+	uv run --no-sync ruff check $(LAB_GATE_PATHS) pyproject.toml
+	uv run --no-sync ruff format --check $(LAB_GATE_PATHS)
 	uv run --no-sync mypy
-	uv run --no-sync pytest tests
+	uv run --no-sync pytest --confcutdir=$(LAB)/tests/guard tests/guard
 
 # product/ is a submodule. Uninitialised, it is an empty directory inside the
 # lab, and a git command run there would act on the lab itself.

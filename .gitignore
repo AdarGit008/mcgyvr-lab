@@ -8,3 +8,25 @@ __pycache__/
 dist/
 build/
 *.egg-info/
+
+# Carried from the product's .gitignore with okf/ tools/ records/ fleet-setup/ archive/
+okf/*
+!okf/index.md
+!okf/config/
+!okf/must-read/
+!okf/models/
+*.log
+!records/evidence/**/*.log
+records/evidence/calibration-2026-08-19/d7-campaign.aborted-run.log
+tools/bundle/worker.local.json
+tools/breadth/worker.local.json
+
+# Local leftovers. None is tracked; the product ignores the same names.
+.env
+.env.local
+.claude/
+.pi-sessions/
+.okfrag/
+graphify-out/
+node_modules/
+.campaign-stop

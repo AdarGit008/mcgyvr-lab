@@ -8,20 +8,8 @@ runs.
 
 ## The separation rule
 
-- mcgyvr is the product; mcgyvr-lab is where it is developed. Work happens only
-  in the lab.
-- The product changes only through pull requests opened from the lab's linked
-  checkout of the product (`product/`), each one ready to merge.
-- Nothing of the owner's machines enters the product: no machine names, no user
-  name, no home paths, no card models stated as facts, no measured values, no
-  rules for working on those machines.
-- The lab may point at the product; the product never depends on the lab.
-- A guard keeps it that way. The lab-side guard exists: `guard/` searches
-  what leaves for the product for the words in `guard/private-words.txt`. The
-  product-side guard (the product never pointing at the lab) is added to the
-  product's CI in a later step.
-- The word list is a tracked file in this repository, which is public: it is
-  not secret. It lives in the lab and never enters the product.
+It lives in the rule store, not here: `okf/must-read/the-split.md`, with its
+core paragraph in `okf/must-read/always.md`.
 
 ## Layout
 
@@ -62,16 +50,31 @@ runs.
   the guard lists them as not scanned as text and exits 2. Convert such a
   file to UTF-8 and remove the control characters; for a real binary, list
   its exact path in `guard/binary-ok.txt`.
-- `tests/` — tests of the lab's own code.
-- `records/`, `archive/`, `fleet-setup/`, `docs/` — research, measurements and
-  planning material (described below).
+- `okf/` — the rule store: how to act in this work. Start at `okf/index.md`.
+- `tools/` — the tools copied from the product (bench, problems, runs and
+  others), not yet part of the lab gate.
+- `tests/` — `tests/guard/` holds the tests of the lab's own code; the other
+  154 files are tests, helpers and fixtures copied from the product, not yet
+  part of the lab gate.
+- `records/` — measurements, evidence, corpora, fleet records, headers and
+  plans.
+- `fleet-setup/` — the fleet setup: declarations, reports, digests and
+  evidence. `fleet-setup/README.md` says which evidence file is which.
+- `archive/` — superseded prose and retired code, at the paths they had in the
+  product.
+- `docs/` — `docs/conflicts.md`, moved from the product on 2026-09-17 (see
+  "Later moves").
+- `Makefile` — the lab's entry points (see "Make targets").
+- `.github/workflows/ci.yml` — lab CI (see "What lab CI does").
 - `pyproject.toml`, `uv.lock` — the lab's environment (uv); it is never
   published.
 
 ## Make targets
 
 - `make check` — the lab's own gate: ruff, format check, mypy and pytest over
-  `tests/`, which includes the guard's self-tests.
+  `guard/` and `tests/guard/` (the guard's self-tests). The tests and tools
+  copied from the product (`tests/` outside `tests/guard/`, `tools/`) are not
+  yet part of the lab gate; making them part of it is the next step.
 - `make product-check` — the product's own `make check`, run inside
   `product/`. It does not set up what the product's CI sets up first: Node 24,
   `npm ci` and the pinned JS toolchain on PATH, and the pinned uv and Python
@@ -130,12 +133,21 @@ root shows the product.
   `records/plans/sleep-wake.md` or `archive/docs/port-from-local-ai.md`
   resolves here at the same path.
 
-## What stayed in mcgyvr
+## What is in both repositories for now
 
-Everything under `records/`, `archive/`, `fleet-setup/` and `okf/` that is not
-listed below is still in mcgyvr: its code or tests read it, or a data file
-cites it. The pull request that moved these files lists each kept path with
-the file and line that reads or cites it.
+The lab holds every file the product tracks under `okf/`, `tools/`,
+`records/`, `fleet-setup/` and `archive/`, and 154 files from the product's
+`tests/` (tests, helpers and fixtures). They were copied byte for byte, at the
+same paths, from product commit `ef12d3d3`. The lab's `okf/` has been edited
+since.
+
+The product still holds its own copies of these files for now. They leave the
+product in a later step, through product pull requests.
+
+The lab also holds the files moved out of the product earlier, listed below.
+The product does not track those, with one exception: it has its own
+`fleet-setup/evidence.json`. The lab keeps both versions; `fleet-setup/README.md`
+says which is which.
 
 ## Moved paths
 
@@ -347,6 +359,9 @@ records/plans/wake-timeout.md
 ```
 
 ## Later moves
+
+These entries describe moves made at their dates. The present layout is in
+"Layout".
 
 The import above is one commit's files. Anything moved out of mcgyvr after it
 is listed here, with the commit it came from, so no entry above is restated
