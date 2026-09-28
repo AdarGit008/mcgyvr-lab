@@ -1,11 +1,11 @@
 # srv1-multi-gpu: top takeaways (2× RTX 3060 12 GB, PCIe gen3 x8/x8, i5-9600K)
 
-E = /home/adaramir/claude/mcgyvr/records/evidence/2026-09-27-srv1-multi-gpu. Figures are tpot_ms_p50 at n=1 unless marked.
+E = /home/adaramir/claude/mcgyvr-lab/records/evidence/2026-09-27-srv1-multi-gpu. Figures are tpot_ms_p50 at n=1 unless marked.
 Read by three reviewers (hardware, engine, model profile); spot-checked against the TSVs.
 
 ## Hardware
 1. **Each all-reduce costs about 0.06 ms regardless of size.** Latency stays flat from 4 KiB to 32 KiB and then grows with size: 0.06 ms at 4 KiB, 0.339 ms at 1 MiB, 17.4 ms at 64 MiB (3.59 GiB/s). Rows: E/nccl.tsv 'nccl-base bytes=…'.
-2. **ReBAR and P2P did not change NCCL.** With BAR1 at 16 GiB (E/rebar.tsv) and with P2P granted (E/p2p.tsv PEERGATE `copy_verified=True`), NCCL still went via `SHM/direct/direct`. The 64 MiB all-reduce took 17.05 ms with P2P off and 16.83 ms with it on (E/p2p.tsv 'p2p-link-off/on'). The path between the cards is `PHB`, through the CPU.
+2. **ReBAR and P2P did not change NCCL at NCCL's default P2P level.** With BAR1 at 16 GiB (E/rebar.tsv) and with P2P granted (E/p2p.tsv PEERGATE `copy_verified=True`), NCCL still went via `SHM/direct/direct`. The 64 MiB all-reduce took 17.05 ms with P2P off and 16.83 ms with it on (E/p2p.tsv 'p2p-link-off/on'). The path between the cards is `PHB`, through the CPU. At `NCCL_P2P_LEVEL=SYS`, NCCL goes via `P2P/CUMEM` instead (E/nccl-sys.tsv 'nccl-sys' rows).
 3. **A direct copy between the cards doubled with P2P:** 2.95 GiB/s before (E/link.tsv 'link-p2p-on' PEER) and 6.11 GiB/s after (E/p2p.tsv 'p2p-link-on' PEER).
 4. **PCIe gen2 measured slower than gen1.** Host-to-card copy: 6.06 GiB/s at gen3, 0.24 at gen2, 1.23 at gen1. The 64 MiB all-reduce: 17.95 ms at gen3, 408.96 at gen2, 120.52 at gen1 (E/pcie.tsv 'pcie-gen*'). Link speed alone does not predict gen2 below gen1 (inference: the link is unstable at 5 GT/s). At idle the links read 2.5 GT/s even when targeting gen3; that is power saving.
 5. **The host is tight under vLLM TP-2.** At n=16 one core runs at 99%, the least free RAM was 283 MiB, and nothing swapped. Under DP-2 the hottest core is at 20% (E/p2p.tsv 'p7-tp2' and 'p7-dp2' n=16).
@@ -29,5 +29,5 @@ Read by three reviewers (hardware, engine, model profile); spot-checked against 
 - qmoe and DeepSeek-Lite TP-2: the vLLM engine failed to initialize.
 - llama.cpp row split: no split buffers.
 - Tensor split for deepseek2, bailingmoe3 and nemotron_h_moe: not implemented.
-- Why NCCL picks SHM: no NCCL line gives a reason (inference: its default P2P level excludes PHB). Not tested with `NCCL_P2P_LEVEL=SYS`.
+- Why NCCL picks SHM at its default P2P level: no NCCL line gives a reason (inference: its default level excludes PHB). With `NCCL_P2P_LEVEL=SYS`, NCCL reports `nccl_via=P2P/CUMEM` in place of `SHM/direct/direct`; the 64 MiB all-reduce took 17.15 ms without the setting and 11.13 ms with it (E/nccl-sys.tsv 'nccl-default bytes=67108864' and 'nccl-sys bytes=67108864').
 - Why vLLM's P2P test failed: not measured.
