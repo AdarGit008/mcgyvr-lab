@@ -1,8 +1,10 @@
 # Words that must never reach the product (AdarGit008/mcgyvr).
 #
 # One pattern per line: a Python regular expression, matched
-# case-insensitively after the text is normalised (Unicode NFKC, zero-width
-# characters removed, lines ending in a backslash joined with the next).
+# case-insensitively after the text is normalised (format characters removed,
+# Unicode NFKC, dashes mapped to `-`, lines ending in a backslash joined with
+# the next). Refused: backreferences, named groups, a NUL, and any pattern that
+# NFKC would change.
 # Blank lines and lines starting with `#` are ignored; a `#` that follows
 # whitespace starts a comment; write `\#` for a literal `#`. Leading and
 # trailing whitespace is not part of a pattern.
@@ -11,14 +13,15 @@
 # or inside camelCase, so `my_srv1_x` and `camelSrv1Host` would pass. Every
 # pattern here has a sample in tests/guard/test_check_outgoing.py (SAMPLES).
 #
-# These are the owner's private identifiers. They live here, in the lab, on
-# purpose: the lab is where they belong, and the guard reads them from here.
+# These are the owner's identifiers. This file is tracked in the lab, which is
+# a public repository, so it is not secret; what matters is that the list
+# lives in the lab and never enters the product.
 
 # Host names: any left side; on the right, anything but a digit
 # (srv1, my_srv1_x, camelSrv1Host match; srv10, srv12 do not).
 srv1(?![0-9])
 srv2(?![0-9])
-(?<![a-z0-9])b-small(?![a-z0-9])
+(?<![a-z0-9])b[-_]small(?![a-z0-9])
 
 # User name and home directory
 adaramir
@@ -28,13 +31,14 @@ adaramir
 tailbaf744
 (?<![0-9])100\.69\.72\.51(?![0-9])
 
-# Card models: never followed by another digit (RTX3060, rtx3060ti match;
-# RTX30600 does not)
-RTX ?3060(?![0-9])
-GTX ?1660(?![0-9])
-(?<![0-9])1660 ?SUPER
-GTX ?1080(?![0-9])
-(?<![0-9])1080 ?Ti(?![a-z])
+# Card models, with a space, `_`, `-` or nothing between the parts, and never
+# followed by another digit (RTX_3060, rtx3060ti, 3060 Ti, 1660S match;
+# RTX30600, 16600, 1080p do not). Bare `3060` and `1660` are not listed.
+RTX[ _-]?3060(?![0-9])|(?<![0-9])3060[ _-]?Ti(?![a-z])
+GTX[ _-]?1660(?![0-9])
+(?<![0-9])1660[ _-]?(?:SUPER|S)(?![a-z])
+GTX[ _-]?1080(?![0-9])
+(?<![0-9])1080[ _-]?Ti(?![a-z])
 
 # Board
 (?<![0-9])Z490(?![0-9])
@@ -43,6 +47,7 @@ GTX ?1080(?![0-9])
 srv[12]_[a-z0-9_]+
 d-srv[12]-[a-z0-9-]+
 
-# The lab itself: the product must not point at the lab. The one README line
-# the owner allows goes in guard/allowed.txt.
-mcgyvr-lab
+# The lab itself: the product must not point at the lab (mcgyvr-lab, and the
+# module spelling mcgyvr_lab). The one README line the owner allows goes in
+# guard/allowed.txt.
+mcgyvr[-_]lab
