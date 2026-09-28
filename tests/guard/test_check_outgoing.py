@@ -327,7 +327,12 @@ SAMPLES: dict[str, list[str]] = {
     "(?<![0-9])Z490(?![0-9])": ["Z490", "boardZ490"],
     "srv[12]_[a-z0-9_]+": ["srv2_35b_32k", "my_srv1_x"],
     "d-srv[12]-[a-z0-9-]+": ["d-srv1-dense"],
-    r"mcgyvr[ \t_-]+lab": ["mcgyvr-lab", "import mcgyvr_lab", "mcgyvr  lab"],
+    r"mcgyvr[ \t_-]+lab(?![a-z])": [
+        "mcgyvr-lab",
+        "import mcgyvr_lab",
+        "mcgyvr  lab",
+        "mcgyvr-lab2",
+    ],
 }
 
 # Ordinary text that must pass. `b-smaller` passes by choice: the b-small
@@ -359,6 +364,10 @@ ORDINARY = [
     "100.70.1",
     "bsmall",
     "mcgyvrlab",
+    "Every image carries mcgyvr labels",
+    "mcgyvr-labels",
+    "mcgyvr laboratory",
+    "mcgyvr-labs",
 ]
 
 
@@ -1284,3 +1293,89 @@ def test_not_scanned_says_what_to_do(repo: Repo, words: Path, allowed: Path) -> 
     result = guard(repo.root, words, allowed, "--tree")
     assert result.code == 2
     assert "UTF-8" in result.out and "binary-ok.txt" in result.out
+
+
+# --- round 4, S1: mcgyvr labels is not the lab ------------------------------
+
+
+def test_mcgyvr_labels_wrapped_or_in_a_branch_name_passes(repo: Repo) -> None:
+    base = repo.git("rev-parse", "HEAD")
+    repo.write("image.py", "# Every image carries mcgyvr\n# labels; the rest\n")
+    repo.commit("labels")
+    args = ("--diff", f"{base}..HEAD", "--branch", "feat/mcgyvr-labels")
+    result = guard(repo.root, REAL_WORDS, REAL_ALLOWED, *args)
+    assert result.code == 0, result
+    assert guard(repo.root, REAL_WORDS, REAL_ALLOWED, "--tree").code == 0
+
+
+# --- round 4, S2: the allow list can waive a join ---------------------------
+
+
+def test_a_join_is_waived_only_when_both_lines_are_listed(
+    repo: Repo, tmp_path: Path
+) -> None:
+    repo.write("a.txt", "runs on the RTX\n3060 with 12 GB\n")
+    repo.commit("wrapped")
+    both = tmp_path / "both.txt"
+    both.write_text("a.txt:runs on the RTX\na.txt:3060 with 12 GB\n", encoding="utf-8")
+    one = tmp_path / "one.txt"
+    one.write_text("a.txt:runs on the RTX\n", encoding="utf-8")
+    assert guard(repo.root, REAL_WORDS, both, "--tree").code == 0
+    assert guard(repo.root, REAL_WORDS, one, "--tree").code == 1
+
+
+# --- round 4, S3: closed or full standard streams ---------------------------
+
+
+def test_a_closed_stdout_exits_2(repo: Repo, words: Path, allowed: Path) -> None:
+    repo.write("a.txt", "srv1\n")
+    repo.commit("one")
+    command = (
+        f"'{sys.executable}' '{SCRIPT}' --repo '{repo.root}' --words '{words}' "
+        f"--allowed '{allowed}' --tree >&-"
+    )
+    done = subprocess.run(["bash", "-c", command], capture_output=False, check=False)
+    assert done.returncode == 2
+
+
+def test_stderr_on_a_full_device_exits_2(
+    tmp_path: Path, words: Path, allowed: Path
+) -> None:
+    with open("/dev/full", "w") as full:
+        done = subprocess.run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "--repo",
+                str(tmp_path / "nowhere"),
+                "--words",
+                str(words),
+                "--allowed",
+                str(allowed),
+                "--tree",
+            ],
+            stdout=subprocess.DEVNULL,
+            stderr=full,
+            check=False,
+        )
+    assert done.returncode == 2
+
+
+# --- round 4, S4 and S5: the prefilter and odd line ends ---------------------
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        b"sr\\\r\r\nv1\n",
+        "user adaramir\\\ńx\n".encode(),
+        b"on the RTX\r3060 card\r",
+        b"on the RTX\x0b3060 card\n",
+        b"# on the RTX\r# 3060 card\r",
+    ],
+)
+def test_odd_line_ends_and_joins_are_seen_whole(repo: Repo, content: bytes) -> None:
+    repo.write("a.txt", content)
+    repo.commit("odd")
+    result = guard(repo.root, REAL_WORDS, REAL_ALLOWED, "--tree")
+    assert result.code == 1, result

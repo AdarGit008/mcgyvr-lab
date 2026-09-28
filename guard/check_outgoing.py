@@ -35,7 +35,8 @@ The guard fails closed.
 * A blob is *text* when the whole of it decodes, strictly, in a recognised
   encoding and holds none of U+0000-U+0008, U+000E-U+001A, U+001C-U+001F and
   U+007F (tab, line feed, vertical tab, form feed, carriage return and escape
-  are allowed): UTF-8 (with or without
+  are allowed; a carriage return that does not end a line and a vertical tab
+  count as line breaks when matching): UTF-8 (with or without
   a BOM), UTF-16 or UTF-32 with a BOM, UTF-32 without one, or UTF-16 without
   one whose NUL bytes all sit on one side of each code unit and make up at
   least 30% of it. There is no allowance for a few odd bytes.
@@ -48,7 +49,8 @@ The guard fails closed.
   U+0080-U+009F, U+2028, U+2029, variation selectors, tag characters, U+034F
   and U+180E are removed; Unicode NFKC is applied; every character of
   category Pd (dashes) and U+2212 (minus) becomes ``-``; a line ending in a
-  backslash is joined with the next; and two neighbouring lines are also
+  backslash is joined with the next; a carriage return inside a line and a
+  vertical tab are read as line breaks; and two neighbouring lines are also
   matched joined by one space, the lower one without its leading whitespace
   and comment markers (``#``, ``//``, ``*``, ``--``, ``>``, ``|``), keeping
   only matches that cross the join.
@@ -60,7 +62,9 @@ directory. ``--quiet`` leaves out the finding lines and the list of files not
 scanned as text (their count stays).
 
 Exit codes: 0 clean, 1 findings, 2 usage, error, refused state or content not
-scanned as text. An error never exits 0.
+scanned as text. An error never exits 0; this includes an unexpected
+exception, a closed stdout or stderr, and writing either to a broken pipe or
+a full device.
 
 Standard library only.
 """
@@ -116,6 +120,9 @@ GIT_ENV.pop("GIT_EXTERNAL_DIFF", None)
 # a line is joined to the one above it.
 MARKERS = re.compile(r"^\s*(?:(?:#|//|\*|--|>|\|)\s*)*")
 BREAKS = re.compile(r"\s*\n\s*(?:(?:#|//|\*|--|>|\|)\s*)*")
+# A lone carriage return or a vertical tab inside a line is a line break too:
+# replaced, with the markers after it, by one space.
+MIDBREAKS = re.compile(r"[ \t\f]*[\r\v]\s*(?:(?:#|//|\*|--|>|\|)\s*)*")
 # Characters text does not hold: C0 controls other than tab, line feed,
 # vertical tab, form feed, carriage return and escape; and DEL.
 CONTROL = re.compile(r"[\x00-\x08\x0e-\x1a\x1c-\x1f\x7f]")
@@ -380,10 +387,6 @@ class Scanner:
     def path_name(self, path: str, commit: str = "") -> list[Finding]:
         return self.match(path, 0, path, commit)
 
-    def _worth_scanning(self, text: str) -> bool:
-        flat = normalise(text.replace("\\\r\n", "").replace("\\\n", ""))
-        return bool(self.any.search(flat) or self.any.search(BREAKS.sub(" ", flat)))
-
     def lines(
         self,
         path: str,
@@ -405,8 +408,6 @@ class Scanner:
         them by a deletion. There only what crosses the new boundary is
         reported: a backslash join or a wrapped word the deletion created.
         """
-        if wanted is None and not self._worth_scanning(text):
-            return []
         raw = [line.rstrip("\r") for line in text.split("\n")]
         spans = logical_lines(raw)
         cache: dict[int, tuple[str, list[int]]] = {}
@@ -419,6 +420,8 @@ class Scanner:
                 for index in range(first, last + 1):
                     piece = raw[index][:-1] if index < last else raw[index]
                     piece = normalise(piece)
+                    if "\r" in piece or "\v" in piece:
+                        piece = MIDBREAKS.sub(" ", piece.replace("\\\r", ""))
                     pieces.append(piece)
                     size += len(piece)
                     offsets.append(size)
@@ -431,11 +434,25 @@ class Scanner:
                 n in wanted for n in range(first + 1, last + 2)
             )
 
+        def is_allowed(k: int) -> bool:
+            first, last = spans[k]
+            return all((path, raw[i]) in self.allowed for i in range(first, last + 1))
+
+        if wanted is None:
+            # Skip the per-line work when nothing can match: the prefilter
+            # sees exactly the text the matcher sees, joins included.
+            if text.isascii() and not any(ch in text for ch in "\\\r\v"):
+                flat = text
+            else:
+                flat = "\n".join(span_text(k)[0] for k in range(len(spans)))
+            if not (self.any.search(flat) or self.any.search(BREAKS.sub(" ", flat))):
+                return []
+
         found: list[Finding] = []
         for k, (first, last) in enumerate(spans):
+            if is_allowed(k):
+                continue
             if is_wanted(k):
-                if first == last and (path, raw[first]) in self.allowed:
-                    continue
                 joined, _ = span_text(k)
                 found.extend(
                     Finding(path, first + 1, source, m.group(0), commit)
@@ -454,6 +471,8 @@ class Scanner:
         for k in range(len(spans) - 1):
             if not (is_wanted(k) or is_wanted(k + 1) or spans[k][1] + 1 in joins):
                 continue
+            if is_allowed(k) and is_allowed(k + 1):
+                continue  # a join is waived only when both of its lines are
             left = span_text(k)[0].rstrip()
             right = MARKERS.sub("", span_text(k + 1)[0])
             if not left or not right:
@@ -964,17 +983,28 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _silence_stdout() -> None:
-    """Send whatever is still buffered for stdout nowhere, so that the
-    interpreter's own flush at exit cannot fail again and change the code."""
+def _say_error(message: str) -> None:
+    """Print an error line; a stderr that cannot be written to is silenced."""
     try:
+        if sys.stderr is not None:
+            print(message, file=sys.stderr)
+            sys.stderr.flush()
+    except BaseException:
+        _silence(sys.stderr)
+
+
+def _silence(stream: object) -> None:
+    try:
+        fileno = stream.fileno()  # type: ignore[attr-defined]
         devnull = os.open(os.devnull, os.O_WRONLY)
-        os.dup2(devnull, sys.stdout.fileno())
-    except (OSError, ValueError):
+        os.dup2(devnull, fileno)
+    except BaseException:
         pass
 
 
 def run(argv: Sequence[str] | None) -> int:
+    if sys.stdout is None or sys.stderr is None:
+        return EXIT_ERROR  # nowhere to report a finding or an error
     parser = build_parser()
     try:
         args = parser.parse_args(argv)
@@ -1007,14 +1037,14 @@ def run(argv: Sequence[str] | None) -> int:
             print(line)
         sys.stdout.flush()
     except GuardError as exc:
-        print(f"error: {exc}", file=sys.stderr)
+        _say_error(f"error: {exc}")
         return EXIT_ERROR
     except BaseException as exc:  # anything unforeseen must not read as clean
-        _silence_stdout()
+        _silence(sys.stdout)
         if isinstance(exc, KeyboardInterrupt):
-            print("error: interrupted", file=sys.stderr)
+            _say_error("error: interrupted")
         else:
-            print(f"error: {type(exc).__name__}: {exc}", file=sys.stderr)
+            _say_error(f"error: {type(exc).__name__}: {exc}")
         return EXIT_ERROR
     if args.count_only:
         return EXIT_CLEAN
@@ -1024,7 +1054,18 @@ def run(argv: Sequence[str] | None) -> int:
 
 
 def main() -> None:
-    sys.exit(run(sys.argv[1:]))
+    code = run(sys.argv[1:])
+    # Flush here, where a failure can still change the code, and leave with
+    # os._exit so that no flush at interpreter exit can turn it into 120.
+    for stream in (sys.stdout, sys.stderr):
+        if stream is None:
+            continue
+        try:
+            stream.flush()
+        except BaseException:
+            _silence(stream)
+            code = EXIT_ERROR
+    os._exit(code)
 
 
 if __name__ == "__main__":
