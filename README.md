@@ -62,7 +62,8 @@ runs.
   the guard lists them as not scanned as text and exits 2. Convert such a
   file to UTF-8 and remove the control characters; for a real binary, list
   its exact path in `guard/binary-ok.txt`.
-- `tests/` — tests of the lab's own code.
+- `tests/` — `tests/guard/` holds the tests of the lab's own code; the rest
+  are tests copied from the product, not yet part of the lab gate.
 - `records/`, `archive/`, `fleet-setup/`, `docs/` — research, measurements and
   planning material (described below).
 - `pyproject.toml`, `uv.lock` — the lab's environment (uv); it is never
@@ -71,7 +72,9 @@ runs.
 ## Make targets
 
 - `make check` — the lab's own gate: ruff, format check, mypy and pytest over
-  `tests/`, which includes the guard's self-tests.
+  `guard/` and `tests/guard/` (the guard's self-tests). The tests and tools
+  copied from the product (`tests/` outside `tests/guard/`, `tools/`) are not
+  yet part of the lab gate; making them part of it is the next step.
 - `make product-check` — the product's own `make check`, run inside
   `product/`. It does not set up what the product's CI sets up first: Node 24,
   `npm ci` and the pinned JS toolchain on PATH, and the pinned uv and Python
