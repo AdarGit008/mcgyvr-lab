@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """One door, ``python -m mcgyvr.serving.run`` — and the tree is scanned to prove it.
 
 A design that says "one door" and never looks is true of an afternoon, not of the
@@ -55,12 +57,12 @@ import re
 import subprocess
 import sys
 import types
-from fnmatch import fnmatch
 from pathlib import Path
 
 import pytest
 
 from mcgyvr.serving.run import EXPORTED
+from tests._helpers import PRODUCT
 
 REPO = Path(__file__).resolve().parent.parent
 EVIDENCE = REPO / "records" / "evidence"
@@ -88,20 +90,7 @@ SSH_SPAWN = re.compile(
     r"|[\"'](?:/usr/bin/)?(?:ssh|scp|rsync|sftp)[\"']\s*,"
     r"|^\s*(?:import|from)\s+(?:paramiko|fabric|asyncssh)\b"
 )
-#: A container start: ``docker run ...`` in shell form, or the list form.
-DOCKER_RUN = re.compile(
-    r"(?<![\w./-])docker\s+run\s+(?=[\w$\"'{@.-])"
-    r"|[\"']docker[\"']\s*,\s*[\"'](?:run|create|start)[\"']"
-)
-#: Naming a daemon of one's own, or stripping the door's environment.
-DAEMON_OVERRIDE = re.compile(
-    r"\bDOCKER_HOST\b"
-    r"|\bdocker\s+(?:-H|--host|--context)\b"
-    r"|-H[= ]+ssh://"
-    r"|\benv\s+-[ui]\b"
-)
 LOOPBACK = re.compile(r"\blocalhost\b|\b127\.0\.0\.1\b")
-RETIRED_SEAMS = re.compile(r"\bRUN_DOCKER\b|\bRUN_SSH\b|\bRUN_RIG_SNAPSHOT_CMD\b")
 
 #: Two spellings in which the seam's NAME provably starts no process, erased from a line
 #: before the spawn patterns read it. The list form above sees ``"ssh",`` and cannot
@@ -148,102 +137,6 @@ def _scanned(line: str) -> str:
     and nothing else on the line touched."""
     return SEAM_MENTION.sub(" <seam mention> ", line)
 
-
-#: The door and what stands behind it. Path glob -> why it may reach a rig.
-#: ``fnmatch`` semantics: ``*`` crosses ``/``. ``run.py`` itself is NOT here
-#: and must not be: it reaches no rig, it only runs the gate scripts in
-#: order, which is what makes this list the complete set of places a rig is
-#: touched from. Nor is ``tools/bench/serving/*`` allowed an ssh of its own:
-#: the harness reaches a rig through ``contract.ssh``, which is
-#: ``gatelib.ssh`` — see ``test_the_serving_harness_spawns_no_ssh_of_its_own``.
-ALLOWED: dict[str, str] = {
-    "src/mcgyvr/serving/gatelib.py": (
-        "the ssh spawns in src/ and tools/: gatelib.ssh, which refuses outside "
-        "the door and to any host but the door's — gate 2, gate 7, the geometry "
-        "read, `mcgyvr scan` and the serving harness (contract.ssh) all go "
-        "through it — and the shims' own lease check, which admits the same way"
-    ),
-    "src/mcgyvr/serving/gate-scripts/bin/ssh": (
-        "the `ssh` on the PATH the door exports: admits the door's host through "
-        "gatelib, then execs the next ssh on PATH with BatchMode and a connect "
-        "timeout"
-    ),
-    "src/mcgyvr/serving/gate-scripts/bin/docker": (
-        "the `docker` on the PATH the door exports: admits the door through "
-        "gatelib, then execs the next docker on PATH at -H ssh://RUN_HOST"
-    ),
-    "src/mcgyvr/serving/gate-scripts/rig-snapshot.sh": (
-        "the reader itself: it RUNS ON the rig, piped in on stdin by gate 2, "
-        "and opens nothing of its own"
-    ),
-    "src/mcgyvr/serving/gate-scripts/default-step.sh": (
-        "the shipped step: it proves the door (gatelib.under_door) first, then "
-        "runs the shims BY PATH under RUN_BIN, never an ssh or docker from PATH"
-    ),
-    "tools/runs/_common.sh": (
-        "the emitter every campaign step sources: rig_snapshot and image_digest "
-        "prove the door, then run the shims by path under RUN_BIN; "
-        "door_required refuses without the RUN_* only the door exports AND "
-        "without the door itself"
-    ),
-    "tools/runs/drivers/*.py": (
-        "the sweep drivers: gatelib.door_required at startup, their ssh through "
-        "gatelib.ssh, and their plain `docker` the shim under the door"
-    ),
-    "tools/runs/campaigns/**/*.sh": (
-        "campaign steps; their plain `ssh`/`docker` are the shims under the "
-        "door, and they refuse without RUN_ID, which only the door exports"
-    ),
-    "tools/bench/serving/backends/*.py": (
-        "a `docker run` command LINE the serving backends ship to the rig over "
-        "contract.ssh -> gatelib.ssh; nothing here spawns a process of its own"
-    ),
-    "tests/red_port/test_dod_rig_lease.py": (
-        "`docker run` and `ssh` LINES inside steps a test runs under the door: "
-        "the ssh asks the stub rig what its lease says, and the launch proves "
-        "the shim refuses it once the run's lease is gone — the test asserts it "
-        "never reached the daemon"
-    ),
-    "tools/bench/serving/knobs.py": (
-        "a `docker run --help` command line shipped the same way, for the knob "
-        "census; spawns nothing locally"
-    ),
-    "src/mcgyvr/sandbox/docker.py": (
-        "the local sandbox — a container on this machine, not a rig"
-    ),
-    "tests/onedoor.py": (
-        "the door tests' stubs: the `ssh` and `docker` a fixture stands behind "
-        "the shims; the argv the list-form pattern sees is the stub's own name"
-    ),
-    "tests/test_one_door.py": "this file names the patterns it scans for",
-    "tests/test_cross_rig_claim.py": (
-        "monkeypatches contract.ssh with a stub; reaches no rig"
-    ),
-    "tests/test_serving.py": "stubs a dead ssh and asserts its message is kept",
-    "tests/test_serving_memory_declaration.py": (
-        "asserts the shape of a launch line against a stub"
-    ),
-    "tests/test_sink_conformance.py": "counts ssh calls into a stub",
-    "tests/test_serving_gatelib.py": (
-        "drives gatelib.ssh under a fake door against an ssh stub"
-    ),
-    "tests/test_serving_door_cli.py": (
-        "drives the shims under a fake door against ssh and docker stubs"
-    ),
-    "tests/test_default_step.py": (
-        "drives the shipped step against ssh and docker stubs on PATH"
-    ),
-    "tests/test_a_failed_lock_fleets_start_keeps_its_full_log_and_gets_one_retry.py": (
-        "runs lock-fleets' step bodies under a fake door with an ssh and a docker "
-        "stub standing under RUN_BIN, and finds the move shell's `docker run -d` "
-        "in the stub's call log; reaches no rig"
-    ),
-    "tests/test_lock_fleets_files_an_exit_cause_and_one_diagnostic_start.py": (
-        "runs lock-fleets' unit step under a fake door with an ssh and a docker "
-        "stub standing under RUN_BIN, which answer the container's State and the "
-        "rig's kernel log from files the test writes; reaches no rig"
-    ),
-}
 
 DECILES = re.compile(r"^\s*PROMPT_DECILES\s*=")
 
@@ -294,10 +187,6 @@ def _rel(path: Path) -> str:
     return path.relative_to(REPO).as_posix()
 
 
-def _allowed(rel: str) -> bool:
-    return any(fnmatch(rel, pattern) for pattern in ALLOWED)
-
-
 def _matching(pattern: re.Pattern[str], text: str) -> list[str]:
     """Every code line of ``text`` the pattern hits, seam mentions erased.
 
@@ -340,119 +229,6 @@ def _started() -> list[Path]:
 # --------------------------------------------------------------------------
 
 
-def test_an_ssh_or_a_docker_run_appears_only_behind_the_door() -> None:
-    hits = _hits(SSH_SPAWN, ("src", "tools", "tests"), root_files=True)
-    for rel, lines in _hits(
-        DOCKER_RUN, ("src", "tools", "tests"), root_files=True
-    ).items():
-        hits.setdefault(rel, []).extend(lines)
-    assert hits, "the scan found no invocation at all — the pattern is broken"
-    strays = {rel: lines for rel, lines in hits.items() if not _allowed(rel)}
-    assert not strays, (
-        f"{len(strays)} file(s) reach a rig outside {DOOR} — each is "
-        "(path, invocations) and a new one is argued into ALLOWED with a reason "
-        f"or removed: {strays}"
-    )
-
-
-def test_every_allowed_entry_names_a_file_that_exists() -> None:
-    """A stale allowance is a hole waiting for a file of that name."""
-    present = [_rel(p) for p in _sources(("src", "tools", "tests"), root_files=False)]
-    stale = [
-        pattern
-        for pattern in ALLOWED
-        if not any(fnmatch(rel, pattern) for rel in present)
-    ]
-    assert not stale, f"ALLOWED names files that do not exist: {stale}"
-
-
-#: Lines that must NOT read as a spawn: the seam's name, in the two spellings
-#: that provably start nothing. Every one of these reaches no machine.
-A_SEAM_MENTION = (
-    'monkeypatch.setattr(servelib, "ssh", rig)',
-    'monkeypatch.setattr(gatelib, "ssh", fake_ssh)',
-    'monkeypatch.setattr(mcgyvr.serving.servelib, "ssh", rig)',
-    'return subprocess.CompletedProcess(args=["ssh", HOST], returncode=0, stdout="")',
-    'CompletedProcess(args=["scp", HOST], returncode=1, stdout="")',
-    # The constructor as black wraps it: the argv line stands alone, and the
-    # ``returncode=`` beside it is the anchor.
-    'args=["ssh", HOST], returncode=code, stdout=stdout, stderr=""',
-)
-
-#: Lines that must STILL read as a spawn, with the erasure in force. The first
-#: is the plain argv the guard has always caught; the rest are the ``SEAM``
-#: trick attempted against a call that really does reach a rig, in each shape
-#: the erasure could have been hoped to cover. If any of these stops being a
-#: hit, the guard has been made weaker and not smarter.
-STILL_A_SPAWN = (
-    'subprocess.run(["ssh", host, "nvidia-smi"])',
-    'monkeypatch.setattr(servelib, "ssh", lambda h, c: subprocess.run(["ssh", h, c]))',
-    'monkeypatch.setattr(servelib, "ssh", lambda h, c: os.system(f"ssh {h} {c}"))',
-    'monkeypatch.setattr(servelib, "ssh", fake); subprocess.run(["ssh", host])',
-    # A bare ``setattr`` is not pytest's fixture and is not exempt.
-    'setattr(servelib, "ssh", fake)',
-    # The seam is not the first element, so nothing is erased: a real spawn by
-    # keyword cannot dress itself as a result record.
-    'subprocess.run(args=["env", "ssh", host])',
-    # No ``returncode=`` and no constructor: a spawn by keyword is not a record.
-    'subprocess.run(args=["ssh", host])',
-    'subprocess.run(args=["ssh", host], check=True, capture_output=True)',
-    'run(f"ssh srv1 nvidia-smi")',
-)
-
-
-def test_replacing_the_seam_is_not_a_spawn_and_hides_no_spawn() -> None:
-    """The scanner tells ``replacing ssh`` from ``calling ssh``.
-
-    ``tests/test_a_sleeping_unit_does_not_read_as_serving.py`` substitutes
-    ``servelib.ssh`` in order to touch NO machine, which is the opposite of
-    what tripwire 1 looks for, and the list-form pattern could not see the
-    difference. That test worked around it by binding the name to a constant —
-    and a workaround that lives in the scanned file is one anybody can apply to
-    a test that really does reach a rig, because it makes the guard pass by
-    changing the text rather than the situation.
-
-    So the erasure is the narrowest thing that settles it: the mention itself
-    and not one character more, with the rest of the line still scanned. The
-    second half of this test is the part that matters — the same trick, done to
-    a real spawn, and still caught.
-    """
-    for line in A_SEAM_MENTION:
-        assert not _matching(SSH_SPAWN, line), f"a substitution read as a spawn: {line}"
-    for line in STILL_A_SPAWN:
-        assert _matching(SSH_SPAWN, line), (
-            f"a spawn slipped through the erasure: {line}"
-        )
-
-
-def test_no_shipped_file_is_exempted_by_the_seam_erasure() -> None:
-    """The erasure is a test-suite affordance and must stay one.
-
-    ``monkeypatch`` is pytest's, and a product that hands back a result record
-    it did not get from a subprocess is not a thing this repo does. So no line
-    under ``src/`` or ``tools/`` — the code that ships, and the code that runs
-    a campaign — is read short by it. A first one is argued into a diff here
-    rather than absorbed silently, which is the same rule ``ALLOWED`` keeps.
-    """
-    exempted = {
-        _rel(path): lines
-        for path in _sources(("src", "tools"), root_files=False)
-        if (
-            lines := [
-                line[:100]
-                for line in _code_lines(
-                    path.read_text(encoding="utf-8", errors="replace")
-                )
-                if SEAM_MENTION.search(line)
-            ]
-        )
-    }
-    assert not exempted, (
-        "a shipped file spells a seam mention, so a line of it is no longer "
-        f"scanned whole: {exempted}"
-    )
-
-
 def test_the_serving_harness_spawns_no_ssh_of_its_own() -> None:
     """``tools/bench/serving/*`` reaches a rig only through ``contract.ssh``,
     which is ``gatelib.ssh``; the `docker run` lines it carries are command
@@ -464,31 +240,6 @@ def test_the_serving_harness_spawns_no_ssh_of_its_own() -> None:
 # --------------------------------------------------------------------------
 # 2. nothing names its own daemon; 3. nothing measures loopback; 4. no seams
 # --------------------------------------------------------------------------
-
-
-#: Files that spell a daemon override in order to REFUSE it. Path -> why.
-REFUSES_A_DAEMON: dict[str, str] = {
-    "src/mcgyvr/serving/gatelib.py": (
-        "the shim's own implementation: -H ssh://RUN_HOST is set here and a "
-        "caller's --context is refused"
-    ),
-    "src/mcgyvr/sandbox/image.py": (
-        "the sandbox's one docker runner names DOCKER_HOST and DOCKER_CONTEXT "
-        "to refuse under either: a container the product starts lands on this "
-        "machine's daemon or nowhere"
-    ),
-}
-
-
-def test_nothing_under_tools_or_src_names_its_own_daemon() -> None:
-    hits = _hits(DAEMON_OVERRIDE, ("src", "tools"))
-    for rel in REFUSES_A_DAEMON:
-        assert (REPO / rel).is_file(), f"{rel} is allowed a mention and does not exist"
-        hits.pop(rel, None)
-    assert not hits, (
-        "a daemon of its own, or the door's environment stripped — under the "
-        f"door `docker` reaches ssh://RUN_HOST and nothing else: {hits}"
-    )
 
 
 #: Campaign files whose loopback is the RIG's: shell text sent over the door's
@@ -518,27 +269,6 @@ def test_no_driver_or_campaign_step_measures_loopback() -> None:
     assert not hits, (
         "the container runs on the rig (the door's `docker` lands there), so a "
         f"client polling this machine's loopback measures nothing: {hits}"
-    )
-
-
-#: Files that must spell the retired names: the guard, this file, and the
-#: door's CLI test, which asserts the seam is gone from the door's vocabulary.
-SPELLS_THE_SEAMS = (
-    "tests/test_no_retired_door_names.py",
-    "tests/test_one_door.py",
-    "tests/test_serving_door_cli.py",
-)
-
-
-def test_the_archived_doors_seam_variables_are_gone() -> None:
-    hits = {
-        rel: lines
-        for rel, lines in _hits(RETIRED_SEAMS, ("src", "tools", "tests")).items()
-        if rel not in SPELLS_THE_SEAMS
-    }
-    assert not hits, (
-        "a variable that replaces a reading is a variable that skips one; the "
-        f"door has no seam and neither does anything under it: {hits}"
     )
 
 
@@ -582,7 +312,7 @@ def test_the_serving_harness_run_bare_exits_2_naming_the_door(tmp_path: Path) ->
 # 10. a hand-set RUN_* environment admits nothing
 # --------------------------------------------------------------------------
 
-GATE_SCRIPTS = REPO / "src" / "mcgyvr" / "serving" / "gate-scripts"
+GATE_SCRIPTS = PRODUCT / "src" / "mcgyvr" / "serving" / "gate-scripts"
 DEFAULT_STEP = GATE_SCRIPTS / "default-step.sh"
 COMMON_SH = REPO / "tools" / "runs" / "_common.sh"
 KERNEL_ARMS_STEP = (
@@ -641,7 +371,7 @@ def _hand_set(stubs: Path, tmp_path: Path, **only: str) -> dict[str, str]:
     env.update(dict.fromkeys(EXPORTED, "x"))
     env.update(
         RUN_ROOT=str(REPO),
-        RUN_BIN=str(REPO / "src" / "mcgyvr" / "serving" / "gate-scripts" / "bin"),
+        RUN_BIN=str(PRODUCT / "src" / "mcgyvr" / "serving" / "gate-scripts" / "bin"),
         RUN_REPO=str(REPO),
         RUN_HOST="srv1",
         RUN_ID="2026-09-05-srv1-kernel-arms-kernel-arms",
@@ -729,26 +459,6 @@ def test_a_driver_with_a_run_id_and_a_digest_is_refused_outside_the_door(
     )
     done = _outside([sys.executable, str(DRIVERS / name), *argv], env)
     _refused_naming_the_door(done, stubs, name)
-
-
-@pytest.mark.parametrize("script", sorted(p.name for p in GATE_SCRIPTS.glob("*.py")))
-def test_a_gate_with_every_run_variable_typed_in_is_refused_before_any_subprocess(
-    tmp_path: Path, script: str
-) -> None:
-    """Gate 7 once ran ``docker ps`` on the ambient daemon before refusing."""
-    stubs = _stubs(tmp_path / "stubs")
-    done = _outside(
-        [sys.executable, str(GATE_SCRIPTS / script)], _hand_set(stubs, tmp_path)
-    )
-    _refused_naming_the_door(done, stubs, script)
-
-
-def test_the_default_step_with_every_run_variable_typed_in_is_refused_outside_the_door(
-    tmp_path: Path,
-) -> None:
-    stubs = _stubs(tmp_path / "stubs")
-    done = _outside(["bash", str(DEFAULT_STEP)], _hand_set(stubs, tmp_path))
-    _refused_naming_the_door(done, stubs, "default-step.sh")
 
 
 # --------------------------------------------------------------------------
@@ -853,14 +563,6 @@ def test_nothing_under_records_is_executable() -> None:
     assert not executable, (
         f"{len(executable)} file(s) under records/ carry the exec bit — a record "
         f"is evidence, not an entry point: {executable}"
-    )
-
-
-def test_no_python_sits_at_the_repo_root() -> None:
-    loose = sorted(p.name for p in REPO.glob("*.py"))
-    assert not loose, (
-        f"{loose} at the repo root: a driver that can be run bare prints "
-        "unstamped rows. Drivers live in tools/runs/drivers/ and refuse without RUN_ID."
     )
 
 

@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """A live unit is judged only by a solo probe run with its lock's own method.
 
 Owner ruling F2: every dispatch row keeps its decode, prefill and in-flight
@@ -271,26 +273,6 @@ HOLDING |= {"ds_prefill": 307.11}
 # --- the tolerance class ----------------------------------------------------
 
 
-@pytest.mark.parametrize(
-    ("unit", "expected"),
-    [
-        ({"engine": "vllm", "launch": {"n_cpu_moe": 4}}, "vllm"),
-        ({"engine": "llama.cpp", "launch": {"n_cpu_moe": 19}}, "cpu_experts"),
-        ({"engine": "llama.cpp", "launch": {"flags": ["--cpu-moe"]}}, "cpu_experts"),
-        (
-            {"engine": "llama.cpp", "launch": {"flags": ["--n-cpu-moe", "8"]}},
-            "cpu_experts",
-        ),
-        ({"engine": "llama.cpp", "launch": {"flags": ["-ngl", "99"]}}, "llamacpp"),
-        ({"launch": {}}, "llamacpp"),
-    ],
-)
-def test_each_unit_has_one_tolerance_class(unit: dict[str, Any], expected: str) -> None:
-    from mcgyvr.fleet.tolerance import tolerance_class
-
-    assert tolerance_class(unit) == expected
-
-
 def test_the_class_tolerances_are_the_measured_ones_stated_in_derived_json() -> None:
     from mcgyvr import derived
 
@@ -305,33 +287,6 @@ def test_the_class_tolerances_are_the_measured_ones_stated_in_derived_json() -> 
     }
     # ``mtp`` was measured later, by the mtp-ornith window (owner, 2026-09-16).
     assert set(stated) - set(measured) == {"mtp"}
-
-
-def test_an_absent_class_tolerance_is_refused_by_name(tmp_path: Path) -> None:
-    from mcgyvr import derived
-
-    doc = json.loads((REPO / "tools/runs/derived.json").read_text(encoding="utf-8"))
-    del doc["engine"]["warm_decode_class_pct"]["cpu_experts"]
-    path = tmp_path / "derived.json"
-    path.write_text(json.dumps(doc), encoding="utf-8")
-    with pytest.raises(derived.DerivedNumbersError, match="cpu_experts"):
-        derived.class_tolerances(path=path)
-
-
-def test_the_locks_nvme_check_reads_the_same_class(tmp_path: Path) -> None:
-    """30 against a 33 baseline is 9.1% slower: inside CPU-experts' 48%, past
-    llama.cpp's 1%."""
-    from mcgyvr.fleet import lock
-
-    evidence = json.loads(json.dumps(EVIDENCE))
-    evidence["combinations"][1]["warm_decode_tok_s"]["srv1_deepseek"] = 30.0
-    evidence["combinations"][1]["baseline_tok_s"] = {"srv1_deepseek": 33.0}
-    lock.write(tmp_path / "experts", FLEET, evidence, tolerances=TOLERANCES)
-
-    plain = json.loads(json.dumps(FLEET))
-    plain["units"]["srv1_deepseek"]["launch"] = {"flags": ["-ngl", "99"]}
-    with pytest.raises(lock.LockRefusedError, match="baseline"):
-        lock.write(tmp_path / "plain", plain, evidence, tolerances=TOLERANCES)
 
 
 # --- judging the lock's plain values ----------------------------------------
@@ -370,23 +325,6 @@ def judged(field: str, value: float, tmp_path: Path) -> list[dict[str, Any]]:
     )
 
 
-@pytest.mark.parametrize(
-    ("field", "holds", "alerts_at"),
-    [
-        ("warm_decode_tok_s", 17.0, 16.9),  # 32.56 x 0.52 = 16.93
-        ("prefill_tok_s", 304.1, 304.0),  # 307.11 x 0.99 = 304.04
-        ("card_mib", 5458, 5459),  # the unit's room_mib
-        ("restarts", 0, 1),
-    ],
-)
-def test_the_locks_plain_values_are_judged_with_the_class_tolerance(
-    field: str, holds: float, alerts_at: float, tmp_path: Path
-) -> None:
-    assert judged(field, holds, tmp_path / "holds") == []
-    raised = judged(field, alerts_at, tmp_path / "alerts")
-    assert [a["field"] for a in raised] == [field], raised
-
-
 # --- the probe --------------------------------------------------------------
 
 
@@ -417,229 +355,9 @@ def test_the_probe_sends_the_locks_own_requests(
     assert all(p.get("cache_prompt") is False for p in to_ds[1:])
 
 
-def test_the_probe_files_stamped_observations_under_journal_fleet(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    journal = live_home(tmp_path, monkeypatch)
-    report = run_probe(FakeUnits(HOLDING))
-
-    assert report.exit_code == 0
-    assert report.alerts == []
-    filed = rows(journal / "fleet")
-    by_unit = {(r["unit_id"], r["field"]): r for r in filed}
-    assert set(by_unit) == {
-        (UNIT_3B, "warm_decode_tok_s"),
-        (UNIT_3B, "prefill_tok_s"),
-        (UNIT_DS, "warm_decode_tok_s"),
-        (UNIT_DS, "prefill_tok_s"),
-    }
-    three = by_unit[(UNIT_3B, "warm_decode_tok_s")]
-    assert three["observed"] == pytest.approx(126.7)
-    assert three["fleet"] == "b-small" and three["rig"] == "srv2"
-    assert three["rig_id"] == RIG2
-    assert three["combination_id"].startswith("cmb-")
-    # The moment srv2_3b's measurement finished: 11.1 s of its requests after
-    # the probe began (a 0.5 s warm-up, 5 x 256/126.7 s, 3 x 1960/11500 s).
-    assert three["at"] == "2026-09-15T12:00:11"
-    assert by_unit[(UNIT_DS, "prefill_tok_s")]["observed"] == pytest.approx(307.11)
-    assert by_unit[(UNIT_DS, "prefill_tok_s")]["alert"] is False
-    assert not list(tmp_path.glob("journal/*.jsonl")), "filed outside journal/fleet"
-
-
 def lock_root(tmp_path: Path) -> Path:
     """The live fleet folder :func:`live_home` promoted, which holds its locks."""
     return tmp_path / "home" / ".mcgyvr" / "fleets" / "b-small"
 
 
-def test_a_llamacpp_unit_below_its_class_tolerance_raises_an_alert(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """16.0 is 50.9% under 32.56: past CPU-experts' 48%."""
-    from mcgyvr.fleet import alerts
-
-    journal = live_home(tmp_path, monkeypatch)
-    report = run_probe(FakeUnits(HOLDING | {"ds_decode": 16.0}))
-
-    assert [(a["unit_id"], a["field"]) for a in report.alerts] == [
-        (UNIT_DS, "warm_decode_tok_s")
-    ]
-    assert report.exit_code == 0
-    flagged = [r for r in rows(journal / "fleet") if r.get("alert")]
-    assert [(r["unit_id"], r["field"]) for r in flagged] == [
-        (UNIT_DS, "warm_decode_tok_s")
-    ]
-    assert "srv1_deepseek" not in report.off_the_rig
-    pulls = alerts.pulled(journal / "fleet", lock_root(tmp_path))
-    assert list(pulls.values()) == [
-        [{"unit_id": UNIT_DS, "field": "warm_decode_tok_s", "count": 1}]
-    ]
-
-
-def test_a_vllm_unit_timed_off_the_rig_is_recorded_not_judged(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """60.0 is 52.6% under 126.7 and 5000 is 56.5% under 11500, far past vLLM's
-    1%. Both are filed with the probe's stamp, and neither alerts or pulls."""
-    from mcgyvr.fleet import alerts
-
-    journal = live_home(tmp_path, monkeypatch)
-    report = run_probe(FakeUnits(HOLDING | {"3b_decode": 60.0, "3b_prefill": 5000.0}))
-
-    assert report.alerts == []
-    assert report.exit_code == 0
-    assert report.probed["srv2_3b"] == {
-        "warm_decode_tok_s": pytest.approx(60.0),
-        "prefill_tok_s": pytest.approx(5000.0),
-    }
-    three = {r["field"]: r for r in rows(journal / "fleet") if r["unit_id"] == UNIT_3B}
-    assert set(three) == {"warm_decode_tok_s", "prefill_tok_s"}
-    assert three["warm_decode_tok_s"]["observed"] == pytest.approx(60.0)
-    assert three["prefill_tok_s"]["observed"] == pytest.approx(5000.0)
-    for row in three.values():
-        assert row["fleet"] == "b-small" and row["rig"] == "srv2"
-        assert row["rig_id"] == RIG2 and row["combination_id"].startswith("cmb-")
-        # 23.0 s of requests: 0.5 + 5 x 256/60 + 3 x 1960/5000.
-        assert row["at"] == "2026-09-15T12:00:23"
-        assert row["off_the_rig"] is True
-        assert "alert" not in row
-    assert alerts.pulled(journal / "fleet", lock_root(tmp_path)) == {}
-
-    assert set(report.off_the_rig) == {"srv2_3b"}
-    fields, reason = report.off_the_rig["srv2_3b"]
-    assert set(fields) == {"warm_decode_tok_s", "prefill_tok_s"}
-    assert "off the rig" in reason and "127.0.0.1" in reason
-
-
-def test_fleet_probe_prints_a_vllm_unit_as_recorded_not_judged(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
-) -> None:
-    from mcgyvr import cli
-    from mcgyvr.fleet import probe, read
-
-    live_home(tmp_path, monkeypatch)
-    fake = FakeUnits(HOLDING | {"3b_decode": 60.0})
-    measured = probe.run
-    # `fleet probe` reads each rig through the door first, and times a vLLM unit
-    # on the rig from that read. A rig the door cannot read is the case this
-    # line is about: its vLLM unit is timed off the rig, recorded, not judged.
-    monkeypatch.setattr(read, "spawn_read", lambda host, run_id, probe=(): 2)
-
-    def faked(**kwargs: Any) -> Any:
-        return measured(
-            transport=fake, in_flight=idle, clock=fake.clock, now=NOW, **kwargs
-        )
-
-    monkeypatch.setattr(probe, "run", faked)
-    assert cli.main(["fleet", "probe"]) == 0
-    lines = capsys.readouterr().out.splitlines()
-
-    assert "probed srv2_3b: warm_decode_tok_s 60.00, prefill_tok_s 11500.00" in lines
-    marked = [line for line in lines if line.startswith("not judged srv2_3b: ")]
-    assert len(marked) == 1, lines
-    assert "warm_decode_tok_s, prefill_tok_s recorded" in marked[0]
-    assert "off the rig" in marked[0] and "127.0.0.1" in marked[0]
-    assert not [line for line in lines if line.startswith("not judged srv1_deepseek")]
-    assert not [line for line in lines if line.startswith("alert ")]
-
-
-def test_card_and_restarts_are_named_as_not_read_behind_the_door(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    live_home(tmp_path, monkeypatch)
-    report = run_probe(FakeUnits(HOLDING))
-    assert set(report.not_read) == {"srv2_3b", "srv1_deepseek"}
-    for fields, reason in report.not_read.values():
-        assert set(fields) == {"card_mib", "restarts"}
-        assert "door" in reason
-
-
-def test_a_busy_unit_is_not_probed(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    journal = live_home(tmp_path, monkeypatch)
-    fake = FakeUnits(HOLDING)
-
-    def busy_3b(name: str, unit: Mapping[str, Any]) -> int | None:
-        return 2 if name == "srv2_3b" else 0
-
-    report = run_probe(fake, in_flight=busy_3b)
-    assert report.busy == {"srv2_3b": 2}
-    assert not [u for u, _ in fake.posts if u.startswith("http://srv2:8001")]
-    assert {r["unit_id"] for r in rows(journal / "fleet")} == {UNIT_DS}
-    assert report.exit_code == 0
-
-
-def test_a_unit_that_took_work_during_the_probe_is_filed_as_contended_not_judged(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    journal = live_home(tmp_path, monkeypatch)
-    reads: dict[str, int] = {}
-
-    def later(name: str, unit: Mapping[str, Any]) -> int | None:
-        reads[name] = reads.get(name, 0) + 1
-        return 1 if name == "srv2_3b" and reads[name] > 1 else 0
-
-    report = run_probe(FakeUnits(HOLDING | {"3b_decode": 60.0}), in_flight=later)
-    assert report.contended == ["srv2_3b"]
-    assert report.alerts == []
-    three = [r for r in rows(journal / "fleet") if r["unit_id"] == UNIT_3B]
-    assert three and all(r.get("contended") is True for r in three)
-    assert all("alert" not in r for r in three)
-
-
-def test_a_unit_whose_count_cannot_be_read_is_a_probe_that_could_not_run(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    live_home(tmp_path, monkeypatch)
-
-    def unreadable(name: str, unit: Mapping[str, Any]) -> int | None:
-        return None if name == "srv1_deepseek" else 0
-
-    report = run_probe(FakeUnits(HOLDING), in_flight=unreadable)
-    assert "srv1_deepseek" in report.failed
-    assert report.exit_code == 1
-
-
-def test_naming_units_probes_only_those(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    live_home(tmp_path, monkeypatch)
-    fake = FakeUnits(HOLDING)
-    run_probe(fake, units=["srv1_deepseek"])
-    assert {u.split("/")[2] for u, _ in fake.posts} == {"srv1:8080"}
-
-
-def test_with_no_live_fleet_the_probe_cannot_run(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    from mcgyvr.fleet import probe
-
-    monkeypatch.setenv("HOME", str(tmp_path))
-    with pytest.raises(probe.ProbeError, match=r"live\.json"):
-        run_probe(FakeUnits(HOLDING))
-
-
 # --- the command line -------------------------------------------------------
-
-
-def test_fleet_probe_is_a_command(capsys: pytest.CaptureFixture[str]) -> None:
-    from mcgyvr import cli
-
-    with pytest.raises(SystemExit) as done:
-        cli.main(["fleet", "probe", "--help"])
-    assert done.value.code == 0
-    assert "UNIT" in capsys.readouterr().out
-
-
-def test_fleet_alerts_reads_journal_fleet_by_default(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
-) -> None:
-    from mcgyvr import cli
-
-    journal = live_home(tmp_path, monkeypatch)
-    run_probe(FakeUnits(HOLDING | {"ds_decode": 16.0}))
-    capsys.readouterr()
-    assert cli.main(["fleet", "alerts"]) == 0
-    out = capsys.readouterr().out
-    assert UNIT_DS in out and "warm_decode_tok_s" in out, out
-    assert (journal / "fleet").is_dir()

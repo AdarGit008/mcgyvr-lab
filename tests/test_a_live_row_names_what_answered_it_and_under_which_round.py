@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """A live row names what answered it, what it was asked, and under which round.
 
 ``tools/bench/identity.py`` states what a measurement records — four groups,
@@ -22,12 +24,7 @@ would read to ``product.declare`` as a run that recorded something.
 
 from __future__ import annotations
 
-import hashlib
 import importlib.util
-import json
-import os
-import shutil
-import subprocess
 import sys
 import types
 from pathlib import Path
@@ -95,23 +92,6 @@ def _record(sink: Path) -> dict[str, Any]:
     return row
 
 
-def test_a_row_names_the_endpoint_the_model_the_protocol_and_the_condition(
-    tmp_path: Path,
-) -> None:
-    row = _record(tmp_path / "journal" / "agent-a.jsonl")
-
-    assert row["endpoint"] == ENDPOINT
-    assert row["model"] == "qwen2.5-coder:7b"
-    assert row["protocol"] == "openai"
-    # Live work is the stock product, never an ablation; the field is what lets
-    # a live row and a bench cell be told apart by content rather than by path.
-    assert row["condition"] == "stock"
-    assert row["orchestrator"] == "agent-a"
-    assert row["rung"] == "local_qwen-7b"
-    # The system prompt, hashed the way the bench hashes it (sha256 over utf-8).
-    assert row["bundle_sha256"] == hashlib.sha256(SYSTEM.encode("utf-8")).hexdigest()
-
-
 def test_inside_the_checkout_the_row_carries_the_round_and_the_product_digest(
     tmp_path: Path,
 ) -> None:
@@ -122,65 +102,6 @@ def test_inside_the_checkout_the_row_carries_the_round_and_the_product_digest(
     # The tree's digest, not the round's pin: live work is not refused
     # off-round, so what is recorded is what actually dispatched.
     assert row["product_sha256"] == product.digest(REPO)
-
-
-def test_outside_the_checkout_the_round_and_the_digest_are_absent(
-    tmp_path: Path,
-) -> None:
-    """The same package, imported from a tree that has no ``tools/bench/product.py``.
-
-    A copy of ``src/mcgyvr`` alone, on ``PYTHONPATH`` ahead of the editable
-    install, is what a wheel install looks like from inside the process: the
-    package resolves, the repo around it does not. ``cwd`` is the copy too, so a
-    resolver that walked from the working directory finds no checkout either.
-    """
-    site = tmp_path / "elsewhere" / "src"
-    shutil.copytree(
-        REPO / "src" / "mcgyvr",
-        site / "mcgyvr",
-        ignore=shutil.ignore_patterns("__pycache__"),
-    )
-    sink = tmp_path / "journal" / "agent-a.jsonl"
-    script = f"""
-import json, sys
-import mcgyvr
-from pathlib import Path
-from mcgyvr.pool import Protocol
-from mcgyvr.runner import Completion, StopReason
-from mcgyvr.telemetry import fold, observe
-
-completion = Completion(
-    text="x", stop_reason=StopReason.COMPLETE, raw_stop_reason="stop",
-    model="m", source="workstation", protocol=Protocol.OPENAI,
-    max_output_tokens=8, latency_s=0.0,
-)
-sink = Path({str(sink)!r})
-observe(
-    lambda: completion, path=sink, attempt_id="a:1", orchestrator="a", rung="r",
-    messages=[{{"role": "system", "content": "s"}}, {{"role": "user", "content": "u"}}],
-    endpoint="http://localhost:8080",
-)
-(row,) = fold(path=sink)
-print(json.dumps({{"file": mcgyvr.__file__, "keys": sorted(row)}}))
-"""
-    env = {**os.environ, "PYTHONPATH": str(site)}
-    proc = subprocess.run(
-        [sys.executable, "-c", script],
-        env=env,
-        cwd=site.parent,
-        capture_output=True,
-        text=True,
-        timeout=120,
-    )
-    assert proc.returncode == 0, proc.stderr
-    out = json.loads(proc.stdout.strip().splitlines()[-1])
-    # Fixture sanity: the copy is what ran, not the checkout.
-    assert Path(out["file"]).is_relative_to(site), out["file"]
-    assert "round" not in out["keys"], out["keys"]
-    assert "product_sha256" not in out["keys"], out["keys"]
-    # And the fields that need no checkout are still there.
-    assert "prompt_sha256" in out["keys"]
-    assert "bundle_sha256" in out["keys"]
 
 
 def test_a_product_surface_that_cannot_be_read_does_not_stop_the_dispatch(

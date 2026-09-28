@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """No Ollama. Not fixed, not exempted — removed, and the tree says so.
 
 The code that served Ollama is archived under ``archive/forensic-ollama/`` and is
@@ -23,16 +25,6 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 
-SOURCE_ASKING_FOR_OLLAMA = """\
-units:
-  only:
-    address: http://box:11434
-    model: a-model
-    rig: box
-    engine: ollama
-ladder:
-- only
-"""
 
 OLLAMA = re.compile(r"\bollama\b", re.IGNORECASE)
 
@@ -107,15 +99,6 @@ def _lines(root: Path, *suffixes: str) -> list[str]:
     return found
 
 
-def test_the_product_carries_no_ollama() -> None:
-    """`src/` is the product. Nothing in it may know what Ollama is."""
-    remaining = _lines(REPO / "src", ".py", ".md", ".json")
-    assert not remaining, (
-        f"{len(remaining)} lines still name Ollama in the product:\n"
-        + "\n".join(remaining[:20])
-    )
-
-
 def test_the_tools_carry_no_ollama() -> None:
     """The bench, the rig drivers and the journal readers, on the same rule.
 
@@ -127,41 +110,6 @@ def test_the_tools_carry_no_ollama() -> None:
     assert not remaining, (
         f"{len(remaining)} lines still name Ollama in the tools:\n"
         + "\n".join(remaining[:20])
-    )
-
-
-def test_a_config_that_asks_for_ollama_is_refused() -> None:
-    """Stated as the refusal, not as the shape of the enum.
-
-    Asserting ``Protocol`` has exactly one member, or that ``api`` has exactly
-    one choice, would forbid the cleanest end state: with one protocol there
-    need be no enum and no choices key at all, and deleting them would make
-    such a test raise rather than pass. What must be true is what a user meets.
-    """
-    import pytest
-
-    from mcgyvr.config import ConfigSchemaError, parse
-
-    with pytest.raises(ConfigSchemaError) as refused:
-        parse(SOURCE_ASKING_FOR_OLLAMA)
-    assert "ollama" in str(refused.value).lower(), (
-        f"the refusal must name what was asked for: {refused.value}"
-    )
-
-
-def test_no_dispatch_decision_has_a_second_branch() -> None:
-    """One live protocol is one path through dispatch.
-
-    Asked of the runner table rather than the enum: whatever names a protocol,
-    there must be exactly one implementation a dispatch can select, or the
-    ladder carries a path no test of it ever exercises.
-    """
-    from mcgyvr import runner
-
-    table = getattr(runner, "_RUNNERS", None)
-    assert table is not None and len(table) == 1, (
-        f"dispatch can select {len(table or ())} implementations; the second "
-        "is reached by nothing the live ladder does"
     )
 
 

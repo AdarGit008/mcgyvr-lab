@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """The per-rig derived-numbers file, and the code held to it.
 
 ``tools/runs/derived.json`` is the single source of truth for the numeric
@@ -27,7 +29,6 @@ from mcgyvr import derived
 
 REPO = Path(__file__).resolve().parent.parent
 DERIVED = REPO / "tools" / "runs" / "derived.json"
-SRC = REPO / "src"
 
 
 def document() -> dict[str, Any]:
@@ -81,36 +82,3 @@ def test_the_per_rig_card_remainder_is_recorded() -> None:
     doc = document()
     assert doc["srv1"]["numbers"]["card_remainder_mib"]["value"] == 97.69
     assert doc["srv2"]["numbers"]["card_remainder_mib"]["value"] == 144.67
-
-
-def test_a_rig_whose_number_is_absent_is_refused_by_name(tmp_path: Path) -> None:
-    mutated = json.loads(DERIVED.read_text(encoding="utf-8"))
-    del mutated["srv2"]["numbers"]["runtime_resident_gb"]
-    path = tmp_path / "derived.json"
-    path.write_text(json.dumps(mutated), encoding="utf-8")
-    with pytest.raises(derived.DerivedNumbersError, match="runtime_resident_gb"):
-        derived.runtime_resident_gb("srv2", path=path)
-
-
-def test_a_rig_that_is_not_declared_is_refused_by_name() -> None:
-    with pytest.raises(derived.DerivedNumbersError, match="desktop-2"):
-        derived.runtime_resident_gb("desktop-2")
-
-
-def test_the_moved_literals_live_only_in_the_file() -> None:
-    """The numbers that were hard-coded in ``src/`` are gone from it."""
-    serving = (SRC / "mcgyvr" / "serving" / "__init__.py").read_text(encoding="utf-8")
-    cli = (SRC / "mcgyvr" / "cli.py").read_text(encoding="utf-8")
-    vramfit = (SRC / "mcgyvr" / "serving" / "vramfit.py").read_text(encoding="utf-8")
-    assert "RUNTIME_RESIDENT_GB" not in serving
-    assert "1.53" not in serving
-    assert "144.67" not in vramfit and "97.69" not in vramfit
-    assert '"vllm": 3.0' not in cli and '"llama.cpp": 5.0' not in cli
-    assert '"cpu_experts": 48.0' not in cli
-    assert "class_tolerances()" in cli
-
-
-def test_the_runtime_resident_constant_is_gone() -> None:
-    from mcgyvr import serving
-
-    assert not hasattr(serving, "RUNTIME_RESIDENT_GB")

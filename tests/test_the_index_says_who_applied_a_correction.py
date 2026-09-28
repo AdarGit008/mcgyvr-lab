@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """A folded row says who applied the correction it is carrying.
 
 :func:`mcgyvr.telemetry.correct` requires its ``orchestrator`` and writes it as
@@ -27,7 +29,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from mcgyvr.telemetry import correct, fold
+from mcgyvr.telemetry import correct
 
 REPO = Path(__file__).resolve().parent.parent
 INDEX = REPO / "tools" / "live" / "index.py"
@@ -110,24 +112,6 @@ def _rows(journal: Path) -> dict[str, dict[str, Any]]:
         db.row_factory = sqlite3.Row
         found = db.execute(f"SELECT * FROM {TABLE}").fetchall()
     return {row["attempt_id"]: dict(row) for row in found}
-
-
-def test_a_folded_attempt_names_the_writer_of_the_correction_that_won(
-    tmp_path: Path,
-) -> None:
-    """The author moves with the outcome and the detail, latest-wins in file order."""
-    journal = _journal(tmp_path)
-
-    folded = {row["attempt_id"]: row for row in fold(path=journal / "agent-a.jsonl")}
-    corrected = folded["agent-a:impl:local_qwen-7b:1"]
-    assert corrected["outcome"] == "rejected", corrected
-    assert corrected.get("applied_by") == "review", (
-        f"the folded row does not say who rejected it: {corrected}"
-    )
-    # The attempt's own writer is untouched: applying is not running.
-    assert corrected["orchestrator"] == "agent-a", corrected
-    # Never corrected: no outcome and no author, and absence is not a name.
-    assert folded["agent-a:impl:local_qwen-7b:2"].get("applied_by") is None
 
 
 def test_the_index_column_carries_the_author_of_the_folded_outcome(

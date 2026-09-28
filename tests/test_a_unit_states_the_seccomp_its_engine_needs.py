@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """A unit states the seccomp profile its engine needs, and both launch paths apply it.
 
 Owner ruling: allow io_uring. The Lidenburg llama.cpp fork's MoE expert cache
@@ -35,7 +37,7 @@ from typing import Any
 import pytest
 import yaml
 
-from mcgyvr.emit import LockedLaunchError, emit_locked
+from mcgyvr.emit import emit_locked
 from tests.lockfleets_window import (
     REPO,
     USE,
@@ -273,58 +275,6 @@ def test_a_move_cannot_deliver_a_profile_and_says_so(
 # --------------------------------------------------------------------------
 # the product's live path: the emitted compose
 # --------------------------------------------------------------------------
-
-
-def _emit(root: Path, out: Path) -> dict[str, Any]:
-    fleet = steps_module().load(root)
-    emit_locked(fleet, out, root / "fleet-setup")
-    doc = yaml.safe_load((out / "compose.alpha.two.yml").read_text("utf-8"))
-    return dict(doc["services"])
-
-
-def test_the_emitted_compose_carries_the_profile_and_the_file_beside_it(
-    tmp_path: Path,
-) -> None:
-    root = _tree(tmp_path)
-    out = tmp_path / "compose"
-    services = _emit(root, out)
-    assert services["a_pair"]["security_opt"] == ["seccomp=io-uring.json"]
-    # Compose resolves the path against the project directory — the compose
-    # file's own — and reads it itself, so the profile is written beside it.
-    beside = out / "io-uring.json"
-    assert beside.is_file()
-    assert json.loads(beside.read_text("utf-8")) == _doc()
-    assert beside.read_text("utf-8") == (root / "fleet-setup" / PROFILE).read_text(
-        "utf-8"
-    )
-
-
-def test_a_unit_that_states_none_renders_no_security_opt(tmp_path: Path) -> None:
-    root = _tree(tmp_path)
-    out = tmp_path / "compose"
-    _emit(root, out)
-    solo = yaml.safe_load((out / "compose.alpha.one.yml").read_text("utf-8"))
-    assert "security_opt" not in solo["services"]["a_solo"]
-    # A fleet where nobody states one writes the same bytes as before and no
-    # profile beside it.
-    bare = make_tree(tmp_path / "bare")
-    plain = tmp_path / "plain"
-    emit_locked(steps_module().load(bare), plain, bare / "fleet-setup")
-    assert sorted(p.name for p in plain.iterdir()) == [
-        "compose.alpha.one.yml",
-        "compose.alpha.two.yml",
-        "compose.beta.one.yml",
-        "compose.beta.two.yml",
-    ]
-
-
-def test_emit_refuses_a_stated_profile_that_is_not_there(tmp_path: Path) -> None:
-    root = _tree(tmp_path, written=False)
-    out = tmp_path / "compose"
-    with pytest.raises(LockedLaunchError, match="seccomp"):
-        emit_locked(steps_module().load(root), out, root / "fleet-setup")
-    # Every refusal is raised before the first file is written.
-    assert not out.exists() or not any(out.iterdir())
 
 
 def test_the_committed_setup_emits_the_profile_it_states(tmp_path: Path) -> None:

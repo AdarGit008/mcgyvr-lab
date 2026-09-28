@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """A locked fleet is emitted as the launch its unit_ids were hashed over.
 
 A ``fleet.yaml`` has no ``models`` block, so an emit that sized a locked unit
@@ -138,17 +140,6 @@ def fleet() -> dict[str, Any]:
     }
 
 
-def install(tmp_path: Path, document: dict[str, Any]) -> Path:
-    config = tmp_path / "config"
-    config.mkdir()
-    (config / "fleet.yaml").write_text(yaml.safe_dump(document), encoding="utf-8")
-    ladder = list(document["units"])
-    (config / "policy.yaml").write_text(
-        yaml.safe_dump({"ladder": ladder}), encoding="utf-8"
-    )
-    return config
-
-
 @pytest.fixture(autouse=True)
 def no_scans(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """No rig has been scanned: a locked launch needs no scan to be rendered."""
@@ -164,97 +155,6 @@ def emit(config: Path, out: Path, *extra: str) -> int:
 def services(path: Path) -> dict[str, dict[str, Any]]:
     loaded = yaml.safe_load(path.read_text(encoding="utf-8"))
     return dict(loaded["services"])
-
-
-def by_container(path: Path) -> dict[str, dict[str, Any]]:
-    return {block["container_name"]: block for block in services(path).values()}
-
-
-def test_a_locked_fleet_is_emitted_without_a_scan_or_a_kv_dtype(
-    tmp_path: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
-    out = tmp_path / "compose"
-    assert emit(install(tmp_path, fleet()), out) == Exit.OK, capsys.readouterr().err
-    assert sorted(path.name for path in out.iterdir()) == [
-        "compose.srv1.b-small.yml",
-        "compose.srv2.b-small.yml",
-    ]
-
-
-def test_each_service_runs_the_launch_its_unit_id_was_hashed_over(
-    tmp_path: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
-    document = fleet()
-    out = tmp_path / "compose"
-    assert emit(install(tmp_path, document), out) == Exit.OK, capsys.readouterr().err
-    emitted = by_container(out / "compose.srv1.b-small.yml") | by_container(
-        out / "compose.srv2.b-small.yml"
-    )
-    for name, unit in document["units"].items():
-        service = emitted.get(unit["container"])
-        assert service is not None, f"{name}: no service runs as {unit['container']}"
-        assert service["command"] == unit["launch"]["argv"], name
-        assert service["environment"] == unit["launch"]["env"], name
-        assert service["image"] == unit["image"], name
-
-
-def test_a_llama_cpp_unit_mounts_what_it_states_and_vllm_mounts_its_cache(
-    tmp_path: Path,
-) -> None:
-    out = tmp_path / "compose"
-    assert emit(install(tmp_path, fleet()), out) == Exit.OK
-    deepseek = by_container(out / "compose.srv1.b-small.yml")["mcgyvr-srv1-deepseek"]
-    assert deepseek["volumes"] == MODELS_VOLUMES
-    for service in services(out / "compose.srv2.b-small.yml").values():
-        assert service["volumes"] == [f"{HF_CACHE}:/root/.cache/huggingface:ro"]
-        assert service["ipc"] == "host"
-
-
-def test_the_layout_is_the_start_order(tmp_path: Path) -> None:
-    out = tmp_path / "compose"
-    assert emit(install(tmp_path, fleet()), out) == Exit.OK
-    pair = services(out / "compose.srv2.b-small.yml")
-    assert pair["srv2_7b"]["depends_on"] == {
-        "srv2_3b": {"condition": "service_healthy"}
-    }
-    assert "depends_on" not in pair["srv2_3b"]
-    assert "localhost:8001" in " ".join(pair["srv2_3b"]["healthcheck"]["test"])
-    assert (
-        "depends_on" not in services(out / "compose.srv1.b-small.yml")["srv1_deepseek"]
-    )
-
-
-def test_a_locked_unit_that_names_no_container_is_refused(
-    tmp_path: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
-    document = fleet()
-    del document["units"]["srv1_deepseek"]["container"]
-    out = tmp_path / "compose"
-    assert emit(install(tmp_path, document), out) == Exit.REFUSED
-    said = capsys.readouterr().err
-    assert "srv1_deepseek" in said and "container" in said
-    assert not out.exists() or not any(out.iterdir())
-
-
-def test_a_locked_llama_cpp_unit_that_states_no_volumes_is_refused(
-    tmp_path: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
-    document = fleet()
-    del document["units"]["srv1_deepseek"]["launch"]["volumes"]
-    out = tmp_path / "compose"
-    assert emit(install(tmp_path, document), out) == Exit.REFUSED
-    said = capsys.readouterr().err
-    assert "srv1_deepseek" in said and "volumes" in said
-
-
-def test_check_agrees_with_the_files_it_wrote(
-    tmp_path: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
-    config = install(tmp_path, fleet())
-    out = tmp_path / "compose"
-    assert emit(config, out) == Exit.OK
-    capsys.readouterr()
-    assert emit(config, out, "--check") == Exit.OK, capsys.readouterr().err
 
 
 def test_the_stamped_setup_emits_the_argv_and_env_its_digests_record(
