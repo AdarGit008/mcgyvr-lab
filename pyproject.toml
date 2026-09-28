@@ -1,0 +1,54 @@
+# The lab: where mcgyvr is developed. Not a package and never published; this
+# file exists to give the lab one locked environment in which the product
+# (installed editable from the product/ submodule) and the lab's own tools run.
+[project]
+name = "mcgyvr-lab"
+version = "0"
+description = "Development lab for mcgyvr (not published)"
+requires-python = ">=3.12"
+dependencies = ["mcgyvr"]
+
+[tool.uv]
+# A virtual project: uv installs its dependencies but never builds the lab.
+package = false
+
+[tool.uv.sources]
+mcgyvr = { path = "product", editable = true }
+
+[dependency-groups]
+# Same versions the product locks, so a check in the lab and in the product
+# means the same thing. pytest-xdist is here because the product's pytest
+# configuration runs with `-n auto`: a product test run through the lab's
+# environment needs it.
+dev = [
+    "pytest==9.1.1",
+    "pytest-xdist==3.8.0",
+    "ruff==0.16.8",
+    "mypy==2.3.1",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+# Only the lab's own code. product/ is checked by its own gate
+# (`make product-check`); records/, archive/ and fleet-setup/ are records and
+# are kept byte for byte as they were.
+extend-exclude = ["product", "records", "archive", "fleet-setup"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.12"
+files = ["guard", "tests"]
+strict = true
+explicit_package_bases = true
+exclude = "^(product|records|archive|fleet-setup)/"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
