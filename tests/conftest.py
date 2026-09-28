@@ -1,3 +1,7 @@
+# The lab's conftest. It began as a byte-for-byte copy of the product's
+# tests/conftest.py (product commit ef12d3d3); the product keeps its own. What
+# changed for the lab: `_derived_numbers_are_the_labs` below. Everything else
+# is as copied.
 """Fixtures shared across the tests that touch the instrument declaration.
 
 ``tools/instruments.json`` is read by five modules and none of them is a
@@ -299,3 +303,18 @@ def _no_test_opens_the_doors_read(monkeypatch: pytest.MonkeyPatch) -> None:
         )
 
     monkeypatch.setattr(read, "spawn_read", refused)
+
+
+@pytest.fixture(autouse=True)
+def _derived_numbers_are_the_labs(monkeypatch: pytest.MonkeyPatch) -> None:
+    """:mod:`mcgyvr.derived` reads the lab's ``tools/runs/derived.json``.
+
+    By default the product's module reads ``tools/runs/derived.json`` under its
+    own checkout, which in the lab is the ``product/`` submodule. The derived
+    numbers are the lab's (measured on the owner's rigs) and the lab holds its
+    own copy at its root, so every lab test reads that one. A test that means
+    another file passes it or patches the seam again itself.
+    """
+    import mcgyvr.derived as derived
+
+    monkeypatch.setattr(derived, "DERIVED", REPO / "tools" / "runs" / "derived.json")
