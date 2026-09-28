@@ -30,7 +30,9 @@ jobs:
       - name: check (lint, typecheck, tests, guard self-tests)
         run: make check
 
-  # The outgoing gate: runs whenever a lab change moves the product pointer.
+  # The outgoing net (not a gate: the commits it scans are already on GitHub,
+  # and the gate is the local `make guard` before a product branch is pushed).
+  # It runs whenever a lab change moves the product pointer.
   # It compares the product commit recorded on the base with the one at HEAD
   # and, if they differ, scans every product commit from the product's
   # origin/main to the new pointer (guard/outgoing-ci.sh). Findings fail the

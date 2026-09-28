@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# The outgoing gate for lab CI. Run from anywhere inside the lab checkout.
+# The outgoing net for lab CI (a net, not a gate: the commits it scans are
+# already on GitHub; the gate is the local `make guard`). Run from anywhere
+# inside the lab checkout.
 #
 #   guard/outgoing-ci.sh [LAB_BASE]
 #
@@ -10,9 +12,12 @@
 # the new pointer: exit 0 clean, 1 findings, 2 error.
 #
 # Fails closed: a shallow lab checkout, a base that is not present, a product
-# history that cannot be made complete, or a pointer with no common history
-# with origin/main is exit 2, never a pass.
-set -euo pipefail
+# history that cannot be made complete, a pointer with no common history with
+# origin/main, or any command that fails is exit 2, never a pass. (Under
+# `set -e` a failing command would exit with its own code, so the ERR trap
+# turns every such failure into 2; the scan's own code is checked as well.)
+set -Eeuo pipefail
+trap 'echo "outgoing: a command failed (line $LINENO); treating it as an error" >&2; exit 2' ERR
 
 here=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 python=${PYTHON:-python3}
@@ -58,4 +63,9 @@ mb=$(git -C product merge-base origin/main "$new") \
   || fail "$new has no common history with the product's origin/main"
 
 echo "outgoing: scanning product commits $mb..$new"
-exec "$python" "$here/check_outgoing.py" --repo product --diff "$mb..$new"
+rc=0
+"$python" "$here/check_outgoing.py" --repo product --diff "$mb..$new" || rc=$?
+case $rc in
+  0 | 1 | 2) exit "$rc" ;;
+  *) fail "the scan exited $rc" ;;
+esac
