@@ -162,6 +162,12 @@ def check_repo(repo: Path) -> None:
     inside = git(repo, "rev-parse", "--is-inside-work-tree").strip()
     if inside != b"true":
         raise GuardError(f"{repo}: not a git work tree")
+    # Must be the top of its own work tree. An uninitialised submodule is an
+    # empty directory inside the lab's work tree, and scanning the lab instead
+    # of the product would report on the wrong repository.
+    top = git(repo, "rev-parse", "--show-toplevel").decode().strip()
+    if Path(top).resolve() != repo.resolve():
+        raise GuardError(f"{repo}: not the top of a git work tree (that is {top})")
 
 
 def is_binary(blob: bytes) -> bool:

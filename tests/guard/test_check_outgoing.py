@@ -190,6 +190,14 @@ def test_missing_repo_exits_2(tmp_path: Path, words: Path, allowed: Path) -> Non
     assert guard(plain, words, allowed, "--tree").code == 2
 
 
+def test_directory_inside_another_repo_exits_2(
+    repo: Repo, words: Path, allowed: Path
+) -> None:
+    # An uninitialised submodule: an empty directory in the outer work tree.
+    (repo.root / "product").mkdir()
+    assert guard(repo.root / "product", words, allowed, "--tree").code == 2
+
+
 def test_bad_range_and_bad_allow_list_exit_2(
     repo: Repo, words: Path, tmp_path: Path, allowed: Path
 ) -> None:
