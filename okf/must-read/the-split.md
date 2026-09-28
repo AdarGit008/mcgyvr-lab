@@ -1,6 +1,7 @@
 # the-split
 
-Any change that reaches the product. Owner ruling, every line of it.
+Any change that reaches the product. Owner rulings, and how they are carried
+out.
 
 ## What goes where
 
@@ -19,9 +20,10 @@ born in a campaign.
 **Renaming is not cleaning.** A machine with an invented name and the owner's
 card count, sizes, layout or incident is still the owner's machine.
 
-**A number in the product is a fact, an estimate, or the user's own reading, and
-says which.** An estimate names what it estimates and gives way to the user's
-reading. A value read on the owner's machines is never a rule in the product.
+**A number in the product must be a fact, an estimate, or the user's own
+reading, and must say which.** An estimate names what it estimates and gives way
+to the user's reading. A value read on the owner's machines must never be a rule
+in the product.
 
 **A refusal in the product protects the user's run.** A check that exists so
 results can be compared — an idle machine, a pinned tree, a stamped row — is the
@@ -44,26 +46,32 @@ and the lab's environment installs it from there, so a change made in
 name, no home path, no card model stated as a fact, no value read on those
 machines stated as a rule, and no rule for working those machines.
 
-**The lab may point at the product; the product never depends on the lab.** It
-names the lab in one line of its README and nowhere else.
+**The lab may point at the product; the product must never depend on the lab.**
+It may name the lab in one line of its README and nowhere else.
 
 ## The line, case by case
 
-**Three kinds of use, and two keep records.** A product live run keeps none. A
-dev-live run, started from the lab, and a dev campaign keep them. Recording
-attempts and prompt and reply texts is the lab's; the fleet readings that
-alerts need are the product's, and belong in the user's data folder.
+**Three kinds of use, and two keep records.** A product live run must keep
+none. A dev-live run, started from the lab, and a dev campaign keep them.
+Recording attempts and prompt and reply texts is the lab's; the fleet readings
+that alerts need are the product's, and belong in the user's data folder.
 
 **The door: serving and reading are the product's; measuring — campaigns,
-rounds, workloads — is the lab's.** The lab brings its own gates to it.
+rounds, workloads — is the lab's.** Gates that measure are the lab's to bring.
 
-**The product ships numbers as estimates by card class; the user's own readings
-replace them.**
+**A number the product ships must be an estimate by card class, and the user's
+own reading must replace it.**
 
-**A user's machine is approved for live work by the product itself,** from its
-own read and probe of that machine.
+**A user's machine must be approved for live work by the product itself,** from
+its own read and probe of that machine.
 
-**A product test uses invented machines,** invented in shape, not only in name.
+**Another process on the card must be reported, not refused.** The product may
+refuse only when the card has too little free memory.
+
+**A product default may change without a lab measurement first.**
+
+**A product test must use invented machines,** invented in shape, not only in
+name.
 
 ## How a product change travels
 
