@@ -30,6 +30,38 @@ jobs:
       - name: check (lint, typecheck, tests, guard self-tests)
         run: make check
 
+  # The outgoing gate: runs whenever a lab change moves the product pointer.
+  # It compares the product commit recorded on the base with the one at HEAD
+  # and, if they differ, scans every product commit from the product's
+  # origin/main to the new pointer (guard/outgoing-ci.sh). Findings fail the
+  # job, and so does anything that stops the scan: a shallow lab checkout, a
+  # base that is not present, or a product history that cannot be completed.
+  outgoing:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      # Full history, no submodule yet: the script reads the pointer on the
+      # base commit and then fetches the product's full history itself.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: outgoing scan of the product pointer
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          if [ "$EVENT" = pull_request ]; then
+            base=$PR_BASE
+          elif [ -n "$BEFORE" ] && ! [[ "$BEFORE" =~ ^0+$ ]]; then
+            base=$BEFORE
+          else
+            # A new branch: measure against where it left the lab's main.
+            base=$(git merge-base origin/main HEAD || true)
+          fi
+          guard/outgoing-ci.sh "$base"
+
   # The product's full gate inside product/, set up the way the product's own
   # workflow sets it up (pinned JS toolchain on PATH, then `make check`).
   product-check:
