@@ -4,38 +4,56 @@ Two modes, both over a git repository (``--repo``, the product checkout):
 
 ``--diff BASE..HEAD``
     The pre-pull-request check. Every commit reachable from HEAD and not from
-    BASE is scanned on its own: the lines it adds, the path names it adds and
-    its commit message (author and committer identity are not scanned). A
-    word added in one commit and removed in a later one is still found,
-    because it still leaves in the pushed history. ``--branch NAME`` scans the
-    branch name too. The work tree must be clean: staged, modified or
-    untracked (non-ignored) files are an error, because they are not in the
-    range and would otherwise read as clean.
+    BASE is scanned on its own: the lines it adds (and the lines next to a
+    deletion, which a deletion can join to a trailing backslash), the path
+    names it adds, its commit message, and its author and committer lines
+    (name and e-mail, not the timestamp). A word added in one commit and
+    removed in a later one is still found, because it still leaves in the
+    pushed history. ``--branch NAME`` scans the branch name too. Tags, tag
+    messages and git notes are not scanned. The output always says how many
+    commits were scanned.
+
+    Refused with exit 2: staged, modified or untracked (non-ignored) files
+    (they are in no range); a side of the range that starts with ``^`` or
+    holds range syntax itself; a range given backwards (HEAD an ancestor of
+    BASE); and a HEAD given as ``HEAD`` that is detached while local branches
+    hold commits outside the range, which the scan would otherwise miss.
 
 ``--tree``
     Scan every tracked file and every path name at HEAD. This measures how far
     the clean-up of the whole product still has to go. ``--count-only`` makes
     it informational: exit 0 whenever the scan ran.
 
-The guard fails closed. Nothing is skipped because git calls it binary, and
-no ``.gitattributes`` rule on the outgoing branch can switch it off: blobs are
-read with ``git cat-file`` and scanned as bytes, and added lines are found by
-diffing blob against blob, where no attribute applies. Every blob is decoded
-as UTF-8 (with replacement); UTF-16 content (a BOM, or the NUL pattern of
-UTF-16) is decoded as UTF-16 as well, and other content with NUL bytes or
-invalid UTF-8 as latin-1 as well. Content that is still not text is scanned
-anyway and listed as *not scanned as text*, which exits 2 unless its path
-matches a glob in ``binary-ok.txt``. Before matching, text is normalised with
-Unicode NFKC, zero-width characters are removed, and a line ending in a
-backslash is joined with the next.
+The guard fails closed.
+
+* Blobs are read with ``git cat-file`` and scanned as bytes; nothing is
+  skipped because git calls it binary. Added lines are found by diffing blob
+  against blob, where no ``.gitattributes`` rule applies. Replace objects are
+  switched off, and a shallow or grafted repository is refused.
+* A blob is *text* when the whole of it decodes, strictly, in a recognised
+  encoding and holds no control characters (other than tab, line feed,
+  vertical tab, form feed, carriage return and escape): UTF-8 (with or without
+  a BOM), UTF-16 or UTF-32 with a BOM, UTF-32 without one, or UTF-16 without
+  one whose NUL bytes all sit on one side of each code unit and make up at
+  least 30% of it. There is no allowance for a few odd bytes.
+* Any other blob is still searched (as UTF-8 with replacement, and, when it
+  holds NUL bytes, as latin-1 with the NUL bytes removed) and is then listed
+  as *not scanned as text*, which exits 2 unless its exact path is listed in
+  ``binary-ok.txt``. Compressed or encoded content is never read through.
+* Before matching, text is normalised: format characters (Unicode category
+  Cf, such as soft hyphens, zero-width and direction marks), variation
+  selectors, tag characters, U+034F and U+180E are removed; Unicode NFKC is
+  applied; dashes and minus signs become ``-``; and a line ending in a
+  backslash is joined with the next.
 
 Output: one finding per line, ``path:line: pattern: matching text`` (followed
 by ``(commit <id>)`` in ``--diff`` mode; a path name is line 0), the files not
 scanned as text, then a summary counted per pattern and per top-level
-directory. ``--quiet`` leaves out the finding lines.
+directory. ``--quiet`` leaves out the finding lines and the list of files not
+scanned as text (their count stays).
 
-Exit codes: 0 clean, 1 findings, 2 usage, error or content not scanned as
-text. An error never exits 0.
+Exit codes: 0 clean, 1 findings, 2 usage, error, refused state or content not
+scanned as text. An error never exits 0.
 
 Standard library only.
 """
@@ -43,7 +61,7 @@ Standard library only.
 from __future__ import annotations
 
 import argparse
-import fnmatch
+import functools
 import os
 import re
 import subprocess
@@ -66,7 +84,9 @@ DEFAULT_BINARY_OK = HERE / "binary-ok.txt"
 
 TOP_LEVEL_FILES = "(top-level files)"
 MESSAGE = "(commit message)"
+IDENTITY = "(commit identity)"
 BRANCH = "(branch name)"
+PSEUDO_PATHS = {MESSAGE, IDENTITY, BRANCH}
 GITLINK_MODE = "160000"
 
 # Git with the outside influences on what it shows switched off: no user or
@@ -79,15 +99,25 @@ GIT_BASE = [
     "-c",
     "core.attributesFile=/dev/null",
     "--no-pager",
+    "--no-replace-objects",
 ]
-GIT_ENV = {**os.environ, "GIT_ATTR_NOSYSTEM": "1"}
+GIT_ENV = {**os.environ, "GIT_ATTR_NOSYSTEM": "1", "GIT_NO_REPLACE_OBJECTS": "1"}
 GIT_ENV.pop("GIT_EXTERNAL_DIFF", None)
 
-ZERO_WIDTH = dict.fromkeys(map(ord, "​‌‍⁠﻿"))
-# Characters a text file does not contain; used to tell text from binary.
-NOT_TEXT = re.compile(r"[\x00-\x08\x0e-\x1a\x1c-\x1f\x7f�]")
-C1_CONTROLS = re.compile(r"[\x80-\x9f]")
-NOT_TEXT_LIMIT = 0.05
+DASHES = "\u2010\u2011\u2012\u2013\u2014\u2015\u2212\ufe58\ufe63\uff0d"
+# Characters text does not hold: C0 controls other than tab, line feed,
+# vertical tab, form feed, carriage return and escape; and DEL.
+CONTROL = re.compile(r"[\x00-\x08\x0e-\x1a\x1c-\x1f\x7f]")
+BOMS = [
+    (b"\x00\x00\xfe\xff", "utf-32-be"),
+    (b"\xff\xfe\x00\x00", "utf-32-le"),
+    (b"\xef\xbb\xbf", "utf-8"),
+    (b"\xff\xfe", "utf-16-le"),
+    (b"\xfe\xff", "utf-16-be"),
+]
+# A pattern that refers to a group by number or name would change meaning
+# inside the combined prefilter, where group numbers shift.
+BACKREFERENCE = re.compile(r"(?<!\\)(?:\\\\)*\\(?:[1-9]|g<)|\(\?P=|\(\?\(")
 HUNK = re.compile(rb"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@", re.MULTILINE)
 INLINE_COMMENT = re.compile(r"\s+#.*$")
 
@@ -119,6 +149,7 @@ class Finding:
 class Report:
     findings: list[Finding] = field(default_factory=list)
     not_scanned: dict[str, int] = field(default_factory=dict)  # path -> size
+    commits: int | None = None  # scanned in --diff mode
 
 
 # --- configuration files ------------------------------------------------------
@@ -149,10 +180,21 @@ def load_patterns(path: Path) -> list[Pattern]:
         line = INLINE_COMMENT.sub("", raw).strip()
         if not line or line.startswith("#"):
             continue
+        if "\0" in line:
+            raise GuardError(f"{path}:{number}: pattern holds a NUL byte")
+        if unicodedata.normalize("NFKC", line) != line:
+            raise GuardError(
+                f"{path}:{number}: pattern {line!r} changes under NFKC; text is "
+                "normalised before matching, so it could never match as written"
+            )
+        if BACKREFERENCE.search(line):
+            raise GuardError(f"{path}:{number}: pattern {line!r} uses a backreference")
         try:
             regex = re.compile(line, re.IGNORECASE)
         except re.error as exc:
             raise GuardError(f"{path}:{number}: bad pattern {line!r}: {exc}") from exc
+        if regex.groupindex:
+            raise GuardError(f"{path}:{number}: pattern {line!r} names a group")
         if regex.search(""):
             raise GuardError(f"{path}:{number}: pattern {line!r} matches everything")
         patterns.append(Pattern(line, regex))
@@ -169,25 +211,50 @@ def load_allowed(path: Path) -> set[tuple[str, str]]:
         file_path, sep, line_text = raw.partition(":")
         if not sep or not file_path:
             raise GuardError(f"{path}:{number}: expected 'path:exact line text'")
+        if file_path in PSEUDO_PATHS:
+            raise GuardError(f"{path}:{number}: {file_path} can never be allowed")
         allowed.add((file_path, line_text))
     return allowed
 
 
-def load_globs(path: Path) -> list[str]:
-    return [
-        line.strip().lower()
-        for _, line in _read_config(path)
-        if line.strip() and not line.strip().startswith("#")
-    ]
+def load_exact_paths(path: Path) -> set[str]:
+    """Exact paths, one per line; a glob character is refused."""
+    paths = set()
+    for number, raw in _read_config(path):
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if re.search(r"[*?\[]", line):
+            raise GuardError(f"{path}:{number}: {line!r}: exact paths only, no globs")
+        paths.add(line)
+    return paths
 
 
 # --- matching -----------------------------------------------------------------
 
 
+@functools.cache
+def _normal_table() -> dict[int, str | None]:
+    """Characters removed before matching, and dashes mapped to `-`."""
+    table: dict[int, str | None] = {
+        cp: None
+        for cp in range(sys.maxunicode + 1)
+        if unicodedata.category(chr(cp)) == "Cf"
+    }
+    for cp in (0x034F, 0x180E, *range(0xFE00, 0xFE10), *range(0xE0000, 0xE0080)):
+        table[cp] = None
+    for cp in range(0xE0100, 0xE01F0):
+        table[cp] = None
+    for dash in DASHES:
+        table[ord(dash)] = "-"
+    return table
+
+
 def normalise(text: str) -> str:
     if text.isascii():
         return text
-    return unicodedata.normalize("NFKC", text).translate(ZERO_WIDTH)
+    table = _normal_table()
+    return unicodedata.normalize("NFKC", text.translate(table)).translate(table)
 
 
 def logical_lines(lines: Sequence[str]) -> list[tuple[int, int]]:
@@ -203,50 +270,54 @@ def logical_lines(lines: Sequence[str]) -> list[tuple[int, int]]:
     return spans
 
 
-def utf16_codec(blob: bytes) -> str | None:
-    if blob.startswith((b"\xff\xfe", b"\xfe\xff")):
-        return "utf-16"
-    sample = blob[:4096]
-    half = len(sample) // 2
-    if half < 2:
+def _strict(blob: bytes, codec: str) -> str | None:
+    """`blob` decoded, when all of it is text in `codec`; otherwise None."""
+    try:
+        text = blob.decode(codec)
+    except UnicodeDecodeError:
         return None
-    even = sample[0::2].count(0) / half
-    odd = sample[1::2].count(0) / half
-    if odd >= 0.3 and even <= 0.05:
-        return "utf-16-le"
-    if even >= 0.3 and odd <= 0.05:
-        return "utf-16-be"
+    return None if CONTROL.search(text) else text
+
+
+def recognise(blob: bytes) -> tuple[str, str] | None:
+    """(codec, text) when the whole blob is text in a recognised encoding."""
+    for bom, codec in BOMS:
+        if blob.startswith(bom):
+            text = _strict(blob[len(bom) :], codec)
+            return (codec, text) if text is not None else None
+    if b"\0" not in blob:
+        text = _strict(blob, "utf-8")
+        return ("utf-8", text) if text is not None else None
+    candidates = []
+    if len(blob) % 4 == 0:
+        candidates += ["utf-32-le", "utf-32-be"]
+    if len(blob) % 2 == 0:
+        units = len(blob) // 2
+        even, odd = blob[0::2].count(0), blob[1::2].count(0)
+        if even == 0 and odd >= 0.3 * units:
+            candidates.append("utf-16-le")
+        if odd == 0 and even >= 0.3 * units:
+            candidates.append("utf-16-be")
+    for codec in candidates:
+        text = _strict(blob, codec)
+        if text is not None:
+            return codec, text
     return None
 
 
 def decodings(blob: bytes) -> tuple[list[str], bool, bool]:
-    """(texts to scan, looks like text, line numbers are git's).
+    """(texts to search, is text, line numbers are git's).
 
-    Git counts lines by the byte `\\n`; that holds for UTF-8 and latin-1 and
-    not for UTF-16.
+    Git counts lines by the byte `\\n`; that holds for UTF-8 and not for
+    UTF-16 or UTF-32.
     """
-    codec = utf16_codec(blob)
-    if codec is not None:
-        wide = blob.decode(codec, "replace")
-        return [wide, blob.decode("utf-8", "replace")], True, False
-    if b"\0" not in blob:
-        try:
-            return [blob.decode("utf-8")], True, True
-        except UnicodeDecodeError:
-            pass
-    utf8 = blob.decode("utf-8", "replace")
-    latin = blob.decode("latin-1")
-    return [utf8, latin], _text_like(utf8, latin), True
-
-
-def _text_like(utf8: str, latin: str) -> bool:
-    if not latin:
-        return True
-    as_utf8 = len(NOT_TEXT.findall(utf8)) / max(len(utf8), 1)
-    as_latin = (len(NOT_TEXT.findall(latin)) + len(C1_CONTROLS.findall(latin))) / len(
-        latin
-    )
-    return min(as_utf8, as_latin) <= NOT_TEXT_LIMIT
+    found = recognise(blob)
+    texts = [found[1]] if found is not None else []
+    texts.append(blob.decode("utf-8", "replace"))
+    if b"\0" in blob:
+        texts.append(blob.replace(b"\0", b"").decode("latin-1"))
+    aligned = found is not None and found[0] == "utf-8"
+    return texts, found is not None, aligned
 
 
 class Scanner:
@@ -254,15 +325,20 @@ class Scanner:
         self,
         patterns: Sequence[Pattern],
         allowed: set[tuple[str, str]],
-        binary_ok: Sequence[str],
+        binary_ok: set[str],
     ) -> None:
         self.patterns = patterns
         self.allowed = allowed
         self.binary_ok = binary_ok
         # One pass to decide whether a text needs the per-pattern pass at all.
-        self.any = re.compile(
-            "|".join(f"(?:{p.source})" for p in patterns), re.IGNORECASE
-        )
+        # Backreferences and named groups are refused on load, so the shifted
+        # group numbers in here cannot change what a pattern means.
+        try:
+            self.any = re.compile(
+                "|".join(f"(?:{p.source})" for p in patterns), re.IGNORECASE
+            )
+        except re.error as exc:
+            raise GuardError(f"the patterns do not combine: {exc}") from exc
 
     def match(self, path: str, number: int, text: str, commit: str) -> list[Finding]:
         text = normalise(text)
@@ -321,12 +397,8 @@ class Scanner:
         for text in texts:
             merged |= Counter(self.lines(path, text, wanted, commit))
         report.findings.extend(merged.elements())
-        if not text_like and not self.is_binary_ok(path):
+        if not text_like and path not in self.binary_ok:
             report.not_scanned[path] = len(blob)
-
-    def is_binary_ok(self, path: str) -> bool:
-        lowered = path.lower()
-        return any(fnmatch.fnmatchcase(lowered, glob) for glob in self.binary_ok)
 
 
 # --- git ----------------------------------------------------------------------
@@ -344,6 +416,19 @@ def git(repo: Path, *args: str) -> bytes:
     return done.stdout
 
 
+def git_yes(repo: Path, *args: str) -> bool:
+    """True on exit 0, False on exit 1; anything else is an error."""
+    command = [*GIT_BASE, "-C", str(repo), *args]
+    try:
+        done = subprocess.run(command, capture_output=True, check=False, env=GIT_ENV)
+    except OSError as exc:
+        raise GuardError(f"cannot run git: {exc}") from exc
+    if done.returncode not in (0, 1):
+        detail = done.stderr.decode("utf-8", "replace").strip()
+        raise GuardError(f"git {' '.join(args[:3])} failed: {detail}")
+    return done.returncode == 0
+
+
 def check_repo(repo: Path) -> None:
     if not repo.is_dir():
         raise GuardError(f"{repo}: no such directory")
@@ -356,6 +441,12 @@ def check_repo(repo: Path) -> None:
     top = git(repo, "rev-parse", "--show-toplevel").decode().strip()
     if Path(top).resolve() != repo.resolve():
         raise GuardError(f"{repo}: not the top of a git work tree (that is {top})")
+    # A shallow or grafted history hides commits and content from the scan.
+    if git(repo, "rev-parse", "--is-shallow-repository").strip() != b"false":
+        raise GuardError(f"{repo} is a shallow clone; fetch its full history")
+    grafts = git(repo, "rev-parse", "--git-path", "info/grafts").decode().strip()
+    if (repo / grafts).exists() or Path(grafts).exists():
+        raise GuardError(f"{repo} has a grafts file ({grafts}); remove it")
 
 
 def check_clean(repo: Path) -> None:
@@ -485,6 +576,9 @@ def parse_range(spec: str) -> tuple[str, str]:
         base, sep, head = spec.partition("..")
     if not sep or not base or not head:
         raise GuardError(f"--diff wants BASE..HEAD, got {spec!r}")
+    for side in (base, head):
+        if side.startswith("^") or any(t in side for t in ("..", "^!", "^@", "^-")):
+            raise GuardError(f"--diff: {side!r} is not a single revision")
     return base, head
 
 
@@ -540,15 +634,57 @@ def added_lines(repo: Path, old_sha: str, new_sha: str) -> set[int]:
         new_sha,
     )
     lines: set[int] = set()
-    for match in HUNK.finditer(out):
+    for match in HUNK.finditer(out):  # a line is changed or next to a deletion
         start = int(match.group(1))
         count = int(match.group(2)) if match.group(2) is not None else 1
-        lines.update(range(start, start + count))
+        if count == 0:
+            # A pure deletion after line `start`: the lines on either side
+            # are now neighbours, and a trailing backslash can join them.
+            lines.update({start, start + 1} - {0})
+        else:
+            lines.update(range(start, start + count))
     return lines
 
 
 def is_null(sha: str) -> bool:
     return set(sha) == {"0"}
+
+
+def check_detached(repo: Path, base: str, head: str) -> None:
+    """Refuse a detached HEAD while local branches hold commits outside the range.
+
+    With HEAD detached at the base, `BASE..HEAD` is empty and would read as
+    clean while the work to be sent sits on a branch.
+    """
+    if git_yes(repo, "symbolic-ref", "--quiet", "HEAD"):
+        return
+    refs = git(repo, "for-each-ref", "--format=%(refname)", "refs/heads/")
+    outside = []
+    for ref in refs.decode("utf-8", "replace").split():
+        count = git(
+            repo, "rev-list", "--count", "--end-of-options", ref, f"^{base}", f"^{head}"
+        )
+        if int(count) > 0:
+            outside.append(f"{ref.removeprefix('refs/heads/')} ({int(count)} commits)")
+    if outside:
+        raise GuardError(
+            f"HEAD is detached at {head[:7]}, and local branches hold commits "
+            f"outside the range: {', '.join(outside)}. Check out the branch to "
+            "send (git switch <branch>) and run the guard again, or pass its "
+            "range explicitly"
+        )
+
+
+def commit_parts(raw: bytes) -> tuple[list[str], str, bytes]:
+    """(parent ids, author and committer lines without timestamps, message)."""
+    headers, _, message = raw.partition(b"\n\n")
+    parents, identity = [], []
+    for line in headers.split(b"\n"):
+        if line.startswith(b"parent "):
+            parents.append(line.split()[1].decode())
+        elif line.startswith((b"author ", b"committer ")):
+            identity.append(line[: line.rfind(b">") + 1])
+    return parents, b"\n".join(identity).decode("utf-8", "replace"), message
 
 
 def scan_diff(
@@ -562,6 +698,12 @@ def scan_diff(
     check_clean(repo)
     base_rev, head_rev = parse_range(spec)
     base, head = resolve(repo, base_rev), resolve(repo, head_rev)
+    if head != base and git_yes(repo, "merge-base", "--is-ancestor", head, base):
+        raise GuardError(
+            f"--diff {spec}: {head_rev} is behind {base_rev}; the range is backwards"
+        )
+    if head_rev in {"HEAD", "@"}:
+        check_detached(repo, base, head)
     if branch is not None:
         report.findings.extend(scanner.match(BRANCH, 0, branch, ""))
     commits = git(
@@ -573,20 +715,21 @@ def scan_diff(
         head,
         f"^{base}",
     ).split()
+    report.commits = len(commits)
     empty_tree = git(repo, "hash-object", "-t", "tree", "/dev/null").decode().strip()
     for raw_commit in commits:
         commit = raw_commit.decode()
         short = commit[:7]
-        raw = git(repo, "cat-file", "commit", commit)
-        headers, _, message_bytes = raw.partition(b"\n\n")
-        for text in decodings(message_bytes)[0]:
+        parents, identity, message = commit_parts(
+            git(repo, "cat-file", "commit", commit)
+        )
+        report.findings.extend(scanner.lines(IDENTITY, identity, None, short))
+        texts, is_text, _ = decodings(message)
+        for text in texts:
             report.findings.extend(scanner.lines(MESSAGE, text, None, short))
-        parents = [
-            line.split()[1].decode()
-            for line in headers.split(b"\n")
-            if line.startswith(b"parent ")
-        ] or [empty_tree]
-        scan_commit(repo, scanner, commit, short, parents, only, report)
+        if not is_text:
+            report.not_scanned[f"{MESSAGE} {short}"] = len(message)
+        scan_commit(repo, scanner, commit, short, parents or [empty_tree], only, report)
 
 
 def scan_commit(
@@ -631,19 +774,22 @@ def scan_commit(
 
 
 def top_level(path: str) -> str:
-    if path in {MESSAGE, BRANCH}:
+    if path in PSEUDO_PATHS:
         return path
     head, sep, _ = path.partition("/")
     return head + "/" if sep else TOP_LEVEL_FILES
 
 
-def summarise(report: Report) -> list[str]:
+def summarise(report: Report, quiet: bool) -> list[str]:
     findings = report.findings
     lines = []
+    if report.commits is not None:
+        lines.append(f"commits scanned: {report.commits}")
     if report.not_scanned:
         lines.append(f"not scanned as text: {len(report.not_scanned)} files")
-        for path, size in sorted(report.not_scanned.items()):
-            lines.append(f"  {path} ({size} bytes)")
+        if not quiet:
+            for path, size in sorted(report.not_scanned.items()):
+                lines.append(f"  {path} ({size} bytes)")
     files = {f.path for f in findings}
     lines.append(f"summary: {len(findings)} findings in {len(files)} files")
     if not findings:
@@ -673,7 +819,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--words", default=str(DEFAULT_WORDS), help="pattern file")
     parser.add_argument("--allowed", default=str(DEFAULT_ALLOWED), help="allow-list")
     parser.add_argument(
-        "--binary-ok", default=str(DEFAULT_BINARY_OK), help="globs of binary files"
+        "--binary-ok",
+        default=str(DEFAULT_BINARY_OK),
+        help="exact paths of binary files that may go out",
     )
     parser.add_argument(
         "--only",
@@ -682,7 +830,9 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="PREFIX",
         help="scan only paths under PREFIX (repeatable; '/' = top-level files)",
     )
-    parser.add_argument("--quiet", action="store_true", help="no finding lines")
+    parser.add_argument(
+        "--quiet", action="store_true", help="no finding lines, no file list"
+    )
     parser.add_argument(
         "--count-only",
         action="store_true",
@@ -706,7 +856,7 @@ def run(argv: Sequence[str] | None) -> int:
         scanner = Scanner(
             load_patterns(Path(args.words)),
             load_allowed(Path(args.allowed)),
-            load_globs(Path(args.binary_ok)),
+            load_exact_paths(Path(args.binary_ok)),
         )
         repo = Path(args.repo)
         check_repo(repo)
@@ -723,7 +873,7 @@ def run(argv: Sequence[str] | None) -> int:
     if not args.quiet:
         for finding in report.findings:
             print(finding.render())
-    for line in summarise(report):
+    for line in summarise(report, args.quiet):
         print(line)
     if args.count_only:
         return EXIT_CLEAN

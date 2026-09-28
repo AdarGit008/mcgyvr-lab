@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import os
 import re
 import subprocess
@@ -92,7 +93,14 @@ def repo(tmp_path: Path) -> Repo:
     return repo
 
 
-def guard(repo: Path, words: Path, allowed: Path, *args: str) -> Result:
+def guard(
+    repo: Path,
+    words: Path,
+    allowed: Path,
+    *args: str,
+    binary_ok: Path | None = None,
+) -> Result:
+    extra = ["--binary-ok", str(binary_ok)] if binary_ok is not None else []
     done = subprocess.run(
         [
             sys.executable,
@@ -103,6 +111,7 @@ def guard(repo: Path, words: Path, allowed: Path, *args: str) -> Result:
             str(words),
             "--allowed",
             str(allowed),
+            *extra,
             *args,
         ],
         capture_output=True,
@@ -269,35 +278,62 @@ def findings(out: str) -> list[tuple[str, int, str]]:
 SAMPLES: dict[str, list[str]] = {
     "srv1(?![0-9])": ["srv1", "my_srv1_thing", "camelSrv1Host", "LIVE_SRV1"],
     "srv2(?![0-9])": ["read_srv2", "SRV2", "local_srv2"],
-    "(?<![a-z0-9])b-small(?![a-z0-9])": ["b-small", "the_b-small box"],
+    "(?<![a-z0-9])b[-_]small(?![a-z0-9])": [
+        "b-small",
+        "the_b-small box",
+        "units.b_small",
+    ],
     "adaramir": ["adaramir"],
     "/home/adaramir": ["/home/adaramir/x"],
     "tailbaf744": ["tailbaf744.ts.net"],
     r"(?<![0-9])100\.69\.72\.51(?![0-9])": ["100.69.72.51"],
-    "RTX ?3060(?![0-9])": ["RTX 3060", "RTX3060", "rtx3060ti"],
-    "GTX ?1660(?![0-9])": ["GTX1660", "GTX 1660"],
-    "(?<![0-9])1660 ?SUPER": ["1660 SUPER", "1660SUPER"],
-    "GTX ?1080(?![0-9])": ["GTX 1080", "gtx1080"],
-    "(?<![0-9])1080 ?Ti(?![a-z])": ["1080Ti", "1080 Ti"],
+    "RTX[ _-]?3060(?![0-9])|(?<![0-9])3060[ _-]?Ti(?![a-z])": [
+        "RTX 3060",
+        "RTX3060",
+        "rtx3060ti",
+        "NVIDIA_GeForce_RTX_3060",
+        "RTX-3060",
+        "3060 Ti",
+        "3060Ti",
+    ],
+    "GTX[ _-]?1660(?![0-9])": ["GTX1660", "GTX 1660", "GTX-1660", "GTX_1660_SUPER"],
+    "(?<![0-9])1660[ _-]?(?:SUPER|S)(?![a-z])": [
+        "1660 SUPER",
+        "1660SUPER",
+        "1660_SUPER",
+        "1660S",
+        "1660s",
+        "1660 Super",
+    ],
+    "GTX[ _-]?1080(?![0-9])": ["GTX 1080", "gtx1080", "GTX_1080"],
+    "(?<![0-9])1080[ _-]?Ti(?![a-z])": ["1080Ti", "1080 Ti", "1080-Ti"],
     "(?<![0-9])Z490(?![0-9])": ["Z490", "boardZ490"],
     "srv[12]_[a-z0-9_]+": ["srv2_35b_32k", "my_srv1_x"],
     "d-srv[12]-[a-z0-9-]+": ["d-srv1-dense"],
-    "mcgyvr-lab": ["mcgyvr-lab"],
+    "mcgyvr[-_]lab": ["mcgyvr-lab", "import mcgyvr_lab"],
 }
 
+# Ordinary text that must pass. `b-smaller` passes by choice: the b-small
+# pattern refuses a following letter so that ordinary words built on "small"
+# never match; the cost is that a camelCase `b-smallHost` is not caught.
 ORDINARY = [
     "srv10",
     "srv12",
     "conserv1ng",
     "Z4900",
     "31660",
+    "16600",
     "b-smaller",
+    "sub_small",
     "RTX30600",
     "GTX10800",
     "GTX16600",
     "timing out",
     "1100.69.72.512",
     "1080 times",
+    "1080p",
+    "1660 Series",
+    "3060 Timer",
 ]
 
 
@@ -352,10 +388,13 @@ def test_text_with_one_nul_byte_is_scanned(
     base = repo.git("rev-parse", "HEAD")
     repo.write("notes.txt", b"a normal text file that runs on srv1\n\x00\nend\n")
     repo.commit("nul")
+    # A NUL byte is not text in any recognised encoding: the word is still
+    # reported, and the file is listed as not scanned as text (exit 2).
     diff = guard(repo.root, words, allowed, "--diff", f"{base}..HEAD")
-    assert diff.code == 1, diff
+    assert diff.code == 2, diff
     assert "notes.txt:1: " in diff.out
-    assert guard(repo.root, words, allowed, "--tree").code == 1
+    tree = guard(repo.root, words, allowed, "--tree")
+    assert tree.code == 2 and "notes.txt:1: " in tree.out
 
 
 def test_utf16_text_is_scanned(repo: Repo, words: Path, allowed: Path) -> None:
@@ -396,17 +435,20 @@ def test_real_binary_is_listed_not_scanned_and_exits_2(
     assert guard(repo.root, words, allowed, "--tree").code == 2
 
 
-def test_binary_ok_globs_pass_but_their_names_are_scanned(
-    repo: Repo, words: Path, allowed: Path
+def test_binary_ok_paths_pass_but_their_names_are_scanned(
+    repo: Repo, words: Path, allowed: Path, tmp_path: Path
 ) -> None:
+    ok = tmp_path / "binary-ok.txt"
+    ok.write_text("# exact paths\nimg/logo.png\nimg/srv1-rack.png\n", encoding="utf-8")
     base = repo.git("rev-parse", "HEAD")
     noise = bytes(range(256)) * 8
     repo.write("img/logo.png", noise)
     repo.commit("image")
-    assert guard(repo.root, words, allowed, "--diff", f"{base}..HEAD").code == 0
+    rng = f"{base}..HEAD"
+    assert guard(repo.root, words, allowed, "--diff", rng, binary_ok=ok).code == 0
     repo.write("img/srv1-rack.png", noise)
     repo.commit("image with a private name")
-    diff = guard(repo.root, words, allowed, "--diff", f"{base}..HEAD")
+    diff = guard(repo.root, words, allowed, "--diff", rng, binary_ok=ok)
     assert diff.code == 1, diff
     assert "img/srv1-rack.png:0: " in diff.out
 
@@ -446,12 +488,27 @@ def test_the_branch_name_is_scanned(repo: Repo, words: Path, allowed: Path) -> N
     assert guard(repo.root, words, allowed, *args, "fix-wake").code == 0
 
 
-def test_author_identity_is_not_scanned(repo: Repo, words: Path, allowed: Path) -> None:
+def test_author_and_committer_identity_are_scanned(repo: Repo) -> None:
     base = repo.git("rev-parse", "HEAD")
     repo.write("a.txt", "fine\n")
     repo.git("add", "a.txt")
-    repo.git("commit", "-q", "-m", "fine", "--author", "secrethost <x@srv1.invalid>")
-    assert guard(repo.root, words, allowed, "--diff", f"{base}..HEAD").code == 0
+    env = {**GIT_ENV, "GIT_AUTHOR_EMAIL": "adaramir@srv1.tailbaf744.ts.net"}
+    subprocess.run(
+        ["git", "-C", str(repo.root), "commit", "-q", "-m", "fine"], env=env, check=True
+    )
+    result = guard(repo.root, REAL_WORDS, REAL_ALLOWED, "--diff", f"{base}..HEAD")
+    assert result.code == 1, result
+    assert "(commit identity):" in result.out
+    base = repo.git("rev-parse", "HEAD")
+    repo.write("b.txt", "fine\n")
+    repo.git("add", "b.txt")
+    env = {**GIT_ENV, "GIT_COMMITTER_NAME": "Adar on b-small"}
+    subprocess.run(
+        ["git", "-C", str(repo.root), "commit", "-q", "-m", "fine"], env=env, check=True
+    )
+    result = guard(repo.root, REAL_WORDS, REAL_ALLOWED, "--diff", f"{base}..HEAD")
+    assert result.code == 1, result
+    assert "(commit identity):" in result.out
 
 
 # --- item 4: uncommitted work is not clean ----------------------------------
@@ -756,3 +813,246 @@ def test_two_occurrences_on_one_line_are_two_findings(
     repo.commit("twice")
     result = guard(repo.root, words, allowed, "--tree")
     assert "summary: 2 findings in 1 files" in result.out, result
+
+
+# --- round 2, B2: content the guard cannot read is never clean -------------
+
+UNREADABLE = {
+    "utf32-bom": "host srv1 here\n".encode("utf-32"),
+    "utf32-le": "host srv1 here\n".encode("utf-32-le"),
+    "utf32-be": "host srv1 here\n".encode("utf-32-be"),
+    "utf16-tail": b"plain ascii line\n" * 300 + "host srv1 here\n".encode("utf-16-le"),
+    "utf16-odd-tail": b"x"
+    + b"plain ascii line\n" * 300
+    + "host srv1 here\n".encode("utf-16-le"),
+    "nul-split": b"text line\n" * 50 + b"s\0rv1\n",
+    "bom-gzip": b"\xff\xfe" + gzip.compress(b"host srv1 here"),
+    "text-then-gzip": b"text line\n" * 200 + gzip.compress(b"host srv1 here"),
+}
+
+
+@pytest.mark.parametrize("name", sorted(UNREADABLE))
+def test_unreadable_content_is_never_clean(
+    repo: Repo, words: Path, allowed: Path, name: str
+) -> None:
+    base = repo.git("rev-parse", "HEAD")
+    repo.write("data.txt", UNREADABLE[name])
+    repo.commit(name)
+    diff = guard(repo.root, words, allowed, "--diff", f"{base}..HEAD")
+    tree = guard(repo.root, words, allowed, "--tree")
+    expected = {2} if "gzip" in name else {1, 2}
+    assert diff.code in expected, diff
+    assert tree.code in expected, tree
+
+
+def test_a_named_image_holding_gzip_does_not_pass_on_its_name(
+    repo: Repo, words: Path, allowed: Path
+) -> None:
+    repo.write("x.png", gzip.compress(b"host srv1 here"))
+    repo.commit("disguised")
+    assert guard(repo.root, words, allowed, "--tree").code == 2
+
+
+def test_binary_ok_refuses_globs(
+    repo: Repo, words: Path, allowed: Path, tmp_path: Path
+) -> None:
+    ok = tmp_path / "binary-ok.txt"
+    ok.write_text("*.png\n", encoding="utf-8")
+    assert guard(repo.root, words, allowed, "--tree", binary_ok=ok).code == 2
+
+
+def test_real_binary_ok_names_exact_paths_only() -> None:
+    lines = [
+        line.strip()
+        for line in (LAB / "guard" / "binary-ok.txt").read_text().splitlines()
+        if line.strip() and not line.startswith("#")
+    ]
+    assert lines, "binary-ok.txt lists nothing"
+    assert not [line for line in lines if re.search(r"[*?\[]", line)]
+
+
+# --- round 2, B4: a wrong range is refused, never read as clean -------------
+
+
+def test_a_backwards_range_exits_2(repo: Repo, words: Path, allowed: Path) -> None:
+    base = repo.git("rev-parse", "HEAD")
+    repo.write("a.txt", "srv1\n")
+    repo.commit("work")
+    assert guard(repo.root, words, allowed, "--diff", f"HEAD..{base}").code == 2
+
+
+@pytest.mark.parametrize(
+    "spec", ["BASE..^HEAD", "^BASE..HEAD", "BASE..HEAD..HEAD", "BASE..HEAD^!"]
+)
+def test_range_syntax_inside_one_side_exits_2(
+    repo: Repo, words: Path, allowed: Path, spec: str
+) -> None:
+    base = repo.git("rev-parse", "HEAD")
+    repo.write("a.txt", "srv1\n")
+    repo.commit("work")
+    spec = spec.replace("BASE", base)
+    assert guard(repo.root, words, allowed, f"--diff={spec}").code == 2
+
+
+def test_commits_scanned_is_always_printed(
+    repo: Repo, words: Path, allowed: Path
+) -> None:
+    base = repo.git("rev-parse", "HEAD")
+    empty = guard(repo.root, words, allowed, "--diff", f"{base}..HEAD")
+    assert empty.code == 0 and "commits scanned: 0" in empty.out
+    repo.write("a.txt", "fine\n")
+    repo.commit("one")
+    one = guard(repo.root, words, allowed, "--diff", f"{base}..HEAD")
+    assert "commits scanned: 1" in one.out
+
+
+def test_detached_head_at_base_with_work_on_a_branch_exits_2(
+    repo: Repo, words: Path, allowed: Path
+) -> None:
+    base = repo.git("rev-parse", "HEAD")
+    repo.git("switch", "-q", "-c", "work")
+    repo.write("a.txt", "srv1\n")
+    repo.commit("leak on a branch")
+    repo.git("switch", "-q", "--detach", base)
+    result = guard(repo.root, words, allowed, "--diff", f"{base}..HEAD")
+    assert result.code == 2, result
+    assert "work" in result.err
+
+
+# --- round 2, C1: format characters and dashes ------------------------------
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "sr\xadv1",  # soft hyphen
+        "srv\u200e1",  # left-to-right mark
+        "s\u2062rv1",  # invisible times
+        "sr\u180ev1",  # Mongolian vowel separator
+        "sr\u034fv1",  # combining grapheme joiner
+        "sr\ufe0fv1",  # variation selector
+        "sr\U000e0041v1",  # tag character
+        "sr\U000e0100v1",  # variation selector supplement
+        "b\u2010small",
+        "b\u2212small",
+        "mcgyvr\u2014lab",
+        "b\ufe63small",
+        "b\uff0dsmall",
+    ],
+)
+def test_format_characters_and_dashes_are_normalised(repo: Repo, text: str) -> None:
+    repo.write("a.txt", f"on {text} today\n")
+    repo.commit("hidden")
+    result = guard(repo.root, REAL_WORDS, REAL_ALLOWED, "--tree")
+    assert result.code == 1, result
+
+
+# --- round 2, C3: local git state cannot hide content -----------------------
+
+
+def test_a_shallow_repository_exits_2(
+    repo: Repo, words: Path, allowed: Path, tmp_path: Path
+) -> None:
+    repo.write("a.txt", "fine\n")
+    repo.commit("second")
+    shallow = tmp_path / "shallow"
+    subprocess.run(
+        ["git", "clone", "-q", "--depth", "1", f"file://{repo.root}", str(shallow)],
+        env=GIT_ENV,
+        check=True,
+    )
+    assert guard(shallow, words, allowed, "--tree").code == 2
+    assert guard(shallow, words, allowed, "--diff", "HEAD..HEAD").code == 2
+
+
+def test_replace_objects_cannot_hide_a_blob(
+    repo: Repo, words: Path, allowed: Path
+) -> None:
+    repo.write("a.txt", "host srv1\n")
+    repo.commit("leak")
+    leaky = repo.git("rev-parse", "HEAD:a.txt")
+    clean = subprocess.run(
+        ["git", "-C", str(repo.root), "hash-object", "-w", "--stdin"],
+        input="host\n",
+        env=GIT_ENV,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.strip()
+    repo.git("replace", leaky, clean)
+    assert guard(repo.root, words, allowed, "--tree").code == 1
+
+
+# --- round 2, C4: pattern list traps ----------------------------------------
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        "(q)q\n(s)rv1\\1\n",
+        "(?P<host>srv1)\n",
+        "(?P<h>s)rv1(?P=h)\n",
+        "srv\x001\n",
+        "\uff53\uff52\uff56\uff11\n",
+    ],
+)
+def test_pattern_traps_exit_2(
+    repo: Repo, tmp_path: Path, allowed: Path, content: str
+) -> None:
+    words = tmp_path / "w.txt"
+    words.write_text(content, encoding="utf-8")
+    repo.write("a.txt", "srv1s\n")
+    repo.commit("x")
+    assert guard(repo.root, words, allowed, "--tree").code == 2
+
+
+# --- round 2, C5: a deletion can create a join ------------------------------
+
+
+def test_a_join_made_by_a_deletion_is_scanned(
+    repo: Repo, words: Path, allowed: Path
+) -> None:
+    repo.write("a.txt", "a srv\\\nzzz\\\n1 b\n")
+    base = repo.commit("split word")
+    assert guard(repo.root, words, allowed, "--tree").code == 0
+    repo.write("a.txt", "a srv\\\n1 b\n")
+    repo.commit("delete the middle line")
+    result = guard(repo.root, words, allowed, "--diff", f"{base}..HEAD")
+    assert result.code == 1, result
+
+
+# --- round 2, C6: pseudo paths cannot be allowed -----------------------------
+
+
+@pytest.mark.parametrize(
+    "entry",
+    [
+        "(commit message):measured on srv1",
+        "(commit identity):author srv1",
+        "(branch name):srv1",
+    ],
+)
+def test_allow_list_refuses_pseudo_paths(
+    repo: Repo, words: Path, tmp_path: Path, entry: str
+) -> None:
+    allow = tmp_path / "allow.txt"
+    allow.write_text(entry + "\n", encoding="utf-8")
+    assert guard(repo.root, words, allow, "--tree").code == 2
+
+
+# --- round 2, P4: every failure of the CI script is exit 2 ------------------
+
+
+def test_ci_failure_of_a_git_command_exits_2(ci_lab: CiLab) -> None:
+    base = ci_lab.lab.git("rev-parse", "HEAD")
+    move_pointer(ci_lab, "a clean change\n")
+    lab = ci_lab.lab
+    lab.git("submodule", "deinit", "-q", "-f", "product")
+    subprocess.run(
+        ["rm", "-rf", str(lab.root / ".git" / "modules" / "product")], check=True
+    )
+    lab.git("config", "-f", ".gitmodules", "submodule.product.url", "/nonexistent")
+    lab.git("add", ".gitmodules")
+    lab.git("commit", "-q", "-m", "break the url")
+    result = ci(lab, base)
+    assert result.code == 2, result
