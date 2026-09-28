@@ -35,11 +35,14 @@ import statistics
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from mcgyvr.fleet.files import load_fleet
 from mcgyvr.fleet.tolerance import (
     CLASS_MTP,
     tolerance_class,
 )
+from tests.lockfleets_window import fleet_doc
 
 REPO = Path(__file__).resolve().parent.parent
 USE = REPO / "records" / "measurements" / "lock-fleets" / "mtp-ornith"
@@ -81,10 +84,20 @@ def committed_units() -> dict[str, Any]:
 # --- the class -------------------------------------------------------------
 
 
-def test_the_committed_mtp_unit_is_judged_as_mtp() -> None:
-    units = committed_units()
-    assert "--spec-type" in units[UNIT]["launch"]["argv"]
-    assert tolerance_class(units[UNIT]) == CLASS_MTP
+def test_a_setup_unit_that_asks_for_mtp_is_judged_as_mtp_once_read() -> None:
+    """A made-up setup, written as a ``fleet.yaml`` is and read back by the
+    same loader: the one unit whose argv asks to draft with its own head is
+    ``mtp``, the same unit without that ask is not, and no unit beside it is."""
+    fleet = fleet_doc()
+    drafting = "a_solo"
+    fleet["units"][drafting]["launch"]["argv"] += ["--spec-type", "draft-mtp"]
+    units = load_fleet(yaml.safe_dump(fleet, sort_keys=False))["units"]
+    assert "--spec-type" in units[drafting]["launch"]["argv"]
+    assert tolerance_class(units[drafting]) == CLASS_MTP
+    assert tolerance_class(_without_mtp(units[drafting])) != CLASS_MTP
+    for name, unit in units.items():
+        if name != drafting:
+            assert tolerance_class(unit) != CLASS_MTP, name
 
 
 def test_each_declared_unit_is_mtp_only_where_it_asks_and_else_as_before() -> None:
