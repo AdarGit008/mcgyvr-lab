@@ -12,8 +12,7 @@ dependencies = ["mcgyvr"]
 # A virtual project: uv installs its dependencies but never builds the lab.
 package = false
 # mypy's own dependency, held at the version the product locks, so mypy runs
-# the same in the lab as in the product. (types-pyyaml, which the product also
-# locks, is not needed: no lab code imports yaml.)
+# the same in the lab as in the product.
 constraint-dependencies = ["ast-serialize==0.8.0"]
 
 [tool.uv.sources]
@@ -29,6 +28,8 @@ dev = [
     "pytest-xdist==3.8.0",
     "ruff==0.16.8",
     "mypy==2.3.1",
+    # The lab's tests import yaml; mypy needs its stubs, as in the product.
+    "types-pyyaml==6.0.12.20260906",
 ]
 
 [tool.ruff]
@@ -37,7 +38,26 @@ target-version = "py312"
 # Only the lab's own code. product/ is checked by its own gate
 # (`make product-check`); records/, archive/ and fleet-setup/ are records and
 # are kept byte for byte as they were.
-extend-exclude = ["product", "records", "archive", "fleet-setup"]
+#
+# tools/ and tests/ came from the product and are linted here under the
+# product's settings for them (product/pyproject.toml): the same rules, line
+# length and formatter, and the same four task-material directories left out.
+# Those hold digest-pinned instruments (task sets, acceptance scripts,
+# reference solutions); a formatter pass there would break the pins, not tidy
+# anything. See product/pyproject.toml for the per-directory reasons.
+extend-exclude = [
+    "product",
+    "records",
+    "archive",
+    "fleet-setup",
+    "tools/bundle/python/tasks",
+    "tools/problems/tasks",
+    "tools/bench/tasks",
+    "tools/bench/reserve",
+]
+# As in the product, `tests` is first-party for import sorting; `mcgyvr` is
+# first-party there because it lives under the product's src/.
+src = ["product/src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF"]
@@ -48,16 +68,45 @@ indent-style = "space"
 
 [tool.mypy]
 python_version = "3.12"
-# The lab gate checks guard/ and tests/guard/ only: `make check` runs ruff on
-# those two paths, pytest on tests/guard/, and mypy on the `files` below. The
-# tests and tools copied from the product (tests/ outside tests/guard/,
-# tools/) are not yet part of the lab gate; making them part of it is the
-# next step.
-files = ["guard", "tests/guard"]
+# The lab's own code: guard/, and tools/ and tests/ (which came from the
+# product), under the product's settings for tools/ and tests/
+# (product/pyproject.toml): strict, the same four task-material directories
+# left out, the same overrides. mcgyvr itself is not checked here; it is
+# read as the installed package (editable, from product/) and checked by the
+# product's own gate (`make product-check`).
+files = ["guard", "tests", "tools"]
 strict = true
 explicit_package_bases = true
-exclude = "^(product|records|archive|fleet-setup)/"
+exclude = "^(product|records|archive|fleet-setup)/|^tools/(bundle/python/tasks|problems/tasks|bench/tasks|bench/reserve)/"
 
+# From product/pyproject.toml: the siblings a rig under `tools/` reaches by
+# bare name after putting its neighbour's directory on `sys.path`. The files
+# themselves are checked under their own paths.
+[[tool.mypy.overrides]]
+module = ["mode", "mde", "power.mde", "frames", "emit", "product", "responsiveness"]
+ignore_missing_imports = true
+
+# In the product, the bare name `product` (tools/bench/product.py, reached by
+# path) resolves to nothing, so the importer sees it untyped. In the lab the
+# name also matches the product/ submodule directory, which mypy would read as
+# a namespace package with none of the module's names; skipping it gives the
+# importer the same untyped view it has in the product.
+[[tool.mypy.overrides]]
+module = ["product"]
+follow_imports = "skip"
+
+# From product/pyproject.toml: third-party packages with no stubs, installed
+# only where a rig under `tools/` needs them.
+[[tool.mypy.overrides]]
+module = [
+    "datasets", "tokenizers", "trl", "unsloth.*", "unsloth", "okf_rag.*",
+    "torch", "torch.*", "pynvml",
+]
+ignore_missing_imports = true
+
+# A bare `pytest` runs the guard's self-tests only. `make check` runs them with
+# --confcutdir (tests/conftest.py not loaded), then the rest of tests/ with
+# `-n auto`, minus the tests the Makefile lists in LAB_TESTS_OUTSIDE.
 [tool.pytest.ini_options]
 testpaths = ["tests/guard"]
 addopts = "-q"

@@ -1,5 +1,5 @@
 # The lab's entry points. Run them from the lab's root.
-#   make check           the lab's own gate: lint, format, types, tests (guard self-tests included)
+#   make check           the lab's own gate: lint, format, types, the lab's tests (guard self-tests included)
 #   make product-check   the product's own `make check`, run inside product/ (see below for what it does not set up)
 #   make guard           the outgoing gate: what product/'s branch adds on top of origin/main
 #   make guard-baseline  informational: private words left in the product, staying paths and whole tree
@@ -17,18 +17,28 @@ STAYING = --only src --only tests --only data --only examples --only skills --on
 setup:  ## install the lab's environment, frozen against uv.lock
 	uv sync --frozen --project $(LAB)
 
-# The lab gate checks guard/ and tests/guard/, and lints pyproject.toml. The
-# tests and tools copied from the product (tests/ outside tests/guard/,
-# tools/) are not yet part of it; making them part of it is the next step.
-# --confcutdir keeps pytest from loading the copied tests/conftest.py around
-# the guard's self-tests.
-LAB_GATE_PATHS = guard tests/guard
+# The lab gate: ruff (lint and format) and mypy over guard/, tests/ and tools/
+# (tools/ and tests/ under the product's settings for them, see
+# pyproject.toml), and the lab's tests: the guard's self-tests, then the rest
+# of tests/ except LAB_TESTS_OUTSIDE.
+# Not in the gate: records/, archive/, fleet-setup/ (records, kept byte for
+# byte), the four task-material directories under tools/ (digest-pinned), and
+# the lab tests listed in LAB_TESTS_OUTSIDE, which fail in the lab today; the
+# README says why for each.
+# The guard's self-tests run on their own with --confcutdir, so tests/conftest.py
+# and its autouse fixtures are not loaded around them.
+LAB_GATE_PATHS = guard tests tools
+# 2 tests, deselected by id: they fail, and are not skipped or marked.
+LAB_TESTS_OUTSIDE = \
+	--deselect tests/test_one_door.py::test_nothing_under_records_is_executable \
+	--deselect tests/test_a_live_row_names_what_answered_it_and_under_which_round.py::test_inside_the_checkout_the_row_carries_the_round_and_the_product_digest
 
 check: setup  ## the lab's own gate
 	uv run --no-sync ruff check $(LAB_GATE_PATHS) pyproject.toml
 	uv run --no-sync ruff format --check $(LAB_GATE_PATHS)
 	uv run --no-sync mypy
 	uv run --no-sync pytest --confcutdir=$(LAB)/tests/guard tests/guard
+	uv run --no-sync pytest -n auto tests --ignore=tests/guard $(LAB_TESTS_OUTSIDE)
 
 # product/ is a submodule. Uninitialised, it is an empty directory inside the
 # lab, and a git command run there would act on the lab itself.
