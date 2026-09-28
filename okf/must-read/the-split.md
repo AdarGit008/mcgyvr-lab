@@ -25,7 +25,7 @@ reading, and must say which.** An estimate names what it estimates and gives way
 to the user's reading. A value read on the owner's machines must never be a rule
 in the product.
 
-**A refusal in the product protects the user's run.** A check that exists so
+**A refusal in the product must protect the user's run.** A check that exists so
 results can be compared — an idle machine, a pinned tree, a stamped row — is the
 lab's.
 
@@ -59,14 +59,15 @@ that alerts need are the product's, and belong in the user's data folder.
 **The door: serving and reading are the product's; measuring — campaigns,
 rounds, workloads — is the lab's.** Gates that measure are the lab's to bring.
 
-**A number the product ships must be an estimate by card class, and the user's
-own reading must replace it.**
+**A derived number the product ships must be an estimate by card class, and
+the user's own reading must replace it after the first read.**
 
 **A user's machine must be approved for live work by the product itself,** from
 its own read and probe of that machine.
 
-**Another process on the card must be reported, not refused.** The product may
-refuse only when the card has too little free memory.
+**Another process on the card must be reported, not refused,** on a remote
+machine or the local one. A busy card may be refused only when it has too
+little free memory.
 
 **A product default may change without a lab measurement first.**
 

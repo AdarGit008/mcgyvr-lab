@@ -21,8 +21,7 @@ records/evidence/calibration-2026-08-19/d7-campaign.aborted-run.log
 tools/bundle/worker.local.json
 tools/breadth/worker.local.json
 
-# Local files the copied tools and the agents that work here can leave behind.
-# None is tracked; the product ignores the same names.
+# Local leftovers. None is tracked; the product ignores the same names.
 .env
 .env.local
 .claude/
