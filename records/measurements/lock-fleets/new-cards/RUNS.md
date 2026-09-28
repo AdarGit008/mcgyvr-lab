@@ -57,3 +57,25 @@ None.
 |---|---|---|---|---|---|---|---|
 | window | srv2 | 2026-09-28T22:02:22Z |  |  |  | window date 2026-09-28 |  |
 | srv2-01 | srv2 | 2026-09-28T22:02:22Z | 2026-09-28T22:07:09Z | 1 | 2026-09-28-lock-fleets-new-cards-srv2-c1-srv2_35b_32k | records/evidence/2026-09-28-lock-fleets | records/measurements/lock-fleets/new-cards/logs/srv2/srv2-01.out |
+
+## How this use ended
+
+One of the three frozen entries ran: srv2-01, cold start c1 of srv2_35b_32k,
+from 22:02:36 to 22:07:01 UTC on 2026-09-28. The campaign then stopped itself,
+because the machine changed under the run. srv2's `pl1_uw` read 4095000000 in
+the START marker and 65000000 in the END marker, with `uptime_since` unchanged.
+Gate 7 filed a `.RIGMOVED` file beside the artifact, and `drive.sh` stopped with
+`STOP srv2-01: gate 7 filed a .RIGMOVED sidecar: the rig moved under this run`.
+srv2-02 and srv2-03 did not run.
+
+srv2-01's figures are data points, filed in
+`records/evidence/2026-09-28-lock-fleets/new-cards-srv2-c1-srv2_35b_32k.json`:
+wake 29.977 s, warm decode median 35.24 tok/s, prefill median 339.12 tok/s, and
+a load card peak of 5626 MiB sampled until idle, with restarts 0 and pswpout 0.
+
+No evidence was assembled and no lock was written. srv2's live unit had been
+taken down through the door before the window
+(`records/evidence/2026-09-28-live-srv2/serve-down.json`). By the owner's
+ruling, "leave Idle", srv2 was left idle and its unit was not started again.
+The reads of both rigs taken around the window are in
+`records/evidence/2026-09-28-relock-reads/`.
