@@ -554,15 +554,67 @@ def test_every_host_that_wrote_a_row_has_a_declared_rig() -> None:
 # --------------------------------------------------------------------------
 
 
+#: The owner ruled that the 21 files below keep the executable
+#: bit they were recorded with: a record is evidence, not something changed to
+#: suit a test. This is that one exact folder, never a pattern another folder
+#: could also match, and the set is pinned here, read from git with
+#: ``git ls-files -s`` (mode ``100755``) over that folder — if a file's mode
+#: there ever changes, or the set gains or loses a member, this list stops
+#: matching what is on disk and the test below fails and says how.
+RECORDED_EXECUTABLE_DIR = "records/measurements/quick-check-2026-09-15"
+RECORDED_EXECUTABLE = frozenset(
+    f"{RECORDED_EXECUTABLE_DIR}/{rest}"
+    for rest in (
+        "drive.sh",
+        "refused-r28/srv2/apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF.bench-py.stdout",
+        "refused-r28/srv2/apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF.bench-ts.stdout",
+        "refused-r28/srv2/apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF.launch.txt",
+        "srv1/Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF.bench-py.stdout",
+        "srv1/Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF.bench-ts.stdout",
+        "srv1/Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF.launch.txt",
+        "srv1/Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF/bench-py/run.json",
+        "srv1/Qwen_Qwen2.5-Coder-0.5B-Instruct-GGUF/bench-ts/run.json",
+        "srv1/Qwen_Qwen2.5-Coder-1.5B-Instruct-GGUF.launch.txt",
+        "srv2/apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF.bench-py.stdout",
+        "srv2/apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF.bench-ts.stdout",
+        "srv2/apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF.launch.txt",
+        "srv2/apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF/bench-py/run.json",
+        "srv2/apto-as_Qwen2.5-Coder-7B-Instruct-Q5_K_M-GGUF/bench-ts/run.json",
+        "srv2/yuxinlu1_gemma-4-12B-coder-fable5-composer2.5-v1-GGUF.bench-py.stdout",
+        "srv2/yuxinlu1_gemma-4-12B-coder-fable5-composer2.5-v1-GGUF.bench-ts.stdout",
+        "srv2/yuxinlu1_gemma-4-12B-coder-fable5-composer2.5-v1-GGUF.launch.txt",
+        "srv2/yuxinlu1_gemma-4-12B-coder-fable5-composer2.5-v1-GGUF/bench-py/run.json",
+        "srv2/yuxinlu1_gemma-4-12B-coder-fable5-composer2.5-v1-GGUF/bench-ts/run.json",
+        "summarise.py",
+    )
+)
+assert len(RECORDED_EXECUTABLE) == 21
+
+
 def test_nothing_under_records_is_executable() -> None:
+    """Nothing under ``records/`` is executable, except the 21 files pinned in
+    :data:`RECORDED_EXECUTABLE`, under :data:`RECORDED_EXECUTABLE_DIR`. The
+    owner ruled that those files keep the mode they were recorded with — they
+    are history, not an entry point, and are not changed to suit this test.
+    Any OTHER file under ``records/`` gaining the exec bit fails this test,
+    and so does the recorded folder's set of executable files growing (or
+    otherwise changing) past what is pinned above."""
     executable = sorted(
         _rel(path)
         for path in (REPO / "records").rglob("*")
         if path.is_file() and path.stat().st_mode & 0o111
     )
-    assert not executable, (
-        f"{len(executable)} file(s) under records/ carry the exec bit — a record "
-        f"is evidence, not an entry point: {executable}"
+    outside = [path for path in executable if path not in RECORDED_EXECUTABLE]
+    assert not outside, (
+        f"{len(outside)} file(s) under records/ carry the exec bit outside "
+        f"{RECORDED_EXECUTABLE_DIR} — a record is evidence, not an entry "
+        f"point: {outside}"
+    )
+    recorded = sorted(path for path in executable if path in RECORDED_EXECUTABLE)
+    assert recorded == sorted(RECORDED_EXECUTABLE), (
+        f"the executable set under {RECORDED_EXECUTABLE_DIR} no longer matches "
+        f"what the owner's ruling pinned — found {recorded}, expected "
+        f"{sorted(RECORDED_EXECUTABLE)}"
     )
 
 
