@@ -1,0 +1,12 @@
+{
+ "dense": true,
+ "derived": true,
+ "floor_n_cpu_moe": 0,
+ "host": "srv1",
+ "model": "/home/adaramir/models/dense/Qwen2.5-Coder-7B-Instruct-IQ4_XS.gguf",
+ "n_ctx_total": 16384,
+ "n_ubatch": 512,
+ "parallel": 8,
+ "run_id": "2026-09-24-srv1-multi-gpu-link-v2",
+ "why": "no expert tensors: nothing for --n-cpu-moe to move"
+}

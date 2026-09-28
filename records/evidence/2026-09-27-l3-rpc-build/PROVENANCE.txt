@@ -1,0 +1,27 @@
+image     llamacpp:b10644-L3-rpc
+image id  sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841 (identical on srv1 and srv2; see image-inspect-both-hosts.txt)
+commit    d7a2074112d27649303fa107eb8c94db1ee435f3 (build 10644); baked into /app/LLAMA_CPP_COMMIT
+built on  srv2 (docker buildx, containerd snapshotter), from Dockerfile.rpc + patch_mmvq.py in this directory
+moved     ssh srv2 docker save | ssh srv1 docker load (no build or benchmark on srv1)
+
+Changed from Dockerfile.v3: -DGGML_RPC=ON added; the commit is written to /app/LLAMA_CPP_COMMIT. Every other cmake flag, the CUDA arch list, the mmvq patch and both base images are the same.
+CUDA archs: 61-virtual;80-virtual, the same as L3. The driver JIT-compiles the PTX:
+  sm_61 (1080 Ti) runs the compute_61 PTX.
+  sm_75 (1660 SUPER) runs the compute_61 PTX. This is what L3 intends: the Turing MMA path is off. kernels.txt reports hmma_sass=0.
+  sm_86 (3060) runs the compute_80 PTX.
+
+Compared with the deployed llamacpp:b10644-L3 (built by tools/runs/campaigns/srv1-kernel-arms/1-build-ladder.sh, not by Dockerfile.v3):
+  byte-identical (md5): libggml-base, libllama, libggml-cpu-haswell, llama-server, llama-bench, libllama-server-impl, libllama-bench-impl
+  libggml-cuda.so is not byte-identical, but its kernels match (kernels-compare-L3-vs-L3-rpc.txt):
+    142 sm_61 + 142 sm_80 PTX entries, mma_sync_ptx=137748, hmma_sass=0
+    PTX differs by 79 bytes and the .so is 12 KB larger (GGML_RPC=ON)
+  extra files: ggml-rpc-server, libggml-rpc.so, all llama-* tools (Dockerfile.v3 builds every target; the ladder built only server and bench)
+  ENV GGML_BACKEND_PATH=/app (from Dockerfile.v3; the ladder image lacks it). It adds a harmless log line, "load_backend: failed to load /app: ... Is a directory".
+  no org.mcgyvr.build.* labels, /app/commit.txt or /app/kernels.txt (the ladder adds these; Dockerfile.v3 does not)
+
+rpc binary name at this commit: /app/ggml-rpc-server, not rpc-server.
+The RPC0 device appears only when a client passes --rpc host:port (srv2-list-devices-with-rpc.txt).
+smoke test (srv2 only): ggml-rpc-server -H 127.0.0.1 -p 50052 ran in a --rm container with --network host.
+  Checked with ss that it listened on 127.0.0.1 only, then ran llama-bench -rpc 127.0.0.1:50052 -dev RPC0 -ngl 99 on Qwen2.5-Coder-1.5B Q4_K_M.
+  Result: pp512 2266.05 +/- 50.74, tg128 143.07 +/- 0.43, backend CUDA,RPC.
+  Afterwards the server container was stopped and removed, and the port was closed.

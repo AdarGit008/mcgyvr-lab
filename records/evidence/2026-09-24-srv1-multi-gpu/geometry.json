@@ -1,0 +1,220 @@
+{
+ "arch": "qwen2",
+ "bytes_experts": 0,
+ "bytes_nonexpert": 4212518912,
+ "bytes_total_tensors": 4212518912,
+ "caching_layers": 28,
+ "caching_layers_from": "every layer caches",
+ "expert_blocks": [],
+ "expert_bytes_by_block": {},
+ "expert_layers": 0,
+ "file": "/home/adaramir/models/dense/Qwen2.5-Coder-7B-Instruct-IQ4_XS.gguf",
+ "full_attn_interval": null,
+ "key_length": 128,
+ "key_length_mla": null,
+ "key_length_swa": null,
+ "kv_layers": [
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 0,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 1,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 2,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 3,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 4,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 5,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 6,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 7,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 8,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 9,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 10,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 11,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 12,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 13,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 14,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 15,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 16,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 17,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 18,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 19,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 20,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 21,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 22,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 23,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 24,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 25,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 26,
+   "v_elems": 512
+  },
+  {
+   "is_swa": false,
+   "k_elems": 512,
+   "layer": 27,
+   "v_elems": 512
+  }
+ ],
+ "mla_absorbed_v": false,
+ "mla_by_identity": false,
+ "n_ctx_train": 32768,
+ "n_embd": 3584,
+ "n_expert": null,
+ "n_expert_used": null,
+ "n_head_kv": 4,
+ "n_layer": 28,
+ "n_placeable": 0,
+ "n_recurrent": 0,
+ "name": "Qwen2.5 Coder 7B Instruct",
+ "nextn_blocks": [],
+ "nextn_predict_layers": null,
+ "params_total": 7615616512,
+ "placeable_blocks": [],
+ "recurrent_blocks": [],
+ "rope_dim": null,
+ "size_bytes": 4218473248,
+ "sliding_window": null,
+ "sliding_window_pattern_declared": false,
+ "ssm_conv_kernel": null,
+ "ssm_group_count": null,
+ "ssm_inner_size": null,
+ "ssm_params_from": null,
+ "ssm_state_size": null,
+ "swa_pattern_from": "no sliding window declared",
+ "type_bytes": {
+  "F32": 1333248,
+  "IQ4_XS": 3728793600,
+  "Q5_K": 35323904,
+  "Q6_K": 447068160
+ },
+ "value_length": 128,
+ "value_length_swa": null
+}

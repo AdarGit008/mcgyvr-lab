@@ -1,0 +1,55 @@
+cuda_library=present
+mma_sync_ptx=137748
+hmma_sass=0
+ptx_bytes=383879287
+sass_bytes=36920
+== L3 size=51457184
+
+==========
+== CUDA ==
+==========
+tr: misaligned [:upper:] and/or [:lower:] construct
+
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+    142 sm_61
+    142 sm_80
+mma_sync_ptx=137748
+hmma_sass=0
+ptx_bytes=383879287
+== L3-rpc size=51469472
+
+==========
+== CUDA ==
+==========
+
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+tr: misaligned [:upper:] and/or [:lower:] construct
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+    142 sm_61
+    142 sm_80
+mma_sync_ptx=137748
+hmma_sass=0
+ptx_bytes=383879366

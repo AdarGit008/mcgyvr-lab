@@ -1,0 +1,28 @@
+### WORKLOAD digest=none comparable_with=microbenchmark-only
+### START uptime_since=2026-09-20T17:58:51Z pl1_uw=95000000 pl2_uw=120000000 pl1_source=constraint_0_power_limit_uw cpu_max_mhz=4600 ram_mt_s=3600 run_id=2026-09-24-srv1-multi-gpu-link-v2
+### ROUND id=r35-24-09-2026 product_sha256=ae3bc3350b1c04ffb36ed857feb0ed83872b5abe10c7866ef02b279b2a4373b4
+### RIG cpu_max_mhz=4600 ram_mt_s=3600 pl1_uw=95000000 pl2_uw=120000000 driver=580.178.04 gpu_reserve_mib=399 gpu_name=NVIDIA_GeForce_GTX_1660_SUPER gpu_vram_mib=6144 gpu_cc=7.5 cpu_model=Intel(R)_Core(TM)_i5-9600K_CPU_@_3.70GHz
+srv1	gpu0	GPU	index=0	name=NVIDIA_GeForce_GTX_1660_SUPER	bus=00000000:01:00.0	vram_mib=6144	cc=7.5	power_limit_w=125.00	pcie_gen_max=3	pcie_width_max=16	driver=580.178.04
+srv1	gpu1	GPU	index=1	name=NVIDIA_GeForce_GTX_1080_Ti	bus=00000000:02:00.0	vram_mib=11264	cc=6.1	power_limit_w=250.00	pcie_gen_max=3	pcie_width_max=16	driver=580.178.04
+### TOOL name=mgpu_link img=vllm/vllm-openai@sha256:ffb2d59b1c059a5bd8d781320c9f5189de8293693b7d95da54befddaa54abf52
+srv1	pair	TOPO	gpu0_gpu1=PHB
+srv1	pair	P2P	mode=r	gpu0_gpu1=NS
+srv1	pair	P2P	mode=w	gpu0_gpu1=NS
+srv1	gpu0	BAR1	index=0	total_mib=256
+srv1	gpu1	BAR1	index=1	total_mib=256
+srv1	host	IOMMU	cmdline=none
+srv1	link-p2p-on	REFUSED	p2p=on	checkpoint_quant=none	tries=3	the link probe exited non-zero on every try; its last words: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.   
+srv1	link-p2p-on	ENV	p2p=on	nccl_via=unread	cards=2	nccl_p2p_disable=unset	torch=2.11.0+cu130	nccl=2.28.9
+srv1	link-p2p-on	PEER	p2p=on	nccl_via=unread	p2p_0_to_1=False	p2p_1_to_0=False	copy_0_to_1_gibs=2.95
+srv1	link-p2p-on gpu=0	H2D	p2p=on	nccl_via=unread	gpu=0	gibs=6.06
+srv1	link-p2p-on gpu=1	H2D	p2p=on	nccl_via=unread	gpu=1	gibs=6.01
+srv1	link-p2p-on gpu=0	LINK	p2p=on	nccl_via=unread	gpu=0	gen_max=3	width_max=16	gen_loaded=3	width_loaded=8
+srv1	link-p2p-on gpu=1	LINK	p2p=on	nccl_via=unread	gpu=1	gen_max=3	width_max=16	gen_loaded=3	width_loaded=8
+srv1	link-p2p-off	REFUSED	p2p=off	checkpoint_quant=none	tries=3	the link probe exited non-zero on every try; its last words: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.   
+srv1	link-p2p-off	ENV	p2p=off	nccl_via=unread	cards=2	nccl_p2p_disable=1	torch=2.11.0+cu130	nccl=2.28.9
+srv1	link-p2p-off	PEER	p2p=off	nccl_via=unread	p2p_0_to_1=False	p2p_1_to_0=False	copy_0_to_1_gibs=2.95
+srv1	link-p2p-off gpu=0	H2D	p2p=off	nccl_via=unread	gpu=0	gibs=6.06
+srv1	link-p2p-off gpu=1	H2D	p2p=off	nccl_via=unread	gpu=1	gibs=6.01
+srv1	link-p2p-off gpu=0	LINK	p2p=off	nccl_via=unread	gpu=0	gen_max=3	width_max=16	gen_loaded=3	width_loaded=8
+srv1	link-p2p-off gpu=1	LINK	p2p=off	nccl_via=unread	gpu=1	gen_max=3	width_max=16	gen_loaded=3	width_loaded=8
+### END uptime_since=2026-09-20T17:58:51Z pl1_uw=95000000 pl2_uw=120000000 cpu_max_mhz=4600 ram_mt_s=3600 run_id=2026-09-24-srv1-multi-gpu-link-v2

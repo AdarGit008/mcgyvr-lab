@@ -1,0 +1,5 @@
+llamacpp:b10644-L3                              d869b98f2b7b       5.76GB         2.22GB        
+llamacpp:b10644-L3-rpc                          c49d9cd3e2d6       5.76GB         2.22GB        
+0.01.051.695 E load_backend: failed to load /app: /app: cannot read file data: Is a directory
+version: 0.3.0-dev (build 10644, commit d7a207411)
+built with GNU 13.3.0 for Linux x86_64

@@ -1,0 +1,60 @@
+#15 585.5 [761/803] Linking CXX executable bin/llama-gemma3-cli
+#15 585.7 [762/803] Building CXX object tools/mtmd/CMakeFiles/llama-minicpmv-cli.dir/deprecation-warning.cpp.o
+#15 585.8 [763/803] Linking CXX executable bin/llama-minicpmv-cli
+#15 585.8 [764/803] Building CXX object tools/mtmd/CMakeFiles/llama-qwen2vl-cli.dir/deprecation-warning.cpp.o
+#15 585.9 [765/803] Building CXX object tools/fit-params/CMakeFiles/llama-fit-params.dir/main.cpp.o
+#15 586.0 [766/803] Linking CXX executable bin/llama-qwen2vl-cli
+#15 587.3 [767/803] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/pockettts-gen.cpp.o
+#15 587.3 [768/803] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/whisper-enc.cpp.o
+#15 587.3 [769/803] Building CXX object app/CMakeFiles/llama-app.dir/llama.cpp.o
+#15 587.3 [770/803] Building CXX object app/CMakeFiles/llama-app.dir/__/license.cpp.o
+#15 587.5 [771/803] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/deepseekocr2.cpp.o
+#15 587.5 [772/803] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/youtuvl.cpp.o
+#15 587.6 [773/803] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/yasa2.cpp.o
+#15 587.6 [774/803] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/deepseekocr.cpp.o
+#15 587.7 [775/803] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/parakeet.cpp.o
+#15 587.7 [776/803] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/mobilenetv5.cpp.o
+#15 587.9 [777/803] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen3tts-gen.cpp.o
+#15 587.9 [778/803] Building CXX object tools/server/CMakeFiles/server-context.dir/server-tools.cpp.o
+#15 588.5 [779/803] Building CXX object tools/fit-params/CMakeFiles/llama-fit-params-impl.dir/fit-params.cpp.o
+#15 588.6 [780/803] Linking CXX shared library bin/libllama-fit-params-impl.so
+#15 588.7 [781/803] Linking CXX executable bin/llama-fit-params
+#15 589.0 [782/803] Building CXX object tools/results/CMakeFiles/llama-results.dir/results.cpp.o
+#15 589.1 [783/803] Building CXX object tools/mtmd/CMakeFiles/llama-mtmd-debug.dir/debug/mtmd-debug.cpp.o
+#15 589.1 [784/803] Linking CXX executable bin/llama-results
+#15 589.9 [785/803] Building CXX object app/CMakeFiles/llama-app.dir/download.cpp.o
+#15 590.4 [786/803] Building CXX object tools/server/CMakeFiles/server-context.dir/server-context.cpp.o
+#15 591.3 [787/803] Building CXX object tools/mtmd/CMakeFiles/llama-mtmd-cli.dir/mtmd-cli.cpp.o
+#15 591.9 [788/803] Building CXX object tools/server/CMakeFiles/llama-server-impl.dir/server-models.cpp.o
+#15 592.6 [789/803] Building CXX object tools/rpc/CMakeFiles/ggml-rpc-server.dir/rpc-server.cpp.o
+#15 592.7 [790/803] Linking CXX executable bin/ggml-rpc-server
+#15 594.6 [791/803] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/clip.cpp.o
+#15 597.5 [792/803] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-helper.cpp.o
+#15 597.5 [793/803] Linking CXX shared library bin/libmtmd.so.0.3.0
+#15 597.5 [794/803] Creating library symlink bin/libmtmd.so.0 bin/libmtmd.so
+#15 597.6 [795/803] Linking CXX static library tools/server/libserver-context.a
+#15 597.6 [796/803] Linking CXX executable bin/llama-tts
+#15 597.6 [797/803] Linking CXX executable bin/llama-mtmd-cli
+#15 597.6 [798/803] Linking CXX executable bin/llama-mtmd-debug
+#15 597.7 [799/803] Linking CXX shared library bin/libllama-server-impl.so
+#15 597.8 [800/803] Linking CXX executable bin/llama-server
+#15 597.8 [801/803] Linking CXX shared library bin/libllama-cli-impl.so
+#15 597.8 [802/803] Linking CXX executable bin/llama-cli
+#15 597.9 [803/803] Linking CXX executable bin/llama
+#15 DONE 597.9s
+
+#16 [stage-1 4/4] COPY --from=build /src/build/bin/ /app/
+#16 DONE 0.1s
+
+#17 exporting to image
+#17 exporting layers
+#17 exporting layers 3.1s done
+#17 exporting manifest sha256:d9ff2ef4bf085ac07a2d94086e6f4e4db0320512b0638274c2020faa66d7348d done
+#17 exporting config sha256:0c6a3528ecb5be72ee6794361f1875fd6ea131d43ad094790623b5946d7af245 done
+#17 exporting attestation manifest sha256:76bf37f1409eed69b2a67f8c6c1dbbf313da896e2be533792ad398c59f0f1f3a done
+#17 exporting manifest list sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841 0.0s done
+#17 naming to docker.io/library/llamacpp:b10644-L3-rpc done
+#17 unpacking to docker.io/library/llamacpp:b10644-L3-rpc
+#17 unpacking to docker.io/library/llamacpp:b10644-L3-rpc 0.4s done
+#17 DONE 3.6s
+EXIT=0

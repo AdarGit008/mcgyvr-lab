@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-09-27-srv1-multi-gpu-local-v3",
+  "campaign": "srv1-multi-gpu",
+  "step": "local",
+  "host": "srv1",
+  "date": "2026-09-27",
+  "round": "r35-24-09-2026",
+  "product_sha256": "ae3bc3350b1c04ffb36ed857feb0ed83872b5abe10c7866ef02b279b2a4373b4",
+  "profile": "live",
+  "config": "/home/adaramir/.mcgyvr/fleets/b-small@2026-09-16",
+  "mcgyvr_version": "0.1.1.dev424+g86572bdf.d20260927",
+  "started_at": "2026-09-27T16:50:01Z"
+}
