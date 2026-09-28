@@ -31,12 +31,23 @@ runs.
   paths of binary files that may go out (`binary-ok.txt`), and the CI entry
   point `outgoing-ci.sh`. Before matching it removes format characters (soft
   hyphens, zero-width and direction marks and the rest of Unicode category
-  Cf), variation selectors and tag characters; applies NFKC (so fullwidth and
-  other compatibility forms become plain letters); maps Unicode dashes and
-  minus signs to `-`; and joins backslash-continued lines. A word list cannot
-  catch: look-alike letters from other scripts (Cyrillic `ѕ` for `s`), percent
-  encoding, HTML entities, escapes such as `\x73`, base64, compressed content
-  inside an allowed binary, or a word split across string concatenation.
+  Cf), C1 controls, line and paragraph separators, variation selectors and
+  tag characters; applies NFKC (so fullwidth and other compatibility forms
+  become plain letters); maps every Unicode dash (category Pd) and the minus
+  sign to `-`; joins backslash-continued lines; and catches a word wrapped
+  over one line break, also inside `#`, `//`, `*`, `--`, `>` or `|` comments
+  and table rows. It still cannot catch: look-alike letters from other
+  scripts (Cyrillic `ѕ` for `s`), percent encoding, HTML entities, escapes
+  such as `\x73`, base64, compressed content inside an allowed binary, a word
+  split across string concatenation, a table cell split into columns other
+  than `| RTX | 3060 |`, a word split over more than one line break, an ANSI
+  escape sequence inside a word, and words in commit headers other than
+  author and committer or in the time-zone field.
+- Text in a legacy encoding (latin-1, cp1252) and files holding control
+  characters (other than tab, line breaks, form feed and escape) are refused:
+  the guard lists them as not scanned as text and exits 2. Convert such a
+  file to UTF-8 and remove the control characters; for a real binary, list
+  its exact path in `guard/binary-ok.txt`.
 - `tests/` — tests of the lab's own code.
 - `records/`, `archive/`, `fleet-setup/`, `docs/` — research, measurements and
   planning material (described below).
