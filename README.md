@@ -16,15 +16,21 @@ runs.
   name, no home paths, no card models stated as facts, no measured values, no
   rules for working on those machines.
 - The lab may point at the product; the product never depends on the lab.
-- A guard on both sides keeps it that way. The lab's side is `guard/`: it
-  searches what leaves for the product for the words listed in
-  `guard/private-words.txt`.
+- A guard keeps it that way. The lab-side guard exists: `guard/` searches
+  what leaves for the product for the words in `guard/private-words.txt`, and
+  lab CI runs it whenever a lab change moves the product pointer. The
+  product-side guard (the product never pointing at the lab) is added to the
+  product's CI in a later step.
 
 ## Layout
 
 - `product/` — the product, as a submodule tracking its `main`.
-- `guard/` — the outgoing guard: `check_outgoing.py`, the private words, and
-  the allow-list of the few product lines that may contain one.
+- `guard/` — the outgoing guard: `check_outgoing.py`, the private words, the
+  allow-list of the few product lines that may contain one, the globs of
+  binary files that may go out unscanned (`binary-ok.txt`), and the CI entry
+  point `outgoing-ci.sh`. It normalises look-alikes (fullwidth forms,
+  zero-width characters, backslash-continued lines) but does not catch
+  letters from other scripts that look alike, such as Cyrillic `ѕ` for `s`.
 - `tests/` — tests of the lab's own code.
 - `records/`, `archive/`, `fleet-setup/`, `docs/` — research, measurements and
   planning material (described below).
@@ -37,20 +43,26 @@ runs.
   `tests/`, which includes the guard's self-tests.
 - `make product-check` — the product's full gate, run inside `product/` the way
   the product's CI runs it.
-- `make guard` — the guard over `product/`: first the lines its checked-out
-  commit adds on top of `origin/main`, then a count over its whole tree.
+- `make guard` — the outgoing gate: every commit `product/`'s branch adds on
+  top of `origin/main` (lines, path names, messages) and the branch name. Its
+  exit code is the verdict: 0 clean, 1 findings, 2 could not scan or
+  uncommitted work.
+- `make guard-baseline` — informational: private words still in the product,
+  counted for the paths that stay in it and for the whole tree.
 - `make product-sync` — moves `product/` to the latest `origin/main` without
-  touching any branch; refuses if `product/` has uncommitted changes.
+  touching any branch; refuses if `product/` has uncommitted changes or
+  commits that are on no branch.
 
 ## Changing the product from the lab
 
 1. `cd product`
 2. `git fetch origin` and `git switch -c <branch> origin/main`
 3. Make the change.
-4. From the lab's root: `make product-check` and `make guard`. The first part
-   of `make guard` (the lines the branch adds) must report no findings.
-5. `cd product` and `git push -u origin <branch>`
-6. Open the pull request against `AdarGit008/mcgyvr`, e.g.
+4. Commit it: `git add <paths>` and `git commit`. The guard refuses to run
+   over uncommitted work.
+5. From the lab's root: `make product-check` and `make guard`; both must pass.
+6. `cd product` and `git push -u origin <branch>`
+7. Open the pull request against `AdarGit008/mcgyvr`, e.g.
    `gh pr create --repo AdarGit008/mcgyvr --base main`.
 
 ## The archive
