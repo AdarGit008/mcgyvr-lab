@@ -1,0 +1,16 @@
+# Binary files that may go to the product without being scanned as text.
+#
+# One glob per line, matched case-insensitively against the whole path
+# (`*` also crosses `/`). A binary file whose path matches no glob here is
+# listed as "not scanned as text" and makes the guard exit 2.
+#
+# The path NAMES of these files are still scanned, and their bytes are still
+# searched as latin-1 on a best-effort basis; only the "not scanned" verdict
+# is waived. Blank lines and lines starting with `#` are ignored.
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.ico
+*.pdf
