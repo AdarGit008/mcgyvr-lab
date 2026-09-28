@@ -1,5 +1,60 @@
 # mcgyvr-lab
 
+This is where [mcgyvr](https://github.com/AdarGit008/mcgyvr) is developed.
+mcgyvr is the product; this repository is the lab around it. The product is
+linked here as a submodule at `product/`, and the lab's environment installs it
+from there in editable mode, so a change made in `product/` is the code the lab
+runs.
+
+## The separation rule
+
+- mcgyvr is the product; mcgyvr-lab is where it is developed. Work happens only
+  in the lab.
+- The product changes only through pull requests opened from the lab's linked
+  checkout of the product (`product/`), each one ready to merge.
+- Nothing of the owner's machines enters the product: no machine names, no user
+  name, no home paths, no card models stated as facts, no measured values, no
+  rules for working on those machines.
+- The lab may point at the product; the product never depends on the lab.
+- A guard on both sides keeps it that way. The lab's side is `guard/`: it
+  searches what leaves for the product for the words listed in
+  `guard/private-words.txt`.
+
+## Layout
+
+- `product/` — the product, as a submodule tracking its `main`.
+- `guard/` — the outgoing guard: `check_outgoing.py`, the private words, and
+  the allow-list of the few product lines that may contain one.
+- `tests/` — tests of the lab's own code.
+- `records/`, `archive/`, `fleet-setup/`, `docs/` — research, measurements and
+  planning material (described below).
+- `pyproject.toml`, `uv.lock` — the lab's environment (uv); it is never
+  published.
+
+## Make targets
+
+- `make check` — the lab's own gate: ruff, format check, mypy and pytest over
+  `tests/`, which includes the guard's self-tests.
+- `make product-check` — the product's full gate, run inside `product/` the way
+  the product's CI runs it.
+- `make guard` — the guard over `product/`: first the lines its checked-out
+  commit adds on top of `origin/main`, then a count over its whole tree.
+- `make product-sync` — moves `product/` to the latest `origin/main` without
+  touching any branch; refuses if `product/` has uncommitted changes.
+
+## Changing the product from the lab
+
+1. `cd product`
+2. `git fetch origin` and `git switch -c <branch> origin/main`
+3. Make the change.
+4. From the lab's root: `make product-check` and `make guard`. The first part
+   of `make guard` (the lines the branch adds) must report no findings.
+5. `cd product` and `git push -u origin <branch>`
+6. Open the pull request against `AdarGit008/mcgyvr`, e.g.
+   `gh pr create --repo AdarGit008/mcgyvr --base main`.
+
+## The archive
+
 Research, measurements and planning material moved out of
 [AdarGit008/mcgyvr](https://github.com/AdarGit008/mcgyvr) so that repository's
 root shows the product.
