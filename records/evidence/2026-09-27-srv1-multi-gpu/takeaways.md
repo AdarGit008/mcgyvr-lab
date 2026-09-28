@@ -16,7 +16,7 @@ Read by three reviewers (hardware, engine, model profile); spot-checked against 
    - With `--enforce-eager`, TP-2 goes to 23.3 against 19.3 on one card (E/vknobs.tsv 'k7-*-eager').
 7. **DP-2 gives more total throughput under concurrency.** At n=32, 7B: DP-2 585 tok/s at 26.4 ms, TP-2 428 tok/s at 41.8 ms. 1.5B: DP-2 1623, TP-2 1112 (E/vllm.tsv).
 8. **Custom all-reduce, now allowed by P2P, only helps under load.** At n=16, TP-2: 16.2 ms and 655 tok/s with it, 19.2 / 595 without it, 18.4 / 603 with P2P off. At n=1: 8.2 against 8.6 (E/p2p.tsv). The launch where vLLM ran its own P2P test disabled it ('p7-tp2-check' LOG), although the step's own peer copy verified; the cause is not measured yet.
-9. **TP-2 holds 3.65× the KV cache of one card:** 263k tokens against 72k; fp8 KV gives 526k (E/vsched.tsv 's7-tp2-fp8kv'). A 54.6k-token prefill takes 24.0 s on one card, 16.1 s with TP-2 and 13.3 s with PP-2 (E/vctx.tsv).
+9. **TP-2 holds 3.65× the KV cache of one card:** 263k tokens against 72k; fp8 KV gives 526k (E/vsched.tsv 's7-tp2-fp8kv'). A 30,497-token prompt (run label `@prefill=54600`; `ptok=30497`) takes 24.0 s on one card, 16.1 s with TP-2 and 13.3 s with PP-2 (E/vctx.tsv).
 10. **llama.cpp tensor split is faster at n=1 but not under load.** 14B at n=1: one card 29.8, layer split 29.7, tensor split 18.2. At n=16: tensor 86.7, layer 83.8. `GGML_CUDA_P2P=1` moved tpot by at most 0.2 ms (E/lcp.tsv, E/p2p.tsv 'pl14-*').
 
 ## Model profile

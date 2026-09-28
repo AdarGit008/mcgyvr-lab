@@ -1,0 +1,54 @@
+### WORKLOAD digest=2f2bb7932a0b660653def819 driver=tools/runs/workload.py
+### START uptime_since=2026-09-27T19:17:37Z pl1_uw=95000000 pl2_uw=120000000 pl1_source=constraint_0_power_limit_uw cpu_max_mhz=4600 ram_mt_s=3600 run_id=2026-09-27-srv1-multi-gpu-nccl-sys
+### ROUND id=r36-28-09-2026 product_sha256=e8002d8c40fd33eb0adb68410b55ba8e0bb3147037822abc63cb1a34018b4884
+### RIG cpu_max_mhz=4600 ram_mt_s=3600 pl1_uw=95000000 pl2_uw=120000000 driver=580.178.04 gpu_reserve_mib=379 gpu_name=NVIDIA_GeForce_RTX_3060 gpu_vram_mib=12288 gpu_cc=8.6 cpu_model=Intel(R)_Core(TM)_i5-9600K_CPU_@_3.70GHz
+srv1	gpu0	GPU	index=0	name=NVIDIA_GeForce_RTX_3060	bus=00000000:01:00.0	vram_mib=12288	cc=8.6	power_limit_w=170.00	pcie_gen_max=3	pcie_width_max=16	driver=580.178.04
+srv1	gpu1	GPU	index=1	name=NVIDIA_GeForce_RTX_3060	bus=00000000:02:00.0	vram_mib=12288	cc=8.6	power_limit_w=170.00	pcie_gen_max=3	pcie_width_max=16	driver=580.178.04
+### NOTE vllm=vllm/vllm-openai@sha256:ffb2d59b1c059a5bd8d781320c9f5189de8293693b7d95da54befddaa54abf52
+srv1	pair	TOPO	gpu0_gpu1=PHB
+srv1	pair	P2P	mode=w	gpu0_gpu1=OK
+### RIG cpu_max_mhz=4600 ram_mt_s=3600 pl1_uw=95000000 pl2_uw=120000000 driver=580.178.04 gpu_reserve_mib=379 gpu_name=NVIDIA_GeForce_RTX_3060 gpu_vram_mib=12288 gpu_cc=8.6 cpu_model=Intel(R)_Core(TM)_i5-9600K_CPU_@_3.70GHz
+srv1	nccl-default	ENV	arm=default	nccl_via=SHM/direct/direct	cards=2	nccl_p2p_disable=unset	nccl_p2p_level=unset	torch=2.11.0+cu130	nccl=2.28.9
+srv1	nccl-default	PEER	arm=default	nccl_via=SHM/direct/direct	p2p_0_to_1=True	p2p_1_to_0=True	copy_0_to_1_gibs=6.11
+srv1	nccl-default gpu=0	H2D	arm=default	nccl_via=SHM/direct/direct	gpu=0	gibs=6.06
+srv1	nccl-default gpu=1	H2D	arm=default	nccl_via=SHM/direct/direct	gpu=1	gibs=6.01
+srv1	nccl-default gpu=0	LINK	arm=default	nccl_via=SHM/direct/direct	gpu=0	gen_max=3	width_max=16	gen_loaded=3	width_loaded=8
+srv1	nccl-default gpu=1	LINK	arm=default	nccl_via=SHM/direct/direct	gpu=1	gen_max=3	width_max=16	gen_loaded=3	width_loaded=8
+srv1	nccl-default bytes=4096	AR	arm=default	nccl_via=SHM/direct/direct	bytes=4096	reps=300	lat_ms_p50=0.0615	lat_ms_p90=0.0644	busbw_gibs=0.062	verified=True
+srv1	nccl-default bytes=8192	AR	arm=default	nccl_via=SHM/direct/direct	bytes=8192	reps=300	lat_ms_p50=0.06	lat_ms_p90=0.0633	busbw_gibs=0.127	verified=True
+srv1	nccl-default bytes=16384	AR	arm=default	nccl_via=SHM/direct/direct	bytes=16384	reps=300	lat_ms_p50=0.0618	lat_ms_p90=0.0641	busbw_gibs=0.247	verified=True
+srv1	nccl-default bytes=32768	AR	arm=default	nccl_via=SHM/direct/direct	bytes=32768	reps=300	lat_ms_p50=0.0606	lat_ms_p90=0.0638	busbw_gibs=0.504	verified=True
+srv1	nccl-default bytes=65536	AR	arm=default	nccl_via=SHM/direct/direct	bytes=65536	reps=300	lat_ms_p50=0.0738	lat_ms_p90=0.077	busbw_gibs=0.827	verified=True
+srv1	nccl-default bytes=131072	AR	arm=default	nccl_via=SHM/direct/direct	bytes=131072	reps=300	lat_ms_p50=0.0941	lat_ms_p90=0.097	busbw_gibs=1.297	verified=True
+srv1	nccl-default bytes=262144	AR	arm=default	nccl_via=SHM/direct/direct	bytes=262144	reps=300	lat_ms_p50=0.1264	lat_ms_p90=0.1302	busbw_gibs=1.931	verified=True
+srv1	nccl-default bytes=524288	AR	arm=default	nccl_via=SHM/direct/direct	bytes=524288	reps=300	lat_ms_p50=0.1933	lat_ms_p90=0.2024	busbw_gibs=2.527	verified=True
+srv1	nccl-default bytes=1048576	AR	arm=default	nccl_via=SHM/direct/direct	bytes=1048576	reps=300	lat_ms_p50=0.3282	lat_ms_p90=0.3382	busbw_gibs=2.976	verified=True
+srv1	nccl-default bytes=2097152	AR	arm=default	nccl_via=SHM/direct/direct	bytes=2097152	reps=30	lat_ms_p50=0.6016	lat_ms_p90=0.6179	busbw_gibs=3.246	verified=True
+srv1	nccl-default bytes=4194304	AR	arm=default	nccl_via=SHM/direct/direct	bytes=4194304	reps=30	lat_ms_p50=1.136	lat_ms_p90=1.1599	busbw_gibs=3.438	verified=True
+srv1	nccl-default bytes=8388608	AR	arm=default	nccl_via=SHM/direct/direct	bytes=8388608	reps=30	lat_ms_p50=2.2013	lat_ms_p90=2.2132	busbw_gibs=3.549	verified=True
+srv1	nccl-default bytes=16777216	AR	arm=default	nccl_via=SHM/direct/direct	bytes=16777216	reps=30	lat_ms_p50=4.3515	lat_ms_p90=4.3798	busbw_gibs=3.591	verified=True
+srv1	nccl-default bytes=33554432	AR	arm=default	nccl_via=SHM/direct/direct	bytes=33554432	reps=30	lat_ms_p50=8.6256	lat_ms_p90=8.6574	busbw_gibs=3.623	verified=True
+srv1	nccl-default bytes=67108864	AR	arm=default	nccl_via=SHM/direct/direct	bytes=67108864	reps=30	lat_ms_p50=17.1479	lat_ms_p90=17.2308	busbw_gibs=3.645	verified=True
+srv1	nccl-sys	ENV	arm=sys	nccl_via=P2P/CUMEM	cards=2	nccl_p2p_disable=unset	nccl_p2p_level=SYS	torch=2.11.0+cu130	nccl=2.28.9
+srv1	nccl-sys	PEER	arm=sys	nccl_via=P2P/CUMEM	p2p_0_to_1=True	p2p_1_to_0=True	copy_0_to_1_gibs=6.11
+srv1	nccl-sys gpu=0	H2D	arm=sys	nccl_via=P2P/CUMEM	gpu=0	gibs=6.06
+srv1	nccl-sys gpu=1	H2D	arm=sys	nccl_via=P2P/CUMEM	gpu=1	gibs=6.01
+srv1	nccl-sys gpu=0	LINK	arm=sys	nccl_via=P2P/CUMEM	gpu=0	gen_max=3	width_max=16	gen_loaded=3	width_loaded=8
+srv1	nccl-sys gpu=1	LINK	arm=sys	nccl_via=P2P/CUMEM	gpu=1	gen_max=3	width_max=16	gen_loaded=3	width_loaded=8
+srv1	nccl-sys bytes=4096	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=4096	reps=300	lat_ms_p50=0.0604	lat_ms_p90=0.0652	busbw_gibs=0.063	verified=True
+srv1	nccl-sys bytes=8192	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=8192	reps=300	lat_ms_p50=0.0601	lat_ms_p90=0.0641	busbw_gibs=0.127	verified=True
+srv1	nccl-sys bytes=16384	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=16384	reps=300	lat_ms_p50=0.0591	lat_ms_p90=0.0631	busbw_gibs=0.258	verified=True
+srv1	nccl-sys bytes=32768	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=32768	reps=300	lat_ms_p50=0.0592	lat_ms_p90=0.0633	busbw_gibs=0.515	verified=True
+srv1	nccl-sys bytes=65536	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=65536	reps=300	lat_ms_p50=0.0636	lat_ms_p90=0.0658	busbw_gibs=0.96	verified=True
+srv1	nccl-sys bytes=131072	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=131072	reps=300	lat_ms_p50=0.0751	lat_ms_p90=0.0772	busbw_gibs=1.625	verified=True
+srv1	nccl-sys bytes=262144	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=262144	reps=300	lat_ms_p50=0.0961	lat_ms_p90=0.098	busbw_gibs=2.54	verified=True
+srv1	nccl-sys bytes=524288	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=524288	reps=300	lat_ms_p50=0.1369	lat_ms_p90=0.1394	busbw_gibs=3.568	verified=True
+srv1	nccl-sys bytes=1048576	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=1048576	reps=300	lat_ms_p50=0.2219	lat_ms_p90=0.2233	busbw_gibs=4.401	verified=True
+srv1	nccl-sys bytes=2097152	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=2097152	reps=30	lat_ms_p50=0.3981	lat_ms_p90=0.3996	busbw_gibs=4.906	verified=True
+srv1	nccl-sys bytes=4194304	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=4194304	reps=30	lat_ms_p50=0.7507	lat_ms_p90=0.7526	busbw_gibs=5.203	verified=True
+srv1	nccl-sys bytes=8388608	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=8388608	reps=30	lat_ms_p50=1.4495	lat_ms_p90=1.4517	busbw_gibs=5.39	verified=True
+srv1	nccl-sys bytes=16777216	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=16777216	reps=30	lat_ms_p50=2.8475	lat_ms_p90=2.8494	busbw_gibs=5.487	verified=True
+srv1	nccl-sys bytes=33554432	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=33554432	reps=30	lat_ms_p50=5.6032	lat_ms_p90=5.629	busbw_gibs=5.577	verified=True
+srv1	nccl-sys bytes=67108864	AR	arm=sys	nccl_via=P2P/CUMEM	bytes=67108864	reps=30	lat_ms_p50=11.1294	lat_ms_p90=11.1988	busbw_gibs=5.616	verified=True
+### RIG cpu_max_mhz=4600 ram_mt_s=3600 pl1_uw=95000000 pl2_uw=120000000 driver=580.178.04 gpu_reserve_mib=379 gpu_name=NVIDIA_GeForce_RTX_3060 gpu_vram_mib=12288 gpu_cc=8.6 cpu_model=Intel(R)_Core(TM)_i5-9600K_CPU_@_3.70GHz
+### END uptime_since=2026-09-27T19:17:37Z pl1_uw=95000000 pl2_uw=120000000 cpu_max_mhz=4600 ram_mt_s=3600 run_id=2026-09-27-srv1-multi-gpu-nccl-sys

@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-09-27-srv1-multi-gpu-nccl-sys",
+  "campaign": "srv1-multi-gpu",
+  "step": "nccl-sys",
+  "host": "srv1",
+  "date": "2026-09-27",
+  "round": "r36-28-09-2026",
+  "product_sha256": "e8002d8c40fd33eb0adb68410b55ba8e0bb3147037822abc63cb1a34018b4884",
+  "profile": "live",
+  "config": "/home/adaramir/.mcgyvr/fleets/b-small@2026-09-16",
+  "mcgyvr_version": "0.1.1.dev466+g016d00f0.d20260928",
+  "started_at": "2026-09-28T03:47:48Z"
+}
