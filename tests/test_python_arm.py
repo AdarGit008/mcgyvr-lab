@@ -39,6 +39,7 @@ from pathlib import Path
 
 from mcgyvr.contract import Contract, load
 from mcgyvr.worker.bundle import bundle_for
+from tests._helpers import PRODUCT
 
 REPO = Path(__file__).resolve().parent.parent
 BUNDLE_TOOLS = REPO / "tools" / "bundle"
@@ -46,7 +47,7 @@ TASKS = BUNDLE_TOOLS / "python" / "tasks"
 EVIDENCE = REPO / "records" / "evidence" / "local-ai-2026-08-02"
 CONDITIONS = EVIDENCE / "data" / "context_exp" / "bundles"
 INSTRUMENT = EVIDENCE / "instrument"
-SHIPPED = REPO / "src" / "mcgyvr" / "prompts" / "python.md"
+SHIPPED = PRODUCT / "src" / "mcgyvr" / "prompts" / "python.md"
 
 # Identical to the JS/TS arm's, and that is the point rather than a coincidence.
 # Both sets are the same twenty intents — 8 function implementations, 5 bug

@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """The `observed` block: captured comprehensively, compared by nothing (#286).
 
 D7. The properties here are the ones a later reader has to be able to
@@ -214,34 +216,6 @@ def test_every_declared_field_is_present_and_every_null_states_why(
 # pinned above by `test_every_declared_field_is_present_and_every_null_states_why`
 # and below by the vLLM arm's own refusal checks, which is where the whole probe
 # set is now answered or refused.
-
-
-def test_no_runner_in_this_tree_sends_a_seed() -> None:
-    """The half of "observed, never set" that a probe cannot prove.
-
-    Built rather than grepped: what matters is the payload that leaves the
-    process, and a payload assembled from a dict is not something a pattern
-    over the source can be trusted about.
-    """
-    from mcgyvr.pool import Endpoint, Protocol
-    from mcgyvr.runner import _RUNNERS, Request
-
-    assert set(_RUNNERS) == set(Protocol), "a protocol with no runner is untested here"
-    request = Request(prompt="p", max_output_tokens=16, system="s")
-    for protocol, runner_class in _RUNNERS.items():
-        endpoint = Endpoint(
-            source="test",
-            base_url="http://test:11434",
-            protocol=protocol,
-            max_parallel=1,
-            credential_env=None,
-        )
-        payload = runner_class(endpoint)._payload("m", request)
-        assert "seed" not in json.dumps(payload), (
-            f"{runner_class.__name__} sends a seed. Greedy bypasses the sampler "
-            "RNG, and supplying one is a different experiment (#276 item 9) — "
-            "`observed.seed` records what the server holds, not what we set."
-        )
 
 
 def test_an_endpoint_that_answers_nothing_still_produces_the_whole_shape(

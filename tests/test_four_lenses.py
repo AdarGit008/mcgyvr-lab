@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """The four lenses as checks rather than as reading.
 
 A defect found by a person or an agent re-reading is found one instance at a
@@ -38,21 +40,9 @@ from typing import Any
 
 import pytest
 
+from tests._helpers import PRODUCT
+
 REPO = Path(__file__).resolve().parent.parent
-SOURCE_ROOTS = (REPO / "src", REPO / "tools")
-# Corpora and the vendored toolkit are material, not code: their contents are
-# pinned by digest and a sweep there measures the instrument, not the project.
-SKIP_PARTS = ("tasks", "baseline", "reserve", "node_modules", ".venv")
-
-
-def _source_files() -> list[Path]:
-    out: list[Path] = []
-    for root in SOURCE_ROOTS:
-        for path in sorted(root.rglob("*.py")):
-            if any(part in SKIP_PARTS for part in path.parts):
-                continue
-            out.append(path)
-    return out
 
 
 def _rel(path: Path) -> str:
@@ -68,238 +58,6 @@ def _where(path: Path, lineno: int) -> str:
 # --------------------------------------------------------------------------
 # The twin constant — one value, two definitions
 # --------------------------------------------------------------------------
-
-# Module-level literal constants that are defined in more than one place.
-#
-# A duplicate is not automatically a defect — sometimes the coupling is real and
-# importing across it would be worse, which `worker/reply.py` says out loud
-# before duplicating the extension tuples on purpose. What is never acceptable
-# is an *undeclared* duplicate, because the only thing keeping the copies equal
-# is that nobody has edited one of them yet.
-#
-# Each entry is (constant name, whether the copies must hold equal values).
-# `False` marks a name collision across unrelated meanings — two modules that
-# happen to have picked the same word — which this check must not force into
-# agreement.
-DECLARED_DUPLICATES: dict[str, bool] = {
-    # Must agree: tools/runs/campaigns/srv1-cpu-saturation/cpusat.py restates
-    # lock-fleets' rig folder, marker fields and vmstat counters rather than
-    # importing lockfleets.py, because cpusat.py is shipped to the rig as text
-    # (`python3 - rig-agg`, as the harness is) and runs on a python3 with no
-    # mcgyvr to import. The probe tees its markers into the same ~/mcgyvr-relock
-    # and files the same START/END fields and swap counters as a lock-fleets
-    # run, so a reader compares the two artifacts field for field.
-    "RIG_DIR": True,
-    "MARKER_FIELDS": True,
-    "VMSTAT_FIELDS": True,
-    # Two serving backends, added 2026-08-30. Each names the engine it drives,
-    # so three of these four MUST differ and are declared False for that reason
-    # rather than as an unreconciled conflict.
-    # Different engines ship different images; equal values here would mean one
-    # backend was launching the other's container.
-    "CONTAINER_IMAGE": False,
-    # Must agree: the container mount point and the host tree behind it are one
-    # deployment fact seen from two sides — the bench backend launches with
-    # `-v $HOME/models:/models`, and the door's geometry script translates a
-    # container path back to the host one to read a header OUTSIDE any
-    # container. Not made one definition of the other on purpose: the door
-    # would then import a bench backend, which is the dependency the door
-    # exists to remove. If these two stop agreeing, ggufscan reads a path that
-    # is not the blob the step serves, and the placement describes another file.
-    "CONTAINER_MODELS": True,
-    "HOST_MODELS": True,
-    # Must differ: one name for both would have the two backends tear down and
-    # reuse each other's container, which is the collision `release()` exists to
-    # make impossible.
-    "CONTAINER_NAME": False,
-    # 40 against 60. How much log each keeps on a refusal is tuned to how much
-    # that engine prints before it fails; there is no quantity here they share.
-    "LAUNCH_LOG_LINES": False,
-    # Must agree: both express the same thing — how long a launch may take
-    # before the cell is refused — and a run that allowed one engine longer than
-    # the other would report the difference as the engine's.
-    "START_TIMEOUT_S": True,
-    # Must agree. Asserted in a comment in `orchestrator/repo.py` and by nothing
-    # else; git's empty-tree SHA-1 is the same fact on both sides of the seam.
-    "_EMPTY_TREE": True,
-    # Must agree. `orchestrator/symbols.py` says the names match the gate
-    # adapters — if they stop matching, the index and the gate disagree about
-    # which files are JavaScript, silently.
-    "_TS_EXTENSIONS": True,
-    "_TSX_EXTENSIONS": True,
-    # Must agree: deterministic.py restates the gate's Python extensions rather
-    # than importing them (G4 — importing the adapters drags tree-sitter into a
-    # planning-only process), and worker/reply.py carries the same pair.
-    "_PY_EXTENSIONS": True,
-    # Must agree, and cannot be derived. `mcgyvr.cli` writes this as the `tier`
-    # of every deterministic-floor row; `tools/live/index.py` is what a reviewer
-    # filters the table by, and if the two drifted the query for "how much work
-    # finished without a model" would silently return nothing. The reviewer
-    # tool is deliberately not an importer of the CLI — it reads journals other
-    # installs and other versions wrote, and importing `mcgyvr.cli` to learn one
-    # string would drag the whole command surface into a read-only tool — so the
-    # duplication is declared rather than removed. `tests/
-    # test_a_floor_run_is_in_the_corpus_too.py` holds the value to the catalog's
-    # own family name at the writing end.
-    "DETERMINISTIC": True,
-    # Must agree. Both rigs clone the same frames for the same corpus.
-    "CLONE_DEPTH": True,
-    "REMOTES": True,
-    # Must agree: the two rigs sweep the same ladder.
-    "LADDER": True,
-    # Two copies, and they are not the same quantity. The LIVE instruments share
-    # one number: `tools/bench/score.py` declares it and `tools/problems/admit.py`
-    # imports it, so admission rehearses the ceiling that will score it. What is
-    # left here is `tools/bundle/measure.py`'s, which describes a RETIRED
-    # instrument's runs already on disk — it must not move, because moving it
-    # would restate what those rows were measured under. Declared False for that
-    # reason.
-    "ACCEPTANCE_TIMEOUT_S": False,
-    # Known to disagree, and filed: `detect` and `availability` hold different values,
-    # under the `availability` module docstring calling the two "the same trick ... for
-    # the same reason". Weaker than the timeout above — the prose is about concurrency
-    # rather than the value — but it is the same shape.
-    "PROBE_TIMEOUT_S": False,
-    # Inherited rather than derived, in two rigs at once. Equal; the defect is
-    # that neither copy is derived from anything.
-    "MAX_OUTPUT_TOKENS": True,
-    # Three independent schema versions that happen to be 1. They version
-    # different schemas and are NOT required to agree — but a reader sees one
-    # number in three files, so it is declared rather than left to be noticed.
-    "SCHEMA_VERSION": False,
-    # Each rig's declared resume field set (#287): one name by design — the
-    # tests that hold a manifest's keys to the declaration read the same shape
-    # in both rigs — and two values by design, because the rigs record
-    # different identity blocks. What must agree is not the tuples but their
-    # membership in `identity.RECORDED`, which each rig's declared-set test
-    # asserts against the one contract module.
-    "IDENTITY_FIELDS": False,
-    # One per serving backend, and duplicated BY CONSTRUCTION: the contract in
-    # `tools/bench/serving/contract.py` requires every backend to declare its
-    # own name and default port, and a backend may not name another backend, so
-    # there is nowhere shared for either to live. They must NOT agree — two
-    # backends sharing a name or a port would be one backend — which is the
-    # opposite of the usual reason for declaring a duplicate, and is why this is
-    # stated rather than left to be noticed.
-    "NAME": False,
-    "PORT": False,
-    # Name collisions across unrelated meanings.
-    "CHECK": False,  # the gate's own per-module check name
-    "ARMS": False,  # each rig's arms are its own
-    "TIMEOUT_S": False,  # unrelated tools, unrelated ceilings
-    # workload.py's bench system prompt vs propose.py's decomposition prompt:
-    # two prompts for two different callers that happen to share a name.
-    "SYSTEM": False,
-    "_CACHE": False,
-    "_DRIVER": False,
-    # reply.py and deterministic.py carry the whole family; symbols.py is JS only
-    "_JS_EXTENSIONS": False,
-    "__all__": False,  # every package has one
-}
-
-
-def _module_level_constants(
-    files: list[Path] | None = None,
-) -> dict[str, dict[str, list[str]]]:
-    """name -> {repr(value): [locations]} for every literal module constant.
-
-    ``files`` is injectable so the canary below can hand it a synthetic tree.
-    A check that cannot be shown to reject is the defect this file is about.
-    """
-    found: dict[str, dict[str, list[str]]] = collections.defaultdict(
-        lambda: collections.defaultdict(list)
-    )
-    for path in _source_files() if files is None else files:
-        try:
-            tree = ast.parse(path.read_text(encoding="utf-8"))
-        except SyntaxError:  # pragma: no cover - a syntax error is its own failure
-            continue
-        for node in tree.body:
-            names: list[str]
-            value: ast.expr | None
-            if isinstance(node, ast.Assign):
-                names = [t.id for t in node.targets if isinstance(t, ast.Name)]
-                value = node.value
-            elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
-                names = [node.target.id]
-                value = node.value
-            else:
-                continue
-            if value is None:
-                continue
-            try:
-                literal = ast.literal_eval(value)
-            except (ValueError, SyntaxError, TypeError):
-                continue
-            for name in names:
-                found[name][repr(literal)].append(_where(path, node.lineno))
-    return found
-
-
-def _duplicated(
-    constants: dict[str, dict[str, list[str]]],
-) -> dict[str, dict[str, list[str]]]:
-    """The subset defined in more than one place."""
-    return {
-        name: values
-        for name, values in constants.items()
-        if sum(len(locs) for locs in values.values()) > 1
-    }
-
-
-def test_duplicated_constants_are_declared() -> None:
-    """A constant defined twice is declared here, or it is a new instance.
-
-    This is the check the ``_EMPTY_TREE`` comment stands in for. The comment
-    states a claim; this states the property, so the twelfth instance fails the
-    build instead of waiting to be read.
-    """
-    duplicated = _duplicated(_module_level_constants())
-    undeclared = sorted(set(duplicated) - set(DECLARED_DUPLICATES))
-    assert not undeclared, (
-        "a module-level constant is now defined in more than one place and is "
-        "not declared in DECLARED_DUPLICATES:\n"
-        + "\n".join(
-            f"  {name}: "
-            + "; ".join(
-                f"{value} at {', '.join(locs)}"
-                for value, locs in sorted(duplicated[name].items())
-            )
-            for name in undeclared
-        )
-        + "\n\nEither make one definition the source of the "
-        "other, or declare the duplication and say whether the copies must "
-        "hold equal values."
-    )
-
-
-def test_declared_duplicates_that_must_agree_do_agree() -> None:
-    """The half of the class a comment cannot enforce: the values are equal.
-
-    ``ACCEPTANCE_TIMEOUT_S`` is why this exists. Its comment claimed sameness
-    for long enough that a second module built a claim on top of it, and the
-    two values were never equal.
-    """
-    constants = _module_level_constants()
-    broken: list[str] = []
-    for name, must_agree in sorted(DECLARED_DUPLICATES.items()):
-        if not must_agree:
-            continue
-        values = constants.get(name)
-        if values is None:  # the duplication was resolved — nothing to hold
-            continue
-        if len(values) > 1:
-            broken.append(
-                f"  {name} disagrees: "
-                + "; ".join(
-                    f"{value} at {', '.join(locs)}"
-                    for value, locs in sorted(values.items())
-                )
-            )
-    assert not broken, (
-        "a constant declared as needing to hold equal values does not:\n"
-        + "\n".join(broken)
-    )
 
 
 # --------------------------------------------------------------------------
@@ -328,7 +86,7 @@ RUNG_COVERAGE: dict[str, tuple[str, ...]] = {
 def _emitted_check_names(gate: Path | None = None) -> dict[str, list[str]]:
     """Every literal a ``Finding(check=...)`` can carry, resolved by AST."""
     emitted: dict[str, list[str]] = collections.defaultdict(list)
-    gate = REPO / "src" / "mcgyvr" / "gate" if gate is None else gate
+    gate = PRODUCT / "src" / "mcgyvr" / "gate" if gate is None else gate
     for path in sorted(gate.rglob("*.py")):
         tree = ast.parse(path.read_text(encoding="utf-8"))
         constants: dict[str, str] = {}
@@ -522,35 +280,6 @@ def _p05(values: list[float]) -> float:
     return ordered[index]
 
 
-def test_estimate_reserve_is_derived() -> None:
-    """The shipped reserve is re-derived from the data it cites, not asserted.
-
-    ``ESTIMATE_RESERVE`` is enforced in ``check_prompt_fits`` and cited as "the
-    worst vocabulary's p05, rounded up". A test asserting a band would be a claim
-    about the number rather than a derivation of it: the units could change and
-    the band would still pass.
-    """
-    from mcgyvr.gate.preflight import ESTIMATE_RESERVE
-
-    if not TOKEN_UNITS.is_file():  # pragma: no cover - the evidence is vendored
-        pytest.skip("the units are not vendored")
-    rows = [
-        json.loads(line)
-        for line in TOKEN_UNITS.read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
-    worst = min(
-        _p05([r[f"error.{v}"] for r in rows if r.get(f"error.{v}") is not None])
-        for v in TOKEN_VOCABS
-    )
-    derived = math.ceil(abs(worst) * 100) / 100
-    assert pytest.approx(derived) == ESTIMATE_RESERVE, (
-        f"ESTIMATE_RESERVE is {ESTIMATE_RESERVE}, but the vendored units give "
-        f"a worst-vocabulary p05 of {worst:.4f}, i.e. {derived}. The constant "
-        "and the measurement it cites have drifted apart."
-    )
-
-
 # The stratum the reserve's own statement calls out: "the band is language-
 # dependent". A pooled reserve over a heterogeneous stratum is what the
 # consequences forbid a *report* from doing, and the same argument applies to a
@@ -605,51 +334,6 @@ def test_pooled_reserve_is_recorded_against_its_strata() -> None:
 # applying nothing, which is the state this whole file exists to detect.
 
 
-def test_control_an_undeclared_twin_is_rejected(tmp_path: Path) -> None:
-    """The duplicate sweep rejects a constant it has never seen."""
-    (tmp_path / "one.py").write_text("NEW_SHARED_CEILING_S = 5.0\n", encoding="utf-8")
-    (tmp_path / "two.py").write_text("NEW_SHARED_CEILING_S = 9.0\n", encoding="utf-8")
-    duplicated = _duplicated(
-        _module_level_constants([tmp_path / "one.py", tmp_path / "two.py"])
-    )
-    assert "NEW_SHARED_CEILING_S" in duplicated
-    assert sorted(duplicated["NEW_SHARED_CEILING_S"]) == ["5.0", "9.0"]
-    assert "NEW_SHARED_CEILING_S" not in DECLARED_DUPLICATES
-
-
-def test_control_a_must_agree_twin_that_drifts_is_rejected(tmp_path: Path) -> None:
-    """The must-agree half rejects two copies that stopped being equal."""
-    (tmp_path / "a.py").write_text("_EMPTY_TREE = 'aaa'\n", encoding="utf-8")
-    (tmp_path / "b.py").write_text("_EMPTY_TREE = 'bbb'\n", encoding="utf-8")
-    constants = _module_level_constants([tmp_path / "a.py", tmp_path / "b.py"])
-    assert DECLARED_DUPLICATES["_EMPTY_TREE"] is True
-    assert len(constants["_EMPTY_TREE"]) > 1, (
-        "two different values for a must-agree constant did not register as a "
-        "disagreement — test_declared_duplicates_that_must_agree_do_agree is inert"
-    )
-
-
-def test_control_a_rung_that_maps_to_no_check_is_rejected(tmp_path: Path) -> None:
-    """The rung check rejects a declared name that maps to no emitted check."""
-    gate = tmp_path / "gate"
-    gate.mkdir()
-    (gate / "only.py").write_text(
-        'CHECK = "acceptance"\n'
-        "def f():\n"
-        '    return Finding(check="scope", path="p", message="m")\n'
-        "def g():\n"
-        '    return Finding(check=CHECK, path="p", message="m")\n',
-        encoding="utf-8",
-    )
-    emitted = _emitted_check_names(gate)
-    # Both forms resolve: the literal, and the module constant `check=CHECK`
-    # that `acceptance.py` and `semantic.py` actually use.
-    assert set(emitted) == {"scope", "acceptance"}
-    # `adapters` is exactly the shape the real GATE_RUNGS carries: a category
-    # name that is not itself a check. Without RUNG_COVERAGE it maps to nothing.
-    assert "adapters" not in emitted
-
-
 def test_control_a_field_no_analysis_reads_is_rejected() -> None:
     """The readership check rejects a field named in no analysis tool."""
     sources = "\n".join(
@@ -667,33 +351,3 @@ def test_control_a_field_no_analysis_reads_is_rejected() -> None:
         assert f"[{field!r}]" not in sources and f"get({field!r}" not in sources, (
             f"{field} now has a reader; UNREAD_TASK_FIELDS is stale"
         )
-
-
-def test_control_the_reserve_moves_with_its_evidence() -> None:
-    """The reserve check rejects a constant that stopped matching its units."""
-    if not TOKEN_UNITS.is_file():  # pragma: no cover
-        pytest.skip("the units are not vendored")
-    rows = [
-        json.loads(line)
-        for line in TOKEN_UNITS.read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
-    worst = min(
-        _p05([r[f"error.{v}"] for r in rows if r.get(f"error.{v}") is not None])
-        for v in TOKEN_VOCABS
-    )
-    derived = math.ceil(abs(worst) * 100) / 100
-    # Perturb the evidence: one unit far past the current p05 moves the floor,
-    # and the shipped constant does not follow it. That is the drift the band
-    # assertion in test_structured_and_preflight.py cannot see.
-    perturbed = rows + [{"error.deepseek-coder-v2": -0.99, "language": "python"}] * (
-        len(rows) // 10
-    )
-    moved = min(
-        _p05([r[f"error.{v}"] for r in perturbed if r.get(f"error.{v}") is not None])
-        for v in TOKEN_VOCABS
-    )
-    assert math.ceil(abs(moved) * 100) / 100 != derived, (
-        "the derivation did not move when its evidence did — "
-        "test_estimate_reserve_is_derived would pass against any data"
-    )

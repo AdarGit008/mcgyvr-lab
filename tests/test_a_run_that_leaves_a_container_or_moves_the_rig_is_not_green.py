@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """Gate 7: teardown — the containers are gone and the rig reads as it started.
 
 A hard lock can wipe the BIOS profile, and it takes the ssh pipe with it, so
@@ -21,29 +23,6 @@ from tests import onedoor
 from tests.onedoor import Scenario
 
 PROBE = Scenario("alpha", "1-probe.sh")
-
-
-def test_a_container_still_named_for_the_run_is_exit_1_and_named(
-    tmp_path: Path,
-) -> None:
-    root = onedoor.fixture_repo(tmp_path)
-    flag = tmp_path / "step-ran"
-    onedoor.add_step(
-        root,
-        "alpha",
-        "1-probe.sh",
-        onedoor.probe_step(tmp_path / "e", after=f"touch '{flag}'"),
-    )
-    onedoor.docker_stub(onedoor.stubs_dir(root), leftover_flag=flag)
-    result = onedoor.door(root, PROBE)
-    assert result.returncode == 1, (result.stdout, result.stderr)
-    run_id = onedoor.read_env_file(tmp_path / "e")["RUN_ID"]
-    assert f"{run_id}-lcps" in result.stderr, (
-        f"the leftover container is not named on stderr: {result.stderr}"
-    )
-    assert any(line.startswith("ps") for line in onedoor.docker_log(root)), (
-        "the door never asked docker ps"
-    )
 
 
 def test_a_rig_that_reads_differently_after_the_step_is_stamped_rigmoved(

@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """A unit that drafts with its own head is judged by its own tolerance class.
 
 Owner ruling, 2026-09-16, after the mtp-ornith window: ``srv2_ornith_mtp`` —
@@ -33,46 +35,15 @@ import statistics
 from pathlib import Path
 from typing import Any
 
-import pytest
-
 from mcgyvr.fleet.files import load_fleet
 from mcgyvr.fleet.tolerance import (
-    CLASS_CPU_EXPERTS,
-    CLASS_LLAMACPP,
     CLASS_MTP,
-    CLASS_VLLM,
-    CLASSES,
     tolerance_class,
 )
 
 REPO = Path(__file__).resolve().parent.parent
 USE = REPO / "records" / "measurements" / "lock-fleets" / "mtp-ornith"
 UNIT = "srv2_ornith_mtp"
-SPEC = ["--spec-type", "draft-mtp", "--spec-draft-n-max", "2"]
-BASE = ["--model", "/models/moe/x.gguf", "--parallel", "1", "-c", "4096", "-ngl", "99"]
-
-#: Units that do not ask for mtp, each with the class it had before the ruling.
-#: Invented, so the check does not move when a unit joins or leaves the fleet.
-BEFORE: dict[str, tuple[dict[str, Any], str]] = {
-    "a_vllm_unit": ({"engine": "vllm", "launch": {"argv": ["Qwen/x"]}}, CLASS_VLLM),
-    "a_plain_llamacpp_unit": (
-        {"engine": "llama.cpp", "launch": {"argv": BASE}},
-        CLASS_LLAMACPP,
-    ),
-    "an_unnamed_engine": ({"launch": {"argv": BASE}}, CLASS_LLAMACPP),
-    "experts_on_the_cpu_in_the_argv": (
-        {"engine": "llama.cpp", "launch": {"argv": [*BASE, "--n-cpu-moe", "8"]}},
-        CLASS_CPU_EXPERTS,
-    ),
-    "experts_on_the_cpu_as_a_key": (
-        {"engine": "llama.cpp", "launch": {"n_cpu_moe": 8}},
-        CLASS_CPU_EXPERTS,
-    ),
-    "experts_on_the_cpu_among_the_flags": (
-        {"engine": "llama.cpp", "launch": {"flags": ["--cpu-moe"]}},
-        CLASS_CPU_EXPERTS,
-    ),
-}
 
 
 def _without_mtp(unit: dict[str, Any]) -> dict[str, Any]:
@@ -101,10 +72,6 @@ def _without_mtp(unit: dict[str, Any]) -> dict[str, Any]:
     return {**unit, "launch": kept}
 
 
-def _llamacpp(argv: list[str], **launch: Any) -> dict[str, Any]:
-    return {"engine": "llama.cpp", "launch": {"argv": argv, **launch}}
-
-
 def committed_units() -> dict[str, Any]:
     text = (REPO / "fleet-setup" / "fleet.yaml").read_text(encoding="utf-8")
     units: dict[str, Any] = load_fleet(text)["units"]
@@ -114,22 +81,10 @@ def committed_units() -> dict[str, Any]:
 # --- the class -------------------------------------------------------------
 
 
-def test_mtp_is_a_class_of_its_own() -> None:
-    assert CLASS_MTP == "mtp"
-    assert CLASS_MTP in CLASSES
-    assert set(CLASSES) == {CLASS_VLLM, CLASS_LLAMACPP, CLASS_CPU_EXPERTS, CLASS_MTP}
-
-
 def test_the_committed_mtp_unit_is_judged_as_mtp() -> None:
     units = committed_units()
     assert "--spec-type" in units[UNIT]["launch"]["argv"]
     assert tolerance_class(units[UNIT]) == CLASS_MTP
-
-
-@pytest.mark.parametrize("name", sorted(BEFORE))
-def test_a_unit_that_does_not_ask_for_mtp_keeps_its_class(name: str) -> None:
-    unit, before = BEFORE[name]
-    assert tolerance_class(unit) == before
 
 
 def test_each_declared_unit_is_mtp_only_where_it_asks_and_else_as_before() -> None:
@@ -140,50 +95,6 @@ def test_each_declared_unit_is_mtp_only_where_it_asks_and_else_as_before() -> No
             assert tolerance_class(unit) == before, name
         else:
             assert tolerance_class(unit) == CLASS_MTP, name
-
-
-@pytest.mark.parametrize(
-    "argv",
-    [
-        [*BASE, *SPEC],
-        [*BASE[:2], "--n-cpu-moe", "8", *SPEC, *BASE[2:]],
-        [*BASE, "--cpu-moe", *SPEC],
-        [*SPEC, *BASE],
-    ],
-)
-def test_draft_mtp_in_the_argv_is_mtp_with_or_without_experts_on_the_cpu(
-    argv: list[str],
-) -> None:
-    assert tolerance_class(_llamacpp(argv)) == CLASS_MTP
-
-
-def test_draft_mtp_among_the_flags_is_mtp() -> None:
-    unit = {"engine": "llama.cpp", "launch": {"flags": SPEC}}
-    assert tolerance_class(unit) == CLASS_MTP
-
-
-@pytest.mark.parametrize(
-    ("argv", "expected"),
-    [
-        (
-            [*BASE, "--spec-type", "draft-model", "--spec-draft-n-max", "2"],
-            CLASS_LLAMACPP,
-        ),
-        ([*BASE, "--n-cpu-moe", "8", "--spec-type", "ngram"], CLASS_CPU_EXPERTS),
-        ([*BASE, "--spec-type"], CLASS_LLAMACPP),
-        ([*BASE, "draft-mtp"], CLASS_LLAMACPP),
-        ([*BASE, "--spec-draft-n-max", "2"], CLASS_LLAMACPP),
-    ],
-)
-def test_any_other_spec_type_or_a_bare_word_is_judged_as_before(
-    argv: list[str], expected: str
-) -> None:
-    assert tolerance_class(_llamacpp(argv)) == expected
-
-
-def test_a_vllm_unit_is_vllm_whatever_its_argv_says() -> None:
-    unit = {"engine": "vllm", "launch": {"argv": ["Qwen/x", *SPEC]}}
-    assert tolerance_class(unit) == CLASS_VLLM
 
 
 # --- the numbers ----------------------------------------------------------------
@@ -227,16 +138,3 @@ def test_the_other_classes_numbers_did_not_move() -> None:
     prefill = {k: v for k, v in tolerances["prefill_tok_s"].items() if k != CLASS_MTP}
     assert decode == {"vllm": 1.0, "llamacpp": 1.0, "cpu_experts": 48.0}
     assert prefill == {"vllm": 8.0, "llamacpp": 1.0, "cpu_experts": 1.0}
-
-
-@pytest.mark.parametrize("entry", ["warm_decode_class_pct", "prefill_class_pct"])
-def test_an_absent_mtp_class_is_refused_by_name(entry: str, tmp_path: Path) -> None:
-    from mcgyvr import derived
-
-    doc = json.loads((REPO / "tools/runs/derived.json").read_text(encoding="utf-8"))
-    del doc["engine"][entry][CLASS_MTP]
-    path = tmp_path / "derived.json"
-    path.write_text(json.dumps(doc), encoding="utf-8")
-    with pytest.raises(derived.DerivedNumbersError, match=entry) as was:
-        derived.class_tolerances(path=path)
-    assert repr(CLASS_MTP) in str(was.value)

@@ -37,8 +37,10 @@ from pathlib import Path
 
 import pytest
 
+from tests._helpers import PRODUCT
+
 REPO = Path(__file__).resolve().parent.parent
-SCRIPT = REPO / "src" / "mcgyvr" / "serving" / "gate-scripts" / "default-step.sh"
+SCRIPT = PRODUCT / "src" / "mcgyvr" / "serving" / "gate-scripts" / "default-step.sh"
 SRV2_ENVELOPE = (
     REPO / "records" / "evidence" / "2026-09-05-e2e-srv2-deepseek-coder-v2-16b"
 )

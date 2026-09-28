@@ -52,10 +52,16 @@ core paragraph in `okf/must-read/always.md`.
   its exact path in `guard/binary-ok.txt`.
 - `okf/` — the rule store: how to act in this work. Start at `okf/index.md`.
 - `tools/` — the tools copied from the product (bench, problems, runs and
-  others), not yet part of the lab gate.
-- `tests/` — `tests/guard/` holds the tests of the lab's own code; the other
-  154 files are tests, helpers and fixtures copied from the product, not yet
-  part of the lab gate.
+  others). Part of the lab gate (see "Make targets").
+- `tests/` — `tests/guard/` holds the guard's self-tests. Of the other
+  files, 154 began as the tests, helpers and fixtures copied from the product,
+  and one was written here:
+  `tests/test_the_lab_digests_the_product_where_the_lab_holds_it.py`. In a
+  test file whose tests were split between the two repositories, the lab's
+  copy keeps only the lab's tests and says so in its first lines. The lab's
+  tests find the product's source, examples and packaging under `product/`
+  (`tests/_helpers.py`, `PRODUCT`) and the lab's `tools/`, `records/` and
+  `fleet-setup/` at the lab's root.
 - `records/` — measurements, evidence, corpora, fleet records, headers and
   plans.
 - `fleet-setup/` — the fleet setup: declarations, reports, digests and
@@ -71,10 +77,18 @@ core paragraph in `okf/must-read/always.md`.
 
 ## Make targets
 
-- `make check` — the lab's own gate: ruff, format check, mypy and pytest over
-  `guard/` and `tests/guard/` (the guard's self-tests). The tests and tools
-  copied from the product (`tests/` outside `tests/guard/`, `tools/`) are not
-  yet part of the lab gate; making them part of it is the next step.
+- `make check` — the lab's own gate: ruff check, ruff format check and mypy
+  over `guard/`, `tests/` and `tools/`, then the guard's self-tests
+  (`tests/guard/`, run on their own), then the rest of `tests/` with
+  `-n auto`. `tools/` and `tests/` are held to the product's lint and type
+  settings for them (`pyproject.toml` says which).
+  Not covered: `records/`, `archive/` and `fleet-setup/` (records, kept byte
+  for byte); the four digest-pinned task-material directories under `tools/`
+  (`bundle/python/tasks`, `problems/tasks`, `bench/tasks`, `bench/reserve`);
+  and the lab tests listed under "Lab tests outside the gate". The tests that
+  need the product's pinned JS toolchain (eslint, prettier and
+  `typescript-eslint` under `product/node_modules`) skip where it is not
+  installed; lab CI installs it.
 - `make product-check` — the product's own `make check`, run inside
   `product/`. It does not set up what the product's CI sets up first: Node 24,
   `npm ci` and the pinned JS toolchain on PATH, and the pinned uv and Python
@@ -91,6 +105,24 @@ core paragraph in `okf/must-read/always.md`.
 - `make product-sync` — moves `product/` to the latest `origin/main` without
   touching any branch; refuses if `product/` has uncommitted changes or
   commits that are on no branch.
+
+## Lab tests outside the gate
+
+Two lab tests fail in the lab today. `make check` deselects them by id
+(`LAB_TESTS_OUTSIDE` in the `Makefile`); they are not skipped or marked, and
+running them by hand shows them failing.
+
+- `tests/test_one_door.py::test_nothing_under_records_is_executable` — 21
+  files under `records/measurements/quick-check-2026-09-15/`, moved into the
+  lab on 2026-09-16, carry the executable bit. It passes once those files lose
+  the bit, or once the owner rules that they keep it.
+- `tests/test_a_live_row_names_what_answered_it_and_under_which_round.py::test_inside_the_checkout_the_row_carries_the_round_and_the_product_digest`
+  — a live row's `product_sha256` is taken by `mcgyvr.telemetry` over the
+  product's checkout (`product/`), not over the lab's tree that the lab's
+  `tools/bench/product.py` digests. Once a campaign started from the lab has
+  added a round to the lab's `tools/bench/rounds.json`, the row's `round`
+  differs too, because telemetry reads the product's copy. The test waits on
+  the product change that settles where a row gets its round and digest.
 
 ## Changing the product from the lab
 
@@ -109,7 +141,9 @@ messages or git notes, so do not push those to the product from here.
 
 ## What lab CI does
 
-- `check` — `make check` on every push and pull request.
+- `check` — `make check` on every push and pull request, after installing
+  Node 24 and the product's pinned JS toolchain (`npm ci` in `product/`, its
+  `node_modules/.bin` on PATH), the way `product-check` does.
 - `outgoing` — a net, not a gate. When a lab change moves the product pointer,
   it scans the product commits between the product's `origin/main` and the
   new pointer. Those commits are already on GitHub by then, and in the normal

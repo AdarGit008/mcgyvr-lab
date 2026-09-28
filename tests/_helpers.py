@@ -11,6 +11,12 @@ from typing import Any
 
 from mcgyvr.telemetry import ATTEMPT_KIND, CORRECTION_KIND, fold
 
+#: The product's checkout: the lab's submodule, from which the lab's
+#: environment installs mcgyvr in editable mode. A lab test that reads the
+#: product's source, examples or packaging reads them here; the lab's own
+#: tools/, records/ and fleet-setup/ are at the lab's root.
+PRODUCT = Path(__file__).resolve().parent.parent / "product"
+
 
 def by_path(name: str, path: Path) -> types.ModuleType:
     """A module loaded by path through its shared ``sys.modules`` slot."""

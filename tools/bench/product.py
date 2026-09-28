@@ -142,6 +142,22 @@ SURFACE: tuple[str, ...] = (
 DERIVED_DIR = "__pycache__"
 DERIVED_SUFFIXES: tuple[str, ...] = (".pyc", ".pyo")
 
+# Where each entry is read from. In the product's checkout, every entry is
+# under the one root. In the lab (mcgyvr-lab), the product is the submodule at
+# `product/` and the rig files under `tools/` are the lab's own, at the lab's
+# root. An entry is hashed under the same relative path in either layout, so a
+# given set of files has one digest whichever layout holds it.
+LAB_PRODUCT_DIR = "product"
+RIG_PREFIX = "tools/"
+
+
+def _base(repo: Path, entry: str) -> Path:
+    """The root ``entry`` is read under: the lab's product for a product entry."""
+    nested = repo / LAB_PRODUCT_DIR
+    if not entry.startswith(RIG_PREFIX) and nested.is_dir():
+        return nested
+    return repo
+
 
 class ProductError(Exception):
     """The surface cannot be read, or the tree does not match the open round."""
@@ -153,7 +169,7 @@ def _is_derived(path: Path) -> bool:
 
 
 def surface_files(repo: Path = REPO, surface: tuple[str, ...] = SURFACE) -> list[Path]:
-    """Every file in the declared surface, sorted by repo-relative path.
+    """Every file in the declared surface, sorted by the path it is hashed under.
 
     ``surface`` defaults to the product's. The serving harness pins itself with
     the same shape over ``tools/bench/serving/`` (#325): it is not product, so
@@ -172,28 +188,36 @@ def surface_files(repo: Path = REPO, surface: tuple[str, ...] = SURFACE) -> list
     verdict. Only :func:`_is_derived` paths are dropped, and they are dropped
     because they are outputs of files already hashed here.
     """
-    found: list[Path] = []
+    return [path for _, path in _surface(repo, surface)]
+
+
+def _surface(repo: Path, surface: tuple[str, ...]) -> list[tuple[str, Path]]:
+    """Each surface file with the relative path it is hashed under, sorted."""
+    found: list[tuple[str, Path]] = []
     for entry in surface:
-        path = repo / entry
+        base = _base(repo, entry)
+        path = base / entry
         if path.is_dir():
             found.extend(
-                sorted(p for p in path.rglob("*") if p.is_file() and not _is_derived(p))
+                (p.relative_to(base).as_posix(), p)
+                for p in path.rglob("*")
+                if p.is_file() and not _is_derived(p)
             )
         elif path.is_file():
-            found.append(path)
+            found.append((entry, path))
         else:
             raise ProductError(
                 f"the declared product surface names {entry}, which is not a "
                 "file or a directory in this tree; a surface entry that has "
                 "moved must be re-declared, not dropped"
             )
-    return sorted(found, key=lambda p: p.relative_to(repo).as_posix())
+    return sorted(found, key=lambda item: item[0])
 
 
 def _lines(repo: Path, surface: tuple[str, ...] = SURFACE) -> Iterator[str]:
-    for path in surface_files(repo, surface):
+    for rel, path in _surface(repo, surface):
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        yield f"{path.relative_to(repo).as_posix()} {digest}"
+        yield f"{rel} {digest}"
 
 
 def digest(repo: Path = REPO, surface: tuple[str, ...] = SURFACE) -> str:

@@ -99,10 +99,14 @@ ACCEPTANCE_TIMEOUT_S = 120.0
 IGNORED = "__pycache__/\n*.pyc\nnode_modules\n"
 
 
-ESLINT_CONFIG = REPO / "eslint.config.mjs"
+#: Where the product's JS bar and toolchain are: the product's checkout. In the
+#: lab (mcgyvr-lab) the product is the submodule at ``product/``; in the
+#: product's own checkout it is this repository.
+PRODUCT_ROOT = REPO / "product" if (REPO / "product").is_dir() else REPO
+ESLINT_CONFIG = PRODUCT_ROOT / "eslint.config.mjs"
 #: The format half of the JS/TS bar.
-PRETTIER_CONFIG = REPO / "prettier.config.mjs"
-NODE_MODULES = REPO / "node_modules"
+PRETTIER_CONFIG = PRODUCT_ROOT / "prettier.config.mjs"
+NODE_MODULES = PRODUCT_ROOT / "node_modules"
 
 
 def stage_js_toolchain(into: Path) -> None:

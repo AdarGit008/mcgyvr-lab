@@ -1,3 +1,5 @@
+# The lab's copy. The tests of this file that are the product's were removed
+# here; they remain in the product's copy of this file.
 """``C`` steps once an expert block is on the host, and holds after that.
 
 ``C`` is not the same at every placement. On srv2, deepseek-coder-v2-16b
@@ -82,15 +84,3 @@ def test_without_op_offload_the_constant_does_not_step() -> None:
         off = _one(rows, ncmoe, op_offload=False)
         assert off["compute"] == probe["compute"], ncmoe
         assert off["C"] == pytest.approx(probe["C"], abs=1.0), ncmoe
-
-
-def test_vramfit_no_longer_says_one_probe_at_any_placement_fixes_the_constant() -> None:
-    """The docstring is the rule a caller probes by, so it has to be the true one."""
-    module = vramfit.__doc__ or ""
-    probe = vramfit.constant_from_probe.__doc__ or ""
-    assert "does not move with" not in module
-    assert "at any placement" not in module
-    assert "op offload" in module
-    assert "on the host" in probe, (
-        "constant_from_probe must say a probe is taken with an expert on the host"
-    )
