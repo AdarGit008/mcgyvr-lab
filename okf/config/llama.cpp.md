@@ -126,7 +126,7 @@ fault; the fit is ours to derive.
 ## `-t`
 
 **Physical cores at most, and the sum across units that decode at the same time
-stays inside the physical cores.** Nothing here sums `-t` across co-resident
+stays inside the physical cores.** Neither mcgyvr nor the lab sums `-t` across co-resident
 units — each is set on its own — so check the sum by hand.
 → `okf/must-read/touching-rigs.md` § Host memory bandwidth
 

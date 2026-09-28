@@ -156,7 +156,7 @@ sleep by the card's memory dropping, never by the status.
 probe also reads `/is_sleeping`, and an explicit `true` or an answer it could
 not read takes the unit out of service; a 404 there means awake.
 
-**Level 1 parks the weights in host RAM and is refused here.** It needs host RAM
+**Level 1 parks the weights in host RAM and mcgyvr refuses it.** It needs host RAM
 the size of the weights; read available memory after the wake before counting
 that RAM as returned.
 

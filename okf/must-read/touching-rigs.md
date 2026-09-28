@@ -1,6 +1,7 @@
 # touching-rigs
 
-Any ssh, any launch, any measurement on a rig.
+Any ssh, any launch, any measurement on a rig. `→ gate N` names a gate of the
+door, the product's `mcgyvr.serving.run`.
 
 ## Before
 
@@ -11,7 +12,7 @@ host's available memory on the rig, at the moment you are about to launch. The
 rigs swap hardware; a stored spec is a guess.
 
 **Read `used`, and find out whose it is.** A card can be held by a process
-nothing in this repo started. Query the compute apps
+neither mcgyvr nor the lab started. Query the compute apps
 (`nvidia-smi --query-compute-apps=pid,used_memory --format=csv`) before planning
 a budget around free VRAM.
 

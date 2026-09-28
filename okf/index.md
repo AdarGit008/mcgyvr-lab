@@ -22,6 +22,7 @@ rigs swap hardware, and a value that was right on one afternoon is not a rule.
 | path | read it when |
 |---|---|
 | `must-read/always.md` | every session start |
+| `must-read/the-split.md` | any change that reaches the product |
 | `must-read/reading-results.md` | going over run results |
 | `must-read/touching-rigs.md` | any action on a rig |
 | `must-read/touching-models.md` | choosing, comparing or deleting a checkpoint |
@@ -42,9 +43,9 @@ one contradicts a measured entry, the measurement wins.
 
 ## Where the archive is
 
-Superseded prose, plans, session logs and retired code live in the lab repo
-under the paths they would have here. They are not opened unasked and are not
-an authority when they are → `must-read/always.md`.
+Superseded prose, plans, session logs and retired code live in this
+repository, at the paths they had in the product. They are not opened unasked
+and are not an authority when they are → `must-read/always.md`.
 
 ## Querying the store
 
@@ -58,6 +59,4 @@ Frontmatter is parsed as YAML and one bad value takes down the whole listing,
 not just its own file — a `title` or `description` containing `: ` must be
 quoted.
 
-`okf/*` is gitignored; `index.md`, `config/`, `must-read/` and `models/` are
-un-ignored so they are tracked. All of it is hand-authored and none of it is
-rebuilt.
+All of it is hand-authored and none of it is rebuilt.

@@ -2,22 +2,19 @@
 
 Read at session start. Each is an owner ruling or has burned a session.
 
-**The work is split across two repositories.** Owner ruling. The product repo
-holds the product and what its code, tests and data read: measurements,
-evidence, corpora and fleet locks. The lab repo holds research notes, plans,
-session logs and superseded code, under the paths they would have here. A
-citation spelled `mcgyvr-lab/<path>` is in the lab, and so is a cited
-`archive/` or `records/plans/` path that is not on disk here.
+**The product is operational; the lab is developmental.** Owner ruling. The
+product, linked at `product/`, is what a stranger needs to run mcgyvr on a
+machine nobody here has seen; this repository is what the owner needs to build,
+measure and learn. A thing is placed by who needs it, never by what it is
+called. → `okf/must-read/the-split.md`
 
-**`archive/` and the lab are not read. Asked to, they are still not an
-authority.**
+**`archive/` is not read. Asked to, it is still not an authority.**
 
-**Superseded code is archived in the lab, never deleted.** The old module or
-function goes to the lab under `archive/<its path here>`, with the tests that
-exist only to call it. The lab commit lands first; the merge that supersedes the
-code removes it and names that lab commit. Deleting drops the only record of
-what the old code claimed. `archive/` here may keep only what code or tests
-still read; anything else in it belongs in the lab.
+**Superseded code is archived here, never deleted.** The old module or function
+goes to `archive/<its path in the product>`, with the tests that exist only to
+call it. The copy rides in the lab pull request that carries the change, which
+merges last; the product's change names nothing of the lab. Deleting drops the
+only record of what the old code claimed.
 
 **A run is expandable until its first measurement, and frozen from then on.**
 
