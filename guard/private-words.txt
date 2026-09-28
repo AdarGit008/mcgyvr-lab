@@ -1,0 +1,40 @@
+# Words that must never reach the product (AdarGit008/mcgyvr).
+#
+# One pattern per line. Blank lines and lines starting with `#` are ignored.
+# Each pattern is a Python regular expression, matched case-insensitively
+# against every line the guard scans. `\b` is added where the bare word could
+# otherwise match inside an ordinary word or a longer number.
+#
+# These are the owner's private identifiers. They live here, in the lab, on
+# purpose: the lab is where they belong, and the guard reads them from here.
+
+# Host names
+\bsrv1\b
+\bsrv2\b
+\bb-small\b
+
+# User name and home directory
+adaramir
+/home/adaramir
+
+# Tailnet name and address
+tailbaf744
+\b100\.69\.72\.51\b
+
+# Card models
+RTX ?3060
+\bGTX ?1660
+\b1660 ?SUPER\b
+\bGTX ?1080
+\b1080 ?Ti\b
+
+# Board
+\bZ490\b
+
+# Unit and fleet names
+\bsrv[12]_[a-z0-9_]+
+\bd-srv[12]-[a-z0-9-]+
+
+# The lab itself: the product must not point at the lab. The one README line
+# the owner allows goes in guard/allowed.txt.
+mcgyvr-lab

@@ -1,0 +1,15 @@
+# Lines of the product that may contain a private word anyway.
+#
+# One entry per line, written as
+#
+#     path:exact line text
+#
+# `path` is relative to the product's root; everything after the first `:` is
+# the whole line exactly as it stands in the file (leading spaces included,
+# line ending excluded). A scanned line that matches an entry is not a finding,
+# whatever patterns it contains. Change the line and it is a finding again.
+#
+# Blank lines and lines starting with `#` are ignored.
+#
+# The owner allows exactly one entry: the product README's single line that
+# mentions the lab. It is added here when that line is written.
