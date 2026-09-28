@@ -1,0 +1,23 @@
+{
+ "blocks_on_card": 8,
+ "card_free_mib": 5729,
+ "constant_mib": 3465.5,
+ "dense": false,
+ "derived": true,
+ "experts_on_card_mib": 2210.0,
+ "floor_n_cpu_moe": 32,
+ "host": "srv2",
+ "kv_mib": 640.0,
+ "kv_swa_mib": 0.0,
+ "model": "/home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf",
+ "n_ctx_seq": 32768,
+ "n_ctx_total": 32768,
+ "n_placeable": 40,
+ "n_ubatch": 512,
+ "nonexpert_mib": 1994.7,
+ "parallel": 1,
+ "predicted_card_mib": 5675.5,
+ "run_id": "2026-09-28-lock-fleets-new-cards-srv2-c1-srv2_35b_32k",
+ "scratch_allowance_mib": 768,
+ "state_mib": 62.8
+}

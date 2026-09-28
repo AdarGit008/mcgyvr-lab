@@ -49,8 +49,11 @@ None.
 
 | event | rig | at | idle minutes |
 |---|---|---|---|
+| stopped | srv2 | 2026-09-28T22:07:09Z |  |
 
 ## Log
 
 | entry | rig | started_at | ended_at | exit | run id | envelope | output |
 |---|---|---|---|---|---|---|---|
+| window | srv2 | 2026-09-28T22:02:22Z |  |  |  | window date 2026-09-28 |  |
+| srv2-01 | srv2 | 2026-09-28T22:02:22Z | 2026-09-28T22:07:09Z | 1 | 2026-09-28-lock-fleets-new-cards-srv2-c1-srv2_35b_32k | records/evidence/2026-09-28-lock-fleets | records/measurements/lock-fleets/new-cards/logs/srv2/srv2-01.out |
