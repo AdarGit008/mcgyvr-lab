@@ -54,7 +54,8 @@ core paragraph in `okf/must-read/always.md`.
 - `tools/` — the tools copied from the product (bench, problems, runs and
   others), not yet part of the lab gate.
 - `tests/` — `tests/guard/` holds the tests of the lab's own code; the other
-  154 are tests copied from the product, not yet part of the lab gate.
+  154 files are tests, helpers and fixtures copied from the product, not yet
+  part of the lab gate.
 - `records/` — measurements, evidence, corpora, fleet records, headers and
   plans.
 - `fleet-setup/` — the fleet setup: declarations, reports, digests and
@@ -135,9 +136,10 @@ root shows the product.
 ## What is in both repositories for now
 
 The lab holds every file the product tracks under `okf/`, `tools/`,
-`records/`, `fleet-setup/` and `archive/`, and 154 of the product's tests. They
-were copied byte for byte, at the same paths, from product commit `ef12d3d3`.
-The lab's `okf/` has been edited since.
+`records/`, `fleet-setup/` and `archive/`, and 154 files from the product's
+`tests/` (tests, helpers and fixtures). They were copied byte for byte, at the
+same paths, from product commit `ef12d3d3`. The lab's `okf/` has been edited
+since.
 
 The product still holds its own copies of these files for now. They leave the
 product in a later step, through product pull requests.
