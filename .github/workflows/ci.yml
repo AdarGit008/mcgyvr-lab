@@ -1,0 +1,92 @@
+name: ci
+on:
+  push:
+  pull_request:
+  # Manual only: the product's full gate. The product's own CI runs it on every
+  # product pull request; here it is for checking product work from the lab.
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  # The lab's own gate, on every push and pull request.
+  check:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      # The product submodule is fetched at depth 1 (fetch-depth applies to
+      # submodules too). The editable install of the product builds from a
+      # shallow clone; its version then reads as a dev build of that commit.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+          fetch-depth: 1
+      # Same action, pin and versions as the product's workflow.
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: "0.11.28"
+          python-version: "3.12"
+      - name: install
+        run: uv sync --frozen
+      - name: check (lint, typecheck, tests, guard self-tests)
+        run: make check
+
+  # The outgoing net (not a gate: the commits it scans are already on GitHub,
+  # and the gate is the local `make guard` before a product branch is pushed).
+  # It runs whenever a lab change moves the product pointer.
+  # It compares the product commit recorded on the base with the one at HEAD
+  # and, if they differ, scans every product commit from the product's
+  # origin/main to the new pointer (guard/outgoing-ci.sh). Findings fail the
+  # job, and so does anything that stops the scan: a shallow lab checkout, a
+  # base that is not present, or a product history that cannot be completed.
+  outgoing:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      # Full history, no submodule yet: the script reads the pointer on the
+      # base commit and then fetches the product's full history itself.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: outgoing scan of the product pointer
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          if [ "$EVENT" = pull_request ]; then
+            base=$PR_BASE
+          elif [ -n "$BEFORE" ] && ! [[ "$BEFORE" =~ ^0+$ ]]; then
+            base=$BEFORE
+          else
+            # A new branch: measure against where it left the lab's main.
+            base=$(git merge-base origin/main HEAD || true)
+          fi
+          guard/outgoing-ci.sh "$base"
+
+  # The product's full gate inside product/, set up the way the product's own
+  # workflow sets it up (pinned JS toolchain on PATH, then `make check`).
+  product-check:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+          fetch-depth: 1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: product/package-lock.json
+      - name: install the product's pinned JS toolchain
+        working-directory: product
+        run: |
+          npm ci
+          echo "$GITHUB_WORKSPACE/product/node_modules/.bin" >> "$GITHUB_PATH"
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: "0.11.28"
+          python-version: "3.12"
+      - name: product check
+        run: make product-check

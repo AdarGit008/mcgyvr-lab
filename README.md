@@ -1,5 +1,123 @@
 # mcgyvr-lab
 
+This is where [mcgyvr](https://github.com/AdarGit008/mcgyvr) is developed.
+mcgyvr is the product; this repository is the lab around it. The product is
+linked here as a submodule at `product/`, and the lab's environment installs it
+from there in editable mode, so a change made in `product/` is the code the lab
+runs.
+
+## The separation rule
+
+- mcgyvr is the product; mcgyvr-lab is where it is developed. Work happens only
+  in the lab.
+- The product changes only through pull requests opened from the lab's linked
+  checkout of the product (`product/`), each one ready to merge.
+- Nothing of the owner's machines enters the product: no machine names, no user
+  name, no home paths, no card models stated as facts, no measured values, no
+  rules for working on those machines.
+- The lab may point at the product; the product never depends on the lab.
+- A guard keeps it that way. The lab-side guard exists: `guard/` searches
+  what leaves for the product for the words in `guard/private-words.txt`. The
+  product-side guard (the product never pointing at the lab) is added to the
+  product's CI in a later step.
+- The word list is a tracked file in this repository, which is public: it is
+  not secret. It lives in the lab and never enters the product.
+
+## Layout
+
+- `product/` — the product, as a submodule tracking its `main`.
+- `guard/` — the outgoing guard: `check_outgoing.py`, the word list, the
+  allow-list of the few product lines that may contain a word, the exact
+  paths of binary files that may go out (`binary-ok.txt`), and the CI entry
+  point `outgoing-ci.sh`. Before matching it removes format characters (soft
+  hyphens, zero-width and direction marks and the rest of Unicode category
+  Cf), C1 controls, line and paragraph separators, variation selectors and
+  tag characters; applies NFKC (so fullwidth and other compatibility forms
+  become plain letters); maps every Unicode dash (category Pd) and the minus
+  sign to `-`; joins backslash-continued lines; reads a lone carriage return
+  or a vertical tab as a line break; and catches a word wrapped over one line
+  break when the break falls where the pattern accepts a separator, also
+  inside `#`, `//`, `*`, `--`, `>` or `|` comments and table rows (`RTX` /
+  `3060` is caught; `srv` / `1` is not, because `srv1` takes no separator).
+  Other comment markers (`///`, `;`, `%`, `..`, `<!--`, `*/`) are not
+  stripped from a continuation line. It still cannot catch: look-alike letters from other
+  scripts (Cyrillic `ѕ` for `s`), percent encoding, HTML entities, escapes
+  such as `\x73`, base64, compressed content inside an allowed binary, a word
+  split across string concatenation, a table cell split into columns other
+  than `| RTX | 3060 |`, a word split over more than one line break, an ANSI
+  escape sequence inside a word, and words in commit headers other than
+  author and committer or in the time-zone field.
+- Accepted limits of the word list: `bsmall` and `mcgyvrlab` with no
+  separator pass; `b-smaller` and `mcgyvr-labs` pass (no letter may follow
+  those names, so `mcgyvr labels` passes); `1660s` and `1660 s` match the
+  card pattern; bare `3060`, bare `1660` and the bare short user name are
+  not in the list, by the owner's decision.
+- Ordinary code can trip the line-join rule in rare shapes, for example
+  `x = 1660` on one line and `s = 3` on the next, or `return a + b` followed
+  by `small = 1`. When that happens, list both lines in `guard/allowed.txt`
+  (a join is waived only when both of its lines are listed).
+- Text in a legacy encoding (latin-1, cp1252) and files holding control
+  characters (other than tab, line feed, vertical tab, form feed, carriage
+  return and escape) are refused:
+  the guard lists them as not scanned as text and exits 2. Convert such a
+  file to UTF-8 and remove the control characters; for a real binary, list
+  its exact path in `guard/binary-ok.txt`.
+- `tests/` — tests of the lab's own code.
+- `records/`, `archive/`, `fleet-setup/`, `docs/` — research, measurements and
+  planning material (described below).
+- `pyproject.toml`, `uv.lock` — the lab's environment (uv); it is never
+  published.
+
+## Make targets
+
+- `make check` — the lab's own gate: ruff, format check, mypy and pytest over
+  `tests/`, which includes the guard's self-tests.
+- `make product-check` — the product's own `make check`, run inside
+  `product/`. It does not set up what the product's CI sets up first: Node 24,
+  `npm ci` and the pinned JS toolchain on PATH, and the pinned uv and Python
+  (lab CI's `product-check` job does).
+- `make guard` — the outgoing gate: every commit `product/`'s branch adds on
+  top of `origin/main` (lines, path names, messages, author and committer
+  name and e-mail) and the branch name. It passes or fails; the printed
+  summary says why (words found, content it could not read as text, or a
+  refused state such as uncommitted work, a detached HEAD with work on a
+  branch, or a range given backwards). The script underneath exits 0 clean,
+  1 findings, 2 could not scan; make reports any failure as its own exit 2.
+- `make guard-baseline` — informational: private words still in the product,
+  counted for the paths that stay in it and for the whole tree.
+- `make product-sync` — moves `product/` to the latest `origin/main` without
+  touching any branch; refuses if `product/` has uncommitted changes or
+  commits that are on no branch.
+
+## Changing the product from the lab
+
+1. `cd product`
+2. `git fetch origin` and `git switch -c <branch> origin/main`
+3. Make the change.
+4. Commit it: `git add <paths>` and `git commit`. The guard refuses to run
+   over uncommitted work.
+5. From the lab's root: `make product-check` and `make guard`; both must pass.
+6. `cd product` and `git push -u origin <branch>`
+7. Open the pull request against `AdarGit008/mcgyvr`, e.g.
+   `gh pr create --repo AdarGit008/mcgyvr --base main`.
+
+This flow pushes one branch and no tags. The guard does not scan tags, tag
+messages or git notes, so do not push those to the product from here.
+
+## What lab CI does
+
+- `check` — `make check` on every push and pull request.
+- `outgoing` — a net, not a gate. When a lab change moves the product pointer,
+  it scans the product commits between the product's `origin/main` and the
+  new pointer. Those commits are already on GitHub by then, and in the normal
+  flow the pointer moves after the product pull request has merged, so the
+  range is empty. Prevention is the local `make guard` before a product
+  branch is pushed.
+- `product-check` — the product's full gate, run by hand
+  (`workflow_dispatch`), set up the way the product's own CI sets it up.
+
+## The archive
+
 Research, measurements and planning material moved out of
 [AdarGit008/mcgyvr](https://github.com/AdarGit008/mcgyvr) so that repository's
 root shows the product.

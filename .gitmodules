@@ -1,0 +1,4 @@
+[submodule "product"]
+	path = product
+	url = https://github.com/AdarGit008/mcgyvr.git
+	branch = main

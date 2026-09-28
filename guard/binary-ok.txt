@@ -1,0 +1,13 @@
+# Binary files that may go to the product although they are not text.
+#
+# One EXACT path per line, relative to the product's root; globs are refused
+# (a file named like an image may hold anything). A blob that is not text in
+# a recognised encoding (see guard/check_outgoing.py) and whose path is not
+# listed here is reported as "not scanned as text" and makes the guard exit 2.
+#
+# Listing a path waives only that verdict. The path's NAME is still scanned,
+# and its bytes are still searched as best they can be (UTF-8 with
+# replacement; latin-1 with NUL bytes removed), but compressed or encoded
+# content inside it is never read through. Blank lines and lines starting
+# with `#` are ignored.
+records/evidence/2026-08-24-config-sweep/session-report-2026-08-24.pdf

@@ -1,0 +1,61 @@
+# Words that must never reach the product (AdarGit008/mcgyvr).
+#
+# One pattern per line: a Python regular expression, matched
+# case-insensitively after the text is normalised (format characters removed,
+# Unicode NFKC, dashes mapped to `-`, lines ending in a backslash joined with
+# the next). Refused: backreferences, named groups, a NUL, and any pattern that
+# NFKC would change.
+# Blank lines and lines starting with `#` are ignored; a `#` that follows
+# whitespace starts a comment; write `\#` for a literal `#`. Leading and
+# trailing whitespace is not part of a pattern.
+#
+# Boundaries are chosen per word. `\b` is not used: it does not split at `_`
+# or inside camelCase, so `my_srv1_x` and `camelSrv1Host` would pass. Every
+# pattern here has a sample in tests/guard/test_check_outgoing.py (SAMPLES).
+#
+# These are the owner's identifiers. This file is tracked in the lab, which is
+# a public repository, so it is not secret; what matters is that the list
+# lives in the lab and never enters the product.
+
+# Host names: any left side; on the right, anything but a digit
+# (srv1, my_srv1_x, camelSrv1Host match; srv10, srv12 do not). b-small needs
+# a separator (any run of spaces, tabs, `_` or `-`); `bsmall` passes.
+srv1(?![0-9])
+srv2(?![0-9])
+(?<![a-z0-9])b[ \t_-]+small(?![a-z0-9])
+
+# User name and home directory
+adaramir
+/home/adaramir
+/home/adar(?![a-z0-9])
+
+# Tailnet name, and any address in the tailnet range 100.64.0.0/10
+# (100.64.0.0 to 100.127.255.255; 100.63.x.x and 100.128.x.x pass)
+tailbaf744
+(?<![0-9.])100\.(?:6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\.[0-9]{1,3}\.[0-9]{1,3}(?![0-9])
+
+# Card models: between the parts any run of spaces, tabs, `_`, `-` or `|`
+# (a table cell), or nothing; never followed by another digit. RTX_3060,
+# RTX  3060, | RTX | 3060 |, rtx3060ti, 3060 Ti, 1660S match; RTX30600,
+# 16600, 1080p do not. A word wrapped over one line break is caught by the
+# guard, not by these patterns. Bare `3060` and `1660` are not listed.
+RTX[ \t_|-]*3060(?![0-9])|(?<![0-9])3060[ \t_|-]*Ti(?![a-z])
+GTX[ \t_|-]*1660(?![0-9])
+(?<![0-9])1660[ \t_|-]*(?:SUPER|S)(?![a-z])
+GTX[ \t_|-]*1080(?![0-9])
+(?<![0-9])1080[ \t_|-]*Ti(?![a-z])
+
+# Board
+(?<![0-9])Z490(?![0-9])
+
+# Unit and fleet names
+srv[12]_[a-z0-9_]+
+d-srv[12]-[a-z0-9-]+
+
+# The lab itself: the product must not point at the lab. A separator is
+# required: any run of spaces, tabs, `_` or `-` (mcgyvr-lab, mcgyvr_lab,
+# mcgyvr lab); `mcgyvrlab` with none passes, as does `bsmall` above. No letter
+# may follow, so `mcgyvr labels` and `mcgyvr laboratory` pass; the accepted
+# cost is that `mcgyvr-labs` passes too. The one README line the owner allows
+# goes in guard/allowed.txt.
+mcgyvr[ \t_-]+lab(?![a-z])
