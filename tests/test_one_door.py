@@ -558,9 +558,9 @@ def test_every_host_that_wrote_a_row_has_a_declared_rig() -> None:
 #: bit they were recorded with: a record is evidence, not something changed to
 #: suit a test. This is that one exact folder, never a pattern another folder
 #: could also match, and the set is pinned here, read from git with
-#: ``git ls-files -s`` (mode ``100755``) over that folder — if a file's mode
-#: there ever changes, or the set gains or loses a member, this list stops
-#: matching what is on disk and the test below fails and says how.
+#: ``git ls-files -s`` (mode ``100755``) over that folder. The test below
+#: reads the files on disk: when the set of files there that carry an exec bit
+#: differs from this list, it fails and names the files.
 RECORDED_EXECUTABLE_DIR = "records/measurements/quick-check-2026-09-15"
 RECORDED_EXECUTABLE = frozenset(
     f"{RECORDED_EXECUTABLE_DIR}/{rest}"
@@ -596,19 +596,18 @@ def test_nothing_under_records_is_executable() -> None:
     :data:`RECORDED_EXECUTABLE`, under :data:`RECORDED_EXECUTABLE_DIR`. The
     owner ruled that those files keep the mode they were recorded with — they
     are history, not an entry point, and are not changed to suit this test.
-    Any OTHER file under ``records/`` gaining the exec bit fails this test,
-    and so does the recorded folder's set of executable files growing (or
-    otherwise changing) past what is pinned above."""
+    Any other file under ``records/`` that carries an exec bit fails this
+    test, and so does one of the 21 that no longer carries it."""
     executable = sorted(
         _rel(path)
         for path in (REPO / "records").rglob("*")
         if path.is_file() and path.stat().st_mode & 0o111
     )
-    outside = [path for path in executable if path not in RECORDED_EXECUTABLE]
-    assert not outside, (
-        f"{len(outside)} file(s) under records/ carry the exec bit outside "
-        f"{RECORDED_EXECUTABLE_DIR} — a record is evidence, not an entry "
-        f"point: {outside}"
+    unnamed = [path for path in executable if path not in RECORDED_EXECUTABLE]
+    assert not unnamed, (
+        f"{len(unnamed)} file(s) under records/ carry the exec bit and are not "
+        f"among the {len(RECORDED_EXECUTABLE)} named in RECORDED_EXECUTABLE — a "
+        f"record is evidence, not an entry point: {unnamed}"
     )
     recorded = sorted(path for path in executable if path in RECORDED_EXECUTABLE)
     assert recorded == sorted(RECORDED_EXECUTABLE), (
