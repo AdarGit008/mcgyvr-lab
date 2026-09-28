@@ -34,17 +34,31 @@ runs.
   Cf), C1 controls, line and paragraph separators, variation selectors and
   tag characters; applies NFKC (so fullwidth and other compatibility forms
   become plain letters); maps every Unicode dash (category Pd) and the minus
-  sign to `-`; joins backslash-continued lines; and catches a word wrapped
-  over one line break, also inside `#`, `//`, `*`, `--`, `>` or `|` comments
-  and table rows. It still cannot catch: look-alike letters from other
+  sign to `-`; joins backslash-continued lines; reads a lone carriage return
+  or a vertical tab as a line break; and catches a word wrapped over one line
+  break when the break falls where the pattern accepts a separator, also
+  inside `#`, `//`, `*`, `--`, `>` or `|` comments and table rows (`RTX` /
+  `3060` is caught; `srv` / `1` is not, because `srv1` takes no separator).
+  Other comment markers (`///`, `;`, `%`, `..`, `<!--`, `*/`) are not
+  stripped from a continuation line. It still cannot catch: look-alike letters from other
   scripts (Cyrillic `ѕ` for `s`), percent encoding, HTML entities, escapes
   such as `\x73`, base64, compressed content inside an allowed binary, a word
   split across string concatenation, a table cell split into columns other
   than `| RTX | 3060 |`, a word split over more than one line break, an ANSI
   escape sequence inside a word, and words in commit headers other than
   author and committer or in the time-zone field.
+- Accepted limits of the word list: `bsmall` and `mcgyvrlab` with no
+  separator pass; `b-smaller` and `mcgyvr-labs` pass (no letter may follow
+  those names, so `mcgyvr labels` passes); `1660s` and `1660 s` match the
+  card pattern; bare `3060`, bare `1660` and the bare short user name are
+  not in the list, by the owner's decision.
+- Ordinary code can trip the line-join rule in rare shapes, for example
+  `x = 1660` on one line and `s = 3` on the next, or `return a + b` followed
+  by `small = 1`. When that happens, list both lines in `guard/allowed.txt`
+  (a join is waived only when both of its lines are listed).
 - Text in a legacy encoding (latin-1, cp1252) and files holding control
-  characters (other than tab, line breaks, form feed and escape) are refused:
+  characters (other than tab, line feed, vertical tab, form feed, carriage
+  return and escape) are refused:
   the guard lists them as not scanned as text and exits 2. Convert such a
   file to UTF-8 and remove the control characters; for a real binary, list
   its exact path in `guard/binary-ok.txt`.

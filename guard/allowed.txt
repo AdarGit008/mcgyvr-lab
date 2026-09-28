@@ -7,8 +7,13 @@
 # `path` is relative to the product's root; everything after the first `:` is
 # the whole line exactly as it stands in the file (leading spaces included,
 # line ending excluded). Entries are right-stripped when loaded, so a line
-# that ends in spaces or tabs can never be allowed. A scanned line that matches an entry is not a finding,
-# whatever patterns it contains. Change the line and it is a finding again.
+# that ends in spaces or tabs can never be allowed.
+#
+# A listed line yields no finding of its own, whatever patterns it contains.
+# A finding that crosses a line join (a backslash continuation, or a word
+# wrapped over a line break) is waived only when EVERY line of that join is
+# listed; one listed line is not enough. Change a listed line and it is
+# scanned again.
 #
 # Blank lines and lines starting with `#` are ignored.
 #
