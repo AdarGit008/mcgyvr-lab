@@ -17,20 +17,26 @@ runs.
   rules for working on those machines.
 - The lab may point at the product; the product never depends on the lab.
 - A guard keeps it that way. The lab-side guard exists: `guard/` searches
-  what leaves for the product for the words in `guard/private-words.txt`, and
-  lab CI runs it whenever a lab change moves the product pointer. The
+  what leaves for the product for the words in `guard/private-words.txt`. The
   product-side guard (the product never pointing at the lab) is added to the
   product's CI in a later step.
+- The word list is a tracked file in this repository, which is public: it is
+  not secret. It lives in the lab and never enters the product.
 
 ## Layout
 
 - `product/` — the product, as a submodule tracking its `main`.
-- `guard/` — the outgoing guard: `check_outgoing.py`, the private words, the
-  allow-list of the few product lines that may contain one, the globs of
-  binary files that may go out unscanned (`binary-ok.txt`), and the CI entry
-  point `outgoing-ci.sh`. It normalises look-alikes (fullwidth forms,
-  zero-width characters, backslash-continued lines) but does not catch
-  letters from other scripts that look alike, such as Cyrillic `ѕ` for `s`.
+- `guard/` — the outgoing guard: `check_outgoing.py`, the word list, the
+  allow-list of the few product lines that may contain a word, the exact
+  paths of binary files that may go out (`binary-ok.txt`), and the CI entry
+  point `outgoing-ci.sh`. Before matching it removes format characters (soft
+  hyphens, zero-width and direction marks and the rest of Unicode category
+  Cf), variation selectors and tag characters; applies NFKC (so fullwidth and
+  other compatibility forms become plain letters); maps Unicode dashes and
+  minus signs to `-`; and joins backslash-continued lines. A word list cannot
+  catch: look-alike letters from other scripts (Cyrillic `ѕ` for `s`), percent
+  encoding, HTML entities, escapes such as `\x73`, base64, compressed content
+  inside an allowed binary, or a word split across string concatenation.
 - `tests/` — tests of the lab's own code.
 - `records/`, `archive/`, `fleet-setup/`, `docs/` — research, measurements and
   planning material (described below).
@@ -41,12 +47,17 @@ runs.
 
 - `make check` — the lab's own gate: ruff, format check, mypy and pytest over
   `tests/`, which includes the guard's self-tests.
-- `make product-check` — the product's full gate, run inside `product/` the way
-  the product's CI runs it.
+- `make product-check` — the product's own `make check`, run inside
+  `product/`. It does not set up what the product's CI sets up first: Node 24,
+  `npm ci` and the pinned JS toolchain on PATH, and the pinned uv and Python
+  (lab CI's `product-check` job does).
 - `make guard` — the outgoing gate: every commit `product/`'s branch adds on
-  top of `origin/main` (lines, path names, messages) and the branch name. Its
-  exit code is the verdict: 0 clean, 1 findings, 2 could not scan or
-  uncommitted work.
+  top of `origin/main` (lines, path names, messages, author and committer
+  name and e-mail) and the branch name. It passes or fails; the printed
+  summary says why (words found, content it could not read as text, or a
+  refused state such as uncommitted work, a detached HEAD with work on a
+  branch, or a range given backwards). The script underneath exits 0 clean,
+  1 findings, 2 could not scan; make reports any failure as its own exit 2.
 - `make guard-baseline` — informational: private words still in the product,
   counted for the paths that stay in it and for the whole tree.
 - `make product-sync` — moves `product/` to the latest `origin/main` without
@@ -64,6 +75,21 @@ runs.
 6. `cd product` and `git push -u origin <branch>`
 7. Open the pull request against `AdarGit008/mcgyvr`, e.g.
    `gh pr create --repo AdarGit008/mcgyvr --base main`.
+
+This flow pushes one branch and no tags. The guard does not scan tags, tag
+messages or git notes, so do not push those to the product from here.
+
+## What lab CI does
+
+- `check` — `make check` on every push and pull request.
+- `outgoing` — a net, not a gate. When a lab change moves the product pointer,
+  it scans the product commits between the product's `origin/main` and the
+  new pointer. Those commits are already on GitHub by then, and in the normal
+  flow the pointer moves after the product pull request has merged, so the
+  range is empty. Prevention is the local `make guard` before a product
+  branch is pushed.
+- `product-check` — the product's full gate, run by hand
+  (`workflow_dispatch`), set up the way the product's own CI sets it up.
 
 ## The archive
 
