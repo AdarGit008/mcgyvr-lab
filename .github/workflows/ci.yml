@@ -12,6 +12,7 @@ jobs:
   check:
     if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       # The product submodule is fetched at depth 1 (fetch-depth applies to
       # submodules too). The editable install of the product builds from a
@@ -33,7 +34,7 @@ jobs:
       - name: install the product's pinned JS toolchain
         working-directory: product
         run: |
-          npm ci
+          npm ci --ignore-scripts
           echo "$GITHUB_WORKSPACE/product/node_modules/.bin" >> "$GITHUB_PATH"
       # Same action, pin and versions as the product's workflow.
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
@@ -97,7 +98,7 @@ jobs:
       - name: install the product's pinned JS toolchain
         working-directory: product
         run: |
-          npm ci
+          npm ci --ignore-scripts
           echo "$GITHUB_WORKSPACE/product/node_modules/.bin" >> "$GITHUB_PATH"
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:

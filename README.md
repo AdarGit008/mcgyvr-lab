@@ -53,8 +53,10 @@ core paragraph in `okf/must-read/always.md`.
 - `okf/` — the rule store: how to act in this work. Start at `okf/index.md`.
 - `tools/` — the tools copied from the product (bench, problems, runs and
   others). Part of the lab gate (see "Make targets").
-- `tests/` — `tests/guard/` holds the guard's self-tests; the other files
-  began as the 154 tests, helpers and fixtures copied from the product. In a
+- `tests/` — `tests/guard/` holds the guard's self-tests. Of the other
+  files, 154 began as the tests, helpers and fixtures copied from the product,
+  and one was written here:
+  `tests/test_the_lab_digests_the_product_where_the_lab_holds_it.py`. In a
   test file whose tests were split between the two repositories, the lab's
   copy keeps only the lab's tests and says so in its first lines. The lab's
   tests find the product's source, examples and packaging under `product/`
@@ -117,8 +119,10 @@ running them by hand shows them failing.
 - `tests/test_a_live_row_names_what_answered_it_and_under_which_round.py::test_inside_the_checkout_the_row_carries_the_round_and_the_product_digest`
   — a live row's `product_sha256` is taken by `mcgyvr.telemetry` over the
   product's checkout (`product/`), not over the lab's tree that the lab's
-  `tools/bench/product.py` digests. It needs a product change: telemetry has
-  to take the digest where the run root is.
+  `tools/bench/product.py` digests. Once a campaign started from the lab has
+  added a round to the lab's `tools/bench/rounds.json`, the row's `round`
+  differs too, because telemetry reads the product's copy. The test waits on
+  the product change that settles where a row gets its round and digest.
 
 ## Changing the product from the lab
 

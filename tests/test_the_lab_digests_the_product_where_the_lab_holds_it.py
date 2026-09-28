@@ -106,3 +106,17 @@ def test_a_lab_without_its_product_is_refused_by_name(tmp_path: Path) -> None:
         assert "src/mcgyvr" in str(error)
     else:
         raise AssertionError("a surface entry that is missing was not refused")
+
+
+def test_a_lab_whose_product_folder_is_empty_is_refused(tmp_path: Path) -> None:
+    """An uninitialised submodule is an empty ``product/``: nothing to digest."""
+    lab = _load("lab_bench_product", LAB_MODULE)
+    _, lab_shaped = _trees(tmp_path, lab.SURFACE)
+    shutil.rmtree(lab_shaped / "product")
+    (lab_shaped / "product").mkdir()
+    try:
+        lab.digest(lab_shaped)
+    except lab.ProductError:
+        pass
+    else:
+        raise AssertionError("an empty product/ was digested, not refused")
