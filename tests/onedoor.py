@@ -59,10 +59,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from types import ModuleType
 
+from tests._helpers import PRODUCT
+
 REPO = Path(__file__).resolve().parent.parent
 RUNS = REPO / "tools" / "runs"
 #: The door and everything it spawns. Copied whole into a fixture.
-SERVING_SRC = REPO / "src" / "mcgyvr" / "serving"
+SERVING_SRC = PRODUCT / "src" / "mcgyvr" / "serving"
 #: The door's shim directory — what it exports as ``RUN_BIN``, and where a
 #: step run bare under a fake door is told to find the shims.
 BIN = SERVING_SRC / "gate-scripts" / "bin"

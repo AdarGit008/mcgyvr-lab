@@ -49,12 +49,13 @@ from mcgyvr.worker.bundle import (
     bundle_for,
     strip_provenance,
 )
+from tests._helpers import PRODUCT
 
 REPO = Path(__file__).resolve().parent.parent
 BUNDLE_TOOLS = REPO / "tools" / "bundle"
 TASKS = BUNDLE_TOOLS / "tasks"
 CONDITIONS = BUNDLE_TOOLS / "conditions"
-SHIPPED = REPO / "src" / "mcgyvr" / "prompts" / "javascript.md"
+SHIPPED = PRODUCT / "src" / "mcgyvr" / "prompts" / "javascript.md"
 
 # The composition the task set was built to, mapped onto mcgyvr's own catalog
 # vocabulary. It is not the Python set's composition and cannot be: that set

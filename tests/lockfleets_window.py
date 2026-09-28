@@ -23,10 +23,19 @@ import yaml
 
 from mcgyvr.fleet.files import load_fleet
 from mcgyvr.fleet.ids import rig_id
-from tests._helpers import by_path
+from tests._helpers import PRODUCT, by_path
 
 REPO = Path(__file__).resolve().parent.parent
 LOCK_FLEETS = REPO / "records" / "measurements" / "lock-fleets"
+# The recorded assembler (a record, kept byte for byte) finds gate 2 at
+# `src/mcgyvr/serving/gate-scripts/02-rig.py` under its own tree's root, which
+# is where it sat in the product's checkout. In the lab that root is the lab's
+# and the product's source is under product/, so gate 2 is loaded from there
+# into the `sys.modules` slot the assembler's loader reuses once it is filled.
+by_path(
+    "_lockfleets_gate02",
+    PRODUCT / "src" / "mcgyvr" / "serving" / "gate-scripts" / "02-rig.py",
+)
 USE = "fixture-use"
 WINDOW_DATE = "2026-09-16"
 STALE_PIN = "rig-" + "0" * 64
