@@ -11,6 +11,10 @@ dependencies = ["mcgyvr"]
 [tool.uv]
 # A virtual project: uv installs its dependencies but never builds the lab.
 package = false
+# mypy's own dependency, held at the version the product locks, so mypy runs
+# the same in the lab as in the product. (types-pyyaml, which the product also
+# locks, is not needed: no lab code imports yaml.)
+constraint-dependencies = ["ast-serialize==0.8.0"]
 
 [tool.uv.sources]
 mcgyvr = { path = "product", editable = true }
@@ -44,6 +48,12 @@ indent-style = "space"
 
 [tool.mypy]
 python_version = "3.12"
+# Checked today, by ruff and by mypy: guard/ and tests/ (which holds only
+# tests/guard/). NOT checked yet: tools/ and the product tests that later
+# steps copy into tests/. tools/ is outside `files`, so mypy will not see it
+# until it is added here (ruff would lint it, having no exclusion for it); the
+# copied tests land inside tests/ and would fall under both at once, so the
+# step that copies them has to bring them to these settings or exclude them.
 files = ["guard", "tests"]
 strict = true
 explicit_package_bases = true
