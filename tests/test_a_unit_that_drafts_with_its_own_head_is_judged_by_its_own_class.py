@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """A unit that drafts with its own head is judged by its own tolerance class.
 
 Owner ruling, 2026-09-16, after the mtp-ornith window: ``srv2_ornith_mtp`` —

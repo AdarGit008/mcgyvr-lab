@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """Gate 7: teardown — the containers are gone and the rig reads as it started.
 
 A hard lock can wipe the BIOS profile, and it takes the ssh pipe with it, so

@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """A fleet.yaml the lock accepts is a fleet.yaml a run can read.
 
 ``mcgyvr fleet lock`` requires every unit to carry its ``unit_id``, and
