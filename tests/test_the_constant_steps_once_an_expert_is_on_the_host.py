@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """``C`` steps once an expert block is on the host, and holds after that.
 
 ``C`` is not the same at every placement. On srv2, deepseek-coder-v2-16b

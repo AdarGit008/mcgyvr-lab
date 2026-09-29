@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """A live unit is judged only by a solo probe run with its lock's own method.
 
 Owner ruling F2: every dispatch row keeps its decode, prefill and in-flight

@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """The rig is held to its docker version, by gate 2 and again by gate 3.
 
 The same image can list ``Vulkan0`` on one rig and bench the CPU on another,

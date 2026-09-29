@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """The `observed` block: captured comprehensively, compared by nothing (#286).
 
 D7. The properties here are the ones a later reader has to be able to

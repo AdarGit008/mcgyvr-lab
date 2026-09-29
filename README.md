@@ -55,11 +55,12 @@ core paragraph in `okf/must-read/always.md`.
   others). Part of the lab gate (see "Make targets").
 - `tests/` — `tests/guard/` holds the guard's self-tests. Of the other
   files, 154 began as the tests, helpers and fixtures copied from the product,
-  and one was written here:
-  `tests/test_the_lab_digests_the_product_where_the_lab_holds_it.py`. In a
-  test file whose tests were split between the two repositories, the lab's
-  copy keeps only the lab's tests and says so in its first lines. The lab's
-  tests find the product's source, examples and packaging under `product/`
+  and two were written here:
+  `tests/test_the_lab_digests_the_product_where_the_lab_holds_it.py` and
+  `tests/test_the_engine_the_products_gate_pins_is_the_engine_the_labs_record_of_its_source_describes.py`.
+  In a test file whose tests were split between the two repositories, the
+  lab's file keeps only the lab's tests and says so in its first lines. The
+  lab's tests find the product's source, examples and packaging under `product/`
   (`tests/_helpers.py`, `PRODUCT`) and the lab's `tools/`, `records/` and
   `fleet-setup/` at the lab's root.
 - `records/` — measurements, evidence, corpora, fleet records, headers and
@@ -171,8 +172,23 @@ The lab holds every file the product tracks under `okf/`, `tools/`,
 same paths, from product commit `ef12d3d3`. The lab's `okf/` has been edited
 since.
 
-The product still holds its own copies of these files for now. They leave the
-product in a later step, through product pull requests.
+The product still holds its own copies of the files under `okf/`, `tools/`,
+`records/`, `fleet-setup/` and `archive/`. They leave the product in a later
+step, through product pull requests.
+
+The lab's tests have left the product. At the product commit `product/`
+points at, 116 of the 154 test files are gone from the product. The other 38
+are at the same paths in the product as the product's own files: 27 test
+files whose tests were split between the two repositories, each side keeping
+its own, and 11 helpers, fixtures and package files the product kept.
+
+Two tests are in both repositories' files at the same path: the one listed
+under "Lab tests outside the gate", and
+`tests/test_one_door.py::test_every_allowed_entry_names_a_file_that_exists`,
+which checks each repository's own list. Two more are in both under
+different paths: `test_stripping_provenance_leaves_a_markerless_bundle_alone`
+and `test_ci_installs_the_js_toolchain_so_the_skip_cannot_become_permanent`,
+which reads each repository's own CI workflow.
 
 The lab also holds the files moved out of the product earlier, listed below.
 The product does not track those, with one exception: it has its own
