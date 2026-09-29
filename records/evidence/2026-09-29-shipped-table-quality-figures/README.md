@@ -5,7 +5,8 @@ and that the lab keeps the readings. The product's pull request 543 took the
 quality ladder out of `mcgyvr init`, and its pull request 544 takes every
 quality key, benchmark reading and score text out of the shipped table and
 out of the code. This record keeps, byte for byte, the product files that
-held them, as they stood before each pull request.
+held the readings, as they stood before each pull request, and points by
+commit and line to the code and rule text it does not file.
 
 Each file is filed under the product commit it was taken from, at its path in
 the product, with `git show <commit>:<path>`:
@@ -22,6 +23,8 @@ the product, with `git show <commit>:<path>`:
 | `aec85058/data/task-catalog.json` | `8e048d2bedf28b1e22fba320e036c831e2e9cd06a77a588d80c137cbfd77c6eb` | `c4c25ac3` |
 | `aec85058/src/mcgyvr/capability.py` | `4c662afa961d38c94269e50b2ffb259a1152fecd6e5da7760d0546f6e06cd6b3` | `08e74cbe` |
 | `aec85058/tests/red_port/test_x03_capability_dimensions.py` | `35fa93042251a9e2c658e48848f5d1e4040b3e9c525eefb28d5fac17000f2d49` | `a384600f` |
+| `aec85058/tests/test_capability.py` | `41451373992b629f0ea083678e2e86d0b65581615645db7cbf631078ec5b5752` | `28c4497f` |
+| `aec85058/tests/test_a_table_of_another_shape_is_refused_by_name.py` | `9d8462ebd6b95e1c332400d3af565bbe8b0d03274269083f163db6588bc2637c` | `c439d688` |
 | `4e2b01f1/src/mcgyvr/propose.py` | `468e68ccfb472bc2caf98f8fc1fd639d92b1dd5ca28375141d47275c9dbd65c4` | `5f2513bb` |
 | `4e2b01f1/tests/test_propose.py` | `406931d5d48c44b436b7f13e026c30297ad455ce877e25310b43a2a95946f229` | `7a9e23e8` |
 | `4e2b01f1/tests/test_initialize.py` | `2e83ef357e51a3f7dd20025ab10493acf3f82892ab0a7308fb5bb072e2514f0a` | `2f4c72a7` |
@@ -90,6 +93,25 @@ the product as `ae4cad42`. Its commit `5ef4233c` names the removed tests.
   Two other tests of this file were renamed in the same commit, not
   removed: `test_tiers_are_named_by_role_locality_and_model` and
   `test_detection_still_reads_the_native_model_listing`.
+- `src/mcgyvr/initialize.py`, not filed; at `4e2b01f1`: the filter that kept
+  only the models the table held as measured (`is_measured`, line 219), the
+  call that loaded the shipped table (`load_table()`, line 779), and in
+  `_decisions` (line 598) the text of the line written for each rung (the
+  loop at lines 634 to 646): "an estimated {rung.quality:.1%} HumanEval+
+  pass@1" (line 643), with the rung's size and whether it needed a pull. The
+  loop stays and now says no estimate was matched to the rung. `render_fleet`
+  writes those lines into the header of `fleet.yaml` through `_header` (lines
+  443 to 470); both functions stay.
+- `data/numbers.json` is not in `4e2b01f1`. On the product's main before the
+  merge, `ae4cad42^1:data/numbers.json` lines 571 to 575 state
+  `MIN_QUALITY_GAIN` as a choice; `ae4cad42` no longer has that entry. It is
+  rule text, not a reading.
+
+The other test files pull request 543 changed are not filed: the lines it
+removed from them quote no reading. Those of
+`tests/test_every_card_the_card_tool_prints_is_reported_or_named_in_a_note.py`
+invent every card and read the shipped table only for the ids it held as
+measured.
 
 ## What pull request 544 removes
 
@@ -118,17 +140,30 @@ Pull request 544 (branch `the-shipped-table-carries-no-quality-figure`, head
   (the sort by `best_quality` at line 117, the score text at lines 118 and
   119, the printed column at lines 121 to 123).
 - `tests/red_port/test_x03_capability_dimensions.py`: the whole file.
-- `tests/test_capability.py`, not filed; at `aec85058`:
+- `tests/test_capability.py`, filed whole:
   `test_unmeasured_models_are_never_proposed` (line 29),
   `test_moe_quality_is_reachable_on_a_small_card` (line 67),
   `test_invalid_measurements_are_not_read_as_quality` (line 80), and the old
   bodies of `test_marginal_fits_are_excluded` (line 43) and
   `test_headroom_is_absolute_not_proportional` (line 54).
-- `tests/test_a_table_of_another_shape_is_refused_by_name.py`, not filed; at
-  `aec85058`: `test_a_capability_score_that_is_not_a_number_is_refused_by_its_row`
+- `tests/test_a_table_of_another_shape_is_refused_by_name.py`, filed whole:
+  `test_a_capability_score_that_is_not_a_number_is_refused_by_its_row`
   (line 432), `test_capabilities_given_as_a_list_is_refused_by_its_row`
   (line 443), and the cases for the quality-metric level and the three
   removed reading lists.
+- `data/numbers.json` is not in `aec85058`. On the product's main,
+  `ae4cad42:data/numbers.json` lines 66 to 70 state `DIMENSION_FLOOR` as a
+  choice, and pull request 544 removes that entry. At `ae4cad42`,
+  `src/mcgyvr/capability.py` lines 70 to 73 give the comment on
+  `DIMENSION_FLOOR` in a later wording than the filed copy's lines 70 to 73.
+  Both are rule text, not readings.
+
+The other test and fixture files pull request 544 changed are not filed: the
+lines it removes from `tests/table_fixture.py` and
+`tests/red_port/test_dod_capability_integrity.py` give invented figures only,
+and those it removes from `tests/test_pattern_e_boundaries.py` and
+`tests/test_the_shipped_table_names_no_machine_and_calls_its_numbers_estimates.py`
+give none.
 
 ## Where the readings are
 
@@ -165,6 +200,15 @@ Line numbers are of the files in this record.
   bound.
 - `aec85058/tests/red_port/test_x03_capability_dimensions.py`: its scores
   are invented for its fixtures, not readings.
+- `aec85058/tests/test_capability.py`: its docstrings quote readings at lines
+  46 (`qwen2.5-coder:7b` "measured 1.9x slower on a 6 GB card than on a
+  12 GB one"), 57 ("5.0 GB on a 6 GB card thrashed (83% utilization); 9.5 GB
+  on a 12 GB card did not (79%)"), 70 (">85% on a 6 GB card") and 81
+  (CAV-01, "scored 7B at 32.3% against a true 84.1%"); lines 77 and 89
+  assert quality bounds on the table's figures.
+- `aec85058/tests/test_a_table_of_another_shape_is_refused_by_name.py`: its
+  tables are generated with invented classes, model ids and numbers (its
+  docstring, lines 28 and 29); it holds no reading.
 
 The copy of `tests/test_initialize.py` names the owner's machines and cards,
 as the product's file did at that commit.
@@ -175,11 +219,11 @@ CAV-02 in `aec85058/data/capability-table.json` (line 26) states that a
 server program resolved `qwen3-coder-30b-a3b` to "an F16 weight set (~18
 GB), not a Q4 quant", and its detail (line 27) calls it "The F16 pull". The
 row declares `params_b` 30 (line 152). The hand-over that asked for this
-record flags that a 30-billion-parameter model at F16, two bytes a weight,
-comes to about 60 GB, so the two words of that text do not agree. The same
-text is in the `schema_version` 1 table of the earlier record, and
-`4e2b01f1/tests/test_propose.py` line 186 repeats "F16". This record files
-the text as it stood and does not settle it. The product's CAV-02 at the
+record flags it in its own words: "at F16 that model is about 60 GB, so the
+served set was not F16 as stated". The same text is in the `schema_version`
+1 table of the earlier record, and `4e2b01f1/tests/test_propose.py` line 186
+repeats "F16". This record files the text as it stood and does not settle
+it. The product's CAV-02 at the
 head of pull request 544 no longer says F16 and keeps "~18 GB".
 
 ## How to read it
