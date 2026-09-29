@@ -178,8 +178,8 @@ ALLOWED: dict[str, str] = {
         "its own; reaches no rig"
     ),
     "tests/test_serving.py": (
-        "monkeypatches a backend's contract.ssh with a lambda that returns canned "
-        "text; reaches no rig"
+        "monkeypatches contract.ssh with a lambda that returns canned text; "
+        "reaches no rig"
     ),
     "tests/test_sink_conformance.py": (
         "replaces the vLLM backend's contract.ssh with a local function that "
