@@ -1,0 +1,9 @@
+MCGYVR_RUN_ROOT=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab MCGYVR_CONFIG=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/fleet-setup
+2026-09-28T21:58:03Z
+read: profile=dev config=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/fleet-setup
+read: srv2 rig_id=rig-4cc155e5657874962b2bd6690d2d6d990eaf9102ca737a9d6a4120e130c41c17 run_id=run-20260928T215803-368360a8
+read: fleet d-srv2-35b of the setup /home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/fleet-setup, not the live lock: rows filed locked=false, probe figures unjudged
+read: unit unt-bf826b27dfc7655ee18d21bcf6f55d9592b739e0f4a716e1cbe89559a4193c83 awake
+read: srv2_35b_32k card_mib=5626 restarts=0 in_flight=0
+rc=0
+2026-09-28T21:58:06Z

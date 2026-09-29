@@ -1,0 +1,8 @@
+MCGYVR_RUN_ROOT=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab MCGYVR_CONFIG=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/fleet-setup
+START 2026-09-28T22:02:20Z
+2026-09-28T22:02:20Z srv2 window date 2026-09-28; the dev fleet's compose files go to /tmp/tmp.kzsuFKvEEC
+2026-09-28T22:02:22Z srv2 srv2-01 unit: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/new-cards/01-new-cards-srv2-c1-srv2_35b_32k.sh --model /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 1 --ctx-per-slot 32768 --ubatch 512 --date 2026-09-28
+2026-09-28T22:07:09Z srv2 srv2-01 exited 1 (logged, not decided on)
+2026-09-28T22:07:09Z srv2 STOP srv2-01: gate 7 filed a .RIGMOVED sidecar: the rig moved under this run
+rc=3
+END 2026-09-28T22:07:10Z
