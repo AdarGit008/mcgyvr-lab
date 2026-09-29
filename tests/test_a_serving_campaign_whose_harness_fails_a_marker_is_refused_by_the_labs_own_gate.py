@@ -18,10 +18,13 @@ fails. A campaign that does not serve is not held to the serving markers, and
 the gate says whether it found no ``campaign.json`` or one that does not
 serve. A run the gate cannot name, a root that is not a folder or cannot be
 looked at, a ``campaign.json`` that cannot be looked at or read or is not a
-JSON object, a harness that cannot be loaded, a ``verify_markers`` that fails
-or does not return a list of problems, and a file the markers name that
-cannot be read are each refused with exit 2, naming what failed, and without
-a traceback.
+JSON object, a harness that cannot be looked at or loaded, a
+``verify_markers`` that fails, exits or does not return a list of problems,
+and a file the markers name that cannot be read are each refused with exit 2,
+naming what failed, and without a traceback. A listed file is named as text
+that cannot be read only when it is there and is not UTF-8. Links are
+followed, and every root and file name the gate words itself is printed
+escaped.
 
 The tree the gate checks is a throw-away copy of the harness files the
 markers name, with markers broken on purpose where a test says so.
@@ -55,6 +58,12 @@ REFUSAL = "serving_markers.py: "
 HOLDS = "its harness holds them"
 #: A campaign name with a control character in it.
 ODD = "odd\x1b[2Jname"
+#: A root's folder name with a control character in it.
+ODD_ROOT = "odd\x1b[2Jroot"
+#: A file name, under a root, with a control character in it.
+ODD_FILE = "tools/odd\x1b[2Jfile.py"
+#: What a file holds that cannot be read as UTF-8 text.
+NOT_UTF8 = b"\xff\xfe not UTF-8 text\n"
 #: The line that opens the harness's marker list.
 MARKERS_HEAD = "MARKERS: tuple[tuple[str, str, str], ...] = (\n"
 
@@ -201,7 +210,7 @@ def _passed(done: subprocess.CompletedProcess[str]) -> str:
     return out
 
 
-def test_the_gate_runs_where_the_product_offers_only_its_gatelib(
+def test_the_process_the_gate_is_run_in_offers_only_the_products_gatelib(
     tmp_path: Path,
 ) -> None:
     probe = tmp_path / "probe.py"
@@ -306,8 +315,14 @@ def test_a_harness_that_defines_a_dataclass_is_checked(tmp_path: Path) -> None:
 
 def test_a_harness_that_imports_from_its_own_tree_is_checked(tmp_path: Path) -> None:
     """The root's harness is loaded with the root first on the import path, as
-    the door's campaign entry loads it, so ``tools`` is the root's own."""
+    the door's campaign entry puts it, so ``tools`` is the root's own, even
+    where the folder the gate is started from holds a ``tools`` of its own."""
     root = _tree(tmp_path, broken=False)
+    decoy = root.parent / "tools" / "bench" / "serving" / "contract.py"
+    decoy.parent.mkdir(parents=True)
+    decoy.write_text(
+        '"""Not the root\'s: found only ahead of it."""\n', encoding="utf-8"
+    )
     _append(
         root,
         "\n\nfrom tools.bench.serving import contract as _own\n\n"
@@ -316,6 +331,25 @@ def test_a_harness_that_imports_from_its_own_tree_is_checked(tmp_path: Path) -> 
     )
     _campaign(root, {"serving": True})
     done = _gate(root)
+    out = _passed(done)
+    assert HOLDS in done.stdout, out[-600:]
+
+
+def test_a_root_a_harness_and_a_campaign_json_reached_through_links_are_checked(
+    tmp_path: Path,
+) -> None:
+    """A link is followed: a ``RUN_ROOT`` that links to a root, and a
+    ``launch.py`` and a ``campaign.json`` that link to files, are checked as
+    the root and the files they link to."""
+    root = _tree(tmp_path, broken=False)
+    path = _campaign(root, {"serving": True})
+    for linked in (root / LAUNCH, path):
+        real = linked.with_name(f"real-{linked.name}")
+        linked.rename(real)
+        linked.symlink_to(real.name)
+    link = tmp_path / "root-link"
+    link.symlink_to(root, target_is_directory=True)
+    done = _gate(root, RUN_ROOT=str(link))
     out = _passed(done)
     assert HOLDS in done.stdout, out[-600:]
 
@@ -418,13 +452,15 @@ def test_a_run_variable_set_empty_is_refused_as_empty(tmp_path: Path, key: str) 
     _campaign(root, {"serving": True})
     done = _gate(root, **{key: ""})
     out = _refused(done)
-    assert key in done.stderr and "empty" in done.stderr, (
+    assert f"{key} is not set or is empty" in done.stderr, (
         f"the refusal does not say {key} is empty: {out[-600:]}"
     )
 
 
 @pytest.mark.parametrize("kind", ["missing", "a-file", "in-a-locked-folder"])
-def test_a_run_root_that_is_not_a_folder_is_refused(tmp_path: Path, kind: str) -> None:
+def test_a_run_root_that_is_not_a_folder_or_cannot_be_looked_at_is_refused(
+    tmp_path: Path, kind: str
+) -> None:
     root = _tree(tmp_path, broken=True)
     _campaign(root, {"serving": True})
     locked = tmp_path / "locked"
@@ -529,6 +565,25 @@ def test_a_serving_campaign_whose_root_holds_no_marker_list_file_is_refused(
     assert f"{LAUNCH.as_posix()} is not a file under" in done.stderr, out[-600:]
 
 
+def test_a_serving_campaign_whose_harness_folder_cannot_be_looked_into_is_refused(
+    tmp_path: Path,
+) -> None:
+    """A ``launch.py`` the gate cannot look at is refused as that, never as a
+    file that is not there."""
+    root = _tree(tmp_path, broken=False)
+    _campaign(root, {"serving": True})
+    folder = (root / LAUNCH).parent
+    _unreadable(folder)
+    try:
+        done = _gate(root)
+    finally:
+        folder.chmod(0o700)
+    out = _refused(done)
+    assert "cannot be looked at" in done.stderr, out[-600:]
+    assert LAUNCH.as_posix() in done.stderr, out[-600:]
+    assert "is not a file" not in done.stderr, out[-600:]
+
+
 def _launch_unreadable(root: Path) -> str:
     _unreadable(root / LAUNCH)
     return LAUNCH.as_posix()
@@ -562,9 +617,16 @@ def _launch_that_exits_while_it_loads(root: Path) -> str:
     return LAUNCH.as_posix()
 
 
+def _launch_with_a_relative_import(root: Path) -> str:
+    """The door's campaign entry imports the harness by name, where a relative
+    import resolves; the gate loads the file by its path, where it cannot."""
+    _append(root, "\nfrom . import contract as _sibling\n")
+    return LAUNCH.as_posix()
+
+
 def _marker_file_not_utf8(root: Path) -> str:
     rel = _only_marked()
-    (root / rel).write_bytes(b"\xff\xfe not UTF-8 text\n")
+    (root / rel).write_bytes(NOT_UTF8)
     return rel
 
 
@@ -589,6 +651,7 @@ def _marker_file_unreadable(root: Path) -> str:
         _launch_importing_a_missing_module,
         _launch_naming_an_undefined_name,
         _launch_that_exits_while_it_loads,
+        _launch_with_a_relative_import,
         _marker_file_not_utf8,
         _marker_file_missing,
         _marker_file_unreadable,
@@ -600,6 +663,7 @@ def _marker_file_unreadable(root: Path) -> str:
         "launch-importing-a-missing-module",
         "launch-naming-an-undefined-name",
         "launch-exits-while-it-loads",
+        "launch-with-a-relative-import",
         "marker-file-not-utf8",
         "marker-file-missing",
         "marker-file-unreadable",
@@ -624,6 +688,7 @@ def test_a_harness_file_the_gate_cannot_load_or_read_is_refused_naming_it(
         "def verify_markers(repo):\n    return None\n",
         "def verify_markers(repo):\n    return [1]\n",
         "def verify_markers(repo):\n    raise RuntimeError('a check that broke')\n",
+        "def verify_markers(repo):\n    raise SystemExit(0)\n",
     ],
     ids=[
         "not-a-function",
@@ -631,6 +696,7 @@ def test_a_harness_file_the_gate_cannot_load_or_read_is_refused_naming_it(
         "returns-no-list",
         "returns-no-text",
         "raises",
+        "exits",
     ],
 )
 def test_a_verify_markers_that_fails_or_returns_no_list_of_problems_is_refused(
@@ -659,3 +725,109 @@ def test_a_marker_list_the_harness_cannot_walk_is_not_called_unreadable_text(
     out = _refused(done)
     assert "ValueError" in done.stderr and LAUNCH.as_posix() in done.stderr, out[-900:]
     assert "UTF-8" not in done.stderr, f"not a text that cannot be read: {out[-900:]}"
+
+
+def _list_first(root: Path, entries: str) -> None:
+    """``entries``, as source lines, put at the head of the root's marker list."""
+    text = (root / LAUNCH).read_text(encoding="utf-8")
+    assert MARKERS_HEAD in text, f"{LAUNCH} opens its marker list otherwise"
+    (root / LAUNCH).write_text(
+        text.replace(MARKERS_HEAD, MARKERS_HEAD + entries), encoding="utf-8"
+    )
+
+
+def test_text_that_cannot_be_read_is_blamed_only_on_the_listed_files_that_are_not_utf8(
+    tmp_path: Path,
+) -> None:
+    """A listed file that is missing, beside one that is not UTF-8 text, is not
+    named as text that cannot be read."""
+    launch = _launch()
+    first = str(launch.MARKERS[0][0])
+    missing = next(
+        str(path)
+        for path, _marker, _decision in reversed((*launch.MARKERS, *launch.WITHDRAWN))
+        if str(path) != first
+    )
+    root = _tree(tmp_path, broken=False)
+    assert missing not in first and missing not in str(root)
+    _campaign(root, {"serving": True})
+    (root / first).write_bytes(NOT_UTF8)
+    (root / missing).unlink()
+    done = _gate(root)
+    out = _refused(done)
+    assert f"UTF-8 text under {str(root)!r}: {first!r} (" in done.stderr, out[-900:]
+    assert missing not in done.stderr, f"{missing} is missing, not text: {out[-900:]}"
+
+
+@pytest.mark.parametrize("kind", ["an-unlisted-file", "a-list-it-cannot-walk"])
+def test_text_that_cannot_be_read_names_no_listed_file_when_none_is_found(
+    tmp_path: Path, kind: str
+) -> None:
+    """A ``verify_markers`` that ends in a UnicodeDecodeError, where the gate
+    finds no listed file that is not UTF-8 text, is refused as the failure it
+    is."""
+    root = _tree(tmp_path, broken=False)
+    _campaign(root, {"serving": True})
+    if kind == "an-unlisted-file":
+        (root / "extra.cfg").write_bytes(NOT_UTF8)
+        _append(
+            root,
+            "\n\ndef verify_markers(repo):\n"
+            '    (repo / "extra.cfg").read_text(encoding="utf-8")\n'
+            "    return []\n",
+        )
+    else:
+        first = _only_marked()
+        (root / first).write_bytes(NOT_UTF8)
+        _list_first(root, f'    ("{first}", "a marker", "a test\'s own"),\n    None,\n')
+    done = _gate(root)
+    out = _refused(done)
+    harness = str(root / LAUNCH)
+    assert f"verify_markers of {harness!r} failed: UnicodeDecodeError" in done.stderr, (
+        out[-900:]
+    )
+    assert "the serving markers name" not in done.stderr, out[-900:]
+
+
+@pytest.mark.parametrize(
+    "kind",
+    [
+        "root-missing",
+        "root-cannot-be-looked-at",
+        "root-holds-no-marker-list",
+        "root-holds-a-listed-file-not-utf8",
+        "a-listed-file-name",
+    ],
+)
+def test_a_root_or_file_name_with_control_characters_is_printed_escaped(
+    tmp_path: Path, kind: str
+) -> None:
+    """Every root and file name the gate words itself is printed escaped."""
+    root = _tree(tmp_path, broken=False)
+    _campaign(root, {"serving": True})
+    locked = tmp_path / "locked"
+    given = tmp_path / ODD_ROOT
+    escaped = "odd\\x1b[2Jroot"
+    if kind == "root-cannot-be-looked-at":
+        given = locked / ODD_ROOT
+        given.mkdir(parents=True)
+        _unreadable(locked)
+    elif kind in ("root-holds-no-marker-list", "root-holds-a-listed-file-not-utf8"):
+        root = root.rename(given)
+        if kind == "root-holds-no-marker-list":
+            (root / LAUNCH).unlink()
+        else:
+            (root / str(_launch().MARKERS[0][0])).write_bytes(NOT_UTF8)
+    elif kind == "a-listed-file-name":
+        given = root
+        escaped = "odd\\x1b[2Jfile"
+        (root / ODD_FILE).write_bytes(NOT_UTF8)
+        _list_first(root, f'    ({ODD_FILE!r}, "a marker", "a test\'s own"),\n')
+    try:
+        done = _gate(root, RUN_ROOT=str(given))
+    finally:
+        if locked.exists():
+            locked.chmod(0o700)
+    out = _refused(done)
+    assert "\x1b" not in out, f"a control character is printed raw: {out[-900:]!r}"
+    assert escaped in out, out[-900:]
