@@ -1,14 +1,18 @@
-"""The lab's measured numbers, handed to the product as a user's own.
+"""The lab's recorded numbers, handed to the product as a user's own.
 
 ``tools/runs/derived.json`` is the lab's record of the numbers it measured on
-its rigs. The product reads no file under ``tools/``: :mod:`mcgyvr.derived`
+its rigs, or declared for one rig from another's measurement where an entry's
+``why`` says so. :mod:`mcgyvr.derived` reads no file under ``tools/``: it
 answers from the user's own ``numbers.yaml`` first and from the product's
 shipped estimates second. So the lab writes its record into that file
 (:func:`write`, in each test's HOME, from ``tests/conftest.py``), and a lab
-test that judges a unit judges with the lab's own numbers, each checked to
-come from the user's file and to equal the record
-(:func:`class_tolerances`). A product default may then change without a lab
-measurement first, and no lab test fails when it does.
+test that judges a unit judges with the lab's own numbers. A test that asserts
+a class percent reads it through :func:`class_tolerances`, which checks that
+it came from the user's file and equals the record; a test that only drives a
+judge, as the probe's request test does, is not checked. A value the product
+ships may then change without a lab measurement first, and no lab test fails
+when it does; a class the product adds fails that check until the lab records
+a value for it.
 """
 
 from __future__ import annotations
@@ -22,7 +26,7 @@ import yaml
 from mcgyvr import derived
 
 REPO = Path(__file__).resolve().parent.parent
-#: The lab's record of the numbers it measured on its rigs.
+#: The lab's record of the numbers it measured on its rigs, or declared.
 RECORD = REPO / "tools" / "runs" / "derived.json"
 
 
@@ -53,10 +57,11 @@ def user_numbers() -> dict[str, dict[str, float]]:
     * ``engine.warm_decode_class_pct`` and ``engine.prefill_class_pct`` are
       keyed by tolerance class in the record and in the product alike, and
       are written as they are.
-    * ``runtime_resident_gb`` is recorded per rig, measured on llama.cpp on
-      each; the product keys it by engine, so it is written once, under
-      ``llama.cpp``. Every rig must record the same value: rigs that differ
-      are refused, so no rig's value silently stands for the others.
+    * ``runtime_resident_gb`` is recorded per rig: measured on srv2 with
+      llama.cpp and declared the same for srv1. The product keys it by
+      engine, so it is written once, under ``llama.cpp``. A rig the record
+      lists with no entry is refused by name, and so are rigs that record
+      different values, so no rig's value silently stands for another's.
     * ``card_remainder_mib`` is left out: the product ships no such number,
       and it refuses a user's file that sets a number it does not ship.
     """
@@ -64,6 +69,15 @@ def user_numbers() -> dict[str, dict[str, float]]:
     stated = {
         entry: _by_class(doc, entry) for entry in derived.CLASS_PCT_ENTRIES.values()
     }
+    unrecorded = [
+        rig
+        for rig in doc["hosts"]
+        if derived.RUNTIME_RESIDENT not in doc.get(rig, {}).get("numbers", {})
+    ]
+    assert not unrecorded, (
+        f"{RECORD} lists {', '.join(unrecorded)} in hosts and records no "
+        f"{derived.RUNTIME_RESIDENT} for it"
+    )
     per_rig = {
         rig: float(doc[rig]["numbers"][derived.RUNTIME_RESIDENT]["value"])
         for rig in doc["hosts"]
@@ -79,7 +93,7 @@ def user_numbers() -> dict[str, dict[str, float]]:
 
 
 def write() -> Path:
-    """Write the lab's numbers where the product reads the user's own; say where.
+    """Write the lab's numbers where mcgyvr.derived reads the user's own; say where.
 
     The place is the product's to say (:func:`mcgyvr.derived.overrides_path`,
     ``numbers.yaml`` in mcgyvr's own folder under the current HOME), so this
@@ -96,7 +110,8 @@ def class_tolerances() -> dict[str, dict[str, float]]:
 
     Every percent is checked to come from the user's own file (source
     ``override``), not from the product's shipped estimate, and to equal the
-    lab's record; one failure names every percent that does not.
+    lab's record. One failure names every percent from elsewhere; another
+    names every percent that differs from the record, with both its values.
     """
     answered = derived.class_tolerance_numbers()
     not_ours = {
@@ -113,7 +128,16 @@ def class_tolerances() -> dict[str, dict[str, float]]:
         field: {name: number.value for name, number in by_class.items()}
         for field, by_class in answered.items()
     }
-    assert percents == {field: recorded_percents(field) for field in percents}, (
-        f"the percents judged with are not the ones {RECORD} records"
+    recorded = {field: recorded_percents(field) for field in percents}
+    differ = sorted(
+        f"{field}[{name!r}] is judged at {percents[field].get(name)}, recorded "
+        f"at {recorded[field].get(name)}"
+        for field in percents
+        for name in percents[field].keys() | recorded[field].keys()
+        if percents[field].get(name) != recorded[field].get(name)
+    )
+    assert not differ, (
+        f"the percents judged with are not the ones {RECORD} records: "
+        + "; ".join(differ)
     )
     return percents

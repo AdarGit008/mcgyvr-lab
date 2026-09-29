@@ -30,9 +30,9 @@ prompt and 256 tokens out, so a dispatch is not the lock's quantity.
   Each judged field has its own percents, which :mod:`mcgyvr.derived`
   answers: the user's own ``numbers.yaml`` first, else the product's shipped
   estimates (``data/numbers.json``). The lab's measured percents are recorded
-  in ``tools/runs/derived.json``, which the product does not read; a lab test
-  judges with them, from the user's file (``tests/lab_numbers.py``): warm
-  decode those of
+  in ``tools/runs/derived.json``, which :mod:`mcgyvr.derived` does not read;
+  a lab test judges with them, from the user's file
+  (``tests/lab_numbers.py``): warm decode those of
   ``records/measurements/fleet-identity-2026-09-11/tolerances.json``, prefill
   its own, from
   ``records/measurements/fleet-identity-prefill-2026-09-12/results-prefill.json``
@@ -184,7 +184,7 @@ def live_home(
 ) -> Path:
     """A HOME holding one promoted fleet, named live, with its journal in tmp.
 
-    It holds the lab's measured numbers as the user's own, as every lab
+    It holds the lab's recorded numbers as the user's own, as every lab
     test's HOME does (``tests/lab_numbers.py``).
     """
     from mcgyvr.fleet import lock

@@ -1,11 +1,13 @@
 # The lab's conftest. It began as a byte-for-byte copy of the product's
 # tests/conftest.py (product commit ef12d3d3); the product keeps its own.
 # Below this comment it is as copied, except what the lab adds so a lab test
-# judges with the lab's own measured numbers: the SHIPPED_ESTIMATES marker,
-# pytest_configure, _the_lab_judges_with_its_own_numbers, and the `home`
-# fixture writing the same numbers into the HOME it gives. mcgyvr.derived
-# reads no file under tools/; the lab hands it tools/runs/derived.json the
-# product's own way, as the user's numbers.yaml (tests/lab_numbers.py).
+# judges with the lab's own recorded numbers: the `from tests import
+# lab_numbers` import, the _the_lab_judges_with_its_own_numbers fixture, and
+# the `home` fixture writing the same numbers into the HOME it gives (its
+# lab_numbers.write() call and the sentence of its docstring that says so).
+# mcgyvr.derived reads no file under tools/; the lab hands it
+# tools/runs/derived.json the product's own way, as the user's numbers.yaml
+# (tests/lab_numbers.py).
 """Fixtures shared across the tests that touch the instrument declaration.
 
 ``tools/instruments.json`` is read by five modules and none of them is a
@@ -36,24 +38,6 @@ from tests import lab_numbers
 from tests._helpers import by_path
 
 REPO = Path(__file__).resolve().parent.parent
-
-#: The marker a lab test names when it judges with the product's shipped
-#: estimates rather than the lab's own numbers. No lab test names it.
-SHIPPED_ESTIMATES = "shipped_estimates"
-
-
-def pytest_configure(config: pytest.Config) -> None:
-    config.addinivalue_line(
-        "markers",
-        f"{SHIPPED_ESTIMATES}: judge with the product's shipped estimates, not "
-        "the lab's own numbers written into the test's HOME",
-    )
-
-
-def _lab_numbers_unless_estimates(request: pytest.FixtureRequest) -> None:
-    """Write the lab's numbers into the current HOME, unless the test opts out."""
-    if request.node.get_closest_marker(SHIPPED_ESTIMATES) is None:
-        lab_numbers.write()
 
 
 @pytest.fixture(autouse=True)
@@ -93,16 +77,16 @@ def _own_home_and_session(
 
 
 @pytest.fixture(autouse=True)
-def _the_lab_judges_with_its_own_numbers(
-    request: pytest.FixtureRequest, _own_home_and_session: None
-) -> None:
-    """Every test's HOME holds the lab's measured numbers as the user's own.
+def _the_lab_judges_with_its_own_numbers(_own_home_and_session: None) -> None:
+    """Every test's HOME holds the lab's recorded numbers as the user's own.
 
     :mod:`mcgyvr.derived` answers from the user's ``numbers.yaml`` first and
     from the product's shipped estimates second, and reads nothing of the
     lab's. So the lab's record, ``tools/runs/derived.json``, is written into
     that file in the HOME :func:`_own_home_and_session` made, and a lab test
-    judges with the lab's numbers while a product default may change freely.
+    judges with the lab's numbers: a value the product ships may change and no
+    lab test fails, while a class the product adds fails the lab's check
+    (:func:`tests.lab_numbers.class_tolerances`) until the lab records it.
     Nothing of the product's is patched; the file is the product's own way in.
 
     The mapping is :func:`tests.lab_numbers.user_numbers`: the two class
@@ -111,19 +95,16 @@ def _the_lab_judges_with_its_own_numbers(
     rig required to agree; ``card_remainder_mib`` left out, since the product
     ships no such number and refuses a user's file that sets one.
 
-    A test that judges with the product's shipped estimates instead names the
-    ``shipped_estimates`` marker; no lab test does. A test that moves HOME
-    after this runs takes the numbers along only by writing them again, as
-    :func:`home` does and ``live_home`` in
+    Every test gets the file; no lab test judges with the shipped estimates. A
+    test that moves HOME after this runs takes the numbers along only by
+    writing them again, as :func:`home` does and ``live_home`` in
     ``tests/test_a_live_probe_is_judged_against_its_lock.py`` does.
     """
-    _lab_numbers_unless_estimates(request)
+    lab_numbers.write()
 
 
 @pytest.fixture
-def home(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
-) -> Path:
+def home(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     """A HOME of the test's own, with a synthetic Claude session in it.
 
     It holds the lab's numbers too, as :func:`_the_lab_judges_with_its_own_numbers`
@@ -133,7 +114,7 @@ def home(
     lj.clean_env(monkeypatch, tmp_path / "home")
     monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "s1")
     lj.claude_transcript(tmp_path / "home", "s1")
-    _lab_numbers_unless_estimates(request)
+    lab_numbers.write()
     return tmp_path / "home"
 
 

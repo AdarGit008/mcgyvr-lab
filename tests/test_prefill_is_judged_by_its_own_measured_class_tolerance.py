@@ -35,12 +35,8 @@ from __future__ import annotations
 import json
 import math
 from pathlib import Path
-from typing import Any
-
-import pytest
 
 from tests import lab_numbers
-from tests import test_a_live_probe_is_judged_against_its_lock as probed
 
 REPO = Path(__file__).resolve().parent.parent
 PREFILL_RECORD = (
@@ -62,7 +58,6 @@ MTP_RECORD = (
     / "mtp-ornith"
     / "prefill-tolerance-mtp.json"
 )
-RUN_ID = "run-20260915T120000-0a1b2c3d"
 
 
 # --- the numbers ------------------------------------------------------------
@@ -91,38 +86,3 @@ def test_prefill_and_decode_each_state_their_own_class_percents() -> None:
         "cpu_experts": 48.0,
         "mtp": 2.0,
     }
-
-
-# --- the probe's judge ------------------------------------------------------
-
-
-def _approved(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, unit: str) -> Any:
-    """The probe's view of ``unit``, from a promoted lock and mcgyvr.derived."""
-    from mcgyvr import derived
-    from mcgyvr.fleet import probe
-    from mcgyvr.fleet.admit import layout_ids
-
-    probed.live_home(tmp_path, monkeypatch)
-    fleet = probed.FLEET
-    block = fleet["units"][unit]
-    rig_id = fleet["rigs"][block["rig"]]["rig_id"]
-    combination = layout_ids(fleet, fleet["fleets"]["b-small"]["layout"])[rig_id]
-    approved = probe._approved(
-        probed.lock_root(tmp_path),
-        rig_id,
-        combination,
-        unit,
-        block,
-        derived.class_tolerances(),
-    )
-    stamp = {
-        "fleet": "b-small",
-        "rig": block["rig"],
-        "rig_id": rig_id,
-        "combination_id": combination,
-        "unit_id": block["unit_id"],
-    }
-    return approved, stamp
-
-
-# --- rejudge ----------------------------------------------------------------

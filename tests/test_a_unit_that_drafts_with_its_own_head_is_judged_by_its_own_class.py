@@ -26,8 +26,9 @@ sample the lock itself accepted.
   shortfall %))), which is 2%. The tests below read the class tolerances
   :mod:`mcgyvr.derived` judges with, each from the user's own
   ``numbers.yaml``, which a lab test holds the lab's record in, and never from
-  the product's shipped ``data/numbers.json`` (``tests/lab_numbers.py``). An
-  absent ``mtp`` is refused by name, as any class is.
+  the product's shipped ``data/numbers.json`` (``tests/lab_numbers.py``).
+  Were the lab's record to lose ``mtp``, :mod:`mcgyvr.derived` would answer
+  it from the shipped estimate, and the lab's check fails, naming it.
 """
 
 from __future__ import annotations

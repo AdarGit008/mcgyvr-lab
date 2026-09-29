@@ -3,7 +3,9 @@
 """The lab's per-rig derived-numbers record.
 
 ``tools/runs/derived.json`` is the lab's record of the numeric values it
-measured on its rigs rather than read from the rig or from the model: the
+measured on its rigs, or declared for one rig from another's measurement
+where an entry's ``why`` says so, rather than read from the rig or from the
+model: the
 runtime-resident intercept host-RAM sizing adds to spilled experts, the
 per-rig card remainder ``vramfit``'s ``C`` subsumes, and the class tolerances
 the fleet lock weighs NVMe against and a live probe is judged by.
@@ -66,11 +68,11 @@ def test_every_number_states_a_value_and_why_it_is_that_value() -> None:
 
 
 def test_the_runtime_resident_intercept_resolves_for_each_rig() -> None:
-    """Each rig's measured intercept is the one mcgyvr.derived sizes with.
+    """Each rig's recorded intercept is the one mcgyvr.derived sizes with.
 
-    The product keys the number by engine, llama.cpp, the engine the lab
-    measured it on; the lab records it per rig. It comes from the user's own
-    file, never from the product's shipped estimate.
+    The lab records the number per rig: measured on srv2 with llama.cpp and
+    declared the same for srv1. The product keys it by engine, llama.cpp. It
+    comes from the user's own file, never from the product's shipped estimate.
     """
     doc = document()
     answer = derived.lookup(derived.RUNTIME_RESIDENT, derived.RUNTIME_RESIDENT_KEY)
@@ -78,9 +80,9 @@ def test_the_runtime_resident_intercept_resolves_for_each_rig() -> None:
         f"sized with the {answer.source} in {answer.where}, not the lab's own number"
     )
     for rig in doc["hosts"]:
-        measured = doc[rig]["numbers"]["runtime_resident_gb"]["value"]
-        assert measured == 1.53, rig
-        assert derived.runtime_resident_gb(rig) == answer.value == measured, rig
+        recorded = doc[rig]["numbers"]["runtime_resident_gb"]["value"]
+        assert recorded == 1.53, rig
+        assert derived.runtime_resident_gb(rig) == answer.value == recorded, rig
 
 
 def test_the_per_rig_card_remainder_is_recorded() -> None:
