@@ -52,12 +52,16 @@ core paragraph in `okf/must-read/always.md`.
   its exact path in `guard/binary-ok.txt`.
 - `okf/` — the rule store: how to act in this work. Start at `okf/index.md`.
 - `tools/` — the tools copied from the product (bench, problems, runs and
-  others). Part of the lab gate (see "Make targets").
+  others), and `tools/door/serving_markers.py`, written here: the lab's
+  campaign marker gate, for a door's caller gate list. Part of the lab gate
+  (see "Make targets").
 - `tests/` — `tests/guard/` holds the guard's self-tests. Of the other
   files, 154 began as the tests, helpers and fixtures copied from the product,
-  and two were written here:
-  `tests/test_the_lab_digests_the_product_where_the_lab_holds_it.py` and
-  `tests/test_the_engine_the_products_gate_pins_is_the_engine_the_labs_record_of_its_source_describes.py`.
+  and four were written here:
+  `tests/test_the_lab_digests_the_product_where_the_lab_holds_it.py`,
+  `tests/test_the_engine_the_products_gate_pins_is_the_engine_the_labs_record_of_its_source_describes.py`,
+  `tests/lab_numbers.py` and
+  `tests/test_a_serving_campaign_whose_harness_fails_a_marker_is_refused_by_the_labs_own_gate.py`.
   In a test file whose tests were split between the two repositories, the
   lab's file keeps only the lab's tests and says so in its first lines. The
   lab's tests find the product's source, examples and packaging under `product/`
