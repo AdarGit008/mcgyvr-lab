@@ -101,8 +101,9 @@ by whoever writes the change.
 **In a file copied from the product, a cited `src/`, `data/`, `examples/` or
 `skills/` path is the product's.** Read it under `product/`.
 
-**A cited `tests/` path is the product's when the product holds it.** A test
-that left the product is in this repository's `tests/`.
+**A cited `tests/` path that one repository holds is read there.** A path both
+hold is read where the cited test is: in the product's file under `product/`,
+or in this repository's file.
 
 **A citation spelled `mcgyvr-lab/<path>`, in a file copied from the product, is
 `<path>` in this repository.**

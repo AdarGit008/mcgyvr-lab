@@ -180,9 +180,15 @@ The lab's tests have left the product. At the product commit `product/`
 points at, 116 of the 154 test files are gone from the product. The other 38
 are at the same paths in the product as the product's own files: 27 test
 files whose tests were split between the two repositories, each side keeping
-its own, and 11 helpers, fixtures and package files the product kept. One
-test is in both repositories' files: the one listed under "Lab tests outside
-the gate".
+its own, and 11 helpers, fixtures and package files the product kept.
+
+Two tests are in both repositories' files at the same path: the one listed
+under "Lab tests outside the gate", and
+`tests/test_one_door.py::test_every_allowed_entry_names_a_file_that_exists`,
+which checks each repository's own list. Two more are in both under
+different paths: `test_stripping_provenance_leaves_a_markerless_bundle_alone`
+and `test_ci_installs_the_js_toolchain_so_the_skip_cannot_become_permanent`,
+which reads each repository's own CI workflow.
 
 The lab also holds the files moved out of the product earlier, listed below.
 The product does not track those, with one exception: it has its own

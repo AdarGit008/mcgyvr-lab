@@ -179,8 +179,7 @@ ALLOWED: dict[str, str] = {
     ),
     "tests/test_serving.py": (
         "monkeypatches a backend's contract.ssh with a lambda that returns canned "
-        "text; each call is wrapped over lines, so the seam's name stands on a "
-        "line of its own; reaches no rig"
+        "text; reaches no rig"
     ),
     "tests/test_sink_conformance.py": (
         "replaces the vLLM backend's contract.ssh with a local function that "
