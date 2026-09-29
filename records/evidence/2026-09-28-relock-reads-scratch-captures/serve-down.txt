@@ -1,0 +1,13 @@
+MCGYVR_RUN_ROOT=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab MCGYVR_CONFIG=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/fleet-setup
+c1ecff9c581dbced0c4bcb737c67117bf4eef260aaf8229a9b4949263b6fef94  /home/adaramir/claude/mcgyvr-lab-sessions/relock/compose/compose.srv2.d-srv2-35b.yml
+START 2026-09-28T22:01:28Z
+gate 1: round=r37-28-09-2026 product_sha256=17c753d7d0c9c6b8... profile=dev config=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/fleet-setup
+gate 2: srv2 is serving (gpu_procs=6859,/app/llama-server,5626MiB, containers=6cc57657ff0f); serve down opens on it to stop that, and gate 7 requires nothing left
+gate 2: srv2 matches its declaration on 11 keys
+gate 3: docker on srv2 answers, 29.7.2 as declared
+gate 5: RUN_ID=2026-09-28-live-srv2-serve-down-new-cards-takedown -> /home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/records/evidence/2026-09-28-live-srv2
+gate 6: /home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/product/src/mcgyvr/serving/gate-scripts/serve-down.py --host srv2 -> /home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/records/evidence/2026-09-28-live-srv2 (RUN_ID=2026-09-28-live-srv2-serve-down-new-cards-takedown)
+serve-down: docker compose down on srv2: mcgyvr-srv2-35b-32k
+gate 8: 1 artifact(s) parse
+rc=0
+END 2026-09-28T22:01:50Z
