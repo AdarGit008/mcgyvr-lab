@@ -146,7 +146,52 @@ def _scanned(line: str) -> str:
 
 #: The lab's test files a spawn pattern may hit. Path glob -> why that hit
 #: reaches no rig. ``fnmatch`` semantics: ``*`` crosses ``/``.
-ALLOWED: dict[str, str] = {}
+ALLOWED: dict[str, str] = {
+    "tests/onedoor.py": (
+        "the door tests' stubs: `ssh_stub` writes the `ssh` that stands behind "
+        "the shim, a script that logs and answers and reaches nothing; the argv "
+        "the list-form pattern sees is that file's name"
+    ),
+    "tests/test_one_door.py": (
+        "this file names the patterns it scans for, and writes the `ssh` and "
+        "`docker` stubs its refusal tests run against, which log every argv and "
+        "fail"
+    ),
+    "tests/test_a_failed_lock_fleets_start_keeps_its_full_log_and_gets_one_retry.py": (
+        "runs lock-fleets' step bodies under a fake door with an ssh and a docker "
+        "stub standing under RUN_BIN, and finds the move shell's `docker run -d` "
+        "in the stub's call log; reaches no rig"
+    ),
+    "tests/test_lock_fleets_files_an_exit_cause_and_one_diagnostic_start.py": (
+        "runs lock-fleets' unit step under a fake door with an ssh and a docker "
+        "stub standing under RUN_BIN, which answer the container's State and the "
+        "rig's kernel log from files the test writes; reaches no rig"
+    ),
+    "tests/test_default_step.py": (
+        "drives the shipped default step under a stand-in door, with answering "
+        "ssh and docker stubs at the shim path it names as RUN_BIN and decoys "
+        "under the same names on PATH that log and fail; reaches no rig"
+    ),
+    "tests/test_cross_rig_claim.py": (
+        "monkeypatches contract.ssh with a lambda that answers the health probe; "
+        "the call is wrapped over lines, so the seam's name stands on a line of "
+        "its own; reaches no rig"
+    ),
+    "tests/test_serving.py": (
+        "monkeypatches a backend's contract.ssh with a lambda that returns canned "
+        "text; each call is wrapped over lines, so the seam's name stands on a "
+        "line of its own; reaches no rig"
+    ),
+    "tests/test_sink_conformance.py": (
+        "replaces the vLLM backend's contract.ssh with a local function that "
+        "answers canned readings, under pytest.MonkeyPatch.context() bound as "
+        "`patch`, a spelling the seam erasure does not read; reaches no rig"
+    ),
+    "tests/test_serving_memory_declaration.py": (
+        "reads the vLLM backend's `_start` as text and asserts its `docker run "
+        "-d` launch line is built after the declaration is checked; runs nothing"
+    ),
+}
 
 DECILES = re.compile(r"^\s*PROMPT_DECILES\s*=")
 
