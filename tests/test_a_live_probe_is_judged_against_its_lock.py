@@ -29,9 +29,10 @@ prompt and 256 tokens out, so a dispatch is not the lock's quantity.
   experts on the CPU is ``cpu_experts``; any other llama.cpp is ``llamacpp``.
   Each judged field has its own percents, which :mod:`mcgyvr.derived`
   answers: the user's own ``numbers.yaml`` first, else the product's shipped
-  estimates (``data/numbers.json``, read here under ``product/``). The lab's
-  measured percents are recorded in ``tools/runs/derived.json``, which the
-  product does not read: warm decode those of
+  estimates (``data/numbers.json``). The lab's measured percents are recorded
+  in ``tools/runs/derived.json``, which the product does not read; a lab test
+  judges with them, from the user's file (``tests/lab_numbers.py``): warm
+  decode those of
   ``records/measurements/fleet-identity-2026-09-11/tolerances.json``, prefill
   its own, from
   ``records/measurements/fleet-identity-prefill-2026-09-12/results-prefill.json``
@@ -277,14 +278,14 @@ HOLDING |= {"ds_prefill": 307.11}
 
 
 def test_the_class_tolerances_are_the_measured_ones_stated_in_derived_json() -> None:
-    from mcgyvr import derived
+    from tests import lab_numbers
 
     measured = json.loads(
         (
             REPO / "records/measurements/fleet-identity-2026-09-11/tolerances.json"
         ).read_text(encoding="utf-8")
     )["classes"]
-    stated = derived.class_tolerances()["warm_decode_tok_s"]
+    stated = lab_numbers.class_tolerances()["warm_decode_tok_s"]
     assert {name: stated[name] for name in measured} == {
         name: float(body["tolerance_pct"]) for name, body in measured.items()
     }

@@ -24,9 +24,10 @@ sample the lock itself accepted.
   warm decode at the same rule over the same three runs' decode samples
   (``runs.json``: L = the median of the run medians, tol = max(1, ceil(worst
   shortfall %))), which is 2%. The tests below read the class tolerances
-  from :mod:`mcgyvr.derived`, which answers from the product's shipped
-  ``data/numbers.json`` (or the user's own ``numbers.yaml``), not from that
-  record. An absent ``mtp`` is refused by name, as any class is.
+  :mod:`mcgyvr.derived` judges with, each from the user's own
+  ``numbers.yaml``, which a lab test holds the lab's record in, and never from
+  the product's shipped ``data/numbers.json`` (``tests/lab_numbers.py``). An
+  absent ``mtp`` is refused by name, as any class is.
 """
 
 from __future__ import annotations
@@ -45,6 +46,7 @@ from mcgyvr.fleet.tolerance import (
     CLASS_MTP,
     tolerance_class,
 )
+from tests import lab_numbers
 from tests.lockfleets_window import fleet_doc
 
 REPO = Path(__file__).resolve().parent.parent
@@ -122,9 +124,8 @@ def test_each_declared_unit_is_mtp_only_where_it_asks_and_else_as_before() -> No
 
 
 def _derived() -> dict[str, dict[str, float]]:
-    from mcgyvr import derived
-
-    return derived.class_tolerances()
+    """The class tolerances judged with: the lab's record, from the user's file."""
+    return lab_numbers.class_tolerances()
 
 
 def test_mtp_prefill_is_the_tolerance_the_window_derived() -> None:

@@ -12,8 +12,10 @@ The prefill classes are those of
 ``mcgyvr-lab/records/measurements/fleet-identity-prefill-2026-09-12/README.md``,
 recorded in the lab's ``tools/runs/derived.json`` as
 ``engine.prefill_class_pct``. :mod:`mcgyvr.derived` does not read that file:
-it answers from the product's shipped ``data/numbers.json``, or from the
-user's own ``numbers.yaml`` first, and the test below reads its answer:
+it answers from the user's own ``numbers.yaml`` first, and from the product's
+shipped ``data/numbers.json`` second. The test below reads its answer, each
+percent from the user's file, which a lab test holds the lab's record in
+(``tests/lab_numbers.py``):
 
 * **vLLM 8%**: the 3B's 7.86% worst single-sample shortfall, rounded up, after
   the single restart-tail outlier (the 7B's 9,460 tok/s) is dropped;
@@ -37,6 +39,7 @@ from typing import Any
 
 import pytest
 
+from tests import lab_numbers
 from tests import test_a_live_probe_is_judged_against_its_lock as probed
 
 REPO = Path(__file__).resolve().parent.parent
@@ -66,11 +69,9 @@ RUN_ID = "run-20260915T120000-0a1b2c3d"
 
 
 def test_prefill_and_decode_each_state_their_own_class_percents() -> None:
-    from mcgyvr import derived
-
     measured = json.loads(PREFILL_RECORD.read_text(encoding="utf-8"))
     mtp = json.loads(MTP_RECORD.read_text(encoding="utf-8"))
-    tolerances = derived.class_tolerances()
+    tolerances = lab_numbers.class_tolerances()
 
     assert tolerances["prefill_tok_s"] == {
         "vllm": float(math.ceil(measured["per_unit"][THREE_B]["shortfall_pct"])),
