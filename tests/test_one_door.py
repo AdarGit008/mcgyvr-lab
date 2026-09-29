@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """One door, ``python -m mcgyvr.serving.run`` — and the tree is scanned to prove it.
 
 A design that says "one door" and never looks is true of an afternoon, not of the
@@ -57,6 +57,7 @@ import re
 import subprocess
 import sys
 import types
+from fnmatch import fnmatch
 from pathlib import Path
 
 import pytest
@@ -89,6 +90,11 @@ SSH_SPAWN = re.compile(
     r"|(?<![\w./-])command\s+-p\s+ssh\b"
     r"|[\"'](?:/usr/bin/)?(?:ssh|scp|rsync|sftp)[\"']\s*,"
     r"|^\s*(?:import|from)\s+(?:paramiko|fabric|asyncssh)\b"
+)
+#: A container start: ``docker run ...`` in shell form, or the list form.
+DOCKER_RUN = re.compile(
+    r"(?<![\w./-])docker\s+run\s+(?=[\w$\"'{@.-])"
+    r"|[\"']docker[\"']\s*,\s*[\"'](?:run|create|start)[\"']"
 )
 LOOPBACK = re.compile(r"\blocalhost\b|\b127\.0\.0\.1\b")
 
@@ -137,6 +143,54 @@ def _scanned(line: str) -> str:
     and nothing else on the line touched."""
     return SEAM_MENTION.sub(" <seam mention> ", line)
 
+
+#: The lab's test files a spawn pattern may hit. Path glob -> why that hit
+#: reaches no rig. ``fnmatch`` semantics: ``*`` crosses ``/``.
+ALLOWED: dict[str, str] = {
+    "tests/onedoor.py": (
+        "the door tests' stubs: `ssh_stub` writes the `ssh` that stands behind "
+        "the shim, a script that logs and answers and reaches nothing; the argv "
+        "the list-form pattern sees is that file's name"
+    ),
+    "tests/test_one_door.py": (
+        "this file names the patterns it scans for, and writes the `ssh` and "
+        "`docker` stubs its refusal tests run against, which log every argv and "
+        "fail"
+    ),
+    "tests/test_a_failed_lock_fleets_start_keeps_its_full_log_and_gets_one_retry.py": (
+        "runs lock-fleets' step bodies under a fake door with an ssh and a docker "
+        "stub standing under RUN_BIN, and finds the move shell's `docker run -d` "
+        "in the stub's call log; reaches no rig"
+    ),
+    "tests/test_lock_fleets_files_an_exit_cause_and_one_diagnostic_start.py": (
+        "runs lock-fleets' unit step under a fake door with an ssh and a docker "
+        "stub standing under RUN_BIN, which answer the container's State and the "
+        "rig's kernel log from files the test writes; reaches no rig"
+    ),
+    "tests/test_default_step.py": (
+        "drives the shipped default step under a stand-in door, with answering "
+        "ssh and docker stubs at the shim path it names as RUN_BIN and decoys "
+        "under the same names on PATH that log and fail; reaches no rig"
+    ),
+    "tests/test_cross_rig_claim.py": (
+        "monkeypatches contract.ssh with a lambda that answers the health probe; "
+        "the call is wrapped over lines, so the seam's name stands on a line of "
+        "its own; reaches no rig"
+    ),
+    "tests/test_serving.py": (
+        "monkeypatches contract.ssh with a lambda that returns canned text; "
+        "reaches no rig"
+    ),
+    "tests/test_sink_conformance.py": (
+        "replaces the vLLM backend's contract.ssh with a local function that "
+        "answers canned readings, under pytest.MonkeyPatch.context() bound as "
+        "`patch`, a spelling the seam erasure does not read; reaches no rig"
+    ),
+    "tests/test_serving_memory_declaration.py": (
+        "reads the vLLM backend's `_start` as text and asserts its `docker run "
+        "-d` launch line is built after the declaration is checked; runs nothing"
+    ),
+}
 
 DECILES = re.compile(r"^\s*PROMPT_DECILES\s*=")
 
@@ -187,6 +241,10 @@ def _rel(path: Path) -> str:
     return path.relative_to(REPO).as_posix()
 
 
+def _allowed(rel: str) -> bool:
+    return any(fnmatch(rel, pattern) for pattern in ALLOWED)
+
+
 def _matching(pattern: re.Pattern[str], text: str) -> list[str]:
     """Every code line of ``text`` the pattern hits, seam mentions erased.
 
@@ -227,6 +285,37 @@ def _started() -> list[Path]:
 # --------------------------------------------------------------------------
 # 1. an ssh or a docker run appears only behind the door
 # --------------------------------------------------------------------------
+
+
+def test_an_ssh_or_a_docker_run_in_a_lab_test_is_argued_in_allowed() -> None:
+    """The lab's tests reach no rig: every spawn-shaped line is argued here.
+
+    A hit in a file of ``tests/`` is a stub, a stand-in or a line of text
+    about one, and ``ALLOWED`` says which for each file. A new file with a
+    hit fails until it is argued into ``ALLOWED`` with its reason, or the
+    spawn is removed.
+    """
+    hits = _hits(SSH_SPAWN, ("tests",))
+    for rel, lines in _hits(DOCKER_RUN, ("tests",)).items():
+        hits.setdefault(rel, []).extend(lines)
+    assert hits, "the scan found no invocation at all — the pattern is broken"
+    strays = {rel: lines for rel, lines in hits.items() if not _allowed(rel)}
+    assert not strays, (
+        f"{len(strays)} lab test file(s) hold a spawn outside {DOOR} that "
+        "ALLOWED does not argue — each is (path, invocations) and is argued "
+        f"into ALLOWED with a reason or removed: {strays}"
+    )
+
+
+def test_every_allowed_entry_names_a_file_that_exists() -> None:
+    """A stale allowance is a hole waiting for a file of that name."""
+    present = [_rel(p) for p in _sources(("tests",), root_files=False)]
+    stale = [
+        pattern
+        for pattern in ALLOWED
+        if not any(fnmatch(rel, pattern) for rel in present)
+    ]
+    assert not stale, f"ALLOWED names files that do not exist: {stale}"
 
 
 def test_the_serving_harness_spawns_no_ssh_of_its_own() -> None:

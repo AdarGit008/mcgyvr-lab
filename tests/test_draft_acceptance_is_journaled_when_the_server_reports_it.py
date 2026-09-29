@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """Draft acceptance is journaled when the server reports it.
 
 The MTP lever's effect is ``timings.draft_n_accepted / draft_n`` on each

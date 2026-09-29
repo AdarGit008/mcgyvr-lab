@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """The door refuses before it acts, and leaves ``records/`` as it found it.
 
 ``python -m mcgyvr.serving.run`` is the one access point to the rigs. Asked

@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """The bundle and the assembled prompt.
 
 Three properties carry the weight here. The shipped Python bundle must *be* the

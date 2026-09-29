@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """The evidence goes where ``$MCGYVR_RUN_ROOT`` says, and nowhere else.
 
 The door files every run's envelope under ``<root>/records/evidence/``. A root

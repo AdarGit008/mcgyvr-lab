@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """Pattern B — the tree owns the bytes, and one seam commits them.
 
 Pattern B: *"Nothing owns the bytes"* is what happens when several modules

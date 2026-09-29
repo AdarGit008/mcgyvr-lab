@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """A unit states the seccomp profile its engine needs, and both launch paths apply it.
 
 Owner ruling: allow io_uring. The Lidenburg llama.cpp fork's MoE expert cache

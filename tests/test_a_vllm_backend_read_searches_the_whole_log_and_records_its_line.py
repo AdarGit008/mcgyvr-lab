@@ -1,5 +1,5 @@
-# The lab's copy. The tests of this file that are the product's were removed
-# here; they remain in the product's copy of this file.
+# The lab's part of a split test file. The tests of this file that are the
+# product's were removed here; they remain in the product's file at this path.
 """A vLLM unit's attention backend is read from its whole log, and the line is kept.
 
 Owner ruling: "fix the reader and record the line". ``rig-id-relock``'s
