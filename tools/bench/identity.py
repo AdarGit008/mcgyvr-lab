@@ -140,9 +140,11 @@ GROUPS: dict[str, tuple[str, ...]] = {
     # RESOLVED rule list. `round` and `product_sha256` sit here because the
     # revision they pin (`product.SURFACE`) includes the scorer AND the
     # scorer's configuration — the product's default Python rules under
-    # `src/mcgyvr`, `eslint.config.mjs`, `prettier.config.mjs` — and
-    # `pyproject.toml` and the two lockfiles that decide which checker applies
-    # them.
+    # `src/mcgyvr`, `eslint.config.mjs`, `prettier.config.mjs` — and the
+    # product's ruff requirement (`pyproject.toml`) and its two lockfiles. In
+    # the lab the ruff that runs is the lab's own, pinned by the lab's
+    # `pyproject.toml` and `uv.lock`, which sit outside `product.SURFACE`; its
+    # version enters only `bar_sha256`.
     "bar": (
         "gate_rungs",
         "gate_semantic",
@@ -514,7 +516,8 @@ def _python_bar(
     would drift from the one that scores. A string prefix is not a ruff
     selector: ``E`` is also a prefix of ``EM``, ``EXE`` and ``ERA``.
 
-    ``linter.rules.enabled`` is the only line taken from that output. The rest
+    ``linter.rules.enabled`` is the only line recorded from that output;
+    ``Settings path`` is read only to name and read the file ruff used. The rest
     carries ``linter.project_root``, an absolute path, and a bar that moves when
     the repository is checked out somewhere else is describing the machine.
 
