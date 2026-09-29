@@ -27,7 +27,8 @@ product unchanged in commit `7c74b351`.
   c-mtp and d-srv2-35b and their units. Last changed in the product in commit
   `9eee8def` (committed 2026-09-28).
 - `policy.2026-09-16.yaml` is `policy.yaml` with a ladder of eight units of
-  that fleet file; `srv2_35b_32k` is not among them. Last changed in the product in commit `d27b265a` (committed 2026-09-16).
+  that fleet file; `srv2_35b_32k` is not among them. Last changed in the
+  product in commit `d27b265a` (committed 2026-09-16).
 - `digests-srv1.2026-09-16.json` is `digests-srv1.json` as it was then. Last
   changed in the product in commit `d27b265a` (committed 2026-09-16).
 - `digests-srv2.2026-09-28.json` is `digests-srv2.json` as it was then. Last
