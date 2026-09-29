@@ -34,6 +34,7 @@ import yaml
 from mcgyvr import scan as scan_module
 from mcgyvr.cli import main
 from mcgyvr.exits import Exit
+from tests.lockfleets_window import fleet_doc, make_tree
 
 REPO = Path(__file__).resolve().parent.parent
 HF_CACHE = "/home/adaramir/.cache/huggingface"
@@ -157,27 +158,43 @@ def services(path: Path) -> dict[str, dict[str, Any]]:
     return dict(loaded["services"])
 
 
-def test_the_stamped_setup_emits_the_argv_and_env_its_digests_record(
-    tmp_path: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
-    """``fleet-setup/`` is the stamped a-solo/b-small/b-big setup, and
-    ``digests-srv{1,2}.json`` record the argv and env each unit_id hashed."""
+def emits_as_hashed(
+    setup: Path, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> dict[str, Path]:
+    """Emit the setup in ``setup`` and hold it to its own digests.
+
+    Whatever units and fleets its ``fleet.yaml`` holds: emit writes one compose
+    file per fleet per rig and the seccomp profiles its placed units state,
+    nothing else, and each service is the argv and env that
+    ``digests-<rig>.json`` records its unit_id was hashed over. Returns the
+    profiles it found stated, by the file name emit writes each under.
+    """
     config = tmp_path / "config"
     config.mkdir()
     for name in ("fleet.yaml", "policy.yaml"):
-        shutil.copy(REPO / "fleet-setup" / name, config / name)
+        shutil.copy(setup / name, config / name)
     # A setup is its two fleet files AND the seccomp profiles its units state:
     # `launch.seccomp` names one relative to here.
-    shutil.copytree(REPO / "fleet-setup" / "seccomp", config / "seccomp")
+    if (setup / "seccomp").is_dir():
+        shutil.copytree(setup / "seccomp", config / "seccomp")
     out = tmp_path / "compose"
     assert emit(config, out) == Exit.OK, capsys.readouterr().err
 
     stamped = yaml.safe_load((config / "fleet.yaml").read_text(encoding="utf-8"))
     hashed: dict[str, Any] = {}
-    for host in ("srv1", "srv2"):
-        digests = REPO / "fleet-setup" / f"digests-{host}.json"
+    for host in stamped["rigs"]:
+        digests = setup / f"digests-{host}.json"
         hashed |= json.loads(digests.read_text(encoding="utf-8"))["units"]
 
+    # A unit that states a seccomp profile has it written beside the compose
+    # file that names it, by its file name, which is where compose looks.
+    profiles = {
+        Path(stated).name: config / stated
+        for block in stamped["fleets"].values()
+        for slots in block["layout"].values()
+        for unit_name, _state in slots
+        if (stated := (stamped["units"][unit_name].get("launch") or {}).get("seccomp"))
+    }
     expected_files = sorted(
         [
             *(
@@ -185,12 +202,12 @@ def test_the_stamped_setup_emits_the_argv_and_env_its_digests_record(
                 for fleet_name, block in stamped["fleets"].items()
                 for host in block["layout"]
             ),
-            # srv2_35b_256k states a seccomp profile, and emit writes it beside
-            # the compose file that names it, which is where compose looks.
-            "io-uring.json",
+            *profiles,
         ]
     )
     assert sorted(path.name for path in out.iterdir()) == expected_files
+    for file_name, source in profiles.items():
+        assert (out / file_name).read_bytes() == source.read_bytes(), file_name
     for fleet_name, block in stamped["fleets"].items():
         for host, slots in block["layout"].items():
             emitted = services(out / f"compose.{host}.{fleet_name}.yml")
@@ -202,3 +219,27 @@ def test_the_stamped_setup_emits_the_argv_and_env_its_digests_record(
                 assert service["container_name"] == unit["container"], unit_name
                 assert service["command"] == fields["argv"], unit_name
                 assert service["environment"] == fields["env"], unit_name
+    return profiles
+
+
+def test_the_stamped_setup_emits_the_argv_and_env_its_digests_record(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """``fleet-setup/`` as committed, whatever units and fleets it holds."""
+    emits_as_hashed(REPO / "fleet-setup", tmp_path, capsys)
+
+
+def test_a_made_up_setup_emits_its_hashed_launch_and_the_profile_it_states(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The same rule over a made-up setup in which one placed unit states a
+    seccomp profile and the others state none, so the profile's part of the
+    rule is held whether or not the committed setup has such a unit."""
+    fleet = fleet_doc()
+    fleet["units"]["b_big"]["launch"]["seccomp"] = "seccomp/made-up.json"
+    root = make_tree(tmp_path / "tree", fleet=fleet)
+    profile = root / "fleet-setup" / "seccomp" / "made-up.json"
+    profile.parent.mkdir()
+    profile.write_text('{"defaultAction": "SCMP_ACT_ERRNO"}\n', encoding="utf-8")
+    profiles = emits_as_hashed(root / "fleet-setup", tmp_path, capsys)
+    assert list(profiles) == ["made-up.json"]

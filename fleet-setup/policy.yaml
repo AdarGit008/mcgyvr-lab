@@ -1,17 +1,10 @@
-# DRAFT — policy.yaml for the three-fleet setup.
+# DRAFT — policy.yaml for the one fleet that fits the cards now (d-srv2-35b).
 # Not locked: how work moves between units. See records/plans/fleet-identity.md §2.
-# One ladder serves all three fleets: a unit not awake in the live fleet is
-# skipped by the pool at dispatch (route.py / pool skips non-available units).
+# The ladder over the fleets made for the earlier cards is kept in
+# policy.2026-09-16.yaml (README.md says which file is which).
 
 ladder:
-  - srv2_3b
-  - srv2_7b
-  - srv1_deepseek
-  - srv2_80b
-  - srv1_35b_b
-  - srv2_35b_256k
-  - srv1_35b_maxctx
-  - srv2_ornith_mtp
+  - srv2_35b_32k
 
 fanout: idle
 

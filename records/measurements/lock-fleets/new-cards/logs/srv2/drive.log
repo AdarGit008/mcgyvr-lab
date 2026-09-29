@@ -1,0 +1,11 @@
+2026-09-28T22:02:20Z srv2 window date 2026-09-28; the dev fleet's compose files go to /tmp/tmp.kzsuFKvEEC
+wrote /tmp/tmp.kzsuFKvEEC/compose.srv2.d-srv2-35b.yml
+
+Nothing was started. `docker compose -f <file> up -d` is yours to run.
+2026-09-28T22:02:22Z srv2 srv2-01 unit: python -m mcgyvr.serving.run --host srv2 --campaign lock-fleets --step tools/runs/campaigns/lock-fleets/new-cards/01-new-cards-srv2-c1-srv2_35b_32k.sh --model /home/adaramir/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --parallel 1 --ctx-per-slot 32768 --ubatch 512 --date 2026-09-28
+2026-09-28T22:07:09Z srv2 srv2-01 exited 1 (logged, not decided on)
+2026-09-28T22:07:09Z srv2 STOP srv2-01: gate 7 filed a .RIGMOVED sidecar: the rig moved under this run
+gate 7 filed a .RIGMOVED sidecar: the rig moved under this run
+the START and END markers differ: pl1_uw 4095000000 -> 65000000
+the rig id changed between runs: {'rig-4cc155e5657874962b2bd6690d2d6d990eaf9102ca737a9d6a4120e130c41c17': 'srv2-01', 'rig-c85875eb73aa817320bc95684cda7d6da8266f5fdc7a679af42a60dbf8b323f1': 'srv2-01'}
+stopped srv2 2026-09-28T22:07:09Z
