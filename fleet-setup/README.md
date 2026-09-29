@@ -26,8 +26,8 @@ product unchanged in commit `7c74b351`.
 - `fleet.2026-09-28.yaml` is `fleet.yaml` with fleets a-solo, b-small, b-big,
   c-mtp and d-srv2-35b and their units. Last changed in the product in commit
   `9eee8def` (committed 2026-09-28).
-- `policy.2026-09-16.yaml` is `policy.yaml` with the ladder over those units.
-  Last changed in the product in commit `d27b265a` (committed 2026-09-16).
+- `policy.2026-09-16.yaml` is `policy.yaml` with a ladder of eight units of
+  that fleet file; `srv2_35b_32k` is not among them. Last changed in the product in commit `d27b265a` (committed 2026-09-16).
 - `digests-srv1.2026-09-16.json` is `digests-srv1.json` as it was then. Last
   changed in the product in commit `d27b265a` (committed 2026-09-16).
 - `digests-srv2.2026-09-28.json` is `digests-srv2.json` as it was then. Last
@@ -37,10 +37,12 @@ product unchanged in commit `7c74b351`.
   (committed 2026-09-16).
 
 `fleet.yaml`, `policy.yaml`, both digests files and `evidence.json` without a
-date are the files in use.
+date are the files in use. Only `fleet.yaml` and `policy.yaml` were cut; the
+other three files in use are byte for byte equal to their dated copies.
 
 `fleet.yaml` now holds one fleet, `d-srv2-35b`, with one unit, `srv2_35b_32k`.
-The ladder in `policy.yaml` is that unit. srv1 has a rig entry and no fleet. The
+The ladder in `policy.yaml` is that unit. That entry is new content, not a
+cut: the dated ladder does not name it. srv1 has a rig entry and no fleet. The
 fleet has no lock: `records/fleet/` holds no `d-srv2-35b.json`. The one use of
 lock-fleets that measured it (`new-cards`) stopped after one of its three runs,
 and no evidence was assembled from it.

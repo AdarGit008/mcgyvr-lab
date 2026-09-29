@@ -61,7 +61,10 @@ None.
 ## How this use ended
 
 One of the three frozen entries ran: srv2-01, cold start c1 of srv2_35b_32k,
-from 22:02:36 to 22:07:01 UTC on 2026-09-28. The campaign then stopped itself,
+on 2026-09-28. Two clocks give its times, both UTC: the driver's log row above
+gives 22:02:22 to 22:07:09, from the driver starting the door command to its
+exit; the artifact's `started_at` and `ended_at` give 22:02:36 to 22:07:01, as
+the run's own step recorded them. The campaign then stopped itself,
 because the machine changed under the run. srv2's `pl1_uw` read 4095000000 in
 the START marker and 65000000 in the END marker, with `uptime_since` unchanged.
 Gate 7 filed a `.RIGMOVED` file beside the artifact, and `drive.sh` stopped with
