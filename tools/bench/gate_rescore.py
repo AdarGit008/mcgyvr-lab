@@ -32,9 +32,9 @@ imported from ``regrade`` and the doctrine below is inherited whole.
 
 **Why** ``score.score`` **is called rather than reimplemented.** It is the exact
 function the live sweep runs (``score.score``, called from
-``tools/breadth/measure.py``), including the staged ``pyproject.toml``, the
-``.gitignore`` that keeps ``__pycache__`` out of the changeset, and the linked
-``node_modules``. A re-score that scored
+``tools/breadth/measure.py``), including the staged ``.gitignore`` that keeps
+``__pycache__`` out of the changeset, and the linked ``node_modules``. A
+re-score that scored
 differently from a sweep would answer nothing — the whole point is to put
 ``psi_draw`` on the same bar as ``headroom``, and "the same bar" has to mean the
 same code.

@@ -35,6 +35,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 from mcgyvr.gate.adapters import JavaScriptAdapter, PythonAdapter
+from mcgyvr.gate.adapters.python import ruff_config_args
 
 __all__ = [
     "ABSENT",
@@ -138,9 +139,10 @@ GROUPS: dict[str, tuple[str, ...]] = {
     # resolved rule sets (ruff's and eslint's), so the bar is hashed as the
     # RESOLVED rule list. `round` and `product_sha256` sit here because the
     # revision they pin (`product.SURFACE`) includes the scorer AND the
-    # scorer's configuration — `pyproject.toml`, `eslint.config.mjs`,
-    # `prettier.config.mjs` and the two lockfiles that decide which checker
-    # applies them.
+    # scorer's configuration — the product's default Python rules under
+    # `src/mcgyvr`, `eslint.config.mjs`, `prettier.config.mjs` — and
+    # `pyproject.toml` and the two lockfiles that decide which checker applies
+    # them.
     "bar": (
         "gate_rungs",
         "gate_semantic",
@@ -423,8 +425,7 @@ def bar_material(
       implementation of the resolution drifts from the one that scores.
 
     **Both arms answer ``null`` for ``type_check``.** No ``tsconfig.json`` is
-    staged, so ``tsc`` never runs; ``score.lint_config`` renders a
-    ``pyproject.toml`` holding ruff's tables and nothing else, so
+    staged, so ``tsc`` never runs; no ``pyproject.toml`` is staged either, so
     ``_declares_mypy`` is false and the Python arm is not type-checked either.
     A repository declaring no type checker is correctly not type-checked, so
     this records the absence rather than adding a rung.
@@ -483,11 +484,11 @@ def bar_digest(
 
     **The workspace is staged by the caller**: the bench's bar is not the
     repository's `make lint` bar — it is whatever `score.stage_config` puts in a
-    workspace, which is a `pyproject.toml` rendered from the project's
-    `[tool.ruff]` beside `eslint.config.mjs`, `prettier.config.mjs` and a linked
-    `node_modules`. Resolving the repository's settings instead would digest a
-    bar no candidate is ever scored against. The caller passes its staging, not
-    a hash.
+    workspace, which is `eslint.config.mjs`, `prettier.config.mjs` and a linked
+    `node_modules`, and no ruff configuration, so the Python arm is the
+    product's default for a repository that states none. Resolving the
+    repository's settings instead would digest a bar no candidate is ever
+    scored against. The caller passes its staging, not a hash.
 
     A resolver that will not answer makes this ``None`` with a reason rather
     than a digest over the half that did: a bar hashed from one of its two
@@ -516,30 +517,46 @@ def _python_bar(
     ``linter.rules.enabled`` is the only line taken from that output. The rest
     carries ``linter.project_root``, an absolute path, and a bar that moves when
     the repository is checked out somewhere else is describing the machine.
+
+    Resolved under the arguments the product's gate hands ruff in this
+    workspace, asked of the product (``ruff_config_args``) rather than restated:
+    its default selection, stated inline, for a workspace that states no ruff
+    configuration, which is what a bench workspace is. The config recorded is
+    then those arguments; for a workspace that states its own, the product
+    passes none and the config recorded is the file ruff read.
     """
-    rules, why = _ruff_rules(workspace)
+    args = ruff_config_args(workspace)
+    rules, settings, why = _ruff_rules(workspace, args)
     if rules is None:
         return None, why
     version, why = _tool_version("ruff", workspace)
     if version is None:
         return None, why
-    config = (workspace / "pyproject.toml").read_text(encoding="utf-8")
+    config: str
+    source: list[str] | str
+    if args:
+        config, source = "ruff_config_args", args
+    elif settings is not None:
+        config, source = settings.name, settings.read_text(encoding="utf-8")
+    else:
+        return None, "the workspace states a ruff configuration ruff did not name"
     return {
         "lint": {
             "tool": "ruff",
             "version": version,
-            "config": "pyproject.toml",
-            "config_source": config,
+            "config": config,
+            "config_source": source,
             "rules_enabled": len(rules),
             "rules": rules,
         },
-        # The staged `pyproject.toml` carries `[tool.ruff.format]`. Recorded so
-        # a reader comparing the two arms finds both entries present.
+        # The same configuration decides the formatter (`line-length`, the
+        # quote style). Recorded so a reader comparing the two arms finds both
+        # entries present.
         "format": {
             "tool": "ruff format",
             "version": version,
-            "config": "pyproject.toml",
-            "config_source": config,
+            "config": config,
+            "config_source": source,
         },
     }, None
 
@@ -663,22 +680,29 @@ def _run(argv: list[str], cwd: Path) -> subprocess.CompletedProcess[str] | None:
 BAR_PROBE_TIMEOUT_S = 60.0
 
 
-def _ruff_rules(workspace: Path) -> tuple[list[str] | None, str | None]:
-    """Every rule ruff has enabled in this workspace, in ruff's own order.
+def _ruff_rules(
+    workspace: Path, args: Sequence[str]
+) -> tuple[list[str] | None, Path | None, str | None]:
+    """Every rule ruff has enabled in this workspace under ``args``, in ruff's
+    own order, and the settings file ruff read (None when it read none).
 
     Parsed out of ``--show-settings`` rather than re-derived from ``select``:
     expanding selectors into concrete rules is ruff's resolution, it changes
     between releases, and a second implementation of it here would drift from
     the one that actually scores.
     """
-    proc = _run(["ruff", "check", "--show-settings"], workspace)
+    proc = _run(["ruff", "check", *args, "--show-settings"], workspace)
     if proc is None:
-        return None, "ruff is not on PATH, so the Python bar cannot be resolved"
+        return None, None, "ruff is not on PATH, so the Python bar cannot be resolved"
     if proc.returncode != 0:
-        return None, f"ruff --show-settings failed: {proc.stderr.strip()[:200]}"
+        return None, None, f"ruff --show-settings failed: {proc.stderr.strip()[:200]}"
     rules: list[str] = []
+    settings: Path | None = None
     collecting = False
     for line in proc.stdout.splitlines():
+        if line.startswith("Settings path: "):
+            settings = Path(line.removeprefix("Settings path: ").strip('"'))
+            continue
         if line.startswith("linter.rules.enabled = ["):
             collecting = True
             continue
@@ -687,11 +711,13 @@ def _ruff_rules(workspace: Path) -> tuple[list[str] | None, str | None]:
                 break
             rules.append(line.strip().rstrip(","))
     if not rules:
-        return None, (
+        return (
+            None,
+            None,
             "ruff --show-settings named no enabled rules; a bar that rejects "
-            "nothing is not a bar this project would record a rate against"
+            "nothing is not a bar this project would record a rate against",
         )
-    return rules, None
+    return rules, settings, None
 
 
 def _eslint_config(workspace: Path, probe: str) -> tuple[Any | None, str | None]:

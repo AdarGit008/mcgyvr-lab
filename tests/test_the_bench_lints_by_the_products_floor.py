@@ -1,8 +1,11 @@
 """The bench judges a worker by the product's floor, not by this repo's own.
 
-``tools/bench/score.py:lint_config`` exists because a synthetic one-file
-workspace carries no ruff configuration, so ruff falls back to everything it
-knows, and a stricter bar than the product's is the wrong bar.
+A synthetic one-file workspace carries no ruff configuration, and ruff left to
+itself applies a rule set nobody chose; a stricter bar than the product's is
+the wrong bar. The product's gate states its own default for a repository that
+states no ruff configuration (``ruff_config_args``), and
+``tools/bench/score.py:stage_config`` stages none, so that default is the
+bench's bar.
 
 The choice does not point at ``pyproject.toml``. This repository's selection
 carries rules the product's floor does not: ``DEFAULT_RUFF_SELECT`` in
@@ -20,24 +23,20 @@ published pass rate. The product floor is what a mcgyvr-managed repository that
 declares nothing is actually gated by, which is exactly what a bench workspace
 is.
 
-The first test below is the load-bearing one: it runs the gate over a workspace
-staged by the bench itself, so it asserts the configuration the bench *applies*
-rather than the tuple it names. The tuple check follows only to catch a
-restated copy, and would pass on its own against a bench whose applied bar was
-wrong.
+The tests below run the gate over a workspace staged by the bench itself, so
+they assert the configuration the bench *applies* rather than a tuple it
+names.
 """
 
 from __future__ import annotations
 
 import subprocess
-import tomllib
 from pathlib import Path
 from typing import Any
 
 import pytest
 
 from mcgyvr.gate import Gate
-from mcgyvr.gate.adapters.python import DEFAULT_RUFF_SELECT
 from mcgyvr.gate.changeset import ChangeSet
 from tests._helpers import by_path
 
@@ -88,9 +87,9 @@ def _git(repo: Path, *args: str) -> None:
 def _bench_workspace(score: Any, tmp_path: Path, solution: str) -> Path:
     """A workspace staged by the bench's own ``stage_config``, then committed.
 
-    ``stage_config`` rather than a hand-written ``pyproject.toml``: the bar this
-    asserts on has to be the one a scored candidate meets, and the point of that
-    function is that there is one place the bar is written.
+    ``stage_config`` rather than a hand-built workspace: the bar this asserts on
+    has to be the one a scored candidate meets, and the point of that function
+    is that there is one place the workspace's bar is staged.
     """
     workspace = tmp_path / "workspace"
     workspace.mkdir()
@@ -124,24 +123,8 @@ def test_the_bench_still_rejects_what_the_product_rejects(
 ) -> None:
     """The other half: a floor, not an absence of one.
 
-    Without this, a ``lint_config`` that selected nothing at all would pass the
-    test above — the hole that looks like a pass.
+    Without this, a staged configuration that selected nothing at all would pass
+    the test above — the hole that looks like a pass.
     """
     workspace = _bench_workspace(score, tmp_path, UNUSED_IMPORT)
     assert "F401" in _codes(workspace)
-
-
-def test_the_staged_selection_is_the_products_and_is_not_restated(
-    score: Any, tmp_path: Path
-) -> None:
-    """Weaker than the two above, and kept for one reason: drift.
-
-    ``lint_config`` and ``DEFAULT_RUFF_SELECT`` held the same nine families for
-    three days and then quietly stopped. Asserting equality against the imported
-    constant is what makes the next narrowing move both at once.
-    """
-    workspace = tmp_path / "workspace"
-    workspace.mkdir()
-    score.stage_config(workspace)
-    staged = tomllib.loads((workspace / "pyproject.toml").read_text(encoding="utf-8"))
-    assert staged["tool"]["ruff"]["lint"]["select"] == list(DEFAULT_RUFF_SELECT)
