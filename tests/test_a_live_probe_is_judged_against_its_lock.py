@@ -59,6 +59,8 @@ from typing import Any
 import pytest
 import yaml
 
+from tests import lab_numbers
+
 REPO = Path(__file__).resolve().parent.parent
 HARNESS = REPO / "records" / "measurements" / "fleet-setup-2026-09-13"
 VLLM_HARNESS = HARNESS / "srv2" / "measure_vllm.py"
@@ -180,7 +182,11 @@ def live_home(
     fleet: dict[str, Any] = FLEET,
     evidence: dict[str, Any] = EVIDENCE,
 ) -> Path:
-    """A HOME holding one promoted fleet, named live, with its journal in tmp."""
+    """A HOME holding one promoted fleet, named live, with its journal in tmp.
+
+    It holds the lab's measured numbers as the user's own, as every lab
+    test's HOME does (``tests/lab_numbers.py``).
+    """
     from mcgyvr.fleet import lock
 
     home = tmp_path / "home"
@@ -200,6 +206,7 @@ def live_home(
     )
     monkeypatch.setenv("HOME", str(home))
     monkeypatch.delenv("MCGYVR_CONFIG", raising=False)
+    lab_numbers.write()
     monkeypatch.chdir(tmp_path)
     return journal
 
@@ -278,8 +285,6 @@ HOLDING |= {"ds_prefill": 307.11}
 
 
 def test_the_class_tolerances_are_the_measured_ones_stated_in_derived_json() -> None:
-    from tests import lab_numbers
-
     measured = json.loads(
         (
             REPO / "records/measurements/fleet-identity-2026-09-11/tolerances.json"
