@@ -39,6 +39,7 @@ import yaml
 
 from mcgyvr.fleet.files import load_fleet
 from mcgyvr.fleet.tolerance import (
+    CLASS_CPU_EXPERTS,
     CLASS_MTP,
     tolerance_class,
 )
@@ -86,17 +87,22 @@ def committed_units() -> dict[str, Any]:
 
 def test_a_setup_unit_that_asks_for_mtp_is_judged_as_mtp_once_read() -> None:
     """A made-up setup, written as a ``fleet.yaml`` is and read back by the
-    same loader: the one unit whose argv asks to draft with its own head is
-    ``mtp``, the same unit without that ask is not, and no unit beside it is."""
+    same loader. Two units ask to draft with their own head: one keeps experts
+    on the CPU and one does not. Both are ``mtp``; without the ask the first is
+    ``cpu_experts`` and the second is not ``mtp``; no other unit is ``mtp``."""
     fleet = fleet_doc()
-    drafting = "a_solo"
-    fleet["units"][drafting]["launch"]["argv"] += ["--spec-type", "draft-mtp"]
+    on_cpu, on_card = "a_solo", "a_pair"
+    fleet["units"][on_cpu]["launch"]["argv"] += ["--n-cpu-moe", "4"]
+    for name in (on_cpu, on_card):
+        fleet["units"][name]["launch"]["argv"] += ["--spec-type", "draft-mtp"]
     units = load_fleet(yaml.safe_dump(fleet, sort_keys=False))["units"]
-    assert "--spec-type" in units[drafting]["launch"]["argv"]
-    assert tolerance_class(units[drafting]) == CLASS_MTP
-    assert tolerance_class(_without_mtp(units[drafting])) != CLASS_MTP
+    for name in (on_cpu, on_card):
+        assert "--spec-type" in units[name]["launch"]["argv"], name
+        assert tolerance_class(units[name]) == CLASS_MTP, name
+    assert tolerance_class(_without_mtp(units[on_cpu])) == CLASS_CPU_EXPERTS
+    assert tolerance_class(_without_mtp(units[on_card])) != CLASS_MTP
     for name, unit in units.items():
-        if name != drafting:
+        if name not in (on_cpu, on_card):
             assert tolerance_class(unit) != CLASS_MTP, name
 
 
