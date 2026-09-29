@@ -542,7 +542,27 @@ def test_the_python_bar_records_its_rule_count_and_not_a_label(
     assert any("select" in arg for arg in lint["config_source"]), (
         "the config that decided it"
     )
+    assert lint["config"] == "ruff_config_args"
     assert material["format"]["config"] == "ruff_config_args"
+
+
+def test_a_workspace_that_states_its_own_ruff_config_records_that_file(
+    identity: Any, tmp_path: Path
+) -> None:
+    """A workspace that states its own ruff configuration records the file ruff read.
+
+    The product hands ruff no arguments there, so the config that decided the
+    bar is the workspace's own file: its name, as ruff reports it, and its text.
+    """
+    _stage_python(tmp_path)
+    stated = (tmp_path / "pyproject.toml").read_text(encoding="utf-8")
+    material, why = identity.bar_material(
+        rungs=("acceptance",), language="python", stage_workspace=_stage_python
+    )
+    assert why is None and material is not None, why
+    for half in ("lint", "format"):
+        assert material[half]["config"] == "pyproject.toml", half
+        assert material[half]["config_source"] == stated, half
 
 
 @requires_js

@@ -6,9 +6,10 @@ produced a *plausible* pass rate, which is the dangerous kind:
 
 * the checker's own bytecode cache read as the checker mutating the tree, so
   every Python candidate was rejected by its test runner;
-* no ``pyproject.toml`` in the workspace, so ruff applied a rule set far wider
-  than the project selects — 75 of 257 reference solutions rejected by a rule
-  nobody chose;
+* no ``pyproject.toml`` in the workspace, and no selection stated by the gate
+  either, so ruff applied a rule set far wider than the project selects — 75 of
+  257 reference solutions rejected by a rule nobody chose (the gate now states
+  its default selection for a workspace that states none, ``ruff_config_args``);
 * a missing linter is an *environment issue* rather than a finding, so the
   TypeScript arm was scored by three rungs while Python was scored by five and
   ``passed`` said nothing about it.

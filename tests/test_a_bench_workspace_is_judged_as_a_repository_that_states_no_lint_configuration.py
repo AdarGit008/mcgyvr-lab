@@ -45,9 +45,6 @@ OLD_SPELLING = (
     "    return sum(rows)\n"
 )
 
-#: The codes the old spelling is reported under.
-OLD_SPELLING_CODES = {"UP006", "UP035"}
-
 _IDENTITY = {
     "GIT_AUTHOR_NAME": "t",
     "GIT_AUTHOR_EMAIL": "t@t.invalid",
@@ -119,22 +116,40 @@ def _verdict(kind: str, tmp: Path, score: Any, measure: Any, task: Any) -> GateR
         return _gated(Path(sandbox.workspace), target, sandbox.base_changeset_ref())
 
 
-@pytest.mark.parametrize("kind", ["bare", "bench", "breadth"])
-def test_the_old_spelling_is_noted_and_not_refused(
+Reading = tuple[bool, set[tuple[str, str | None]], set[str | None]]
+
+
+def _reading(result: GateResult) -> Reading:
+    """What the gate said: accepted or not, what it refused under, what it noted."""
+    refused = {(f.check, f.code) for f in result.findings}
+    noted = {f.code for f in result.observations if f.check == STYLE}
+    return result.accepted, refused, noted
+
+
+def test_a_repository_that_states_nothing_notes_the_old_spelling(
+    tmp_path: Path, score: Any, measure: Any, task: Any
+) -> None:
+    """The control: the change is accepted and the old spelling is noted."""
+    accepted, refused, noted = _reading(
+        _verdict("bare", tmp_path, score, measure, task)
+    )
+    assert accepted and not refused, refused
+    assert noted, "a repository that states nothing was not told of the old spelling"
+
+
+@pytest.mark.parametrize("kind", ["bench", "breadth"])
+def test_the_old_spelling_is_judged_as_in_a_repository_that_states_nothing(
     kind: str, tmp_path: Path, score: Any, measure: Any, task: Any
 ) -> None:
-    result = _verdict(kind, tmp_path, score, measure, task)
+    (tmp_path / "bare").mkdir()
+    (tmp_path / kind).mkdir()
+    control = _reading(_verdict("bare", tmp_path / "bare", score, measure, task))
 
-    refused = {f.code for f in result.findings if f.code}
-    assert not OLD_SPELLING_CODES & refused, (
-        f"a {kind} workspace refused the old spelling, which a repository "
-        f"that states no ruff configuration only gets a note for: "
-        f"{result.findings}"
-    )
-    assert result.accepted, f"the {kind} workspace refused: {result.findings}"
-    noted = {f.code for f in result.observations if f.check == STYLE}
-    assert noted >= OLD_SPELLING_CODES, (
-        f"the {kind} workspace did not report the old spelling: {result.observations}"
+    staged = _reading(_verdict(kind, tmp_path / kind, score, measure, task))
+
+    assert staged == control, (
+        f"a {kind} workspace is judged otherwise than a repository that states "
+        f"no ruff configuration (accepted, refused, noted): {staged} != {control}"
     )
 
 

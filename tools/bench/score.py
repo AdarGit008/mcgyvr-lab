@@ -224,8 +224,9 @@ def stage_config(into: Path) -> Path:
     (:func:`~mcgyvr.gate.adapters.python.ruff_config_args`). A staged
     ``[tool.ruff]``, even one holding that same selection, makes the workspace a
     repository with a configuration of its own, which the gate judges as that
-    configuration says: the UP006 and UP035 it selects refuse the change there,
-    where a repository without one only has them reported.
+    configuration says: the UP006 and UP035 it selects refuse a deprecated
+    ``typing`` spelling there, which a repository without one only has
+    reported.
     ``identity.bar_material`` records the default the product applies.
 
     Deliberately **not** here either: ``tsconfig.json`` and ``[tool.mypy]``.
