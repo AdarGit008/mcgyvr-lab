@@ -1,19 +1,23 @@
 # The lab's copy. The tests of this file that are the product's were removed
 # here; they remain in the product's copy of this file.
-"""The per-rig derived-numbers file, and the code held to it.
+"""The lab's per-rig derived-numbers record, and the contract it is held to.
 
-``tools/runs/derived.json`` is the single source of truth for the numeric
-values mcgyvr measures on a rig rather than reads from the rig or from the
-model: the runtime-resident intercept host-RAM sizing adds to spilled experts,
-the per-rig card remainder ``vramfit``'s ``C`` subsumes, and the class
-tolerances the fleet lock weighs NVMe against and a live probe is judged by.
+``tools/runs/derived.json`` is the lab's own record of the numeric values it
+measured on the owner's rigs: the runtime-resident intercept host-RAM sizing
+adds to spilled experts, the per-rig card remainder ``vramfit``'s ``C``
+subsumes, and the class tolerances the fleet lock weighs NVMe against and a
+live probe is judged by. ``mcgyvr.derived`` does not read this file: the
+product ships its own estimate of each number in its package's
+``data/numbers.json``, keyed by a tolerance class or an engine and never by a
+machine's name, with the user's own ``numbers.yaml`` answering first when it
+sets one. The values below are this file's record of what the lab measured on
+the owner's rigs, which is how the shipped estimates were arrived at, not
+values ``mcgyvr.derived`` reads from here.
 
 This file holds the file to the same contract ``test_declared_host_state.py``
 holds ``tools/runs/hosts.json`` to — every number states a value and why it is
 that value, and an absent number is a named refusal, never a silent inline
-default — and it holds the code to the file: the moved literals appear only
-here, never as a source-of-truth literal in ``src/``. The class tolerances'
-own resolution and refusal are in
+default. The class tolerances' own resolution and refusal are in
 ``tests/test_a_live_probe_is_judged_against_its_lock.py``.
 """
 
