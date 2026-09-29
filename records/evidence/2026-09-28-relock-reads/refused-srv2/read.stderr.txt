@@ -1,0 +1,2 @@
+read-02-rig.py: read: THIS MACHINE IS NOT THE DECLARED srv2 — pl1_uw: declared '4095000000', reads '65000000'. tools/runs/hosts.json[srv2].rig is what the rig was declared as; nothing is filed from a machine that is not it
+run.py: REFUSED at read-02-rig.py — read, rig: one reader on the rig, its facts held to hosts.json and the rest filed under the read fleet's journal; nothing leased, nothing torn down, and a busy rig read as it is

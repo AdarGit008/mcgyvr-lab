@@ -62,6 +62,11 @@ The folder holds 10 rows: 6 in the three `rig.jsonl` files, one per read, and
   `THIS MACHINE IS NOT THE DECLARED srv2 — pl1_uw: declared '4095000000', reads
   '65000000'`. That read left no artifact and no journal row, and no file in
   this repository records it: its time and the refusal quoted here are as the
-  session that ran it wrote them into this file. Since then the door refuses
-  srv2 against its declaration in `tools/runs/hosts.json`, which was not
-  changed. No row for srv2 after 21:58:03 is in this folder.
+  session that ran it wrote them into this file.
+- A second read of srv2 through the door's `read` was refused the same way and
+  filed nothing; its exact arguments are not recorded. What it printed is kept
+  byte for byte in `refused-srv2/` (`read.stdout.txt`, `read.stderr.txt`). The
+  two files were written at 22:09:58 and 22:10:00; these are the times the
+  files were last written, not times the door recorded. The declaration in
+  `tools/runs/hosts.json` was not changed, and no later read of srv2 was made
+  in this job. No row for srv2 after 21:58:03 is in this folder.

@@ -1,0 +1,1 @@
+read: profile=dev config=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/fleet-setup
