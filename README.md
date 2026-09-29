@@ -108,14 +108,10 @@ core paragraph in `okf/must-read/always.md`.
 
 ## Lab tests outside the gate
 
-Two lab tests fail in the lab today. `make check` deselects them by id
-(`LAB_TESTS_OUTSIDE` in the `Makefile`); they are not skipped or marked, and
-running them by hand shows them failing.
+One lab test fails in the lab today. `make check` deselects it by id
+(`LAB_TESTS_OUTSIDE` in the `Makefile`); it is not skipped or marked, and
+running it by hand shows it failing.
 
-- `tests/test_one_door.py::test_nothing_under_records_is_executable` — 21
-  files under `records/measurements/quick-check-2026-09-15/`, moved into the
-  lab on 2026-09-16, carry the executable bit. It passes once those files lose
-  the bit, or once the owner rules that they keep it.
 - `tests/test_a_live_row_names_what_answered_it_and_under_which_round.py::test_inside_the_checkout_the_row_carries_the_round_and_the_product_digest`
   — a live row's `product_sha256` is taken by `mcgyvr.telemetry` over the
   product's checkout (`product/`), not over the lab's tree that the lab's

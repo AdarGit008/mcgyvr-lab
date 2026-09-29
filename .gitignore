@@ -17,6 +17,8 @@ okf/*
 !okf/models/
 *.log
 !records/evidence/**/*.log
+# The lab's own: a new measurement log is seen by git.
+!records/measurements/**/*.log
 records/evidence/calibration-2026-08-19/d7-campaign.aborted-run.log
 tools/bundle/worker.local.json
 tools/breadth/worker.local.json

@@ -28,9 +28,8 @@ setup:  ## install the lab's environment, frozen against uv.lock
 # The guard's self-tests run on their own with --confcutdir, so tests/conftest.py
 # and its autouse fixtures are not loaded around them.
 LAB_GATE_PATHS = guard tests tools
-# 2 tests, deselected by id: they fail, and are not skipped or marked.
+# 1 test, deselected by id: it fails, and is not skipped or marked.
 LAB_TESTS_OUTSIDE = \
-	--deselect tests/test_one_door.py::test_nothing_under_records_is_executable \
 	--deselect tests/test_a_live_row_names_what_answered_it_and_under_which_round.py::test_inside_the_checkout_the_row_carries_the_round_and_the_product_digest
 
 check: setup  ## the lab's own gate
