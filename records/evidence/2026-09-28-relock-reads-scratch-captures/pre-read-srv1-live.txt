@@ -1,0 +1,6 @@
+MCGYVR_RUN_ROOT=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab MCGYVR_CONFIG=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/fleet-setup
+2026-09-28T21:57:55Z
+read: profile=dev config=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/fleet-setup
+read: srv1 rig_id=rig-b19063a92b839674422742b5bd928747373dd992d6c8ed94dfff100418f2ade4 run_id=run-20260928T215755-ea68ba07
+rc=0
+2026-09-28T21:57:57Z

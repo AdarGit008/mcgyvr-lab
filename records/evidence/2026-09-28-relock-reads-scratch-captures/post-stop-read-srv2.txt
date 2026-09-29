@@ -1,0 +1,7 @@
+MCGYVR_RUN_ROOT=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab MCGYVR_CONFIG=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/fleet-setup
+2026-09-28T22:08:10Z
+read: profile=dev config=/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/fleet-setup
+read-02-rig.py: read: THIS MACHINE IS NOT THE DECLARED srv2 — pl1_uw: declared '4095000000', reads '65000000'. tools/runs/hosts.json[srv2].rig is what the rig was declared as; nothing is filed from a machine that is not it
+run.py: REFUSED at read-02-rig.py — read, rig: one reader on the rig, its facts held to hosts.json and the rest filed under the read fleet's journal; nothing leased, nothing torn down, and a busy rig read as it is
+rc=2
+2026-09-28T22:08:12Z
