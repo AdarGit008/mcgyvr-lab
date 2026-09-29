@@ -5,7 +5,7 @@
     "srv1",
     "srv2"
   ],
-  "_numbers_doc": "Per-host `numbers` blocks: a value derived from measurement on that rig, carried nowhere else in code. The key is read by `src/mcgyvr/derived.py`; a rig or value that is absent is refused by name.",
+  "_numbers_doc": "Per-host `numbers` blocks: a value derived from measurement on that rig. This is the lab's record; `src/mcgyvr/derived.py` in the product does not read it. The product answers from its own shipped estimates in `data/numbers.json`, keyed by tolerance class or engine and never by a rig's name, and a user's own `numbers.yaml` answers first.",
   "srv1": {
     "numbers": {
       "runtime_resident_gb": {

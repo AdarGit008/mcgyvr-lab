@@ -27,8 +27,11 @@ prompt and 256 tokens out, so a dispatch is not the lock's quantity.
   llama.cpp figure is the server's own ``timings``, and is judged either way.
 * **The tolerance is one class per unit.** vLLM is ``vllm``; llama.cpp with
   experts on the CPU is ``cpu_experts``; any other llama.cpp is ``llamacpp``.
-  Each judged field has its own measured percents, stated in
-  ``tools/runs/derived.json``: warm decode those of
+  Each judged field has its own percents, which :mod:`mcgyvr.derived`
+  answers: the user's own ``numbers.yaml`` first, else the product's shipped
+  estimates (``data/numbers.json``, read here under ``product/``). The lab's
+  measured percents are recorded in ``tools/runs/derived.json``, which the
+  product does not read: warm decode those of
   ``records/measurements/fleet-identity-2026-09-11/tolerances.json``, prefill
   its own, from
   ``records/measurements/fleet-identity-prefill-2026-09-12/results-prefill.json``

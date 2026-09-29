@@ -10,7 +10,10 @@ vLLM's prefill class and outside vLLM decode's 1%.
 
 The prefill classes are those of
 ``mcgyvr-lab/records/measurements/fleet-identity-prefill-2026-09-12/README.md``,
-stated in ``tools/runs/derived.json`` as ``engine.prefill_class_pct``:
+recorded in the lab's ``tools/runs/derived.json`` as
+``engine.prefill_class_pct``. :mod:`mcgyvr.derived` does not read that file:
+it answers from the product's shipped ``data/numbers.json``, or from the
+user's own ``numbers.yaml`` first, and the test below reads its answer:
 
 * **vLLM 8%**: the 3B's 7.86% worst single-sample shortfall, rounded up, after
   the single restart-tail outlier (the 7B's 9,460 tok/s) is dropped;
@@ -93,7 +96,7 @@ def test_prefill_and_decode_each_state_their_own_class_percents() -> None:
 
 
 def _approved(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, unit: str) -> Any:
-    """The probe's view of ``unit``, from a promoted lock and derived.json."""
+    """The probe's view of ``unit``, from a promoted lock and mcgyvr.derived."""
     from mcgyvr import derived
     from mcgyvr.fleet import probe
     from mcgyvr.fleet.admit import layout_ids

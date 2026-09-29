@@ -18,13 +18,15 @@ sample the lock itself accepted.
   nobody. Checked on invented units, and on each unit the committed fleet
   declares against its class with the mtp request taken out, so the check
   holds whichever units the fleet carries.
-* ``tools/runs/derived.json`` states ``mtp`` in both judged fields: prefill at
-  the 5% ``assemble_evidence.py tolerance`` derived from the window
-  (``records/measurements/lock-fleets/mtp-ornith/prefill-tolerance-mtp.json``),
+* ``tools/runs/derived.json``, the lab's record, states ``mtp`` in both judged
+  fields: prefill at the 5% ``assemble_evidence.py tolerance`` derived from the
+  window (``records/measurements/lock-fleets/mtp-ornith/prefill-tolerance-mtp.json``),
   warm decode at the same rule over the same three runs' decode samples
   (``runs.json``: L = the median of the run medians, tol = max(1, ceil(worst
-  shortfall %))), which is 2%. An absent ``mtp`` is refused by name, as any
-  class is.
+  shortfall %))), which is 2%. The tests below read the class tolerances
+  from :mod:`mcgyvr.derived`, which answers from the product's shipped
+  ``data/numbers.json`` (or the user's own ``numbers.yaml``), not from that
+  record. An absent ``mtp`` is refused by name, as any class is.
 """
 
 from __future__ import annotations
