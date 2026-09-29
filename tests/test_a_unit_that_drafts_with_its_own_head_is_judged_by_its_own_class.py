@@ -18,13 +18,17 @@ sample the lock itself accepted.
   nobody. Checked on invented units, and on each unit the committed fleet
   declares against its class with the mtp request taken out, so the check
   holds whichever units the fleet carries.
-* ``tools/runs/derived.json`` states ``mtp`` in both judged fields: prefill at
-  the 5% ``assemble_evidence.py tolerance`` derived from the window
-  (``records/measurements/lock-fleets/mtp-ornith/prefill-tolerance-mtp.json``),
+* ``tools/runs/derived.json``, the lab's record, states ``mtp`` in both judged
+  fields: prefill at the 5% ``assemble_evidence.py tolerance`` derived from the
+  window (``records/measurements/lock-fleets/mtp-ornith/prefill-tolerance-mtp.json``),
   warm decode at the same rule over the same three runs' decode samples
   (``runs.json``: L = the median of the run medians, tol = max(1, ceil(worst
-  shortfall %))), which is 2%. An absent ``mtp`` is refused by name, as any
-  class is.
+  shortfall %))), which is 2%. The tests below read the class tolerances
+  :mod:`mcgyvr.derived` judges with, each from the user's own
+  ``numbers.yaml``, which a lab test holds the lab's record in, and never from
+  the product's shipped ``data/numbers.json`` (``tests/lab_numbers.py``).
+  Were the lab's record to lose ``mtp``, :mod:`mcgyvr.derived` would answer
+  it from the shipped estimate, and the lab's check fails, naming it.
 """
 
 from __future__ import annotations
@@ -43,6 +47,7 @@ from mcgyvr.fleet.tolerance import (
     CLASS_MTP,
     tolerance_class,
 )
+from tests import lab_numbers
 from tests.lockfleets_window import fleet_doc
 
 REPO = Path(__file__).resolve().parent.parent
@@ -120,9 +125,8 @@ def test_each_declared_unit_is_mtp_only_where_it_asks_and_else_as_before() -> No
 
 
 def _derived() -> dict[str, dict[str, float]]:
-    from mcgyvr import derived
-
-    return derived.class_tolerances()
+    """The class tolerances judged with: the lab's record, from the user's file."""
+    return lab_numbers.class_tolerances()
 
 
 def test_mtp_prefill_is_the_tolerance_the_window_derived() -> None:

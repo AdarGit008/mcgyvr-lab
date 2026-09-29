@@ -1,40 +1,34 @@
 # The lab's part of a split test file. The tests of this file that are the
 # product's were removed here; they remain in the product's file at this path.
-"""The per-rig derived-numbers file, and the code held to it.
+"""The lab's per-rig derived-numbers record.
 
-``tools/runs/derived.json`` is the single source of truth for the numeric
-values mcgyvr measures on a rig rather than reads from the rig or from the
-model: the runtime-resident intercept host-RAM sizing adds to spilled experts,
-the per-rig card remainder ``vramfit``'s ``C`` subsumes, and the class
-tolerances the fleet lock weighs NVMe against and a live probe is judged by.
+``tools/runs/derived.json`` is the lab's record of the numeric values it
+measured on its rigs, or declared for one rig from another's measurement
+where an entry's ``why`` says so, rather than read from the rig or from the
+model: the
+runtime-resident intercept host-RAM sizing adds to spilled experts, the
+per-rig card remainder ``vramfit``'s ``C`` subsumes, and the class tolerances
+the fleet lock weighs NVMe against and a live probe is judged by.
 
-This file holds the file to the same contract ``test_declared_host_state.py``
-holds ``tools/runs/hosts.json`` to — every number states a value and why it is
-that value, and an absent number is a named refusal, never a silent inline
-default — and it holds the code to the file: the moved literals appear only
-here, never as a source-of-truth literal in ``src/``. The class tolerances'
-own resolution and refusal are in
-``tests/test_a_live_probe_is_judged_against_its_lock.py``.
+:mod:`mcgyvr.derived` does not read this file. It answers from a user's own
+``numbers.yaml`` first and from the product's shipped estimates
+(``data/numbers.json``) second, each keyed by a tolerance class or an engine
+and never by a machine's name. A lab test judges with the lab's numbers, from
+the user's file, never with the product's estimates (``tests/lab_numbers.py``).
+
+This file holds the record to the same contract ``test_declared_host_state.py``
+holds ``tools/runs/hosts.json`` to: every number states a value and why it is
+that value. How :mod:`mcgyvr.derived` resolves and refuses a number is
+tested in the product, for example
+``product/tests/test_a_number_nobody_stated_is_refused_by_name.py``.
 """
 
 from __future__ import annotations
 
-import json
-from pathlib import Path
 from typing import Any
 
-import pytest
-
 from mcgyvr import derived
-
-REPO = Path(__file__).resolve().parent.parent
-DERIVED = REPO / "tools" / "runs" / "derived.json"
-
-
-def document() -> dict[str, Any]:
-    loaded = json.loads(DERIVED.read_text(encoding="utf-8"))
-    assert isinstance(loaded, dict), "the derived-numbers file is not a JSON object"
-    return loaded
+from tests.lab_numbers import record as document
 
 
 def _unexplained(numbers: dict[str, Any]) -> list[str]:
@@ -74,8 +68,21 @@ def test_every_number_states_a_value_and_why_it_is_that_value() -> None:
 
 
 def test_the_runtime_resident_intercept_resolves_for_each_rig() -> None:
-    assert derived.runtime_resident_gb("srv1") == pytest.approx(1.53)
-    assert derived.runtime_resident_gb("srv2") == pytest.approx(1.53)
+    """Each rig's recorded intercept is the one mcgyvr.derived sizes with.
+
+    The lab records the number per rig: measured on srv2 with llama.cpp and
+    declared the same for srv1. The product keys it by engine, llama.cpp. It
+    comes from the user's own file, never from the product's shipped estimate.
+    """
+    doc = document()
+    answer = derived.lookup(derived.RUNTIME_RESIDENT, derived.RUNTIME_RESIDENT_KEY)
+    assert answer.source == "override", (
+        f"sized with the {answer.source} in {answer.where}, not the lab's own number"
+    )
+    for rig in doc["hosts"]:
+        recorded = doc[rig]["numbers"]["runtime_resident_gb"]["value"]
+        assert recorded == 1.53, rig
+        assert derived.runtime_resident_gb(rig) == answer.value == recorded, rig
 
 
 def test_the_per_rig_card_remainder_is_recorded() -> None:
