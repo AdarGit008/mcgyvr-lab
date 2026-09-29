@@ -55,8 +55,9 @@ core paragraph in `okf/must-read/always.md`.
   others), and files the lab has written there since. One of those is
   `tools/door/serving_markers.py`, the lab's campaign marker gate, written for
   the gate list of a step verb the product's door does not have yet; the
-  door's serve and read give it no campaign to check. Part of the lab gate
-  (see "Make targets").
+  door's serve names a campaign with no folder, so it is not checked; read
+  names none, which the gate refuses, so it goes only on the step verb's
+  list. Part of the lab gate (see "Make targets").
 - `tests/` — `tests/guard/` holds the guard's self-tests. Of the other
   files, 154 began as the tests, helpers and fixtures copied from the product,
   and four were written here:
