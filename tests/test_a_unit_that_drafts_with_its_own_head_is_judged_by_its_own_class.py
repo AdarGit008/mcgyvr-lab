@@ -35,11 +35,15 @@ import statistics
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from mcgyvr.fleet.files import load_fleet
 from mcgyvr.fleet.tolerance import (
+    CLASS_CPU_EXPERTS,
     CLASS_MTP,
     tolerance_class,
 )
+from tests.lockfleets_window import fleet_doc
 
 REPO = Path(__file__).resolve().parent.parent
 USE = REPO / "records" / "measurements" / "lock-fleets" / "mtp-ornith"
@@ -81,10 +85,25 @@ def committed_units() -> dict[str, Any]:
 # --- the class -------------------------------------------------------------
 
 
-def test_the_committed_mtp_unit_is_judged_as_mtp() -> None:
-    units = committed_units()
-    assert "--spec-type" in units[UNIT]["launch"]["argv"]
-    assert tolerance_class(units[UNIT]) == CLASS_MTP
+def test_a_setup_unit_that_asks_for_mtp_is_judged_as_mtp_once_read() -> None:
+    """A made-up setup, written as a ``fleet.yaml`` is and read back by the
+    same loader. Two units ask to draft with their own head: one keeps experts
+    on the CPU and one does not. Both are ``mtp``; without the ask the first is
+    ``cpu_experts`` and the second is not ``mtp``; no other unit is ``mtp``."""
+    fleet = fleet_doc()
+    on_cpu, on_card = "a_solo", "a_pair"
+    fleet["units"][on_cpu]["launch"]["argv"] += ["--n-cpu-moe", "4"]
+    for name in (on_cpu, on_card):
+        fleet["units"][name]["launch"]["argv"] += ["--spec-type", "draft-mtp"]
+    units = load_fleet(yaml.safe_dump(fleet, sort_keys=False))["units"]
+    for name in (on_cpu, on_card):
+        assert "--spec-type" in units[name]["launch"]["argv"], name
+        assert tolerance_class(units[name]) == CLASS_MTP, name
+    assert tolerance_class(_without_mtp(units[on_cpu])) == CLASS_CPU_EXPERTS
+    assert tolerance_class(_without_mtp(units[on_card])) != CLASS_MTP
+    for name, unit in units.items():
+        if name not in (on_cpu, on_card):
+            assert tolerance_class(unit) != CLASS_MTP, name
 
 
 def test_each_declared_unit_is_mtp_only_where_it_asks_and_else_as_before() -> None:

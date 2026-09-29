@@ -1,0 +1,16 @@
+{
+  "run_id": "2026-09-28-live-srv2-serve-down-new-cards-takedown",
+  "host": "srv2",
+  "mode": "down",
+  "compose_file": "/home/adaramir/claude/mcgyvr-lab-sessions/relock/compose/compose.srv2.d-srv2-35b.yml",
+  "compose_down_exit": 0,
+  "expected": [
+    "mcgyvr-srv2-35b-32k"
+  ],
+  "remaining": [],
+  "daemon_read": true,
+  "card_after": {
+    "used_mib": 17,
+    "free_mib": 5729
+  }
+}

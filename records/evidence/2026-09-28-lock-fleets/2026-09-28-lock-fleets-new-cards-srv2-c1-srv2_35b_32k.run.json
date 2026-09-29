@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-09-28-lock-fleets-new-cards-srv2-c1-srv2_35b_32k",
+  "campaign": "lock-fleets",
+  "step": "new-cards-srv2-c1-srv2_35b_32k",
+  "host": "srv2",
+  "date": "2026-09-28",
+  "round": "r37-28-09-2026",
+  "product_sha256": "17c753d7d0c9c6b8a5d790a53fd30115a71b088737fef8a75b10ac8c2006120e",
+  "profile": "dev",
+  "config": "/home/adaramir/claude/mcgyvr-lab-sessions/relock/lab/fleet-setup",
+  "mcgyvr_version": "0.1.1.dev512+gef12d3d3",
+  "started_at": "2026-09-28T22:02:31Z"
+}

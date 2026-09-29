@@ -58,5 +58,6 @@ there is no fallback, and no environment variable disables the tier
 under a plain `docker run` the call returns `EPERM` and the server dies before
 it serves.
 
-Only `srv2_35b_256k` states it. Any other unit that needs it states it too, or
-launches without one.
+Among the units of `fleet.2026-09-28.yaml`, only `srv2_35b_256k` states it; no
+unit of the `fleet.yaml` in use states one. Any other unit that needs it states
+it too, or launches without one.

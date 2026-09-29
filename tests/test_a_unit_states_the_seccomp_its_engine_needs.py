@@ -116,17 +116,40 @@ def test_the_profile_says_where_it_came_from_and_what_was_added() -> None:
         assert name in readme
 
 
-def test_the_unit_that_cannot_start_states_the_profile_and_no_other_does() -> None:
-    fleet = yaml.safe_load((REPO / "fleet-setup" / "fleet.yaml").read_text("utf-8"))
-    stated = {
-        name: (unit.get("launch") or {}).get("seccomp")
+def _profiles_off_the_rule(fleet: dict[str, Any]) -> list[str]:
+    """What in ``fleet`` breaks the profile rule: a unit that states a profile
+    other than the committed one, or a hole anywhere in the setup."""
+    broken = [
+        f"{name} states {stated}"
         for name, unit in fleet["units"].items()
-        if (unit.get("launch") or {}).get("seccomp")
-    }
-    assert stated == {"srv2_35b_256k": PROFILE}
-    # Never a hole, and never the whole machine.
-    assert "unconfined" not in json.dumps(fleet)
-    assert "privileged" not in json.dumps(fleet)
+        if (stated := (unit.get("launch") or {}).get("seccomp")) not in (None, PROFILE)
+    ]
+    for word in ("unconfined", "privileged"):
+        if word in json.dumps(fleet):
+            broken.append(f"the setup says {word}")
+    return broken
+
+
+def test_every_profile_the_committed_setup_states_is_the_committed_one() -> None:
+    """Whatever units ``fleet-setup/fleet.yaml`` holds, and whether or not any
+    of them states a profile: each one stated is the committed profile, and
+    the setup never asks for no profile or the whole machine."""
+    fleet = yaml.safe_load((REPO / "fleet-setup" / "fleet.yaml").read_text("utf-8"))
+    assert _profiles_off_the_rule(fleet) == []
+
+
+def test_the_profile_rule_holds_a_made_up_setup_and_catches_a_hole() -> None:
+    """The same rule over made-up setups: one unit stating the committed
+    profile and the others none passes; a unit stating ``unconfined``, or a
+    profile of its own, is named."""
+    assert _profiles_off_the_rule(_fleet()) == []
+    assert _profiles_off_the_rule(_fleet("unconfined")) == [
+        "a_pair states unconfined",
+        "the setup says unconfined",
+    ]
+    assert _profiles_off_the_rule(_fleet("seccomp/other.json")) == [
+        "a_pair states seccomp/other.json"
+    ]
 
 
 # --------------------------------------------------------------------------
@@ -277,19 +300,36 @@ def test_a_move_cannot_deliver_a_profile_and_says_so(
 # --------------------------------------------------------------------------
 
 
-def test_the_committed_setup_emits_the_profile_it_states(tmp_path: Path) -> None:
-    setup = REPO / "fleet-setup"
-    fleet = steps_module().load(REPO)
+def test_a_setup_emits_the_profile_its_unit_states_and_no_other(
+    tmp_path: Path,
+) -> None:
+    """A made-up setup in which ``a_pair`` states the profile and no other unit
+    does: its service names the profile by file name, the profile is written
+    beside the compose file, and no other service in any file names one."""
+    root = _tree(tmp_path)
+    setup = root / "fleet-setup"
     out = tmp_path / "compose"
-    emit_locked(fleet, out, setup)
-    solo = yaml.safe_load((out / "compose.srv2.a-solo.yml").read_text("utf-8"))
-    service = solo["services"]["srv2_35b_256k"]
+    emit_locked(steps_module().load(root), out, setup)
+    stating = yaml.safe_load((out / "compose.alpha.two.yml").read_text("utf-8"))
+    service = stating["services"]["a_pair"]
     assert service["security_opt"] == ["seccomp=io-uring.json"]
-    assert (out / "io-uring.json").read_bytes() == COMMITTED.read_bytes()
-    # b-small is what live serves and states none: its file keeps its shape.
-    small = yaml.safe_load((out / "compose.srv2.b-small.yml").read_text("utf-8"))
-    for name in ("srv2_3b", "srv2_7b"):
-        assert "security_opt" not in small["services"][name]
+    assert (out / "io-uring.json").read_bytes() == (setup / PROFILE).read_bytes()
+    others = [
+        (compose.name, name)
+        for compose in sorted(out.glob("compose.*.yml"))
+        for name, other in yaml.safe_load(compose.read_text("utf-8"))[
+            "services"
+        ].items()
+        if name != "a_pair" and "security_opt" in other
+    ]
+    assert others == []
+    # The four other units are placed in the files checked above.
+    placed = {
+        name
+        for compose in out.glob("compose.*.yml")
+        for name in yaml.safe_load(compose.read_text("utf-8"))["services"]
+    }
+    assert placed == {"a_solo", "a_pair", "b_big", "b_small", "b_mid"}
 
 
 # --------------------------------------------------------------------------
