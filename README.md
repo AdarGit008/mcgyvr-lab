@@ -52,8 +52,10 @@ core paragraph in `okf/must-read/always.md`.
   its exact path in `guard/binary-ok.txt`.
 - `okf/` — the rule store: how to act in this work. Start at `okf/index.md`.
 - `tools/` — the tools copied from the product (bench, problems, runs and
-  others), and `tools/door/serving_markers.py`, written here: the lab's
-  campaign marker gate, for a door's caller gate list. Part of the lab gate
+  others), and files the lab has written there since. One of those is
+  `tools/door/serving_markers.py`, the lab's campaign marker gate, written for
+  the gate list of a step verb the product's door does not have yet; the
+  door's serve and read give it no campaign to check. Part of the lab gate
   (see "Make targets").
 - `tests/` — `tests/guard/` holds the guard's self-tests. Of the other
   files, 154 began as the tests, helpers and fixtures copied from the product,
