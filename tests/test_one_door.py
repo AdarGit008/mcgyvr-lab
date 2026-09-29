@@ -57,6 +57,7 @@ import re
 import subprocess
 import sys
 import types
+from fnmatch import fnmatch
 from pathlib import Path
 
 import pytest
@@ -89,6 +90,11 @@ SSH_SPAWN = re.compile(
     r"|(?<![\w./-])command\s+-p\s+ssh\b"
     r"|[\"'](?:/usr/bin/)?(?:ssh|scp|rsync|sftp)[\"']\s*,"
     r"|^\s*(?:import|from)\s+(?:paramiko|fabric|asyncssh)\b"
+)
+#: A container start: ``docker run ...`` in shell form, or the list form.
+DOCKER_RUN = re.compile(
+    r"(?<![\w./-])docker\s+run\s+(?=[\w$\"'{@.-])"
+    r"|[\"']docker[\"']\s*,\s*[\"'](?:run|create|start)[\"']"
 )
 LOOPBACK = re.compile(r"\blocalhost\b|\b127\.0\.0\.1\b")
 
@@ -137,6 +143,10 @@ def _scanned(line: str) -> str:
     and nothing else on the line touched."""
     return SEAM_MENTION.sub(" <seam mention> ", line)
 
+
+#: The lab's test files a spawn pattern may hit. Path glob -> why that hit
+#: reaches no rig. ``fnmatch`` semantics: ``*`` crosses ``/``.
+ALLOWED: dict[str, str] = {}
 
 DECILES = re.compile(r"^\s*PROMPT_DECILES\s*=")
 
@@ -187,6 +197,10 @@ def _rel(path: Path) -> str:
     return path.relative_to(REPO).as_posix()
 
 
+def _allowed(rel: str) -> bool:
+    return any(fnmatch(rel, pattern) for pattern in ALLOWED)
+
+
 def _matching(pattern: re.Pattern[str], text: str) -> list[str]:
     """Every code line of ``text`` the pattern hits, seam mentions erased.
 
@@ -227,6 +241,37 @@ def _started() -> list[Path]:
 # --------------------------------------------------------------------------
 # 1. an ssh or a docker run appears only behind the door
 # --------------------------------------------------------------------------
+
+
+def test_an_ssh_or_a_docker_run_in_a_lab_test_is_argued_in_allowed() -> None:
+    """The lab's tests reach no rig: every spawn-shaped line is argued here.
+
+    A hit in a file of ``tests/`` is a stub, a stand-in or a line of text
+    about one, and ``ALLOWED`` says which for each file. A new file with a
+    hit fails until it is argued into ``ALLOWED`` with its reason, or the
+    spawn is removed.
+    """
+    hits = _hits(SSH_SPAWN, ("tests",))
+    for rel, lines in _hits(DOCKER_RUN, ("tests",)).items():
+        hits.setdefault(rel, []).extend(lines)
+    assert hits, "the scan found no invocation at all — the pattern is broken"
+    strays = {rel: lines for rel, lines in hits.items() if not _allowed(rel)}
+    assert not strays, (
+        f"{len(strays)} lab test file(s) hold a spawn outside {DOOR} that "
+        "ALLOWED does not argue — each is (path, invocations) and is argued "
+        f"into ALLOWED with a reason or removed: {strays}"
+    )
+
+
+def test_every_allowed_entry_names_a_file_that_exists() -> None:
+    """A stale allowance is a hole waiting for a file of that name."""
+    present = [_rel(p) for p in _sources(("tests",), root_files=False)]
+    stale = [
+        pattern
+        for pattern in ALLOWED
+        if not any(fnmatch(rel, pattern) for rel in present)
+    ]
+    assert not stale, f"ALLOWED names files that do not exist: {stale}"
 
 
 def test_the_serving_harness_spawns_no_ssh_of_its_own() -> None:
