@@ -98,8 +98,11 @@ by whoever writes the change.
 
 ## Reading a citation
 
-**In a file copied from the product, a cited `src/`, `tests/`, `data/`,
-`examples/` or `skills/` path is the product's.** Read it under `product/`.
+**In a file copied from the product, a cited `src/`, `data/`, `examples/` or
+`skills/` path is the product's.** Read it under `product/`.
+
+**A cited `tests/` path is the product's when the product holds it.** A test
+that left the product is in this repository's `tests/`.
 
 **A citation spelled `mcgyvr-lab/<path>`, in a file copied from the product, is
 `<path>` in this repository.**
