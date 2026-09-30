@@ -46,8 +46,7 @@ NOT_SCANNED = frozenset({"product", "records", "archive"})
 
 #: One line per name: the product module, the name the lab imports from it,
 #: and one lab file that imports it (outside ``tests/`` when one does).
-LISTED = """
-mcgyvr                        config                   tests/test_a_locked_fleet_loads_as_the_run_config.py
+LISTED = """mcgyvr                        config                   tests/test_a_locked_fleet_loads_as_the_run_config.py
 mcgyvr                        contract                 tests/test_bundle_ladder.py
 mcgyvr                        derived                  tests/lab_numbers.py
 mcgyvr                        drive                    tests/livejournal.py
@@ -58,6 +57,7 @@ mcgyvr.catalog                Family                   tools/missions/attempt.py
 mcgyvr.catalog                catalog                  tools/missions/run.py
 mcgyvr.cli                    main                     tests/livejournal.py
 mcgyvr.config                 Config                   tools/missions/run.py
+mcgyvr.config                 ConfigError              tools/live/run.py
 mcgyvr.config                 _split_setup             tests/_helpers.py
 mcgyvr.config                 load                     tools/missions/run.py
 mcgyvr.config                 parse                    tests/test_a_locked_fleet_loads_as_the_run_config.py
@@ -121,13 +121,14 @@ mcgyvr.gate                   LanguageAdapter          tools/missions/attempt.py
 mcgyvr.gate.acceptance        Acceptance               tools/bench/score.py
 mcgyvr.gate.adapters          JavaScriptAdapter        tools/bench/identity.py
 mcgyvr.gate.adapters          PythonAdapter            tools/bench/identity.py
-mcgyvr.gate.adapters.python   DEFAULT_RUFF_LINE_LENGTH tools/bench/score.py
-mcgyvr.gate.adapters.python   DEFAULT_RUFF_SELECT      tools/bench/score.py
+mcgyvr.gate.adapters.python   DEFAULT_RUFF_SELECT      tests/test_bench_score.py
+mcgyvr.gate.adapters.python   ruff_config_args         tools/bench/identity.py
 mcgyvr.gate.changeset         ChangeSet                tools/bench/score.py
 mcgyvr.gate.preflight         check_prompt_fits        tools/breadth/measure.py
 mcgyvr.gate.runner            Gate                     tools/bench/lintless.py
 mcgyvr.gate.semantic          ENGINE_COMMIT            tests/test_the_engine_the_products_gate_pins_is_the_engine_the_labs_record_of_its_source_describes.py
 mcgyvr.gate.semantic          ENGINE_DIGESTS           tests/test_the_engine_the_products_gate_pins_is_the_engine_the_labs_record_of_its_source_describes.py
+mcgyvr.gate.typecheck         STYLE                    tests/test_a_bench_workspace_is_judged_as_a_repository_that_states_no_lint_configuration.py
 mcgyvr.orchestrator.decompose Decomposition            tools/missions/run.py
 mcgyvr.orchestrator.decompose DepRef                   tools/missions/propose.py
 mcgyvr.orchestrator.decompose Evidence                 tools/missions/propose.py
@@ -206,8 +207,7 @@ mcgyvr.worker.prompt          render_user_message      tools/bundle/measure.py
 mcgyvr.worker.reply           ParsedFile               tools/missions/attempt.py
 mcgyvr.worker.reply           ReplyError               tools/bench/gate_rescore.py
 mcgyvr.worker.reply           WHOLE_FILE               tools/replies/pin.py
-mcgyvr.worker.reply           parse_reply              tools/bench/gate_rescore.py
-"""  # noqa: E501
+mcgyvr.worker.reply           parse_reply              tools/bench/gate_rescore.py"""  # noqa: E501
 
 SHELL_FROM = re.compile(r"\bfrom\s+(mcgyvr(?:\.\w+)*)\s+import\s+([\w ,]+)")
 SHELL_MODULE = re.compile(r"(?:\bimport|(?<!\S)-m)\s+(mcgyvr(?:\.\w+)*)")
