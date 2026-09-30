@@ -1015,10 +1015,11 @@ def stage_bar(into: Path) -> None:
 
     ``score.stage_config`` and nothing else, *called* rather than restated. The
     bench's bar is not this repository's ``make lint`` bar: it is whatever a
-    workspace carries, which is a ``pyproject.toml`` rendered from the project's
-    ``[tool.ruff]`` beside ``eslint.config.mjs``, ``prettier.config.mjs`` and a
-    linked ``node_modules``. Resolving the repository's own settings instead
-    would digest a bar no candidate is ever scored against.
+    workspace carries, which is ``eslint.config.mjs``, ``prettier.config.mjs``
+    and a linked ``node_modules``, and no ruff configuration, so the gate lints
+    Python by the product's default for a repository that states none.
+    Resolving the repository's own settings instead would digest a bar no
+    candidate is ever scored against.
 
     This used to hold its own copy of those steps, which is how a bar digest
     comes to describe a workspace nothing is scored in: #262's defect, one

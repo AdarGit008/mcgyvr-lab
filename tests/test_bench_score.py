@@ -6,9 +6,10 @@ produced a *plausible* pass rate, which is the dangerous kind:
 
 * the checker's own bytecode cache read as the checker mutating the tree, so
   every Python candidate was rejected by its test runner;
-* no ``pyproject.toml`` in the workspace, so ruff applied a rule set far wider
-  than the project selects — 75 of 257 reference solutions rejected by a rule
-  nobody chose;
+* no ``pyproject.toml`` in the workspace, and no selection stated by the gate
+  either, so ruff applied a rule set far wider than the project selects — 75 of
+  257 reference solutions rejected by a rule nobody chose (the gate now states
+  its default selection for a workspace that states none, ``ruff_config_args``);
 * a missing linter is an *environment issue* rather than a finding, so the
   TypeScript arm was scored by three rungs while Python was scored by five and
   ``passed`` said nothing about it.
@@ -32,7 +33,7 @@ from typing import Any
 
 import pytest
 
-from mcgyvr.gate.adapters.python import DEFAULT_RUFF_SELECT
+from mcgyvr.gate.adapters.python import DEFAULT_RUFF_SELECT, ruff_config_args
 from mcgyvr.gate.changeset import ChangeSet
 from mcgyvr.gate.runner import Gate
 from mcgyvr.sandbox.tempdir import TempDirSandbox
@@ -136,28 +137,32 @@ def test_the_staged_tree_carries_a_gitignore(
         assert "__pycache__" in (base / ".gitignore").read_text()
 
 
-def test_the_staged_tree_carries_the_products_lint_floor(
+def test_the_staged_tree_is_linted_by_the_products_default(
     score: types.ModuleType, measure: types.ModuleType
 ) -> None:
     """A workspace with no config makes ruff apply rules nobody chose.
 
-    Asserted against ``DEFAULT_RUFF_SELECT`` rather than against this repo's
-    ``pyproject.toml``, which is what it read until 2026-09-08. The two were the
-    same list when this test was written and then diverged, and the version that
-    read ``pyproject.toml`` went on passing while the bench rejected on E501 —
-    a rule the product had just dropped precisely because ``ruff format`` cannot
-    satisfy it. The bar a bench workspace is judged by is the product's floor;
-    the argument is at ``tools/bench/score.py:lint_config`` and the applied
-    behaviour is pinned by
-    ``tests/test_the_bench_lints_by_the_products_floor.py``.
+    Unless the gate states the rules itself, which it does for a repository
+    that states no ruff configuration: ``ruff_config_args`` hands ruff the
+    product's default selection. A bench workspace states none, so that default
+    is its bar. Asserted against ``DEFAULT_RUFF_SELECT`` rather than against
+    this repo's ``pyproject.toml``, which is what this test read until
+    2026-09-08. The two were the same list when this test was written and then
+    diverged, and the version that read ``pyproject.toml`` went on passing while
+    the bench rejected on E501 — a rule the product had just dropped precisely
+    because ``ruff format`` cannot satisfy it. The argument is at
+    ``tools/bench/score.py:stage_config`` and the applied behaviour is pinned by
+    ``tests/test_the_bench_lints_by_the_products_floor.py`` and
+    ``tests/test_a_bench_workspace_is_judged_as_a_repository_that_states_no_lint_configuration.py``.
     """
     import tomllib
 
     task = measure.load_tier_tasks("bench-py", ["b002-option-pairs"])[0]
     with tempfile.TemporaryDirectory() as tmp:
         base = score.stage_dir(task, task.contract.target_content, Path(tmp) / "b")
-        staged = tomllib.loads((base / "pyproject.toml").read_text())
-    assert staged["tool"]["ruff"]["lint"]["select"] == list(DEFAULT_RUFF_SELECT)
+        args = ruff_config_args(base)
+    (selected,) = [arg for arg in args if arg.startswith("lint.select")]
+    assert tomllib.loads(selected)["lint"]["select"] == list(DEFAULT_RUFF_SELECT)
 
 
 def test_the_reference_is_never_staged(
@@ -401,9 +406,9 @@ def test_the_scored_workspace_and_the_digested_one_are_the_same_workspace(
     `prettier.config.mjs` can enter the scored workspace and not the digested
     one — so the seam is one function and this holds both callers to it.
 
-    Compared as file *contents*, not names. A `pyproject.toml` rendered by two
-    code paths could carry the same name and two different rule selections,
-    which is the failure this is about wearing a passing test.
+    Compared as file *contents*, not names. A config file written by two code
+    paths could carry the same name and two different rule selections, which is
+    the failure this is about wearing a passing test.
     """
     with tempfile.TemporaryDirectory() as tmp:
         scored, digested = Path(tmp) / "scored", Path(tmp) / "digested"
@@ -412,7 +417,7 @@ def test_the_scored_workspace_and_the_digested_one_are_the_same_workspace(
         score.stage_config(scored)
         measure.stage_bar(digested)
         for staged in (scored, digested):
-            assert (staged / "pyproject.toml").is_file()
+            assert (staged / score.PRETTIER_CONFIG.name).is_file()
         staged_names = {p.name for p in scored.iterdir()}
         assert staged_names == {p.name for p in digested.iterdir()}
         for path in sorted(scored.iterdir()):
@@ -425,17 +430,20 @@ def test_the_scored_workspace_and_the_digested_one_are_the_same_workspace(
 def test_the_staged_workspace_declares_both_halves_of_the_bar(
     score: types.ModuleType,
 ) -> None:
-    """Every configuration a rung reads is a file the workspace holds.
+    """Every configuration a rung reads is declared, for both halves of each arm.
 
-    #262 acceptance box 2. The Python arm always had this — `lint_config`
-    renders `[tool.ruff]` and `[tool.ruff.format]` from the project's own
-    settings — and the JS/TS arm had eslint's half and not prettier's, so one
-    arm applied a declared style and the other applied its release's defaults.
+    #262 acceptance box 2. The Python arm's two halves are declared by the
+    product: a workspace that states no ruff configuration gets the product's
+    lint selection and format settings from `ruff_config_args`. The JS/TS arm's
+    are files the workspace holds; it had eslint's half and not prettier's, so
+    one arm applied a declared style and the other applied its release's
+    defaults.
     """
     with tempfile.TemporaryDirectory() as tmp:
         staged = score.stage_config(Path(tmp))
-        assert "[tool.ruff.lint]" in (staged / "pyproject.toml").read_text()
-        assert "[tool.ruff.format]" in (staged / "pyproject.toml").read_text()
+        args = ruff_config_args(staged)
+        assert any(arg.startswith("lint.select") for arg in args)
+        assert any(arg.startswith("format.") for arg in args)
         if score.ESLINT_CONFIG.is_file():
             assert (staged / score.ESLINT_CONFIG.name).is_file()
         assert (staged / score.PRETTIER_CONFIG.name).is_file()

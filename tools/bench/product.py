@@ -24,15 +24,20 @@ files that dispatch and score. An unrelated edit closing a round is the cost; a
 missed edit corrupting a contrast is the failure it exists to prevent, and only
 one of those two is recoverable.
 
-**The bar is configuration as much as code, and both are in.** Half the bar
-lives in the scorer's configuration: ``score.lint_config`` derives the workspace
-ruff settings from ``pyproject.toml`` at call time, ``score.stage_js_toolchain``
-copies ``eslint.config.mjs`` into every workspace, and the checkers themselves
-are whatever ``uv.lock`` and ``package-lock.json`` resolve to. A rule flipped
-off in either config file, or a checker moved by a lockfile bump, narrows what
-the gate rejects. Both lockfiles, never one: the arms are paired ts/py, and
-pinning Python's checker while JavaScript's floats puts a language effect inside
-every contrast the bench will publish.
+**The bar is configuration as much as code, and both are in.** The Python rules
+are the product's default for a repository that states no ruff configuration
+(``src/mcgyvr/gate/adapters/python.py``), which the gate applies because
+``score.stage_config`` stages none; ``score.stage_js_toolchain`` copies
+``eslint.config.mjs`` into every workspace, and in the product's checkout the
+checkers themselves are whatever ``uv.lock`` (from the product's ruff
+requirement in ``pyproject.toml``) and ``package-lock.json`` resolve to. A rule
+dropped from that default or flipped off in the eslint config, or a checker
+moved by a lockfile bump, narrows what the gate rejects. Both lockfiles, never
+one: the arms are paired ts/py, and pinning Python's checker while
+JavaScript's floats puts a language effect inside every contrast the bench will
+publish. In the lab the ruff that runs is the lab's own, pinned by the lab's
+``pyproject.toml`` and ``uv.lock``, which sit outside :data:`SURFACE`; its
+version enters only ``bar_sha256``, the digest of ``identity.bar_material``.
 
 **A directory contributes every file beneath it, whatever the extension** — so
 ``src/mcgyvr/prompts/*.md``, the literal text a worker is sent, is inside the
@@ -113,19 +118,23 @@ SURFACE: tuple[str, ...] = (
     "tools/bench/matrix.py",
     "tools/bench/matrix.json",
     "tools/bench/product.py",
-    # The bar as configuration. `score.lint_config` reads `pyproject.toml` at
-    # call time and `score.stage_config` copies `eslint.config.mjs` and
-    # `prettier.config.mjs` into every workspace, so a rule flipped in any of
-    # them moves what the gate rejects without touching a line of scorer code.
-    # The eslint config is the *project's* standard — it binds the gate, not
-    # just the bench.
+    # The bar as configuration. `score.stage_config` copies `eslint.config.mjs`
+    # and `prettier.config.mjs` into every workspace, so a rule flipped in
+    # either moves what the gate rejects without touching a line of scorer
+    # code. The eslint config is the *project's* standard — it binds the gate,
+    # not just the bench. No ruff configuration is staged: the Python rules are
+    # the product's default, under `src/mcgyvr`, and `pyproject.toml` states
+    # the product's ruff requirement.
     "pyproject.toml",
     "eslint.config.mjs",
     "prettier.config.mjs",
-    # The bar as implementation. `uv.lock` decides which ruff resolves under
-    # `uv run` and `package-lock.json` decides which eslint, typescript-eslint
-    # and prettier the workspace's linked `node_modules` supplies. Pinning the
-    # toolchain makes the checker version part of the instrument.
+    # The bar as implementation. In the product's checkout `uv.lock` decides
+    # which ruff resolves under `uv run`; in the lab the ruff that runs is the
+    # lab's own, pinned by the lab's `pyproject.toml` and `uv.lock`, which sit
+    # outside this surface, and its version enters only `bar_sha256`.
+    # `package-lock.json` decides which eslint, typescript-eslint and prettier
+    # the workspace's linked `node_modules` supplies. Pinning the toolchain
+    # makes the checker version part of the instrument.
     "uv.lock",
     "package-lock.json",
     # The vocabulary a contract is validated against (`src/mcgyvr/catalog.py`,
