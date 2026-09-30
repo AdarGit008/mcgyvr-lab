@@ -50,22 +50,23 @@ for n in 0 8 16 24 32 40 48; do
     cells+=("next-t-cm$n:$NEXT:tensor:$L:--n-cpu-moe+$n")
 done
 # layer split as the two-card comparison, and one card (g0) as the baseline a
-# two-card split has to beat
+# two-card split has to beat. The floor measured by the walk above is 24 — a
+# placement below it is a refusal, not a measurement — so these sit at the floor.
 cells+=(
-    "next-l-cm16:$NEXT:layer:$L:--n-cpu-moe+16"
-    "next-g0-cm16:$NEXT:g0:$L:--n-cpu-moe+16"
+    "next-l-cm24:$NEXT:layer:$L:--n-cpu-moe+24"
+    "next-g0-cm24:$NEXT:g0:$L:--n-cpu-moe+24"
 )
 # context at the floor: a PREFILL prompt of ~90% of the window (@prefill,
 # ~0.54 tokens a character) so the long window is actually exercised, not just
 # allocated. KV is 12 caching layers of 48; the recurrent layers charge per slot.
 cells+=(
-    "next-t-cm16-w8k:$NEXT:tensor:built:8192:1:@prefill=13600+--n-cpu-moe+16"
-    "next-t-cm16-w32k:$NEXT:tensor:built:32768:1:@prefill=54600+--n-cpu-moe+16"
+    "next-t-cm24-w8k:$NEXT:tensor:built:8192:1:@prefill=13600+--n-cpu-moe+24"
+    "next-t-cm24-w32k:$NEXT:tensor:built:32768:1:@prefill=54600+--n-cpu-moe+24"
 )
 # the added general 80B, at two placements (its fetch may still be in flight —
 # the engine's refusal is the record until it lands)
 cells+=(
-    "nxtq3-t-cm16:$NXTQ3:tensor:$L:--n-cpu-moe+16"
+    "nxtq3-t-cm24:$NXTQ3:tensor:$L:--n-cpu-moe+24"
     "nxtq3-t-cm32:$NXTQ3:tensor:$L:--n-cpu-moe+32"
 )
 
