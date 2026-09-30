@@ -63,9 +63,9 @@ def _tree(root: Path) -> Path:
     (root / "tools/bench/matrix.py").write_text("mx = 6\n")
     (root / "tools/bench/matrix.json").write_text("{}\n")
     (root / "tools/bench/product.py").write_text("p = 7\n")
-    # The bar: its configuration and the lockfiles that decide which checker
-    # applies it (#291).
-    (root / "pyproject.toml").write_text("[tool.ruff]\nline-length = 88\n")
+    # The bar: its configuration, the product's ruff requirement, and the
+    # product's lockfiles (#291).
+    (root / "pyproject.toml").write_text('[project]\ndependencies = ["ruff>=0.16"]\n')
     (root / "eslint.config.mjs").write_text("export default [];\n")
     # The format half of the JS/TS bar (#262). Absent from this fixture until
     # there was a config to stage — prettier ran on its release's defaults, so
@@ -148,13 +148,20 @@ def test_the_bar_is_in_the_surface(product: Any) -> None:
 def test_changing_the_lint_config_moves_the_digest(
     product: Any, tmp_path: Path
 ) -> None:
-    """A rule flipped to `warn` narrows the bar, so it moves the digest."""
+    """A rule flipped to `warn` narrows the bar, so it moves the digest.
+
+    So does a moved ruff requirement. The Python rules are the product's
+    default, under `src/mcgyvr`, and `pyproject.toml` states the product's ruff
+    requirement. In the lab the ruff that applies them is the lab's own, pinned
+    by the lab's `pyproject.toml` and `uv.lock`, which sit outside SURFACE; its
+    version enters only `bar_sha256`.
+    """
     tree = _tree(tmp_path)
     before = product.digest(tree)
     (tree / "eslint.config.mjs").write_text("export default [{rules: {}}];\n")
     assert product.digest(tree) != before
     after = product.digest(tree)
-    (tree / "pyproject.toml").write_text("[tool.ruff]\nline-length = 100\n")
+    (tree / "pyproject.toml").write_text('[project]\ndependencies = ["ruff>=0.17"]\n')
     assert product.digest(tree) != after
 
 

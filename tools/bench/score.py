@@ -36,10 +36,6 @@ from pathlib import Path
 from typing import Any
 
 from mcgyvr.gate.acceptance import Acceptance
-from mcgyvr.gate.adapters.python import (
-    DEFAULT_RUFF_LINE_LENGTH,
-    DEFAULT_RUFF_SELECT,
-)
 from mcgyvr.gate.changeset import ChangeSet
 from mcgyvr.gate.runner import Gate
 from mcgyvr.sandbox.tempdir import TempDirSandbox
@@ -156,48 +152,6 @@ def link_node_modules(into: Path) -> None:
     link.symlink_to(NODE_MODULES, target_is_directory=True)
 
 
-def lint_config() -> str:
-    """The product's own lint floor, as a workspace ``pyproject.toml``.
-
-    **Why this file exists.** The staged ``pyproject.toml`` states the
-    product's floor (``DEFAULT_RUFF_SELECT``, ``DEFAULT_RUFF_LINE_LENGTH``)
-    explicitly, so the bar is a file in the scored workspace and enters
-    ``identity.bar_material``; the adapter would apply the same floor through
-    :func:`~mcgyvr.gate.adapters.python.ruff_config_args` if it were absent.
-
-    **Why the product's floor and not this repository's ``pyproject.toml``.**
-    Stricter than the product is the wrong bar. This repository's selection
-    carries rules the product's floor does not (the ``E4``/``E7``/``E9`` note in
-    ``src/mcgyvr/gate/adapters/python.py``), so deriving the bench's bar from
-    ``pyproject.toml`` would score a reply the product would ship as a lint
-    rejection.
-
-    A bench workspace is precisely the case ``DEFAULT_RUFF_SELECT`` is *for* — a
-    repository that declares no ruff configuration of its own — so mirroring the
-    floor is not an approximation of production, it is production's own answer
-    to this exact question. Reading ``pyproject.toml`` instead would measure a
-    worker against this repository's house style, which nothing in a bench run
-    is about, and would silently move every published pass rate the next time a
-    rule is added here for our own prose.
-
-    Imported rather than restated: two copies of a rule list drift. What is
-    deliberately *not* carried over from the product's
-    :func:`~mcgyvr.gate.adapters.python.ruff_config_args` is ``target-version``:
-    it states none, so ruff's default applies there, and stating one here would
-    be a bar the product does not apply.
-    """
-    select = ", ".join(f'"{family}"' for family in DEFAULT_RUFF_SELECT)
-    return (
-        "[tool.ruff]\n"
-        f"line-length = {DEFAULT_RUFF_LINE_LENGTH}\n\n"
-        "[tool.ruff.lint]\n"
-        f"select = [{select}]\n\n"
-        "[tool.ruff.format]\n"
-        'quote-style = "double"\n'
-        'indent-style = "space"\n'
-    )
-
-
 @dataclass(frozen=True)
 class Verdict:
     """One candidate's gate result, flattened for a row.
@@ -264,14 +218,24 @@ def stage_config(into: Path) -> Path:
     :func:`stage_dir` and ``stage_bar`` in ``tools/breadth/measure.py`` both
     call it.
 
-    Deliberately **not** here: ``tsconfig.json`` and ``[tool.mypy]``. Neither
-    arm is type-checked, both for the same reason and by the same rule: the type
-    checker is the target repository's, and a repository declaring none is
-    correctly not type-checked. Adding either would be a new rung rather than a
-    recorded one. A reader sees it in ``identity.bar_material``'s ``type_check``
-    entry.
+    Deliberately **not** here: any ruff configuration. The bench measures the
+    product's own answer for a repository that states none, and the product's
+    gate gives that repository its default selection itself
+    (:func:`~mcgyvr.gate.adapters.python.ruff_config_args`). A staged
+    ``[tool.ruff]``, even one holding that same selection, makes the workspace a
+    repository with a configuration of its own, which the gate judges as that
+    configuration says: the UP006 and UP035 it selects refuse a deprecated
+    ``typing`` spelling there, which a repository without one only has
+    reported.
+    ``identity.bar_material`` records the default the product applies.
+
+    Deliberately **not** here either: ``tsconfig.json`` and ``[tool.mypy]``.
+    Neither arm is type-checked, both for the same reason and by the same rule:
+    the type checker is the target repository's, and a repository declaring none
+    is correctly not type-checked. Adding either would be a new rung rather than
+    a recorded one. A reader sees it in ``identity.bar_material``'s
+    ``type_check`` entry.
     """
-    (into / "pyproject.toml").write_text(lint_config(), encoding="utf-8")
     stage_js_toolchain(into)
     return into
 

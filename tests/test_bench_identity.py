@@ -539,8 +539,30 @@ def test_the_python_bar_records_its_rule_count_and_not_a_label(
     lint = material["lint"]
     assert lint["tool"] == "ruff"
     assert lint["rules_enabled"] == len(lint["rules"]) > 100
-    assert "select" in lint["config_source"], "the config that decided it"
-    assert material["format"]["config"] == "pyproject.toml"
+    assert any("select" in arg for arg in lint["config_source"]), (
+        "the config that decided it"
+    )
+    assert lint["config"] == "ruff_config_args"
+    assert material["format"]["config"] == "ruff_config_args"
+
+
+def test_a_workspace_that_states_its_own_ruff_config_records_that_file(
+    identity: Any, tmp_path: Path
+) -> None:
+    """A workspace that states its own ruff configuration records the file ruff read.
+
+    The product hands ruff no arguments there, so the config that decided the
+    bar is the workspace's own file: its name, as ruff reports it, and its text.
+    """
+    _stage_python(tmp_path)
+    stated = (tmp_path / "pyproject.toml").read_text(encoding="utf-8")
+    material, why = identity.bar_material(
+        rungs=("acceptance",), language="python", stage_workspace=_stage_python
+    )
+    assert why is None and material is not None, why
+    for half in ("lint", "format"):
+        assert material[half]["config"] == "pyproject.toml", half
+        assert material[half]["config_source"] == stated, half
 
 
 @requires_js
@@ -622,10 +644,9 @@ def test_neither_arm_is_type_checked_and_both_say_so(
     """The correction to #262: the absence is symmetric, not a JS/TS asymmetry.
 
     The issue reads it as the TypeScript arm alone — no `tsconfig.json` is
-    staged. True, and incomplete: `score.lint_config` renders a `pyproject.toml`
-    holding `[tool.ruff]` and nothing else, so `_declares_mypy` is false and the
-    Python arm is not type-checked either. Neither is a defect; a reader of a
-    pass rate has to be able to tell.
+    staged. True, and incomplete: no `pyproject.toml` is staged either, so
+    `_declares_mypy` is false and the Python arm is not type-checked either.
+    Neither is a defect; a reader of a pass rate has to be able to tell.
 
     Asked of the product's own adapters rather than restated, so a repository
     that *does* declare a checker gets the real command — asserted below, or
