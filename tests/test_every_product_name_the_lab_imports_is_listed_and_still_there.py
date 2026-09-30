@@ -103,6 +103,9 @@ mcgyvr.fleet.harness          HARNESS_WORD             tools/runs/campaigns/lock
 mcgyvr.fleet.harness          __file__                 tools/runs/campaigns/lock-fleets/lockfleets.py
 mcgyvr.fleet.ids              digest                   fleet-setup/digests-srv1.json.py
 mcgyvr.fleet.ids              rig_id                   tests/lockfleets_window.py
+mcgyvr.fleet.ids              RIG_EXTRA_CARDS          fleet-setup/re-derive-rig-id.py
+mcgyvr.fleet.ids              RIG_HARDWARE             fleet-setup/re-derive-rig-id.py
+mcgyvr.fleet.ids              RIG_SYSTEM               fleet-setup/re-derive-rig-id.py
 mcgyvr.fleet.layout           AWAKE                    tools/runs/campaigns/lock-fleets/lockfleets.py
 mcgyvr.fleet.lock             _combination_id_for      tests/test_lock_fleets_assembles_only_what_its_runs_prove.py
 mcgyvr.fleet.lock             _switch_moves            tools/runs/campaigns/lock-fleets/lockfleets.py
