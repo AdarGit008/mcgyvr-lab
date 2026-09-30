@@ -71,6 +71,9 @@ def _own_home_and_session(
         "CLAUDE_CONFIG_DIR",
         "MCGYVR_CONFIG",
         "MCGYVR_RUN_ROOT",
+        "MCGYVR_HOME",
+        "MCGYVR_DATA",
+        "XDG_STATE_HOME",
     ):
         monkeypatch.delenv(name, raising=False)
     monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "pytest")
