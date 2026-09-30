@@ -172,6 +172,8 @@ mcgyvr.serving                spec_name                tools/runs/campaigns/lock
 mcgyvr.serving                vramfit                  tools/bench/serving/backends/llamacpp.py
 mcgyvr.serving.gatelib        door_required            tools/runs/drivers/lcp_sweep.py
 mcgyvr.serving.gatelib        envelope_escape          tools/runs/campaigns/lock-fleets/lockfleets.py
+mcgyvr.serving.gatelib        refuse                   tools/door/serving_markers.py
+mcgyvr.serving.gatelib        root                     tools/door/serving_markers.py
 mcgyvr.serving.gatelib        ssh                      tools/bench/serving/contract.py
 mcgyvr.serving.gatelib        ssh_spends               tests/test_lock_fleets_steps_start_only_what_fleet_yaml_names.py
 mcgyvr.serving.gatelib        under_door               tools/runs/_common.sh
