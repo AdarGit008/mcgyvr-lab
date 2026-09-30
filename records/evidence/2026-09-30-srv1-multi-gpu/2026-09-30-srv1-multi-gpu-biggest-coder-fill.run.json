@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-09-30-srv1-multi-gpu-biggest-coder-fill",
+  "campaign": "srv1-multi-gpu",
+  "step": "biggest-coder-fill",
+  "host": "srv1",
+  "date": "2026-09-30",
+  "round": "r38-29-09-2026",
+  "product_sha256": "d7784f7b94857fe8dce5105adcdb78335b72f193cbe6433ebf1839d2706b7398",
+  "profile": "live",
+  "config": "/home/adaramir/.mcgyvr/fleets/b-small@2026-09-16",
+  "mcgyvr_version": "0.1.1.dev729+gae4cad42",
+  "started_at": "2026-09-30T07:33:11Z"
+}

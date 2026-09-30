@@ -50,11 +50,11 @@ for n in 0 8 16 24 32 40 48; do
     cells+=("next-t-cm$n:$NEXT:tensor:$L:--n-cpu-moe+$n")
 done
 # layer split as the two-card comparison, and one card (g0) as the baseline a
-# two-card split has to beat. The floor measured by the walk above is 24 — a
-# placement below it is a refusal, not a measurement — so these sit at the floor.
+# two-card split has to beat. The two-card floor is 24; one card holds fewer
+# expert blocks, so its floor is higher — cm40 keeps 8 blocks on the card.
 cells+=(
     "next-l-cm24:$NEXT:layer:$L:--n-cpu-moe+24"
-    "next-g0-cm24:$NEXT:g0:$L:--n-cpu-moe+24"
+    "next-g0-cm40:$NEXT:g0:$L:--n-cpu-moe+40"
 )
 # context at the floor: a PREFILL prompt of ~90% of the window (@prefill,
 # ~0.54 tokens a character) so the long window is actually exercised, not just
