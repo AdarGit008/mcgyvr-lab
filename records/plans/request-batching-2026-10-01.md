@@ -8,8 +8,10 @@ The pinned vLLM leaves automatic prefix caching at its engine default, and the
 plan predicts that this already lets the server read a shared prompt once. The
 engine's cache counters settle that (§4). `n=` can cover only the sampled draws, and
 it costs per-draw accounting the product relies on. The run below exists to
-falsify that prediction cheaply. Gate 0 below is a desk read that may make the
-run unnecessary.
+falsify that prediction cheaply. Gate 0 is a desk read of the engine source. When
+it is conclusive, it closes the narrow `n=` question with no rig time. The mixed
+arm (§4) runs either way, because it tests the local-exhaustion check (§3), not
+`n=`.
 
 Paths under `src/` are the product's (`product/src/...`), at the product
 commit `product/` points at.
@@ -75,10 +77,38 @@ it, not this paragraph.
 | **llama.cpp** | Works | Unverified on the pinned build (Gate 0). If it refuses `n != 1`, the product carries two dispatch paths |
 | **Batch file API** (`/v1/batch`, offline `run_batch`) | — | Asynchronous and job-shaped. It does not fit an interactive ladder dispatch. Out of scope |
 
+### Several mcgyvr instances on one server
+
+```text
+ instance 1: contract a ─ draws a0..a(N-1) ─┐
+ instance 2: contract b ─ draws b0..b(N-1) ─┼─► one vLLM server ─► one running batch
+ instance 3: contract c ─ draws c0..c(N-1) ─┘     (prefix cache: SYSTEM head shared
+                                                    by all; body a, b, c each its own)
+   n= could only fold a1..a(N-1) into one request, inside instance 1
+```
+
+- **The server batches requests whoever sends them.** Continuous batching
+  schedules every running sequence together, whichever process or host sent it.
+  Several instances already share one batch. The client cannot add batching the
+  server is not already doing.
+- **The prefix cache is shared only where prompts match from the start.**
+  Different instances send different contracts. What they share is the constant
+  system prompt at the head of every request. Each contract's body is cached for
+  that contract's own draws and nobody else's. Gate 0 confirms this matching rule
+  in the pinned image.
+- **`n=` can only help inside one instance's own draws.** One request carries one
+  prompt, so `n` can fold only the sampled draws of one contract, sent by one
+  instance. It cannot merge two contracts, whether they come from two instances
+  or from one.
+
 ## 3. "Local throughput exhausted": the line before the API
 
-**Proposed criterion. It is expressed in what the product already reads, and no new
-signal is needed.** A rung is **full** when **either** of these terms says so:
+**This plan builds nothing here.** The check is being built in the ladder-manager
+product PR, https://github.com/AdarGit008/mcgyvr/pull/561. It is defined once, in
+`Capacity`, and both the ladder manager and `_entry_rung` call it. Where this
+section and that code differ, the code is what holds. This section states the
+rule the mixed arm (§4) tests. It uses only signals the product already reads.
+A rung is **full** when **either** of these terms says so:
 
 - **in-process:** `Capacity.load(source, rung) >= Capacity.limit(source, rung)`.
   This is the `load < width` test in `Ascent._entry_rung` (`escalate.py:767`),
@@ -92,7 +122,9 @@ signal is needed.** A rung is **full** when **either** of these terms says so:
 
 A rung is **free** only when both terms say free. Otherwise a reservation not yet
 dispatched, or a `/metrics` read that lags a dispatch, would route a contract into
-a rung that blocks on the flock.
+a rung that blocks on the flock. The in-process term counts only this process
+(`route.py:296-299`). Another instance's load reaches it only through the server
+term. The flock bounds every process on the host, but it does not report load.
 
 **When the server cannot be read** (`_status` returns `None`: a keyed endpoint, an
 unreadable page, or a rung that is down or asleep), the in-process term alone
@@ -106,21 +138,14 @@ requests do. Width is the whole local throughput lever. Whether the declared wid
 sits at the knee is a width-setting question. §4 check W reads it in a cell of its
 own.
 
-**Where it is read: in `_entry_rung` and nowhere else.** The one trigger it governs
-is the `fanout: idle` spill (`escalate.py:727-768`): the cheapest free rung, which
-may be a priced API rung once every local rung is full. It does **not** gate the
-pre-API seam (`escalate.py:1198-1206`, `_next_is_api` at `:1337`). That seam fires
-because a resident family *failed* the contract, not because it was busy. Vetoing
-the API there while a local slot is idle would hold back exactly the contracts the
-local rungs just failed.
-
-**Relation to #33.** In the #33 build being done in parallel, Jev sits at that
-pre-API seam and watches this pressure. Its question is capability and dormancy:
-should a sleeping, bigger local rung be woken instead of the API? Where Jev needs
-pressure (for example, whether a woken rung would have a free slot), it calls this
-same predicate. It does not restate it, and it does not read the predicate as a
-veto on the API. The predicate is defined **once**, in `Capacity`, beside the slot
-files it reads (single source of truth).
+**Who reads it.** It has two callers, both in that PR. The first is `_entry_rung`,
+for the `fanout: idle` spill (`escalate.py:727-768`). That spill takes the
+cheapest free rung, which may be a priced API rung once every local rung is full.
+The second is the ladder manager, which sizes the local ladder to its queue. The
+check does **not** gate the pre-API seam (`escalate.py:1198-1206`, `_next_is_api`
+at `:1337`). That seam fires because a resident family *failed* the contract, not
+because it was busy. Vetoing the API there while a local slot is idle would hold
+back exactly the contracts the local rungs just failed.
 
 ## 4. Measurement plan
 
@@ -135,13 +160,27 @@ Every figure is said about a config tag, never about a rig (`okf/must-read/alway
    by construction.
 2. In the llama.cpp build the product serves, read whether the chat endpoint
    accepts `n != 1`, and whether one slot's cached prompt can serve another slot.
+3. In the same vLLM image, read how the prefix cache matches a prompt: block by
+   block from the start, on token content (§2, several instances).
 
-**If (1) shows `n` is a fan-out over the prefix cache with prefix caching on by
-default, then arm C is predicted to equal arm B.** Whether simultaneous arrivals
-hit is still the counters' to settle (§2). The owner decides whether the
-prediction is enough to close #32 without rig time. If (2) shows no `n` and no
-cross-slot reuse, there is no llama.cpp arm to run, and that is recorded, not
-measured.
+**A conclusive read closes the `n=` question with no rig time.** It is conclusive
+when (1) shows both of these with no version, flag or code-path exception left
+open: prefix caching is on by default, and `n > 1` is either fanned out as child
+requests over that cache or shares one prefill by construction. Then arm C runs
+the same mechanism as arm B and cannot beat it, however simultaneous arrivals
+hit. Arms A, B, C, C0 and Null then do not run.
+
+**The evidence is written down in the run record** before anything is closed. It
+includes the image digest from `emit.py`, and the file path and line range of
+every source passage the conclusion rests on, read inside that image. It quotes
+those lines and states the conclusion each one supports. A read that cites no
+lines is not conclusive.
+
+**If the read leaves any doubt, the `n=` arms run on the rigs as planned below.**
+Doubt includes a default that depends on a flag or version, a code path the read
+could not follow, or a fan-out whose cache use is not explicit. If (2) shows no
+`n` and no cross-slot reuse, there is no llama.cpp arm to run, and that is
+recorded, not measured. The mixed arm and check W run whatever Gate 0 finds.
 
 ### Instrument: extend `tools/runs/drivers/vllm_sweep.py`
 
@@ -189,6 +228,25 @@ Additions:
   a measured repeat. It does seed the shared `SYSTEM` head in every cache-on arm,
   and the hit arithmetic above subtracts that.
 
+- **Several-process mode** (a cell flag `procs=P`, used only by the mixed arm M):
+  the invocation starts P separate client **processes**, not threads. Each one
+  stands in for one mcgyvr instance on the shared server. The processes start
+  from a common barrier so that they dispatch together. Each runs one contract at
+  a time, in same-prompt mode (N draws of its own body). Process p keeps only the
+  draw positions p, p+P, p+2P, … and discards the others. No two processes send
+  the same body, draw positions stay fixed across invocations, and `workload.py`
+  is untouched. Each process holds its slots through the product's own
+  `mcgyvr.capacity.Capacity`, on the host-wide slot files, as an instance on that
+  host would. At every dispatch it records three things side by side:
+  - the in-process term: its own `Capacity.load` against `Capacity.limit`;
+  - the server term: `busy` (running + waiting), read through the product's
+    own status read (`runner._status`);
+  - what the dispatch then waited, on the flock and in the server's queue.
+
+  Once the check from the product PR (§3) is in the pinned product, each process
+  calls it at each dispatch and records its answer beside the two terms. Every
+  row carries `procs=P` and its process index.
+
 Prefix caching on/off needs no code. It goes in the cell's existing `extra`
 field (`--enable-prefix-caching` or `--no-enable-prefix-caching`). Both arms spell
 the flag explicitly, rather than relying on the default.
@@ -202,6 +260,35 @@ the flag explicitly, rather than relying on the default.
 | **C** `n=` | 1 + one `n=N-1` | on |
 | **C0** (mechanism only) | 1 + one `n=N-1` | off |
 | **Null** | B again | on |
+| **M** mixed, several processes (runs whatever Gate 0 finds) | P processes × one contract × N draws each | on |
+| **M-Null** | M again | on |
+
+- **Mixed arm M.** It tests the §3 rule that a rung is full when either term says
+  so, under the load the rule exists for: several instances sharing one server.
+  Only the server term sees the other processes. Levels are set by P and N, with
+  the total T = P × N:
+  - **T at or below the declared width.** These are the throughput rows:
+    aggregate per-draw tok/s and the predicate readings.
+  - **T above the width, with each process's N still below it.** These are
+    predicate rows only. Here each process's own load says free while the
+    rungs are taken. The flock queues the excess, so throughput there is not
+    read, for the same reason as the "no rung above `--max-num-seqs`" rule
+    below.
+
+  M runs under the same rules as every other arm:
+  - one cell per invocation, interleaved with the other arms;
+  - each process sends a warm-up whose body no measured repeat uses, and the
+    first repeat is discarded;
+  - `r` and the invocation count are as above;
+  - its rows are compared only with M rows that carry the same stamp and the
+    same per-draw `ptok`/`otok`, and never with the single-process arms, whose
+    draws differ;
+  - its tie bar is priced from M-Null for aggregate tok/s in the vLLM class.
+
+  Prefix-cache check, per repeat: the hit tokens may not exceed the shared head
+  share (T × |SYSTEM|) plus each process's own body reuse (Σ (N-1) × |body_p|).
+  A repeat above that bound means two processes sent the same body. It is
+  refused as a draw collision.
 
 - **Levels:** N on a ladder whose top is the config tag's declared width.
   `--max-num-seqs` is set to that top (`okf/config/vllm.md`). There is no rung
@@ -209,7 +296,8 @@ the flag explicitly, rather than relying on the default.
   indistinguishable from saturation. The driver's `WIDTH` readback still drops
   any rung the KV pool cannot hold (`vllm_sweep.py:251-278`).
 - **One cell per driver invocation.** Arms are interleaved across invocations
-  (A, B, C, C0, Null, then again), never run in blocks
+  (A, B, C, C0, Null, M, M-Null, then again), never run in blocks. If Gate 0
+  closes `n=`, the order is M, M-Null, then again
   (`okf/must-read/touching-engine.md`).
 - **Comparable rows only:** a ratio is quoted only between rows whose per-draw
   `ptok` and `otok` match.
@@ -242,21 +330,16 @@ Read at each width that every arm ran, never as one number:
    be worth §2's costs: the split draw 0, per-draw journal rows without a
    tokenizer, the N-1-slot hold, the `in_flight` semantics, and a llama.cpp
    fallback path.
-3. **Otherwise NO-GO: nothing to build.** #32 closes on this record. C0 against
-   A says only whether the engine shares prefill under `n` without the cache.
-   That is a mechanism note, not a reason to build.
-4. **Escalation criterion:** §3 is adopted either way. It needs no batching. The
-   only product change it implies is moving the predicate into `Capacity` with the
-   server read, and that change is shared with #33.
-
-## Open questions
-
-- **Owner of the shared predicate:** does §3's predicate land in #33's PR or in a
-  follow-up to this one? The plan assumes it is defined once, in whichever lands
-  first.
-- **Multi-contract load:** should the levels also mix concurrent contracts (several
-  prompts × N draws)? Prefill contends with decode only there. The plan keeps one
-  prompt per level, so arms stay comparable on the workload digest.
-- **Skipping the run:** if Gate 0 shows `n` is a fan-out over a default-on prefix
-  cache, may the owner close #32 without running it? The plan leaves that to the
-  owner.
+3. **Otherwise NO-GO: nothing to build for `n=`.** The batching question closes
+   on this record, or on Gate 0's written evidence when that read was
+   conclusive. C0 against A says only whether the engine shares prefill under
+   `n` without the cache. That is a mechanism note, not a reason to build.
+4. **The either-term rule (arm M).** At each level, count two kinds of dispatch.
+   (a) The in-process term said free, the server term said full, and the
+   dispatch then waited. These are the cases the server term exists to catch.
+   (b) The server term said full and the dispatch did not wait. These are
+   spurious fulls from a lagging read, and each one could spill a contract to a
+   priced API rung for nothing. Report both counts per level, in a per-level
+   table. If (a) occurs, the server term is earning its place. If (b) is
+   material, it goes back to the product PR as a finding on the check, not as a
+   change made here. The check itself is built only in that PR (§3).
