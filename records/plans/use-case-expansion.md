@@ -88,3 +88,12 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   `transcript`, `wer_threshold` (0–1), `sources` — each optional, required by
   cross-validation only when the type declares the matching evidence kind.
   `media_artifact` output schema stays a P2 (seam 2) concern.
+- increment 5 (orchestrator unit, 5a/5b): the ruling is a pure, tested decision
+  in `mcgyvr.orchestrator.local` — `local_orchestrator(use_case, local_only,
+  users)` returns provision / width / flag. "Single-user hardware" is read as
+  `users == 1`, the one count the decision can act on without a hardware model;
+  the flag warns, never refuses. The count is a config fact: `users`, a whole
+  number of at least 1, default 1. A written `width` on the orchestrator's unit
+  wins over it — `users` is the fallback, not a second authority. The resident-
+  first serving wiring (emit/placement) and the media backends are the rest of
+  increment 5, still open.
