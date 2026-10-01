@@ -94,6 +94,18 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   `users == 1`, the one count the decision can act on without a hardware model;
   the flag warns, never refuses. The count is a config fact: `users`, a whole
   number of at least 1, default 1. A written `width` on the orchestrator's unit
-  wins over it — `users` is the fallback, not a second authority. The resident-
-  first serving wiring (emit/placement) and the media backends are the rest of
-  increment 5, still open.
+  wins over it — `users` is the fallback, not a second authority.
+- increment 5c (resident-first serving, agreed): both role units enter the
+  serving plan when local — the orchestrator and the verifier (only when
+  `verifier.enabled`; the verifier is a Jev-like system model, served but never
+  on the ladder, and it may also be an API unit). The orchestrator unit joins
+  the ladder as its **dearest rung**: it is fitted against the full card first
+  and sequenced first, ladder rungs are fitted against the card that remains,
+  and its width is shared — `width = written width or users`, one slot reserved
+  for the orchestration role, `width - 1` slots serving ladder concurrency.
+  Done so far: 5c-1 (both role units enter `units_for` when local; the
+  orchestrator joins the ladder as its dearest rung, its width the user count
+  when unwritten) and 5c-2 (resident-first: the orchestrator's process is
+  fitted against the full card first, and the ladder and verifier on its host
+  are fitted against the card minus its claim). Open: the `width - 1` ladder
+  reservation in `mcgyvr.capacity`, then the media backends.
