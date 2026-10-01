@@ -158,7 +158,11 @@ def test_declared_rungs_name_emitted_checks() -> None:
     # does not — it passes `semantic=None` and no typecheck at all. So the gate
     # *can* emit it while no bench run *does*, and adding it to `GATE_RUNGS`
     # would declare a bar that no recorded rate was measured against.
-    opt_in = {"semantic", "typecheck"}
+    #
+    # `jev` is the third, the same shape again: it runs only when a caller hands
+    # `Gate.run` a `JevCheck`, which `tools/bench/score.py` does not, and it
+    # reports rather than rejects unless built with `blocking=True`.
+    opt_in = {"semantic", "typecheck", "jev"}
     uncovered = sorted(set(emitted) - covered - opt_in)
     assert not uncovered, (
         f"the gate emits {uncovered}, which no declared rung covers — a "
