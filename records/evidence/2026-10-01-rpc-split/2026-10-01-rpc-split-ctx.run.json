@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-10-01-rpc-split-ctx",
+  "campaign": "rpc-split",
+  "step": "ctx",
+  "host": "srv1",
+  "date": "2026-10-01",
+  "round": "r39-01-10-2026",
+  "product_sha256": "83657e058f22ab21a4980f14a7e7f6aad16620aa517cebabe5e71867efed28d8",
+  "profile": "live",
+  "config": "/home/adaramir/.mcgyvr/fleets/b-small@2026-09-16",
+  "mcgyvr_version": "0.1.1.dev855+g7e15d516",
+  "started_at": "2026-10-01T20:40:49Z"
+}

@@ -1,0 +1,3 @@
+a4e15b1099adf59cade80da369400199e4d7922d7e16b717bbfcda4d08a0702f  /home/adaramir/models.bak/dense/Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf
+-rw-rw-r-- 1 adaramir adaramir 23262157792 Oct  1 20:04 /home/adaramir/models.bak/dense/Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf
+hf_lfs_oid=a4e15b1099adf59cade80da369400199e4d7922d7e16b717bbfcda4d08a0702f src=https://huggingface.co/bartowski/Qwen2.5-Coder-32B-Instruct-GGUF/resolve/main/Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf

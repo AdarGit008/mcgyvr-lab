@@ -1,0 +1,18 @@
+## 2026-10-01T20:36:31+00:00 before-xcard-local
+0, NVIDIA GeForce GTX 1660 SUPER, 00000000:01:00.0, 6144 MiB, 114 MiB, 5632 MiB, 7.5, 580.178.04
+178135, 94 MiB
+rpcw llamacpp:b10644-L3-rpc "/app/ggml-rpc-server -H 192.168.1.167 -p 50052 -d CUDA0"
+sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841
+MemAvailable:   45921164 kB
+## 2026-10-01T21:04:47+00:00 after-xcard-local
+0, NVIDIA GeForce GTX 1660 SUPER, 00000000:01:00.0, 6144 MiB, 128 MiB, 5618 MiB, 7.5, 580.178.04
+178135, 108 MiB
+rpcw llamacpp:b10644-L3-rpc "/app/ggml-rpc-server -H 192.168.1.167 -p 50052 -d CUDA0"
+sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841
+MemAvailable:   45966356 kB
+## 2026-10-01T21:04:48+00:00 after-ctx
+0, NVIDIA GeForce GTX 1660 SUPER, 00000000:01:00.0, 6144 MiB, 128 MiB, 5618 MiB, 7.5, 580.178.04
+178135, 108 MiB
+rpcw llamacpp:b10644-L3-rpc "/app/ggml-rpc-server -H 192.168.1.167 -p 50052 -d CUDA0"
+sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841
+MemAvailable:   45952028 kB

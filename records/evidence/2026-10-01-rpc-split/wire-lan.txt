@@ -1,0 +1,23 @@
+## before 2026-10-01T22:45:04+00:00
+0, NVIDIA GeForce RTX 3060, 00000000:01:00.0, 1 MiB, 11909 MiB, 580.178.04
+1, NVIDIA GeForce RTX 3060, 00000000:02:00.0, 1 MiB, 11909 MiB, 580.178.04
+apps:
+img=sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841
+MemAvailable:   46581768 kB
+if_rx_bytes=88510494151 if_tx_bytes=149120254199 if_rx_packets=66307109 if_tx_packets=101826613 
+{"c2s_bytes": 0, "s2c_bytes": 0, "c2s_chunks": 0, "s2c_chunks": 0, "conns": 0, "desync": 0, "cmd_n": {}, "cmd_bytes": {}, "t": 1790894708.6707397, "ctl": {"rtt_ms": 0, "mbit": 0}}load_wall_s=95.8
+load_stats={"c2s_bytes": 3907459256, "s2c_bytes": 42629, "c2s_chunks": 15076, "s2c_chunks": 111, "conns": 16, "desync": 0, "cmd_n": {"HELLO": 16, "DEVICE_COUNT": 1, "GET_DEVICE_MEMORY": 12, "GET_ALIGNMENT": 1, "GET_MAX_SIZE": 1, "GET_ALLOC_SIZE": 3, "ALLOC_BUFFER": 3, "BUFFER_GET_BASE": 3, "SET_TENSOR": 163, "SET_TENSOR_HASH": 65, "BUFFER_CLEAR": 3, "GRAPH_COMPUTE": 1, "GET_TENSOR": 1}, "cmd_bytes": {"HELLO": 528, "DEVICE_COUNT": 9, "GET_DEVICE_MEMORY": 156, "GET_ALIGNMENT": 13, "GET_MAX_SIZE": 13, "GET_ALLOC_SIZE": 9807, "ALLOC_BUFFER": 63, "BUFFER_GET_BASE": 51, "SET_TENSOR": 3907189619, "SET_TENSOR_HASH": 20865, "BUFFER_CLEAR": 54, "GRAPH_COMPUTE": 237757, "GET_TENSOR": 321}, "t": 1790894806.898436, "ctl": {"rtt_ms": 0, "mbit": 0}}## loaded 2026-10-01T22:46:48+00:00
+0, NVIDIA GeForce RTX 3060, 00000000:01:00.0, 7727 MiB, 4183 MiB, 580.178.04
+1, NVIDIA GeForce RTX 3060, 00000000:02:00.0, 8247 MiB, 3664 MiB, 580.178.04
+apps:
+260461, 7718 MiB
+260461, 8238 MiB
+img=sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841
+MemAvailable:   45739356 kB
+if_rx_bytes=88516688358 if_tx_bytes=153205918305 if_rx_packets=66399154 if_tx_packets=104525845 
+# rows from 'l1' on: re-sent to the same live head after the 190-function long prompt (over the 4096 window) was refused with HTTP 400; long prompt is now 80 functions
+relay-gone
+0
+## after 2026-10-01T22:53:53+00:00
+0, 1 MiB, 11909 MiB
+1, 1 MiB, 11909 MiB

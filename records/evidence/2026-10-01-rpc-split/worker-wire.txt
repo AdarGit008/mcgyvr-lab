@@ -1,0 +1,16 @@
+## 2026-10-01T22:34:26+00:00 before-wire-lan
+0, NVIDIA GeForce GTX 1660 SUPER, 00000000:01:00.0, 6144 MiB, 88 MiB, 5658 MiB, 7.5, 580.178.04
+183360, 68 MiB
+rpcw llamacpp:b10644-L3-rpc "/app/ggml-rpc-server -H 192.168.1.167 -p 50052 -d CUDA0"
+sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841
+MemAvailable:   46392156 kB
+rx_bytes=149022808484 tx_bytes=20693155503 
+## 2026-10-01T22:44:53+00:00 after-wire-lan
+0, NVIDIA GeForce GTX 1660 SUPER, 00000000:01:00.0, 6144 MiB, 88 MiB, 5658 MiB, 7.5, 580.178.04
+183360, 68 MiB
+rpcw llamacpp:b10644-L3-rpc "/app/ggml-rpc-server -H 192.168.1.167 -p 50052 -d CUDA0"
+sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841
+MemAvailable:   46409192 kB
+rx_bytes=149022982510 tx_bytes=20693263908 
+LISTEN 0      1                     100.69.72.51:50052      0.0.0.0:*   
+rpcw-ts "/app/ggml-rpc-server -H 100.69.72.51 -p 50052 -d CUDA0"

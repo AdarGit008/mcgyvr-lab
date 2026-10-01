@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-10-01-rpc-split-pair-a3b-rpc",
+  "campaign": "rpc-split",
+  "step": "pair-a3b-rpc",
+  "host": "srv1",
+  "date": "2026-10-01",
+  "round": "r42-01-10-2026",
+  "product_sha256": "018e814a0c40b286528d5ad2772fbf9fc2b80ddf117c30b816b23bdac3fadf8d",
+  "profile": "live",
+  "config": "/home/adaramir/.mcgyvr/fleets/b-small@2026-09-16",
+  "mcgyvr_version": "0.1.1.dev855+g7e15d516",
+  "started_at": "2026-10-01T21:28:57Z"
+}

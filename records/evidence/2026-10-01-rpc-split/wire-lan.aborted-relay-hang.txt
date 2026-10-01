@@ -1,0 +1,8 @@
+## before 2026-10-01T22:34:27+00:00
+0, NVIDIA GeForce RTX 3060, 00000000:01:00.0, 1 MiB, 11909 MiB, 580.178.04
+1, NVIDIA GeForce RTX 3060, 00000000:02:00.0, 1 MiB, 11909 MiB, 580.178.04
+apps:
+img=sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841
+MemAvailable:   46566516 kB
+if_rx_bytes=88510086577 if_tx_bytes=149119992119 if_rx_packets=66304697 if_tx_packets=101825174 
+{"c2s_bytes": 0, "s2c_bytes": 0, "c2s_chunks": 0, "s2c_chunks": 0, "conns": 0, "desync": 0, "cmd_n": {}, "cmd_bytes": {}, "t": 1790894071.2975247, "ctl": {"rtt_ms": 0, "mbit": 0}}
