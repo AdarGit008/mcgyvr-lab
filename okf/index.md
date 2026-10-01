@@ -29,12 +29,16 @@ rigs swap hardware, and a value that was right on one afternoon is not a rule.
 | `must-read/touching-engine.md` | before turning an engine, quant or kernel flag |
 | `config/vllm.md` | before turning a vLLM knob |
 | `config/llama.cpp.md` | before turning a llama.cpp knob |
-| `models/` | sizing a checkpoint against a card — why a cliff fires, what sparsity buys |
+| `config/diffusers.md` | before turning a diffusion knob |
+| `config/tts.md` | before turning a TTS knob |
+| `models/` | sizing a checkpoint against a card — why a cliff fires, what sparsity buys, and the diffusion, speech and context dials |
 
 ## `models/` — sizing concepts
 
-Thirteen atomic concepts on what makes a checkpoint fit and go fast. `a-*` are
-model-shaped, `b-*` hardware-shaped.
+Atomic concepts on what makes a checkpoint fit and go fast, grouped by what
+shapes the cliff. `a-*` are model-shaped, `b-*` hardware-shaped, `c-*`
+diffusion-shaped (image and video), `d-*` speech-shaped (TTS) and `e-*`
+context-shaped (chat and agent long context).
 
 **They are mechanism, not measurement.** They say *why* a cliff exists, never
 where one sits on a card here. Size a checkpoint with them, then measure. Where
