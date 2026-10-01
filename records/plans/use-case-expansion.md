@@ -117,4 +117,11 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   deliberately policy-free and serves any bound local role; the decision binds
   at P4 packaging, where the use-case and deployment choices are made.
   Open: the media backends (seam 4: diffusers / ComfyUI / TTS; seam 6: sec/
-  image · sec/clip · RTF).
+  image · sec/clip · RTF). First 5d slice done: seam 6 opened — the capability
+  table prices image and video in `seconds_per_image` / `seconds_per_clip`
+  reading lists and carries the media row scalars (resolution, steps,
+  vae_decode_gb, frames, temporal_compress, sample_rate_hz, rtf, cpu_only) —
+  and seam 4 names `diffusers` at the serving/emit seam and refuses it by name
+  (no sizing with a text engine's law, no invented number). TTS (RTF) and
+  ComfyUI follow, and `config.py`'s `engine` enum gains `diffusers` once it
+  can be sized and rendered for real.
