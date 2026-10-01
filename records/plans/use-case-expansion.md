@@ -59,7 +59,9 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
 ## Phases
 
 - **P0** research → done (`3ef7c2fc`, `88ec9ccf`)
-- **P1** generalize the core → started (`97be405c`: use_case axis)
+- **P1** generalize the core → increments 1–4 done (`97be405c` use_case axis,
+  `42652ba4` evidence kinds, `3a229f73` prose schema, plus the gate output-check
+  rung + contract params). Increment 5 (serving) next.
 - **P2** media-gen vertical (image + tts first, video last)
 - **P3** chat + agent verticals
 - **P4** packaging (`mcgyvr init --use-case` + the deployment choice)
@@ -76,3 +78,13 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
 - prose (chat/agent) and the orchestrator carry **no output cap** — a chatty
   model is a prompting/model issue, not a cap issue. Only `whole_file` keeps
   the cap, because a truncated file is a correctness hazard.
+- P1 gate seam (increment 4): the four structural evidence kinds are wired into
+  the gate as **output checks** (`mcgyvr.gate.output`), a new rung `Gate.run`
+  runs only when the contract's type declares them. `media_valid` is a real
+  magic-byte validator (image/audio/video headers, no heavy deps);
+  `safety_pass` / `asr_wer` / `grounded` are P2 stubs that raise
+  `ToolUnavailableError` — a check that never ran must not read clean. Their
+  parameters are contract fields: `media_kind` (enum image/audio/video),
+  `transcript`, `wer_threshold` (0–1), `sources` — each optional, required by
+  cross-validation only when the type declares the matching evidence kind.
+  `media_artifact` output schema stays a P2 (seam 2) concern.
