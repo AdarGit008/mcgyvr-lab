@@ -103,9 +103,18 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   and sequenced first, ladder rungs are fitted against the card that remains,
   and its width is shared — `width = written width or users`, one slot reserved
   for the orchestration role, `width - 1` slots serving ladder concurrency.
-  Done so far: 5c-1 (both role units enter `units_for` when local; the
-  orchestrator joins the ladder as its dearest rung, its width the user count
-  when unwritten) and 5c-2 (resident-first: the orchestrator's process is
-  fitted against the full card first, and the ladder and verifier on its host
-  are fitted against the card minus its claim). Open: the `width - 1` ladder
-  reservation in `mcgyvr.capacity`, then the media backends.
+  Done: 5c-1 (both role units enter `units_for` when local; the orchestrator
+  joins the ladder as its dearest rung, its width the user count when
+  unwritten), 5c-2 (resident-first: the orchestrator's process is fitted
+  against the full card first, and the ladder and verifier on its host are
+  fitted against the card minus its claim), and 5c-3 (the `width - 1` ladder
+  reservation in `mcgyvr.capacity`, with the role's endpoint still carrying the
+  served width). Review round found and fixed the co-residency regression
+  (`resident_claim_gb`), the gate-stub docstring contradiction, the `Vram`
+  invariant break, and four low findings (`records/review-p1-5a-5c.md`).
+  Deferred and recorded: the `mcgyvr.orchestrator.local` *decision* (chat and
+  hybrid provision nothing) is not yet wired into `units_for` — `units_for` is
+  deliberately policy-free and serves any bound local role; the decision binds
+  at P4 packaging, where the use-case and deployment choices are made.
+  Open: the media backends (seam 4: diffusers / ComfyUI / TTS; seam 6: sec/
+  image · sec/clip · RTF).
