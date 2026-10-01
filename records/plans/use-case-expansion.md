@@ -73,3 +73,6 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
 - media-gen hybrid fallback is a hosted media API rung.
 - local-only non-chat provisions a local orchestrator (slot = users), flagged on
   single-user HW.
+- prose (chat/agent) and the orchestrator carry **no output cap** — a chatty
+  model is a prompting/model issue, not a cap issue. Only `whole_file` keeps
+  the cap, because a truncated file is a correctness hazard.
