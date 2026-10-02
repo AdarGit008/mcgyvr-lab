@@ -186,3 +186,14 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   `config.py`'s `engine` enum gained `comfyui`. **Seam 4 (serving → diffusers /
   ComfyUI / TTS) is now closed**; seam 6 cost units stay open but unshipped
   (no media row has a measurement yet).
+- P2 first increment (gate output posture flip, done — product `b9d59596`): a
+  structural output check whose validator is missing (``ToolUnavailableError``)
+  is now *inconclusive* — a rejection — never a skipped environment issue that
+  accepts, flipping the P1 posture recorded above. ``InconclusiveRung.exit_code``
+  is optional (``None`` = the required tool never ran; an ``int`` = it ran and
+  its answer is unreadable). The output-checks rung records the rung in both
+  channels — the ``inconclusive`` list that decides the verdict, and the
+  rendered sentence in ``environment_issues`` for older readers — mirroring the
+  adapter rung's ``ToolFailedError`` handling. ``safety_pass`` / ``asr_wer`` /
+  ``grounded`` remain stubs that raise; a contract declaring one now *rejects*
+  until the validator lands. Reviewed (`records/review-p2-missing-validator.md`).
