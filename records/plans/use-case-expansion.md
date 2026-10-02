@@ -61,7 +61,8 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
 - **P0** research → done (`3ef7c2fc`, `88ec9ccf`)
 - **P1** generalize the core → increments 1–4 done (`97be405c` use_case axis,
   `42652ba4` evidence kinds, `3a229f73` prose schema, plus the gate output-check
-  rung + contract params). Increment 5 (serving) next.
+  rung + contract params). Increment 5 (serving) done — 5a/5b/5c plus the
+  diffusers image-engine slice of seam 4; TTS and ComfyUI remain.
 - **P2** media-gen vertical (image + tts first, video last)
 - **P3** chat + agent verticals
 - **P4** packaging (`mcgyvr init --use-case` + the deployment choice)
@@ -116,12 +117,32 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   hybrid provision nothing) is not yet wired into `units_for` — `units_for` is
   deliberately policy-free and serves any bound local role; the decision binds
   at P4 packaging, where the use-case and deployment choices are made.
-  Open: the media backends (seam 4: diffusers / ComfyUI / TTS; seam 6: sec/
-  image · sec/clip · RTF). First 5d slice done: seam 6 opened — the capability
-  table prices image and video in `seconds_per_image` / `seconds_per_clip`
-  reading lists and carries the media row scalars (resolution, steps,
-  vae_decode_gb, frames, temporal_compress, sample_rate_hz, rtf, cpu_only) —
-  and seam 4 names `diffusers` at the serving/emit seam and refuses it by name
-  (no sizing with a text engine's law, no invented number). TTS (RTF) and
-  ComfyUI follow, and `config.py`'s `engine` enum gains `diffusers` once it
-  can be sized and rendered for real.
+  Open: seam 4's remaining media engines — TTS (RTF) and ComfyUI — and the P2
+  media vertical. Seam 6 is open but not shipped: the capability table prices
+  image and video in `seconds_per_image` / `seconds_per_clip` reading lists and
+  carries the media row scalars (resolution, steps, vae_decode_gb, frames,
+  temporal_compress, sample_rate_hz, rtf, cpu_only), yet no media row is
+  shipped because a shipped estimate needs a measurement and none exists.
+  Done — seam 4 first slice, `diffusers` (image): sized and rendered for real,
+  from stated numbers only. A diffusers unit's card peak is the denoiser's
+  resident working set plus the one-shot VAE decode spike
+  (`vram_gb + vae_decode_gb`, c-01/c-03), judged with the scalar headroom;
+  `disk_gb` is the disk claim and the stated `ram_gb` (once-per-run components
+  offloaded to RAM) is the host claim — width 1, no window, no KV cache, no
+  offload knob. The launch spec carries only stated values (the `hf_cache`
+  weights directory, the port, the operator's `serve_args`); mcgyvr ships no
+  diffusers server image or shell binary, so `units.<unit>.image` is required
+  (refused by name when absent), the pasted-shell rendering is refused (the
+  server is the image's entrypoint), and compose mounts the weights directory
+  at its own absolute path. `KNOWN_ENGINES = (llama.cpp, vllm, diffusers)`;
+  `fit`/`unit_for` refuse anything outside it by name, and `config.py`'s
+  `engine` enum gained `diffusers`. Review-round rulings: `vae_decode_gb` must
+  flow through BOTH `ModelSpec` bridges — the capability row
+  (`mcgyvr.cli._model_spec`, decimal GB → GiB) and the `launch` block
+  (`declared_models`, already GiB) — so a real emit does not drop the stated
+  spike; and the `runtime_resident_gb` host-memory figure is a *text-engine*
+  figure, so the three host-memory invariant tests are scoped to
+  `RUNTIME_RESIDENT_KEY + RUNTIME_RESIDENT_READ` (a media engine's host memory
+  is the spec's stated `ram_gb`, charged directly against `MemAvailable` with
+  no text-engine margin), with a compensating invariant that every config
+  engine is known to `serving`.
