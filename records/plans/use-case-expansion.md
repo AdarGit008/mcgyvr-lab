@@ -197,3 +197,13 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   adapter rung's ``ToolFailedError`` handling. ``safety_pass`` / ``asr_wer`` /
   ``grounded`` remain stubs that raise; a contract declaring one now *rejects*
   until the validator lands. Reviewed (`records/review-p2-missing-validator.md`).
+- P2 second increment (media_valid images, done — product `3bb3c2d5`): `media_valid`
+  now checks images *past the header*, standard-library only — dimensions must
+  be present and positive, and the file must be structurally complete enough to
+  decode (truncation/corruption detection). PNG (IHDR + IDAT zlib decompress),
+  JPEG (SOF/SOS/EOI marker walk), GIF (trailer byte), BMP (DIB size set +
+  signed dimensions) and WEBP (VP8 / VP8L / VP8X) each get a per-format checker;
+  new finding codes `bad-dimensions` and `truncated`. Audio and video stay
+  header-only until their duration/decode checks land (next). All numeric
+  offsets/masks live inside function bodies so `output.py` stays "holds no
+  number that sizes or judges". Reviewed (`records/review-p2-media_valid-images.md`).
