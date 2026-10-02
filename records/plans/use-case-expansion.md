@@ -62,7 +62,7 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
 - **P1** generalize the core → increments 1–4 done (`97be405c` use_case axis,
   `42652ba4` evidence kinds, `3a229f73` prose schema, plus the gate output-check
   rung + contract params). Increment 5 (serving) done — 5a/5b/5c plus the
-  diffusers image-engine slice of seam 4; TTS and ComfyUI remain.
+  diffusers image-engine and TTS slices of seam 4; ComfyUI remains.
 - **P2** media-gen vertical (image + tts first, video last)
 - **P3** chat + agent verticals
 - **P4** packaging (`mcgyvr init --use-case` + the deployment choice)
@@ -146,3 +146,29 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   is the spec's stated `ram_gb`, charged directly against `MemAvailable` with
   no text-engine margin), with a compensating invariant that every config
   engine is known to `serving`.
+- seam 4 second slice, `tts` (RTF): sized and rendered for real, from stated
+  numbers only, one engine name for the whole TTS ladder (Piper / Kokoro /
+  StyleTTS). A TTS unit's card peak is its stated working set — **no VAE
+  spike**, which is the image engine's — and a `cpu_only` unit (a Piper-class
+  rung, d-01) claims no card at all; `disk_gb` is the disk claim and the
+  stated `ram_gb` is the host claim, charged directly against `MemAvailable`.
+  Width 1, no window, no KV cache, no offload. The launch spec carries only
+  stated values (the `hf_cache` weights directory, the port, the operator's
+  `serve_args`); mcgyvr ships no TTS server image or shell binary, so
+  `units.<unit>.image` is required, the pasted-shell rendering is refused, the
+  compose service mounts the weights directory at its own absolute path, and
+  a cpu_only unit carries no GPU reservation (`gpu` is the `-1` "no card"
+  sentinel, `alternate` short-circuits before the card comparison, and
+  `_sequence_on_one_card` skips it). `KNOWN_ENGINES = (llama.cpp, vllm,
+  diffusers, tts)`; `config.py`'s `engine` enum gained `tts`. The media path
+  is generalized behind `MEDIA_ENGINES` and a shared `_media_service`; the two
+  `ModelSpec` bridges (capability row and `launch` block) both carry
+  `cpu_only`. Review-round ruling: the text-engine refusal margin
+  (`REFUSAL_RAM_HEADROOM_GB`) is a *text-engine* figure, so `hold_together`
+  applies it only when a launch spec holds a text engine — a media-only spec
+  sums its stated host memory with no margin (this also corrects diffusers
+  co-residency). Deferred: the `/v1/models` healthcheck on co-resident
+  non-cpu media units (shared with diffusers), the `-1` sentinel's
+  classification, `declared_models` dropping `cpu_only` on an `hf_cache`-only
+  override, and refusing a `cpu_only` row that states a non-zero `vram_gb`
+  (`records/review-seam4-tts.md`).
