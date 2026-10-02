@@ -62,7 +62,7 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
 - **P1** generalize the core → increments 1–4 done (`97be405c` use_case axis,
   `42652ba4` evidence kinds, `3a229f73` prose schema, plus the gate output-check
   rung + contract params). Increment 5 (serving) done — 5a/5b/5c plus the
-  diffusers image-engine and TTS slices of seam 4; ComfyUI remains.
+  seam 4 media engines: diffusers (image), TTS, and ComfyUI.
 - **P2** media-gen vertical (image + tts first, video last)
 - **P3** chat + agent verticals
 - **P4** packaging (`mcgyvr init --use-case` + the deployment choice)
@@ -172,3 +172,17 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   classification, `declared_models` dropping `cpu_only` on an `hf_cache`-only
   override, and refusing a `cpu_only` row that states a non-zero `vram_gb`
   (`records/review-seam4-tts.md`).
+- seam 4 third and final slice, `comfyui` (image + video workflows): sized and
+  rendered for real, from stated numbers only, reusing the generalized media
+  path (`MEDIA_ENGINES`, `_sized_media`, `_media_service`) reviewed in the TTS
+  slice — no new logic. A ComfyUI unit's card peak is its stated working set,
+  with **no VAE spike** (ComfyUI tiles its decode, c-04); `disk_gb` and the
+  stated `ram_gb` are the disk and host claims, charged directly against
+  `MemAvailable`. Width 1, no window, no KV cache, no offload. The launch spec
+  carries only stated values (the `hf_cache` weights directory, the port, the
+  operator's `serve_args`); `units.<unit>.image` is required, the pasted-shell
+  rendering is refused, and compose mounts the weights directory at its own
+  absolute path. `KNOWN_ENGINES = (llama.cpp, vllm, diffusers, tts, comfyui)`;
+  `config.py`'s `engine` enum gained `comfyui`. **Seam 4 (serving → diffusers /
+  ComfyUI / TTS) is now closed**; seam 6 cost units stay open but unshipped
+  (no media row has a measurement yet).
