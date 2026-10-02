@@ -224,3 +224,14 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   per-format checker; new finding codes `bad-duration` and `truncated`. This
   closes seam 3's `media_valid` deepening across image, audio and video.
   Reviewed (`records/review-p2-media_valid-video.md`).
+- P2 fifth increment (land the three validators, done — product `7d3c5609`):
+  `safety_pass`, `asr_wer` and `grounded` are no longer stubs. `safety_pass`
+  invokes an external `safety-classifier` CLI (exit 0 safe / 1 unsafe / else a
+  tool failure); `asr_wer` invokes an external `whisper` transcriber and judges
+  the pure word-level Levenshtein WER against the contract's
+  `transcript`/`wer_threshold`; `grounded` is a deterministic stdlib citation
+  check (every sentence must carry a `[n]` marker or a `sources` identifier).
+  The output rung now treats a *failed* validator (`ToolFailedError`) as
+  inconclusive too — not just a missing one. The safety classifier and whisper
+  are external tools, so a machine without them rejects (inconclusive) rather
+  than accepts. Reviewed (`records/review-p2-validators.md`).
