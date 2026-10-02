@@ -207,3 +207,12 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   header-only until their duration/decode checks land (next). All numeric
   offsets/masks live inside function bodies so `output.py` stays "holds no
   number that sizes or judges". Reviewed (`records/review-p2-media_valid-images.md`).
+- P2 third increment (media_valid audio, done — product `e2a94497`): `media_valid`
+  now checks audio past the header, standard-library only — duration must be
+  determinable and structure complete. WAV (fmt/data chunks + RIFF-size match),
+  FLAC (STREAMINFO sample rate + total samples), MP3 (ID3v2 skip incl. v2.2's
+  3-byte size, MPEG frame-header validity, first-frame body fits) and OGG
+  (first-page structure; duration deferred to a later pass) each get a
+  per-format checker; new finding codes `bad-duration` and `truncated`. Video
+  stays header-only until its duration/decode checks land (next). Reviewed
+  (`records/review-p2-media_valid-audio.md`).
