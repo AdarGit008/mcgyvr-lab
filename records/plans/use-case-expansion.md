@@ -63,7 +63,10 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   `42652ba4` evidence kinds, `3a229f73` prose schema, plus the gate output-check
   rung + contract params). Increment 5 (serving) done — 5a/5b/5c plus the
   seam 4 media engines: diffusers (image), TTS, and ComfyUI.
-- **P2** media-gen vertical (image + tts first, video last)
+- **P2** media-gen vertical (image + tts first, video last) → done: the
+  missing-validator posture flip, `media_valid` deepened past header-only for
+  image / audio / video, the three validators (`safety_pass` / `asr_wer` /
+  `grounded`) landed, and the `media_artifact` output schema.
 - **P3** chat + agent verticals
 - **P4** packaging (`mcgyvr init --use-case` + the deployment choice)
 
