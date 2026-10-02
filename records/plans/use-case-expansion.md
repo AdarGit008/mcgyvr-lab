@@ -235,3 +235,11 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   inconclusive too — not just a missing one. The safety classifier and whisper
   are external tools, so a machine without them rejects (inconclusive) rather
   than accepts. Reviewed (`records/review-p2-validators.md`).
+- P2 sixth and final increment (media_artifact output schema, done — product
+  `94017d62`): the worker output protocol gains `media_artifact` as a true
+  sibling of `whole_file`/`prose` (seam 2). A media-gen worker's reply is the
+  media-generation request in plain text, so the parser treats it like `prose`
+  (raw text, no fence hunt, completeness gated by the shared `_unreadable`);
+  the contract enum, the prompt instruction and the regenerated skill reference
+  are in lockstep. This closes the P2 media-gen vertical; P3 (chat + agent)
+  and P4 (packaging) remain.
