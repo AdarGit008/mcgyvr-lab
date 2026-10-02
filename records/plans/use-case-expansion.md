@@ -216,3 +216,11 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   per-format checker; new finding codes `bad-duration` and `truncated`. Video
   stays header-only until its duration/decode checks land (next). Reviewed
   (`records/review-p2-media_valid-audio.md`).
+- P2 fourth increment (media_valid video, done — product `3e0d0203`): `media_valid`
+  now checks video past the header, standard-library only — duration must be
+  determinable and structure complete. MP4 (moov/mdat boxes + mvhd
+  timescale/duration), WEBM (EBML header + Segment + Duration element, iterative
+  walk) and AVI (hdrl/avih microsec-per-frame + total-frames) each get a
+  per-format checker; new finding codes `bad-duration` and `truncated`. This
+  closes seam 3's `media_valid` deepening across image, audio and video.
+  Reviewed (`records/review-p2-media_valid-video.md`).
