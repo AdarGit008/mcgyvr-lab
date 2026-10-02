@@ -1,0 +1,9 @@
+[demo-up] hub up on 127.0.0.1:18765 (pid 3305183, default ctx 12288)
+already bootstrapped
+[demo-up] tunnel to srv1 up (pid 3305204)
+[demo-up] tunnel to srv2 up (pid 3305307)
+[demo-up] agent on srv1 started (rig run)
+[demo-up] agent on srv2 started (rig run)
+head-rig    owner=head-owner    pool     online   ram 45363/47104 MiB agent 0.0.1.dev1294+g5cb7910b2 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=worker-owner  pool     online   ram 45363/46797 MiB agent 0.0.1.dev1294+g5cb7910b2 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+[demo-up] up

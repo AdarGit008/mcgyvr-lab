@@ -1,0 +1,160 @@
+hello {"body": {"machine_id": "mch-62535ed1dac1cfc44b214fc80947f0b12328b5a54913e316922ea7911bb44ebe", "agent_version": "0.0.1.dev1290+g8bfb80e61", "ram_total_mb": 46797, "cards": [{"index": 0, "name": "NVIDIA GeForce GTX 1660 SUPER", "vram_total_mb": 6144, "vram_free_mb": 5729}], "ram_free_mb": 45363, "ca
+hello {"body": {"machine_id": "mch-6fb5c730a2208f2ecbeb243c3581e7d1cd5f58870ab0562ea803cbbe118112d6", "agent_version": "0.0.1.dev1290+g8bfb80e61", "ram_total_mb": 47104, "cards": [{"index": 0, "name": "NVIDIA GeForce RTX 3060", "vram_total_mb": 12288, "vram_free_mb": 11909}, {"index": 1, "name": "NVIDIA G
+roles {"head": "mch-6fb5c730", "worker": "mch-62535ed1", "session": "live-dc6ac415"}
+hub->mch-6fb5c730 {"type": "session_prepare", "body": {"session_id": "live-dc6ac415", "role": "head"}}
+hub->mch-62535ed1 {"type": "session_prepare", "body": {"session_id": "live-dc6ac415", "role": "worker"}}
+rig->hub {"rig": "mch-62535ed1", "type": "session_prepared", "body": {"session_id": "live-dc6ac415", "public_key": "<wg-key-1-redacted>", "listen_port": 51820, "endpoints": [{"host": "192.168.1.167", "port": 51820, "kind": "lan"}]}}
+rig->hub {"rig": "mch-6fb5c730", "type": "session_prepared", "body": {"session_id": "live-dc6ac415", "public_key": "<wg-key-6-redacted>", "listen_port": 51820, "endpoints": [{"host": "192.168.1.144", "port": 51820, "kind": "lan"}]}}
+prepared {"seconds": 2.1}
+hub->mch-6fb5c730 {"type": "tunnel_up", "body": {"session_id": "live-dc6ac415", "address": "10.211.7.1/24", "listen_port": 51820, "peers": [{"rig_id": "rig-0", "public_key": "<wg-key-1-redacted>", "endpoints": [{"host": "192.168.1.167", "port": 51820, "kind": "lan"}], "allowed_ips": ["10.211.
+hub->mch-62535ed1 {"type": "tunnel_up", "body": {"session_id": "live-dc6ac415", "address": "10.211.7.2/24", "listen_port": 51820, "peers": [{"rig_id": "rig-1", "public_key": "<wg-key-6-redacted>", "endpoints": [{"host": "192.168.1.144", "port": 51820, "kind": "lan"}], "allowed_ips": ["10.211.
+rig->hub {"rig": "mch-6fb5c730", "type": "ack", "body": {}}
+rig->hub {"rig": "mch-62535ed1", "type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "worker_start", "body": {"session_id": "live-dc6ac415", "cards": [{"card_index": 0, "port": 50052}]}}
+rig->hub {"rig": "mch-62535ed1", "type": "ack", "body": {}}
+rig->hub {"rig": "mch-62535ed1", "type": "session_status", "body": {"session_id": "live-dc6ac415", "state": "ready", "role": "worker"}}
+worker ready {"seconds": 4.2}
+hub->mch-6fb5c730 {"type": "head_start", "body": {"session_id": "live-dc6ac415", "model": {"name": "Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf"}, "ctx": 12288, "devices": [{"kind": "local", "card_index": 0}, {"kind": "local", "card_index": 1}, {"kind": "rpc", "host": "10.211.7.2", "port": 50052}], "tensor_split": [20, 21
+rig->hub {"rig": "mch-6fb5c730", "type": "ack", "body": {}}
+rig->hub {"rig": "mch-6fb5c730", "type": "session_status", "body": {"session_id": "live-dc6ac415", "state": "loading", "role": "head"}}
+rig->hub {"rig": "mch-6fb5c730", "type": "peer_rtt", "body": {"samples": [{"rig_id": "rig-0", "rtt_us": 333581}]}}
+rig->hub {"rig": "mch-62535ed1", "type": "peer_rtt", "body": {"samples": [{"rig_id": "rig-1", "rtt_us": 338431}]}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+rig->hub {"rig": "mch-6fb5c730", "type": "session_status", "body": {"session_id": "live-dc6ac415", "state": "ready", "role": "head"}}
+head ready {"load_seconds": 125.2}
+hub->mch-6fb5c730 {"type": "relay_request", "body": {"session_id": "live-dc6ac415", "request_id": "req0-ea608c", "endpoint": "chat_completions", "body_bytes": 2565, "stream": false, "timeout_s": 600, "max_response_bytes": 8388608, "window": 8}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_response", "body": {"request_id": "req0-ea608c", "status": 200, "content_type": "application/json; charset=utf-8"}}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 0, "bytes": 1362}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_end", "body": {"request_id": "req0-ea608c", "outcome": "complete"}}
+relay {"n": 0, "outcome": {"request_id": "req0-ea608c", "outcome": "complete"}, "wall_s": 47.94, "frames": 1, "timings": {"cache_n": 0, "prompt_n": 724, "prompt_ms": 25181.452, "prompt_per_token_ms": 34.78101104972376, "prompt_per_second": 28.751320614871613, "predicted_n": 177, "predicted_ms": 22331.786,
+hub->mch-6fb5c730 {"type": "relay_request", "body": {"session_id": "live-dc6ac415", "request_id": "req1-3ff0d2", "endpoint": "chat_completions", "body_bytes": 2565, "stream": false, "timeout_s": 600, "max_response_bytes": 8388608, "window": 8}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_response", "body": {"request_id": "req1-3ff0d2", "status": 200, "content_type": "application/json; charset=utf-8"}}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 0, "bytes": 1360}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_end", "body": {"request_id": "req1-3ff0d2", "outcome": "complete"}}
+relay {"n": 1, "outcome": {"request_id": "req1-3ff0d2", "outcome": "complete"}, "wall_s": 17.68, "frames": 1, "timings": {"cache_n": 0, "prompt_n": 724, "prompt_ms": 2087.016, "prompt_per_token_ms": 2.882618784530387, "prompt_per_second": 346.9067798234417, "predicted_n": 177, "predicted_ms": 15291.796, "
+hub->mch-6fb5c730 {"type": "relay_request", "body": {"session_id": "live-dc6ac415", "request_id": "req2-94672e", "endpoint": "chat_completions", "body_bytes": 2565, "stream": false, "timeout_s": 600, "max_response_bytes": 8388608, "window": 8}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_response", "body": {"request_id": "req2-94672e", "status": 200, "content_type": "application/json; charset=utf-8"}}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 0, "bytes": 1363}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_end", "body": {"request_id": "req2-94672e", "outcome": "complete"}}
+relay {"n": 2, "outcome": {"request_id": "req2-94672e", "outcome": "complete"}, "wall_s": 19.32, "frames": 1, "timings": {"cache_n": 0, "prompt_n": 724, "prompt_ms": 2093.982, "prompt_per_token_ms": 2.8922403314917124, "prompt_per_second": 345.75273330907334, "predicted_n": 177, "predicted_ms": 15316.613,
+hub->mch-6fb5c730 {"type": "relay_request", "body": {"session_id": "live-dc6ac415", "request_id": "req3-6c8e0a", "endpoint": "chat_completions", "body_bytes": 2580, "stream": true, "timeout_s": 600, "max_response_bytes": 8388608, "window": 8}}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_response", "body": {"request_id": "req3-6c8e0a", "status": 200, "content_type": "text/event-stream"}}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 0, "bytes": 579}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 1, "bytes": 286}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 2, "bytes": 279}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 3, "bytes": 281}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 4, "bytes": 279}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 5, "bytes": 278}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 6, "bytes": 286}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 7, "bytes": 281}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 8, "bytes": 283}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 9, "bytes": 281}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 10, "bytes": 280}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 11, "bytes": 281}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 12, "bytes": 282}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 13, "bytes": 279}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 14, "bytes": 283}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 15, "bytes": 278}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 16, "bytes": 283}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 17, "bytes": 282}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 18, "bytes": 285}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 19, "bytes": 279}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 20, "bytes": 278}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 21, "bytes": 278}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 22, "bytes": 280}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 23, "bytes": 288}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 24, "bytes": 280}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 25, "bytes": 279}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 26, "bytes": 283}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 27, "bytes": 278}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 28, "bytes": 281}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 29, "bytes": 282}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 30, "bytes": 285}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 31, "bytes": 280}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 32, "bytes": 279}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 33, "bytes": 278}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 34, "bytes": 283}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 35, "bytes": 279}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 36, "bytes": 284}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 37, "bytes": 281}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 38, "bytes": 289}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 39, "bytes": 278}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 40, "bytes": 280}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 41, "bytes": 281}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 42, "bytes": 284}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 43, "bytes": 279}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 44, "bytes": 284}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 45, "bytes": 286}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 46, "bytes": 282}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 47, "bytes": 283}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 48, "bytes": 280}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 49, "bytes": 288}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 50, "bytes": 287}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 51, "bytes": 279}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 52, "bytes": 278}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 53, "bytes": 278}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 54, "bytes": 280}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 55, "bytes": 287}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 56, "bytes": 281}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 57, "bytes": 282}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 58, "bytes": 284}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 59, "bytes": 278}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 60, "bytes": 282}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 61, "bytes": 280}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 62, "bytes": 281}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 63, "bytes": 281}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 64, "bytes": 534}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_data", "seq": 65, "bytes": 14}
+rig->hub {"rig": "mch-6fb5c730", "type": "relay_end", "body": {"request_id": "req3-6c8e0a", "outcome": "complete"}}
+relay {"n": 3, "outcome": {"request_id": "req3-6c8e0a", "outcome": "complete"}, "wall_s": 8.48, "frames": 66, "sse_events": 67, "tail": "2.8384875690607734,\"prompt_per_second\":352.30029220486944,\"predicted_n\":64,\"predicted_ms\":5428.806,\"predicted_per_token_ms\":86.1715238095238,\"predicted_per_seco
+holding for probes {"seconds": 900.0}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "session_stop", "body": {"session_id": "live-dc6ac415", "reason": "done"}}
+hub->mch-62535ed1 {"type": "session_stop", "body": {"session_id": "live-dc6ac415", "reason": "done"}}
+rig->hub {"rig": "mch-6fb5c730", "type": "ack", "body": {}}
+rig->hub {"rig": "mch-62535ed1", "type": "ack", "body": {}}
+rig->hub {"rig": "mch-6fb5c730", "type": "session_status", "body": {"session_id": "live-dc6ac415", "state": "stopped", "role": "head"}}
+rig->hub {"rig": "mch-62535ed1", "type": "session_status", "body": {"session_id": "live-dc6ac415", "state": "stopped", "role": "worker"}}
+stopped {"seconds": 336.1}

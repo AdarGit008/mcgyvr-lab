@@ -1,0 +1,7 @@
+before: mcgyvr-pool-62975da16f8f-worker-0 mcgyvr-pool-62975da16f8f-tunnel
+removed mcgyvr-pool-62975da16f8f-worker-0, left by an agent that is gone
+removed mcgyvr-pool-62975da16f8f-tunnel, left by an agent that is gone
+lending: worker on llamacpp:b10644-L3-rpc
+stopped
+after: 0 pooled
+1

@@ -1,0 +1,4 @@
+aaacf8a085c44324b2e59da8f52f51e6 ready ctx 12288 rtt [None]
+  local 0 NVIDIA GeForce RTX 3060 blocks 27 plan_use 9856 +reserve 10017
+  local 1 NVIDIA GeForce RTX 3060 blocks 26 plan_use 9501 +reserve 9662
+  rpc 0 NVIDIA GeForce GTX 1660 SUPER blocks 11 plan_use 4791 +reserve 4952

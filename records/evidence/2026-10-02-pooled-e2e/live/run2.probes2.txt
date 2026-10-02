@@ -1,0 +1,10 @@
+worker bridge ip=172.17.0.2 head bridge ip=172.17.0.2
+== P2 worker host -> worker container bridge ip 172.17.0.2:50052: CLOSED
+== P5 another container on the worker's bridge -> 172.17.0.2:50052: CLOSED
+== P5b another container on the worker's bridge -> 172.17.0.2 udp 51820 accepted? (ruleset admits only the head's LAN address; see P15)
+== P19 head host -> head container bridge ip 172.17.0.2:8080 (host-local, gateway source; same trust as loopback): {"status":"ok"}
+== P20 another container on the head's bridge -> 172.17.0.2:8080: CLOSED
+== P21 round trip over the tunnel, warm (head tunnel -> 10.211.7.2):
+round-trip min/avg/max = 0.795/1.097/1.262 ms
+== P22 round trip on the LAN host to host:
+rtt min/avg/max/mdev = 0.211/0.221/0.245/0.011 ms

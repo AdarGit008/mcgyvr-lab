@@ -1,0 +1,10 @@
+[demo-up] fresh database
+[demo-up] hub up on 127.0.0.1:18765 (pid 3307523, default ctx 12288)
+users: head-owner, worker-owner, requester | rigs: head-rig, worker-rig
+[demo-up] tunnel to srv1 up (pid 3307568)
+[demo-up] tunnel to srv2 up (pid 3307582)
+[demo-up] agent on srv1 started (rig join http://127.0.0.1:18765 --token -)
+[demo-up] agent on srv2 started (rig join http://127.0.0.1:18765 --token -)
+head-rig    owner=head-owner    pool     online   ram 45466/47104 MiB agent 0.0.1.dev1294+g5cb7910b2 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=worker-owner  pool     online   ram 45363/46797 MiB agent 0.0.1.dev1294+g5cb7910b2 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+[demo-up] up

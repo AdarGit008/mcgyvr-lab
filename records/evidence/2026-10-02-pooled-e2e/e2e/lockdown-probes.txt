@@ -1,0 +1,26 @@
+# from srv2 (LAN peer) toward the head rig
+closed LAN -> head published API port 35501
+closed LAN -> head :8080
+closed srv2 host -> head tunnel addr :8080
+# worker's rpc port
+closed LAN (head host) -> worker rpc :50052 on LAN addr
+closed head host -> worker tunnel addr :50052 (outside the tunnel)
+closed worker host loopback -> :50052
+closed worker host -> worker netns bridge IP :50052
+closed worker host -> own LAN :50052
+# head API from the head host and from a container on the head's bridge
+OPEN   head host loopback -> published API (the agent relay path)
+closed head host LAN addr -> API port
+OPEN   head host -> head netns bridge IP :8080 (src = bridge gateway)
+closed head host -> head netns :50052
+closed other container on the bridge -> head :8080
+# inside the worker's tunnel namespace, over wg0, toward the head API
+closed worker netns over wg0 -> head :8080
+# from the VPS (tailscale) toward the head
+closed VPS -> srv2 tailscale :35501
+closed VPS -> srv2 tailscale :8080
+closed VPS -> srv2 tailscale :50052
+closed VPS -> srv1 tailscale :35501
+closed VPS -> srv1 tailscale :8080
+# legit path
+{"status":"ok"}

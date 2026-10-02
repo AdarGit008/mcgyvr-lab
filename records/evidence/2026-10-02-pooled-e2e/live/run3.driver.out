@@ -1,0 +1,33 @@
+hello {"body": {"machine_id": "mch-62535ed1dac1cfc44b214fc80947f0b12328b5a54913e316922ea7911bb44ebe", "agent_version": "0.0.1.dev1290+g8bfb80e61", "ram_total_mb": 46797, "cards": [{"index": 0, "name": "NVIDIA GeForce GTX 1660 SUPER", "vram_total_mb": 6144, "vram_free_mb": 5729}], "ram_free_mb": 45261, "ca
+hello {"body": {"machine_id": "mch-6fb5c730a2208f2ecbeb243c3581e7d1cd5f58870ab0562ea803cbbe118112d6", "agent_version": "0.0.1.dev1290+g8bfb80e61", "ram_total_mb": 47104, "cards": [{"index": 0, "name": "NVIDIA GeForce RTX 3060", "vram_total_mb": 12288, "vram_free_mb": 11909}, {"index": 1, "name": "NVIDIA G
+roles {"head": "mch-6fb5c730", "worker": "mch-62535ed1", "session": "live-97125788"}
+hub->mch-6fb5c730 {"type": "session_prepare", "body": {"session_id": "live-97125788", "role": "head"}}
+hub->mch-62535ed1 {"type": "session_prepare", "body": {"session_id": "live-97125788", "role": "worker"}}
+rig->hub {"rig": "mch-6fb5c730", "type": "session_prepared", "body": {"session_id": "live-97125788", "public_key": "<wg-key-3-redacted>", "listen_port": 51820, "endpoints": [{"host": "192.168.1.144", "port": 51820, "kind": "lan"}]}}
+rig->hub {"rig": "mch-62535ed1", "type": "session_prepared", "body": {"session_id": "live-97125788", "public_key": "<wg-key-5-redacted>", "listen_port": 51820, "endpoints": [{"host": "192.168.1.167", "port": 51820, "kind": "lan"}]}}
+prepared {"seconds": 2.1}
+hub->mch-6fb5c730 {"type": "tunnel_up", "body": {"session_id": "live-97125788", "address": "10.211.7.1/24", "listen_port": 51820, "peers": [{"rig_id": "rig-0", "public_key": "<wg-key-5-redacted>", "endpoints": [{"host": "192.168.1.167", "port": 51820, "kind": "lan"}], "allowed_ips": ["10.211.
+hub->mch-62535ed1 {"type": "tunnel_up", "body": {"session_id": "live-97125788", "address": "10.211.7.2/24", "listen_port": 51820, "peers": [{"rig_id": "rig-1", "public_key": "<wg-key-3-redacted>", "endpoints": [{"host": "192.168.1.144", "port": 51820, "kind": "lan"}], "allowed_ips": ["10.211.
+rig->hub {"rig": "mch-6fb5c730", "type": "ack", "body": {}}
+rig->hub {"rig": "mch-62535ed1", "type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "worker_start", "body": {"session_id": "live-97125788", "cards": [{"card_index": 0, "port": 50052}]}}
+rig->hub {"rig": "mch-62535ed1", "type": "ack", "body": {}}
+rig->hub {"rig": "mch-62535ed1", "type": "session_status", "body": {"session_id": "live-97125788", "state": "ready", "role": "worker"}}
+worker ready {"seconds": 4.3}
+hub->mch-6fb5c730 {"type": "head_start", "body": {"session_id": "live-97125788", "model": {"name": "Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf"}, "ctx": 12288, "devices": [{"kind": "local", "card_index": 0}, {"kind": "local", "card_index": 1}, {"kind": "rpc", "host": "10.211.7.2", "port": 50052}], "tensor_split": [20, 21
+rig->hub {"rig": "mch-6fb5c730", "type": "ack", "body": {}}
+rig->hub {"rig": "mch-6fb5c730", "type": "session_status", "body": {"session_id": "live-97125788", "state": "loading", "role": "head"}}
+rig->hub {"rig": "mch-62535ed1", "type": "peer_rtt", "body": {"samples": [{"rig_id": "rig-1", "rtt_us": 839}]}}
+rig->hub {"rig": "mch-6fb5c730", "type": "peer_rtt", "body": {"samples": [{"rig_id": "rig-0", "rtt_us": 683}]}}
+hub->mch-62535ed1 {"type": "ack", "body": {}}
+closed {"rig": "mch-62535ed1", "why": "ConnectionError('client left mid-frame')"}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+hub->mch-6fb5c730 {"type": "ack", "body": {}}
+closed {"rig": "mch-6fb5c730", "why": "ConnectionError('client left mid-frame')"}

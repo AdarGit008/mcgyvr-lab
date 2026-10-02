@@ -1,0 +1,128 @@
+containers: worker-tunnel=mcgyvr-pool-b6d92dc7eda0-tunnel worker=mcgyvr-pool-b6d92dc7eda0-worker-0 head-tunnel=mcgyvr-pool-b6d92dc7eda0-tunnel head=mcgyvr-pool-b6d92dc7eda0-head
+template parsing error: template: :1:18: executing "" at <.NetworkSettings.IPAddress>: map has no entry for key "IPAddress"
+template parsing error: template: :1:18: executing "" at <.NetworkSettings.IPAddress>: map has no entry for key "IPAddress"
+worker bridge ip= head bridge ip= head api published at: 127.0.0.1:51235
+== P1 LAN (head rig) -> worker rig LAN:50052: CLOSED
+/tmp/claude-1000/-home-adaramir-claude-mcgyvr-lab-social/4cd54137-501e-4782-bb7b-60c760d8d5a2/scratchpad/live/probes.sh: line 16: $3: unbound variable
+== P2 worker host -> worker container bridge ip:50052: 
+== P3 worker host -> tunnel address 10.211.7.2:50052: CLOSED
+== P4 head host -> worker tunnel address 10.211.7.2:50052 (outside tunnel): CLOSED
+== P5 another container on the worker's bridge -> :50052: CLOSED
+== P6 worker rig (LAN) -> head rig LAN:51235 (head api): CLOSED
+== P7 worker rig (LAN) -> head rig LAN:8080: CLOSED
+== P8 head host loopback -> 127.0.0.1:51235 /health: {"status":"ok"}
+== P9 head host listening sockets on the api port:
+LISTEN 0      4096                     127.0.0.1:51235      0.0.0.0:*   
+== P10 worker host listening on 50052 (expect none):
+none
+== P11 worker host udp listeners for the tunnel port:
+UNCONN 0      0                           192.168.1.167:51820      0.0.0.0:*   
+== P12 srv2 mcgyvr-pool-b6d92dc7eda0-worker-0 inside:
+uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu)
+CapInh:	0000000000000000
+CapPrm:	0000000000000000
+CapEff:	0000000000000000
+CapBnd:	0000000000000000
+CapAmb:	0000000000000000
+NoNewPrivs:	1
+Seccomp:	2
+touch: cannot touch '/probe': Read-only file system
+eth0
+lo
+wg0
+== P13 srv2 mcgyvr-pool-b6d92dc7eda0-worker-0 config:
+User=1000:1000 ReadonlyRootfs=true CapDrop=[ALL] CapAdd=[] Privileged=false NetworkMode=container:fa8c44df5a04c3966187f94df7d5823f424b71f7738970e45a2dcea6cd541a0f PidMode= IpcMode=private Memory=8589934592 MemorySwap=8589934592 PidsLimit=256 Ports=map[] Mounts=/home/adaramir/mcgyvr-pool-tmp/data/rpc-cache:/rpc-cache:rw=true  SecOpt=no-new-privileges=true seccomp={"defaultAction":"SCMP_ACT_ERRNO 
+== P12 srv1 mcgyvr-pool-b6d92dc7eda0-head inside:
+uid=1001 gid=1001 groups=1001
+CapInh:	0000000000000000
+CapPrm:	0000000000000000
+CapEff:	0000000000000000
+CapBnd:	0000000000000000
+CapAmb:	0000000000000000
+NoNewPrivs:	1
+Seccomp:	2
+touch: cannot touch '/probe': Read-only file system
+eth0
+lo
+wg0
+== P13 srv1 mcgyvr-pool-b6d92dc7eda0-head config:
+User=1001:1001 ReadonlyRootfs=true CapDrop=[ALL] CapAdd=[] Privileged=false NetworkMode=container:2ca6c506cab4b2b24f8d29bd0d45615d735fab9cdb4a063800d369060f88ca16 PidMode= IpcMode=private Memory=8589934592 MemorySwap=8589934592 PidsLimit=512 Ports=map[] Mounts=/home/adaramir/models.bak/dense:/models:rw=false  SecOpt=no-new-privileges=true seccomp={"defaultAction":"SCMP_ACT_ERRNO 
+== P14 srv2 tunnel mcgyvr-pool-b6d92dc7eda0-tunnel config:
+User= ReadonlyRootfs=true CapDrop=[ALL] CapAdd=[CAP_NET_ADMIN] Privileged=false NetworkMode=bridge Ports=map[51820/udp:[{192.168.1.167 51820}]] Mounts=0
+== P15 srv2 tunnel ruleset:
+table inet mcgyvr {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		iif "lo" accept
+		iifname "eth0" ip saddr 192.168.1.144 udp dport 51820 accept
+		iifname "wg0" ip saddr 10.211.7.1 ip daddr 10.211.7.2 icmp type { echo-reply, echo-request } accept
+		iifname "wg0" ip saddr 10.211.7.1 ip daddr 10.211.7.2 tcp dport 50052 accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+		oif "lo" accept
+		oifname "eth0" ip daddr 192.168.1.144 udp sport 51820 accept
+		oifname "wg0" ip saddr 10.211.7.2 ip daddr 10.211.7.1 icmp type { echo-reply, echo-request } accept
+		oifname "wg0" ip saddr 10.211.7.2 ip daddr 10.211.7.1 tcp sport 50052 accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+	}
+}
+== P16 srv2 wg (public parts only):
+interface: wg0
+  public key: <wg-key-1-redacted>
+  listening port: 51820
+
+peer: <wg-key-6-redacted>
+  endpoint: 192.168.1.144:51820
+  allowed ips: 10.211.7.1/32
+  latest handshake: 19 seconds ago
+  transfer: 4.59 GiB received, 503.31 MiB sent
+  persistent keepalive: every 25 seconds
+== P17 srv2 does the private key appear anywhere outside the tunnel (logs, inspect)?
+0
+== P14 srv1 tunnel mcgyvr-pool-b6d92dc7eda0-tunnel config:
+User= ReadonlyRootfs=true CapDrop=[ALL] CapAdd=[CAP_NET_ADMIN] Privileged=false NetworkMode=bridge Ports=map[8080/tcp:[{127.0.0.1 51235}] 51820/udp:[{192.168.1.144 51820}]] Mounts=0
+== P15 srv1 tunnel ruleset:
+table inet mcgyvr {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		iif "lo" accept
+		iifname "eth0" ip saddr 192.168.1.167 udp dport 51820 accept
+		iifname "wg0" ip saddr 10.211.7.2 ip daddr 10.211.7.1 icmp type { echo-reply, echo-request } accept
+		iifname "eth0" ip saddr 172.17.0.1 tcp dport 8080 accept
+		iifname "wg0" ip saddr 10.211.7.2 ip daddr 10.211.7.1 tcp sport 50052 tcp dport 32768-60999 accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+		oif "lo" accept
+		oifname "eth0" ip daddr 192.168.1.167 udp sport 51820 accept
+		oifname "wg0" ip saddr 10.211.7.1 ip daddr 10.211.7.2 icmp type { echo-reply, echo-request } accept
+		oifname "eth0" ip daddr 172.17.0.1 tcp sport 8080 accept
+		oifname "wg0" ip saddr 10.211.7.1 ip daddr 10.211.7.2 tcp dport 50052 accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+	}
+}
+== P16 srv1 wg (public parts only):
+interface: wg0
+  public key: <wg-key-6-redacted>
+  listening port: 51820
+
+peer: <wg-key-1-redacted>
+  endpoint: 192.168.1.167:51820
+  allowed ips: 10.211.7.2/32
+  latest handshake: 24 seconds ago
+  transfer: 503.31 MiB received, 4.59 GiB sent
+  persistent keepalive: every 25 seconds
+== P17 srv1 does the private key appear anywhere outside the tunnel (logs, inspect)?
+0
+== P18 host kernel unchanged (wireguard module loaded?):
+srv1: 0
+srv2: 0

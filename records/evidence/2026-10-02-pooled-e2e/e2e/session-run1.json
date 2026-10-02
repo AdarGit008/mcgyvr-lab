@@ -1,0 +1,76 @@
+{
+    "sessions": [
+        {
+            "id": "f6868621422847c6b6263e5680b6b8d2",
+            "model": "Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf",
+            "ctx": 12288,
+            "state": "starting",
+            "creator": "requester",
+            "failure_code": null,
+            "failure_detail": null,
+            "created_at": "2026-10-02T01:01:38.855765Z",
+            "plan": {
+                "model": "Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf",
+                "head_rig_id": "ec573685351b499f801fe660c778eef3",
+                "worker_rig_ids": [
+                    "4faa91e1d86649a4849329efe50eb941"
+                ],
+                "worker_rtt_ms": [
+                    null
+                ],
+                "devices": [
+                    {
+                        "rig_id": "ec573685351b499f801fe660c778eef3",
+                        "card_index": 0,
+                        "card_name": "NVIDIA GeForce RTX 3060",
+                        "kind": "local",
+                        "layers": 27,
+                        "vram_use_mb": 9856,
+                        "vram_free_mb": 11909
+                    },
+                    {
+                        "rig_id": "ec573685351b499f801fe660c778eef3",
+                        "card_index": 1,
+                        "card_name": "NVIDIA GeForce RTX 3060",
+                        "kind": "local",
+                        "layers": 26,
+                        "vram_use_mb": 9501,
+                        "vram_free_mb": 11909
+                    },
+                    {
+                        "rig_id": "4faa91e1d86649a4849329efe50eb941",
+                        "card_index": 0,
+                        "card_name": "NVIDIA GeForce GTX 1660 SUPER",
+                        "kind": "rpc",
+                        "layers": 11,
+                        "vram_use_mb": 4791,
+                        "vram_free_mb": 5729
+                    }
+                ],
+                "ctx": 12288,
+                "max_ctx": 32768,
+                "n_layers": 64
+            },
+            "members": [
+                {
+                    "rig_id": "ec573685351b499f801fe660c778eef3",
+                    "rig_name": "head-rig",
+                    "owner": "head-owner",
+                    "role": "head",
+                    "agent_state": "loading",
+                    "error_code": null,
+                    "log_excerpt": ""
+                },
+                {
+                    "rig_id": "4faa91e1d86649a4849329efe50eb941",
+                    "rig_name": "worker-rig",
+                    "owner": "worker-owner",
+                    "role": "worker",
+                    "agent_state": "ready",
+                    "error_code": null,
+                    "log_excerpt": ""
+                }
+            ]
+        }
+    ]
+}

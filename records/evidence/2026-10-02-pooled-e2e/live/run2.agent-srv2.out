@@ -1,0 +1,13 @@
+joined http://127.0.0.1:18765 as a token of 17 characters; the token is kept in /home/adaramir/mcgyvr-pool-tmp/home/rig-credentials.json
+agent for http://127.0.0.1:18765 as a token of 17 characters; Ctrl-C stops it
+lending: worker on llamacpp:b10644-L3-rpc
+online as rig-0: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1006: the connection dropped; trying again in 0.7 s
+connect_to 127.0.0.1 port 18765: failed.
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.6 s
+connect_to 127.0.0.1 port 18765: failed.
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 2.2 s
+connect_to 127.0.0.1 port 18765: failed.
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 5.6 s
+connect_to 127.0.0.1 port 18765: failed.
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 14.2 s

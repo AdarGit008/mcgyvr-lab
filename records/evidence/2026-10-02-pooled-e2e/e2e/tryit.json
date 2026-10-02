@@ -1,0 +1,20 @@
+[
+ {
+  "scheme": "dark",
+  "plan_text": "Model\nQwen2.5-Coder-32B-Instruct-Q5_K_M.gguf\nContext\n12,288 tokens (these cards could hold up to 32,768)\nRigs\n2\nLayers\n64\nRig\tCard\tRole\tLayers\tExpected VRAM\nhead-rig \u00b7 @head-owner\tNVIDIA GeForce RTX 3060\thead\t27 layers (42%)\n\t9.6 GB of 12 GB free\nhead-rig \u00b7 @head-owner\tNVIDIA GeForce RTX 3060\thead\t26 layers (41%)\n\t9.3 GB of 12 GB free\nworker-rig \u00b7 @worker-owner\tNVIDIA GeForce GTX 1660 SUPER\tworker\t11 layers (17%)\n\t4.7 GB of 5.6 GB free\n\nThe head, head-rig, belongs to @head-owner, who can technically see the prompts and answers it serves.",
+  "first_text_s": 1.19,
+  "done_s": 3.53,
+  "answer": "Splitting a model's layers across several GPUs allows for parallel processing, which can significantly speed up training by distributing the computational load.",
+  "failed": false,
+  "sessions_text": "Sessions\nQwen2.5-Coder-32B-Instruct-Q5_K_M.gguf\nREADY\n\u00b7 12,288 tokens \u00b7 started by @requester 4 min ago\nstop\nhead head-rig \u00b7 @head-owner \u00b7 ready\nworker worker-rig \u00b7 @worker-owner \u00b7 ready\nQwen2.5-Coder-32B-Instruct-Q5_K_M.gguf\nFAILED\n\u00b7 12,288 tokens \u00b7 started by @requester 21 min ago\n\nFailed: agent_gone a member rig disconnected\n\nhead head-rig \u00b7 @head-owner \u00b7 ready\nworker worker-rig \u00b7 @worker-owner \u00b7 ready\nQwen2.5-Coder-32B-Instruct-Q5_K_M.gguf\nFAILED\n\u00b7 12,288 tokens \u00b7 started by @requester 24 min ago\n\nFailed: start_failed the head reported failed\n\nhead head-rig \u00b7 @head-owner \u00b7 failed start_failed\nlog\nworker worker-rig \u00b7 @worker-owner \u00b7 ready"
+ },
+ {
+  "scheme": "light",
+  "plan_text": "Model\nQwen2.5-Coder-32B-Instruct-Q5_K_M.gguf\nContext\n12,288 tokens (these cards could hold up to 32,768)\nRigs\n2\nLayers\n64\nRig\tCard\tRole\tLayers\tExpected VRAM\nhead-rig \u00b7 @head-owner\tNVIDIA GeForce RTX 3060\thead\t27 layers (42%)\n\t9.6 GB of 12 GB free\nhead-rig \u00b7 @head-owner\tNVIDIA GeForce RTX 3060\thead\t26 layers (41%)\n\t9.3 GB of 12 GB free\nworker-rig \u00b7 @worker-owner\tNVIDIA GeForce GTX 1660 SUPER\tworker\t11 layers (17%)\n\t4.7 GB of 5.6 GB free\n\nThe head, head-rig, belongs to @head-owner, who can technically see the prompts and answers it serves.",
+  "first_text_s": 1.15,
+  "done_s": 3.48,
+  "answer": "Splitting a model's layers across several GPUs allows for parallel processing, significantly speeding up training and inference by distributing the computational load.",
+  "failed": false,
+  "sessions_text": "Sessions\nQwen2.5-Coder-32B-Instruct-Q5_K_M.gguf\nREADY\n\u00b7 12,288 tokens \u00b7 started by @requester 4 min ago\nstop\nhead head-rig \u00b7 @head-owner \u00b7 ready\nworker worker-rig \u00b7 @worker-owner \u00b7 ready\nQwen2.5-Coder-32B-Instruct-Q5_K_M.gguf\nFAILED\n\u00b7 12,288 tokens \u00b7 started by @requester 22 min ago\n\nFailed: agent_gone a member rig disconnected\n\nhead head-rig \u00b7 @head-owner \u00b7 ready\nworker worker-rig \u00b7 @worker-owner \u00b7 ready\nQwen2.5-Coder-32B-Instruct-Q5_K_M.gguf\nFAILED\n\u00b7 12,288 tokens \u00b7 started by @requester 24 min ago\n\nFailed: start_failed the head reported failed\n\nhead head-rig \u00b7 @head-owner \u00b7 failed start_failed\nlog\nworker worker-rig \u00b7 @worker-owner \u00b7 ready"
+ }
+]
