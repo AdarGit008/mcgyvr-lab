@@ -67,7 +67,7 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   missing-validator posture flip, `media_valid` deepened past header-only for
   image / audio / video, the three validators (`safety_pass` / `asr_wer` /
   `grounded`) landed, and the `media_artifact` output schema.
-- **P3** chat + agent verticals
+- **P3** chat + agent verticals → in progress (chat + agent task types landed)
 - **P4** packaging (`mcgyvr init --use-case` + the deployment choice)
 
 ## Rulings
@@ -246,3 +246,19 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   the contract enum, the prompt instruction and the regenerated skill reference
   are in lockstep. This closes the P2 media-gen vertical; P3 (chat + agent)
   and P4 (packaging) remain.
+- P3 first increment (chat + agent task types, done — product `ac73519b`): the
+  catalog gains two task types. `chat` (use_case chat, starts_on local) is the
+  **sole ungated type** — a raw prompt-to-response endpoint, so its
+  `required_evidence` is the empty list, and the loader now distinguishes an
+  absent `required_evidence` key from an empty one: absent or null is refused
+  by name, an empty list (chat) is legal, and a non-list is refused. `agent`
+  (use_case agent, starts_on local) is the gated assistant, judged by the
+  `grounded` and `safety_pass` output checks. The agent gate's "format"
+  component from the plan's use-case table is the `prose` output protocol
+  itself (the reply parser's raw-text/no-fence/complete enforcement), not a
+  separate evidence kind; "tool-calling" is a backend capability for the
+  serving layer (P4), not a gate rung. The `gate` evidence kind's doc is
+  narrowed: it is the floor under every *coding* type; chat is ungated, and
+  agent/media-gen are judged by their own structural evidence through the
+  gate's output-checks rung. Reviewed
+  (`records/review-p3-chat-agent-types.md`).
