@@ -1,0 +1,10 @@
+$ HUB_ONLY=1 tools/demo/demo-down
+[demo-down] hub stopped
+[demo-down] down: hub stopped (rigs not touched)
+exit=0
+$ HUB_ONLY=1 HUB_REPO=/home/adaramir/claude/mcgyvr-hub-live BIND=100.119.117.59 tools/demo/demo-up --fresh
+[demo-up] fresh database
+[demo-up] hub up on 100.119.117.59:18765 (pid 3415513, default ctx 12288)
+users: head-owner, worker-owner, requester | rigs: head-rig, worker-rig
+[demo-up] hub only: rigs not touched
+exit=0

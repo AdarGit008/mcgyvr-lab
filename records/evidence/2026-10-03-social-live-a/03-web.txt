@@ -1,0 +1,19 @@
+$ STATE=~/.local/state/mcgyvr-demo HUB=http://100.119.117.59:18765 python3 instruments/web_walk.py live-a-user live-a-admin
+PASS  logged-out / is the landing page  | HTTP 200
+PASS  logged-out /pool/plan is 404  | HTTP 404
+PASS  web sign-up (normal user) 201, token shown once-warning  | HTTP 201, tokens on page: 1
+PASS  logged-in / is home (not landing)  | HTTP 200
+PASS  home shows the endpoint URL  | endpoint=http://100.119.117.59:18765/v1
+PASS  home page shows no plaintext token
+PASS  key creation 201, key shown with 'Save this key now'  | HTTP 201, keys on page: 1
+PASS  key not shown again on reload; key listed by name  | HTTP 200
+PASS  /network directory 200, lists the new user  | HTTP 200
+PASS  /network for logged-out visitor 200  | HTTP 200
+PASS  no Try-it box on /, /pool, /network  | pool HTTP 200
+PASS  POST /pool/try is gone (404/405)  | HTTP 404
+PASS  /pool/plan 404 for a normal user  | HTTP 404
+PASS  web sign-up (admin handle) 201  | HTTP 201
+PASS  /pool/plan 200 for an admin handle  | HTTP 200, body: Pick a model to see how its layers would be split.
+PASS  after sign-out / is the landing page again  | signout HTTP 303, / HTTP 200
+16/16 passed
+exit=0

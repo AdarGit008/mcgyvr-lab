@@ -1,0 +1,44 @@
+## (a) curated list empty
+no models on the list: the general pool runs nothing
+[empty] GET /v1/models (no key)                            HTTP 401   0.057 s  code=invalid_api_key type=invalid_request_error message='invalid or missing token'
+[empty] GET /v1/models (live-a-user key)                   HTTP 200   0.011 s  data=[]
+[empty] GET /v1/models (head-owner key, rig offline)       HTTP 200   0.007 s  data=[]
+[empty] GET /v1/models X-Mcgyvr-Scope: own                 HTTP 200   0.006 s  data=[]
+[empty] GET /v1/models X-Mcgyvr-Scope: bogus               HTTP 400   0.003 s  code=invalid_scope type=invalid_request_error message='x-mcgyvr-scope must be one of: own, crew, anyone'
+[empty] POST chat (no key)                                 HTTP 401   0.002 s  code=invalid_api_key type=invalid_request_error message='invalid or missing token'
+[empty] POST chat malformed JSON                           HTTP 400   0.004 s  code=invalid_request type=invalid_request_error message=': Invalid JSON: key must be a string at line 1 column 2'
+[empty] POST chat Qwen2.5-Coder-32B-Inst… (live-a-user)    HTTP 404   0.009 s  code=model_not_found type=invalid_request_error message='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf is not running in the pool, and the pool does not start models on request. Running now: nothing you can use.'
+[empty] POST chat Qwen2.5-Coder-32B-Inst… (requester)      HTTP 404   0.045 s  code=model_not_found type=invalid_request_error message='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf is not running in the pool, and the pool does not start models on request. Running now: nothing you can use.'
+[empty] POST chat Qwen2.5-Coder-32B-Inst… (head-owner)     HTTP 404   0.008 s  code=model_not_found type=invalid_request_error message='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf is not running in the pool, and the pool does not start models on request. Running now: nothing you can use.'
+[empty] POST chat stream=true (live-a-user)                HTTP 404   0.007 s  code=model_not_found type=invalid_request_error message='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf is not running in the pool, and the pool does not start models on request. Running now: nothing you can use.'
+[empty] POST chat unlisted.gguf (live-a-user)              HTTP 404   0.006 s  code=model_not_found type=invalid_request_error message='unlisted.gguf is not running in the pool, and the pool does not start models on request. Running now: nothing you can use.'
+[empty] POST chat scope=own (live-a-user)                  HTTP 404   0.009 s  code=model_not_found type=invalid_request_error message='no rig you can use has this model'
+[empty] POST chat scope=own (head-owner, rig offline)      HTTP 404   0.007 s  code=model_not_found type=invalid_request_error message='no rig you can use has this model'
+[empty] POST chat scope=crew (live-a-user)                 HTTP 404   0.008 s  code=model_not_found type=invalid_request_error message='no rig you can use has this model'
+[empty] POST chat scope=crew (head-owner, rig offline)     HTTP 404   0.008 s  code=model_not_found type=invalid_request_error message='no rig you can use has this model'
+[empty] 6 concurrent chats (3 users)                            statuses=[404, 404, 404, 404, 404, 404] all done in 0.170 s
+
+## (b) Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf on the list, no rig online
+asked the running hub to apply the fleet policies once: it does within 5 s
+priority	name	min	max	state
+1	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	1	1	enabled
+[listed] GET /v1/models (no key)                           HTTP 401   0.069 s  code=invalid_api_key type=invalid_request_error message='invalid or missing token'
+[listed] GET /v1/models (live-a-user key)                  HTTP 200   0.006 s  data=[]
+[listed] GET /v1/models (head-owner key, rig offline)      HTTP 200   0.008 s  data=[]
+[listed] GET /v1/models X-Mcgyvr-Scope: own                HTTP 200   0.012 s  data=[]
+[listed] GET /v1/models X-Mcgyvr-Scope: bogus              HTTP 400   0.005 s  code=invalid_scope type=invalid_request_error message='x-mcgyvr-scope must be one of: own, crew, anyone'
+[listed] POST chat (no key)                                HTTP 401   0.002 s  code=invalid_api_key type=invalid_request_error message='invalid or missing token'
+[listed] POST chat malformed JSON                          HTTP 400   0.004 s  code=invalid_request type=invalid_request_error message=': Invalid JSON: key must be a string at line 1 column 2'
+[listed] POST chat Qwen2.5-Coder-32B-Inst… (live-a-user)   HTTP 404   0.057 s  code=model_not_found type=invalid_request_error message='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf is not running in the pool, and the pool does not start models on request. Running now: nothing you can use.'
+[listed] POST chat Qwen2.5-Coder-32B-Inst… (requester)     HTTP 404   0.012 s  code=model_not_found type=invalid_request_error message='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf is not running in the pool, and the pool does not start models on request. Running now: nothing you can use.'
+[listed] POST chat Qwen2.5-Coder-32B-Inst… (head-owner)    HTTP 404   0.022 s  code=model_not_found type=invalid_request_error message='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf is not running in the pool, and the pool does not start models on request. Running now: nothing you can use.'
+[listed] POST chat stream=true (live-a-user)               HTTP 404   0.059 s  code=model_not_found type=invalid_request_error message='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf is not running in the pool, and the pool does not start models on request. Running now: nothing you can use.'
+[listed] POST chat unlisted.gguf (live-a-user)             HTTP 404   0.014 s  code=model_not_found type=invalid_request_error message='unlisted.gguf is not running in the pool, and the pool does not start models on request. Running now: nothing you can use.'
+[listed] POST chat scope=own (live-a-user)                 HTTP 404   0.019 s  code=model_not_found type=invalid_request_error message='no rig you can use has this model'
+[listed] POST chat scope=own (head-owner, rig offline)     HTTP 404   0.011 s  code=model_not_found type=invalid_request_error message='no rig you can use has this model'
+[listed] POST chat scope=crew (live-a-user)                HTTP 404   0.051 s  code=model_not_found type=invalid_request_error message='no rig you can use has this model'
+[listed] POST chat scope=crew (head-owner, rig offline)    HTTP 404   0.011 s  code=model_not_found type=invalid_request_error message='no rig you can use has this model'
+[listed] 6 concurrent chats (3 users)                            statuses=[404, 404, 404, 404, 404, 404] all done in 0.108 s
+asked the running hub to apply the fleet policies once: it does within 5 s
+(list emptied again)
+no models on the list: the general pool runs nothing

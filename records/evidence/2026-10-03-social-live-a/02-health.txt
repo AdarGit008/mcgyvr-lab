@@ -1,0 +1,13 @@
+$ curl -sS $HUB/api/v1/health
+{"status":"ok","version":"0.1.0"}  [HTTP 200]
+$ alembic_version + tables of the fresh hub.db
+[('0006',)]
+['alembic_version', 'api_tokens', 'crew_members', 'crews', 'fleet_replans', 'inference_sessions', 'pool_models', 'profiles', 'rig_cards', 'rig_tokens', 'rigs', 'session_members', 'users', 'web_sessions']
+$ ps (hub)
+    PID     ELAPSED COMMAND
+3415513       00:14 /home/adaramir/claude/mcgyvr-hub-live/.venv/bin/python /home/adaramir/claude/mcgyvr-hub-live/.venv/bin/mcgyvr-hub serve --host 100.119.117.59 --port 18765 --db /home/adaramir/.local/state/mcgyvr-demo/hub.db
+$ ss -ltnp / -lunp (hub pid)
+LISTEN 0      2048                100.119.117.59:18765      0.0.0.0:*    users:(("mcgyvr-hub",pid=3415513,fd=19))                    
+UNCONN 0      0            0.0.0.0:3478       0.0.0.0:*    users:(("mcgyvr-hub",pid=3415513,fd=16))
+UNCONN 0      0            0.0.0.0:3479       0.0.0.0:*    users:(("mcgyvr-hub",pid=3415513,fd=17))
+UNCONN 0      0            0.0.0.0:3480       0.0.0.0:*    users:(("mcgyvr-hub",pid=3415513,fd=18))

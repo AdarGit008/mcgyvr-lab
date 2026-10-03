@@ -10,6 +10,10 @@
 # (100.64.0.0/10) to open the web UI on the tailnet; anything else is refused.
 # The rigs still dial their own loopback, forwarded to $BIND:$PORT here.
 # PUBLIC_URL, if set, is the hub's MCGYVR_HUB_PUBLIC_URL (shown in join commands).
+# HUB_ONLY=1 starts the hub and bootstraps its users/rigs, then stops: no ssh,
+# no tunnel, nothing on the rigs.
+# $STATE/hub.env, if present (keep it 0600), is sourced for the hub's own
+# MCGYVR_HUB_* settings (binding responder, relay and its secret, admins).
 # State (database, secrets) lives outside the repository, in $STATE.
 set -euo pipefail
 
@@ -19,6 +23,7 @@ HUB_REPO="${HUB_REPO:-/home/adaramir/claude/mcgyvr-hub}"
 PORT="${PORT:-18765}"
 BIND="${BIND:-127.0.0.1}"
 PUBLIC_URL="${PUBLIC_URL:-}"
+HUB_ONLY="${HUB_ONLY:-0}"
 HEAD_HOST="${HEAD_HOST:-srv1}"
 WORKER_HOST="${WORKER_HOST:-srv2}"
 DEFAULT_CTX="${DEFAULT_CTX:-12288}"
@@ -47,11 +52,12 @@ if alive "$STATE/hub.pid"; then
   say "hub already running (pid $(cat "$STATE/hub.pid"))"
 else
   if [ "$fresh" = 1 ]; then
-    rm -f "$STATE/hub.db" "$STATE/secrets.json"
+    rm -f "$STATE/hub.db" "$STATE/hub.db-wal" "$STATE/hub.db-shm" "$STATE/secrets.json"
     say "fresh database"
   fi
   (
     cd "$HUB_REPO"
+    if [ -f "$STATE/hub.env" ]; then set -a; . "$STATE/hub.env"; set +a; fi
     MCGYVR_HUB_PLANNER_DEFAULT_CTX="$DEFAULT_CTX" MCGYVR_HUB_PUBLIC_URL="$PUBLIC_URL" \
       setsid nohup \
       "$HUB_REPO/.venv/bin/mcgyvr-hub" serve --host "$BIND" --port "$PORT" \
@@ -67,6 +73,7 @@ else
   say "hub up on $BIND:$PORT (pid $(cat "$STATE/hub.pid"), default ctx $DEFAULT_CTX)"
 fi
 python3 "$HERE/hubctl.py" bootstrap
+if [ "$HUB_ONLY" = 1 ]; then say "hub only: rigs not touched"; exit 0; fi
 
 # --- tunnels: the rig's 127.0.0.1:$PORT is this host's hub at $BIND:$PORT --------
 for host in "$HEAD_HOST" "$WORKER_HOST"; do
