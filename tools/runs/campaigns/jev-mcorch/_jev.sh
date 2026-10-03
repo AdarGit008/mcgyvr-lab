@@ -132,8 +132,9 @@ lcp_up() {
     fi
     t0=$(date +%s)
     # shellcheck disable=SC2016
+    # shellcheck disable=SC2086
     "$DOCKER" run -d --name "$cname" --gpus "$gpus" \
-        -v "$RIG_HOME/models:/models:ro" -v /data/models:/data:ro \
+        -v "$RIG_HOME/models:/models:ro" $DATA_MOUNT \
         -p "$port:8080" "$LCP_IMG" --model "$model" -c "$ctx" -np 1 --jinja -lv 4 \
         --no-warmup --host 0.0.0.0 --port 8080 -a "$name" "$@" >/dev/null ||
         { emit refused "$name" "model=$model" -- "docker run failed"; return 1; }
@@ -194,8 +195,11 @@ all_down() {
 # The rig's home directory, read once: the container paths are the rig's
 # ~/models and ~/.cache/huggingface, not the operator's.
 RIG_HOME=""
+#: `-v /data/models:/data:ro` where the rig has that store (srv1's HDD), else empty.
+DATA_MOUNT=""
 jev_images() {
     RIG_HOME=$("$SSH" "$RUN_HOST" 'printf %s "$HOME"' </dev/null) || { _fail "could not read \$HOME on $RUN_HOST" || true; exit 2; }
+    if "$SSH" "$RUN_HOST" 'test -d /data/models' </dev/null; then DATA_MOUNT="-v /data/models:/data:ro"; fi
     local lcp_tag vllm_tag digest
     lcp_tag=${JEV_LCP_IMAGE:-llamacpp:b10644-L3-rpc}
     vllm_tag=${JEV_VLLM_IMAGE:-vllm/vllm-openai:v0.26.0}
@@ -205,5 +209,5 @@ jev_images() {
         digest=$(image_digest "$vllm_tag") || { _fail "$vllm_tag resolves to no digest on $RUN_HOST" || true; exit 1; }
         export VLLM_IMG="$digest"
     fi
-    emit stamp NOTE "lcp_image=$lcp_tag" "vllm_image=$vllm_tag" "rig_home=$RIG_HOME"
+    emit stamp NOTE "lcp_image=$lcp_tag" "vllm_image=$vllm_tag" "rig_home=$RIG_HOME" "data_mount=$(_tok "${DATA_MOUNT:-none}")"
 }

@@ -1,30 +1,41 @@
 #!/usr/bin/env python3
 """One Jev candidate over the labelled slice, through the product's primitive.
 
-    jev_slice.py LABEL PORT MODEL SLICE.jsonl [--kwargs JSON] [--questions SET]
+    jev_slice.py LABEL PORT MODEL SLICE.jsonl [--no-kwargs] [--limit N]
 
 Runs under the door only (door_required, RUN_ID, RUN_HOST). For each slice row
-it re-derives the state from records/measurements and tools/bench/tasks the
-way src/mcgyvr/gate/jev.py:build_state does (task, path, the candidate's added
-lines against target_content), then calls ``mcgyvr.decision.classify`` —
-the product's own request body: one request per question, max_tokens 1,
-temperature 0, logprobs, top_logprobs capped at 20 — with gate/jev.py's
-JEV_QUESTIONS over that state and verify.py's VERDICT_QUESTION over the
-reviewer's state (verify.verdict_state's shape, deterministic_gate "not run").
+it re-derives the state from records/measurements and tools/bench/tasks, then
+calls ``mcgyvr.decision.classify`` — the product's own request body: one
+request per question, max_tokens 1, temperature 0, logprobs, top_logprobs
+capped at 20 — three times:
+
+  primary    gate/jev.py's JEV_QUESTIONS over the RICH state the owner ruled
+             for the rung (2026-10-03): {task, path, added_lines, original,
+             change} — the verify.verdict_state shape plus the added lines
+  secondary  the same questions over the added-lines-only state the rung
+             sends today (gate/jev.py:build_state's shape)
+  verdict    verify.py's VERDICT_QUESTION over verdict_state's shape
+             (deterministic_gate "not run")
+
+Every call carries ``chat_template_kwargs: {"enable_thinking": false}``, the
+body the product will send once the code agent's change lands (owner answer 1,
+2026-10-03); the driver injects it at the transport seam
+(``mcgyvr.decision._post_json``) so the prompt and the read stay the product's.
+``--no-kwargs`` sends the body as the product sends it today (step 0's
+comparison arm only).
 
 Rows, tab-separated `host label kind k=v...`:
 
-  ROW      one slice row: id, label, p_yes per Noul, expected level of the
-           Score, wall_s for all questions, n_added, prompt_tokens as the
-           server reported for the first question
+  ROW      one slice row: id, label; satisfies_p / in_scope_p /
+           regression_level on the rich state, the same with suffix _al on
+           the added-lines state, verdict_p; wall_s for all seven questions,
+           n_added, prompt_tokens as the server reported for the first rich
+           question
   ERR      a row the primitive could not read (DecisionError and kin), the
            error text after `--`
-  SUMMARY  n, errors, acc@0.5 / auroc / brier / ece10 / yes_rate for
-           satisfies_task and verdict, wall medians
-
-`--kwargs` is a chat_template_kwargs JSON the product does NOT send; it is
-passed only on the fidelity step to show what the template does, never on a
-ladder row.
+  SUMMARY  n, errors, kwargs, acc@0.5 / auroc / brier / ece10 / yes_rate for
+           satisfies (rich), satisfies_al (added lines) and verdict, wall
+           medians
 """
 
 from __future__ import annotations
@@ -68,11 +79,29 @@ if not H:
     sys.exit(2)
 
 from mcgyvr import decision as dec  # noqa: E402
+from mcgyvr import runner as _runner  # noqa: E402
 from mcgyvr.gate.jev import JEV_QUESTIONS  # noqa: E402
 from mcgyvr.pool import Endpoint, Protocol  # noqa: E402
 from mcgyvr.verify import VERDICT_KEY, VERDICT_QUESTION  # noqa: E402
 
 REPO = Path(os.environ.get("RUN_ROOT") or Path(__file__).resolve().parents[4])
+
+#: What the product will send on every Jev call (owner answer 1, 2026-10-03).
+KWARGS: dict[str, Any] = {"enable_thinking": False}
+
+
+def install_kwargs() -> None:
+    """Add KWARGS to every body decision.classify posts, at its transport seam."""
+    original = _runner._post_json
+
+    def post(
+        url: str, payload: dict[str, Any], headers: dict[str, str], timeout: float
+    ) -> dict[str, Any]:
+        return original(
+            url, {**payload, "chat_template_kwargs": KWARGS}, headers, timeout
+        )
+
+    dec._post_json = post  # type: ignore[attr-defined]
 
 
 def tok(value: object) -> str:
@@ -97,7 +126,7 @@ def added_lines(original: str, change: str) -> dict[int, str]:
     return out
 
 
-def states(r: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+def states(r: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     contract = yaml.safe_load(
         (REPO / "tools/bench/tasks/py" / r["task"] / "contract.yaml").read_text(
             encoding="utf-8"
@@ -131,7 +160,14 @@ def states(r: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
         "original": original,
         "change": change,
     }
-    return state_jev, state_verdict
+    # the rich rung state the owner ruled: verdict_state's fields plus the
+    # added lines the rung still judges
+    state_rich = {
+        **state_verdict,
+        "path": contract["target"],
+        "added_lines": state_jev["added_lines"],
+    }
+    return state_rich, state_jev, state_verdict
 
 
 def auroc(scores: list[float], labels: list[int]) -> float | None:
@@ -210,7 +246,11 @@ def main() -> int:
     ap.add_argument("model")
     ap.add_argument("slice")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--no-kwargs", action="store_true", help="the body as sent today")
     args = ap.parse_args()
+    if not args.no_kwargs:
+        install_kwargs()
+    kwargs_tag = "none" if args.no_kwargs else "enable_thinking=false"
     url = f"http://{H}:{args.port}"
     endpoint = Endpoint(
         source=args.label,
@@ -228,13 +268,14 @@ def main() -> int:
     if args.limit:
         rows = rows[: args.limit]
     sat: list[float] = []
+    sat_al: list[float] = []
     ver: list[float] = []
     lab: list[int] = []
     walls: list[float] = []
     errors = 0
     for r in rows:
         try:
-            state_jev, state_verdict = states(r)
+            state_rich, state_jev, state_verdict = states(r)
         except (OSError, KeyError, yaml.YAMLError) as exc:
             emit(
                 args.label,
@@ -247,6 +288,9 @@ def main() -> int:
         t0 = time.perf_counter()
         try:
             d1 = dec.classify(
+                endpoint, args.model, state_rich, JEV_QUESTIONS, timeout_s=600
+            )
+            d1al = dec.classify(
                 endpoint, args.model, state_jev, JEV_QUESTIONS, timeout_s=600
             )
             d2 = dec.classify(
@@ -264,13 +308,19 @@ def main() -> int:
             continue
         wall = time.perf_counter() - t0
         a = d1.answers
+        b = d1al.answers
         s = a["satisfies_task"]
         i = a["in_scope"]
         g = a["regression_risk"]
+        s2 = b["satisfies_task"]
+        i2 = b["in_scope"]
+        g2 = b["regression_risk"]
         v = d2.answers[VERDICT_KEY]
         assert isinstance(s, dec.BoolAnswer) and isinstance(i, dec.BoolAnswer)
         assert isinstance(g, dec.ScoreAnswer) and isinstance(v, dec.BoolAnswer)
-        ptok = prompt_tokens(url, args.model, state_jev)
+        assert isinstance(s2, dec.BoolAnswer) and isinstance(i2, dec.BoolAnswer)
+        assert isinstance(g2, dec.ScoreAnswer)
+        ptok = prompt_tokens(url, args.model, state_rich)
         emit(
             args.label,
             "ROW",
@@ -281,12 +331,16 @@ def main() -> int:
             f"satisfies_p={s.probability_true:.4f}",
             f"in_scope_p={i.probability_true:.4f}",
             f"regression_level={g.level:.4f}",
+            f"satisfies_p_al={s2.probability_true:.4f}",
+            f"in_scope_p_al={i2.probability_true:.4f}",
+            f"regression_level_al={g2.level:.4f}",
             f"verdict_p={v.probability_true:.4f}",
             f"wall_s={wall:.3f}",
             f"n_added={len(state_jev['added_lines'])}",
             f"prompt_tokens={ptok if ptok is not None else 'unread'}",
         )
         sat.append(s.probability_true)
+        sat_al.append(s2.probability_true)
         ver.append(v.probability_true)
         lab.append(int(r["label"]))
         walls.append(wall)
@@ -299,9 +353,11 @@ def main() -> int:
         f"n={len(rows)}",
         f"errors={errors}",
         f"model={tok(args.model)}",
+        f"kwargs={kwargs_tag}",
         f"wall_row_med_s={med}",
         f"wall_row_p90_s={p90}",
         *summary("satisfies", sat, lab),
+        *summary("satisfies_al", sat_al, lab),
         *summary("verdict", ver, lab),
     )
     return 0

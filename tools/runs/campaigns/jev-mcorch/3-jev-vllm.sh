@@ -44,9 +44,7 @@ for entry in $LADDER; do
     tag=${entry%%=*}
     model=${entry#*=}
     say "candidate $tag"
-    extra=()
-    case "$tag" in v-q3-*) extra=(--reasoning-parser qwen3 --default-chat-template-kwargs '{"enable_thinking": false}') ;; esac
-    if vllm_up "$tag" device=0 "$model" 16384 --gpu-memory-utilization "$UTIL" "${extra[@]}"; then
+    if vllm_up "$tag" device=0 "$model" 16384 --gpu-memory-utilization "$UTIL"; then
         emit unit_config "$tag"
         emit _py "$HERE/jev_slice.py" "$tag" "${JEV_PORT[$tag]}" "$tag" "$SLICE"
         unit_down "$tag"

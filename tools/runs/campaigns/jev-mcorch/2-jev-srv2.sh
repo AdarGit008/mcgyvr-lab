@@ -29,10 +29,11 @@ door_required
 export JEV_LADDER=${JEV_LADDER:-"
 q25c-1.5b-q4km=/models/dense/Qwen2.5-Coder-1.5B-Instruct-Q4_K_M.gguf
 q25c-3b-q4km=/models/dense/Qwen2.5-Coder-3B-Instruct-Q4_K_M.gguf
-q3-4b-q4km=/models/dense/Qwen3-4B-Q4_K_M.gguf+--reasoning+off
+q3-4b-q4km=/models/dense/Qwen3-4B-Q4_K_M.gguf
 q3-4b-2507-q4km=/models/dense/Qwen3-4B-Instruct-2507-Q4_K_M.gguf
+q35-4b-sc-q40=/models/dense/qwen3.5-4B-super-coder.Q4_0.gguf
 q35-2b-q8=/models/dense/Qwen3.5-2B-Q8_0.gguf
-q35-4b-q4km=/models/dense/Qwen3.5-4B-Q4_K_M.gguf+--reasoning+off
+q35-4b-q4km=/models/dense/Qwen3.5-4B-Q4_K_M.gguf
 q25c-7b-iq4xs=/models/dense/Qwen2.5-Coder-7B-Instruct-IQ4_XS.gguf
 "}
 # The ladder step's body, with this host's card: one script, two hosts.

@@ -34,9 +34,12 @@ jev_images
 trap all_down EXIT
 REPOS="$RUN_OUT_DIR/repos"
 # the corpus is made into the envelope at run time: one git repo per bench task
-_py "$HERE/make_repos.py" "$REPOS" ${ORCH_TASKS:-b002-option-pairs b003-carve-shift b004-install-order b073-bump-release b252-swipe-dedupe} ||
+REAL=()
+[ -n "${ORCH_REAL_REPO:-}" ] && REAL=(--real "mcgyvr=$ORCH_REAL_REPO")
+# shellcheck disable=SC2086
+_py "$HERE/make_repos.py" "$REPOS" ${ORCH_TASKS:-b002-option-pairs b003-carve-shift b004-install-order b073-bump-release b252-swipe-dedupe} "${REAL[@]}" ||
     { _fail "REFUSED — make_repos.py could not build the corpus" || true; exit 2; }
-emit stamp CORPUS "tasks=$(_tok "${ORCH_TASKS:-b002-option-pairs,b003-carve-shift,b004-install-order,b073-bump-release,b252-swipe-dedupe}")"
+emit stamp CORPUS "tasks=$(_tok "${ORCH_TASKS:-b002-option-pairs,b003-carve-shift,b004-install-order,b073-bump-release,b252-swipe-dedupe}")" "real=$(_tok "${ORCH_REAL_REPO:-none}")"
 JEV_ARGS=()
 if [ -n "${JEV_MODEL:-}" ]; then
     if lcp_up jev device=0 "$JEV_MODEL" 16384 --reasoning off; then

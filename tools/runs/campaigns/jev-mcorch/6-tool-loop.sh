@@ -37,9 +37,12 @@ jev_images
 trap all_down EXIT
 REPOS="$RUN_OUT_DIR/repos"
 # the corpus is made into the envelope at run time: one git repo per bench task
-_py "$HERE/make_repos.py" "$REPOS" ${ORCH_TASKS:-b002-option-pairs b003-carve-shift b004-install-order b073-bump-release b252-swipe-dedupe} ||
+REAL=()
+[ -n "${ORCH_REAL_REPO:-}" ] && REAL=(--real "mcgyvr=$ORCH_REAL_REPO")
+# shellcheck disable=SC2086
+_py "$HERE/make_repos.py" "$REPOS" ${ORCH_TASKS:-b002-option-pairs b003-carve-shift b004-install-order b073-bump-release b252-swipe-dedupe} "${REAL[@]}" ||
     { _fail "REFUSED — make_repos.py could not build the corpus" || true; exit 2; }
-emit stamp CORPUS "tasks=$(_tok "${ORCH_TASKS:-b002-option-pairs,b003-carve-shift,b004-install-order,b073-bump-release,b252-swipe-dedupe}")"
+emit stamp CORPUS "tasks=$(_tok "${ORCH_TASKS:-b002-option-pairs,b003-carve-shift,b004-install-order,b073-bump-release,b252-swipe-dedupe}")" "real=$(_tok "${ORCH_REAL_REPO:-none}")"
 LADDER=${ORCH_LADDER:-"
 c30-a3b-q4xl=/models/moe/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf+-sm+layer
 q36-35b-iq3xxs=/models/moe/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf+-sm+layer+--reasoning+off

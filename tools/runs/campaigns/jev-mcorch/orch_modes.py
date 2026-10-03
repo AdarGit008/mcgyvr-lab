@@ -3,6 +3,9 @@
 
     orch_modes.py LABEL PORT MODEL REPOS_DIR WORK_DIR [--modes D,P,J] [--run]
                   [--jev-port PORT --jev-model NAME]
+    orch_modes.py LABEL 0 claude-opus-5-5 REPOS_DIR WORK_DIR --modes D,P \
+                  --api anthropic --api-key-env ANTHROPIC_API_KEY \
+                  [--price-in 4 --price-out 20]
 
   D  direct: a chat completion with skills/mcgyvr/SKILL.md (the contract
      schema) plus the repo's files in context; the reply's ```yaml block is
@@ -22,6 +25,14 @@ WORK_DIR. Each repo under REPOS_DIR is a git checkout holding .truth.json
 command. Each mode gets a fresh clone, so a --run never sees another mode's
 change.
 
+`--api anthropic` is the Ref arm (owner answer 4, 2026-10-03): D posts to the
+Anthropic Messages API (raw HTTP; the lab's frozen environment has no SDK) with
+the key from --api-key-env, never printed; P binds the config's orchestrator
+unit to `https://api.anthropic.com` with `api_key_env`, so `mcgyvr delegate`
+reaches the model over the product's own transport (its OpenAI-shaped body on
+Anthropic's compatibility endpoint). MODE rows then carry the cost at the
+prices given (USD per million tokens).
+
 Rows, tab-separated `host label kind k=v...`:
 
   MODE   one (repo, mode): emitted, valid, target_match, type_match, wall_s,
@@ -40,6 +51,7 @@ import shutil
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 from typing import Any
@@ -90,11 +102,17 @@ def emit(label: str, kind: str, *fields: str, free: str = "") -> None:
 
 
 def write_config(
-    work: Path, port: int, model: str, jev_port: int | None, jev_model: str
+    work: Path,
+    port: int,
+    model: str,
+    jev_port: int | None,
+    jev_model: str,
+    api: str = "",
+    key_env: str = "",
 ) -> Path:
     cfg = work / "cfg"
     cfg.mkdir(parents=True, exist_ok=True)
-    units = {
+    units: dict[str, dict[str, Any]] = {
         "orch": {
             "address": f"http://{H}:{port}",
             "engine": "llama.cpp",
@@ -105,6 +123,16 @@ def write_config(
             "request_timeout_s": 1800,
         }
     }
+    if api == "anthropic":
+        units["orch"] = {
+            "address": "https://api.anthropic.com",
+            "model": model,
+            "api_key_env": key_env,
+            "width": 4,
+            "window": 200000,
+            "output_tokens": 16000,
+            "request_timeout_s": 1800,
+        }
     if jev_port is not None:
         units["jev"] = {
             "address": f"http://{H}:{jev_port}",
@@ -160,8 +188,39 @@ def repo_listing(repo: Path) -> str:
     return "\n\n".join(parts)
 
 
+def api_post(body: dict[str, Any], key_env: str) -> tuple[dict[str, Any], float]:
+    key = os.environ.get(key_env, "")
+    if not key:
+        raise RuntimeError(f"{key_env} is not set; the Ref arm has no credential")
+    req = urllib.request.Request(
+        "https://api.anthropic.com/v1/messages",
+        data=json.dumps(body).encode(),
+        headers={
+            "Content-Type": "application/json",
+            "x-api-key": key,
+            "anthropic-version": "2023-06-01",
+            "anthropic-beta": "server-side-fallback-2026-07-01",
+        },
+    )
+    t0 = time.perf_counter()
+    try:
+        with urllib.request.urlopen(req, timeout=1800) as resp:
+            doc = json.loads(resp.read())
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", "replace")[:300]
+        raise RuntimeError(f"Messages API HTTP {exc.code}: {detail}") from None
+    return doc, time.perf_counter() - t0
+
+
 def mode_d(
-    url: str, model: str, repo: Path, prompt: str, out: Path, cfg: Path
+    url: str,
+    model: str,
+    repo: Path,
+    prompt: str,
+    out: Path,
+    cfg: Path,
+    api: str = "",
+    key_env: str = "",
 ) -> dict[str, Any]:
     system = (
         "You are the mcgyvr orchestrator. Author exactly ONE task contract as "
@@ -175,27 +234,48 @@ def mode_d(
         f"REPOSITORY FILES:\n\n{repo_listing(repo)}\n\nREQUEST:\n{prompt}"
         "\n\nWrite the contract."
     )
-    body = {
-        "model": model,
-        "messages": [
-            {"role": "system", "content": system},
-            {"role": "user", "content": user},
-        ],
-        "temperature": 0.0,
-        "max_tokens": 2048,
-        "stream": False,
-    }
-    req = urllib.request.Request(
-        url + "/v1/chat/completions",
-        data=json.dumps(body).encode(),
-        headers={"Content-Type": "application/json"},
-    )
-    t0 = time.perf_counter()
-    with urllib.request.urlopen(req, timeout=3600) as resp:
-        doc = json.loads(resp.read())
-    wall = time.perf_counter() - t0
-    text = doc["choices"][0]["message"].get("content") or ""
-    usage = doc.get("usage") or {}
+    if api == "anthropic":
+        doc, wall = api_post(
+            {
+                "model": model,
+                "max_tokens": 16000,
+                "system": system,
+                "fallbacks": "default",
+                "messages": [{"role": "user", "content": user}],
+            },
+            key_env,
+        )
+        text = "".join(
+            b.get("text", "")
+            for b in doc.get("content") or []
+            if b.get("type") == "text"
+        )
+        usage = {
+            "prompt_tokens": (doc.get("usage") or {}).get("input_tokens"),
+            "completion_tokens": (doc.get("usage") or {}).get("output_tokens"),
+        }
+    else:
+        body = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+            "temperature": 0.0,
+            "max_tokens": 2048,
+            "stream": False,
+        }
+        req = urllib.request.Request(
+            url + "/v1/chat/completions",
+            data=json.dumps(body).encode(),
+            headers={"Content-Type": "application/json"},
+        )
+        t0 = time.perf_counter()
+        with urllib.request.urlopen(req, timeout=3600) as resp:
+            doc = json.loads(resp.read())
+        wall = time.perf_counter() - t0
+        text = doc["choices"][0]["message"].get("content") or ""
+        usage = doc.get("usage") or {}
     m = re.search(r"```(?:yaml|yml)?\s*\n(.*?)```", text, re.S)
     path = out / "D-contract.yaml"
     path.write_text(m.group(1) if m else text)
@@ -307,6 +387,10 @@ def main() -> int:
     ap.add_argument("--run", action="store_true")
     ap.add_argument("--jev-port", type=int, default=None)
     ap.add_argument("--jev-model", default="jev")
+    ap.add_argument("--api", default="", help="anthropic: the Ref arm")
+    ap.add_argument("--api-key-env", default="ANTHROPIC_API_KEY")
+    ap.add_argument("--price-in", type=float, default=0.0)
+    ap.add_argument("--price-out", type=float, default=0.0)
     ap.add_argument(
         "--write-config-only",
         action="store_true",
@@ -315,7 +399,15 @@ def main() -> int:
     args = ap.parse_args()
     work = Path(args.work)
     work.mkdir(parents=True, exist_ok=True)
-    cfg = write_config(work, args.port, args.model, args.jev_port, args.jev_model)
+    cfg = write_config(
+        work,
+        args.port,
+        args.model,
+        args.jev_port,
+        args.jev_model,
+        args.api,
+        args.api_key_env,
+    )
     if args.write_config_only:
         print(cfg)
         return 0
@@ -344,7 +436,16 @@ def main() -> int:
             label = f"{args.label}-{mode}"
             try:
                 if mode == "D":
-                    rec = mode_d(url, args.model, clone, prompt, out, cfg)
+                    rec = mode_d(
+                        url,
+                        args.model,
+                        clone,
+                        prompt,
+                        out,
+                        cfg,
+                        args.api,
+                        args.api_key_env,
+                    )
                 elif mode == "P":
                     rec = mode_p(cfg, clone, prompt, out)
                 elif mode == "J":
@@ -361,6 +462,8 @@ def main() -> int:
                 )
                 continue
             em = rec.get("emitted") or []
+            cost = (rec.get("prompt_tokens") or 0) * args.price_in / 1e6
+            cost += (rec.get("completion_tokens") or 0) * args.price_out / 1e6
             t_hit = any(e.get("target") == truth["target"] for e in em)
             k_hit = any(e.get("task_type") == truth["task_type"] for e in em)
             emit(
@@ -375,6 +478,7 @@ def main() -> int:
                 f"prompt_tokens={rec.get('prompt_tokens', 'na')}",
                 f"completion_tokens={rec.get('completion_tokens', 'na')}",
                 f"refused={int(bool(rec.get('refused')))}",
+                f"cost_usd={cost:.4f}",
                 free=rec.get("error", ""),
             )
             if args.run:

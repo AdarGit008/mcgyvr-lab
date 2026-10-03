@@ -1,6 +1,8 @@
 # jev-mcorch — the local agent run — planned 2026-10-03
 
-**PLAN, LOCKED FOR OWNER APPROVAL. Nothing below the pilots has been launched.**
+**APPROVED 2026-10-03 (owner, relayed). Frozen at the first door measurement.**
+The owner's answers to §6 are folded in below (marked *ruled*); the edits were
+made before step 0 ran.
 Pilots ran by hand on 2026-10-03 (both rigs idle before and after; every launch
 command is in `records/evidence/2026-10-03-jev-mcorch/`), the campaign scripts are
 under `tools/runs/campaigns/jev-mcorch/` and run only through the door
@@ -31,6 +33,19 @@ a compact mcorch prompt. Jev answers **J1** intent (chat/work/status/abort),
 Decision 0013 (api-tier-only decomposition) is rescinded. §4 steps 6–7 and §5
 carry this; D/P/J (step 4) stays as the contract-authoring comparison because
 the rung still has to author a contract inside the loop.
+
+### 0.1 Owner rulings on §6 (2026-10-03)
+
+| # | question | ruling | where it lands |
+|---|---|---|---|
+| 1 | thinking template | fixed in code: `decision.classify` will send `chat_template_kwargs: {enable_thinking: false}` on every Jev call; until it lands the drivers inject the same kwarg at the transport seam; `--reasoning off` stays only as step 0's recorded comparison arm | `jev_slice.py:install_kwargs`, `jev_items.py`, `0-fidelity.sh` arms `lcp-today` / `lcp-kwargs` / `lcp-rea-off` |
+| 2 | gate rung state | the code will add `original` + `change` (verify.py's `verdict_state` shape) and still judge added lines; measured as the **primary** arm, added-lines-only as the **secondary** arm | `jev_slice.py` rows `satisfies_p` (rich) vs `satisfies_p_al` |
+| 3 | labels | 60 items each for J1/J2/J3, `in_scope`, `regression_risk`, from the step-6 transcripts, labelled by an Opus subagent; a random 10% listed for the owner's spot check; not waited on | step 8 (`8-jev-items.sh`, `jev_items.py`, `items-<date>.jsonl`) |
+| 4 | API Ref arm | approved, small: the same repos × D/P plus the step-6 loop, one model, the credential already in the environment (never printed; skipped if absent), cost recorded | step 7 (`7-ref.sh`): `claude-opus-5-5` over the Messages API (raw HTTP; the lab's frozen venv has no SDK) at the skill's rate card $4 / $20 per MTok |
+| 5 | downloads | approved (~50 GB srv1, ~15 GB srv2); deletions as planned (none this stage; candidates grepped and logged first) | §4.4 |
+| 6 | jail | mcorch relies on harness permissions; the campaign's harness player keeps its path jail (test safety) | `tool_loop.py:run_tool` |
+| 7 | corpus | bench repos fixed: green `acceptance`, tests moved to `demonstration`, `__pycache__` ignored; the mcgyvr repo itself added as a real repo from a read-only clone in scratch (never a user checkout) | `make_repos.py`, `real-tasks.json` (two `docstring` tasks on `fleet/linkread.py` and `rename.py`), `ORCH_REAL_REPO` |
+| 8 | slice | 400 rows | `slice-400.jsonl` |
 
 ## 1. What exists (read from code and records, 2026-10-03)
 
@@ -256,18 +271,20 @@ Evidence lands in `records/evidence/<date>-jev-mcorch/<artifact>.tsv`.
 
 | step | host / card | engine + flags | candidates (container path; HF repo, quant, size) | ctx / slots | data | metrics | stop rule |
 |---|---|---|---|---|---|---|---|
-| 0 fidelity | srv1 card 0 | llama.cpp `--jinja` default vs `--reasoning off`; vLLM `--logprobs-mode raw_logprobs --max-logprobs 20` (+`--default-chat-template-kwargs`) | Qwen3-4B Q4_K_M (on disk); `thewimo/Qwen3-4B-AWQ` (cached); Ling-3.0-tiny Q4_K_M (on disk, the P1 refusal) | 16k / 1 | fixed state, 4 questions, `--pad 300` arm | first token + p, readable, warm wall, cached tokens | a candidate whose shipped-template first token is not a label is run only with the flag that fixes it, and the flag joins its tag |
-| 1 ladder | srv1 card 0 | llama.cpp as step 0 | on disk: Qwen2.5-Coder 1.5B/3B/7B(IQ4_XS)/14B Q4_K_M, Qwen3-4B, Qwen3-8B, Qwen3.5-4B-super-coder Q4_0; **download** (unsloth GGUF, decimal GB): Qwen3-4B-Instruct-2507 Q4_K_M 2.50, Qwen3.5-2B Q8_0 2.01, Qwen3.5-4B Q4_K_M 2.74, Qwen3.5-9B Q4_K_M 5.68, gemma-3-4b-it Q4_K_M 2.49 | 16k / 1 | `slice-400.jsonl` (200/200, 212 tasks) | per candidate: acc, AUROC, Brier, ECE10, yes-rate for `satisfies_task` and `verdict`; `regression_risk` level by label; row wall med/p90; card MiB; load s | a candidate with > 5% `DecisionError` rows is filed REFUSED-on-protocol, not scored; the ladder stops adding size once two consecutive sizes are within the n=400 tie bar (AUROC ±0.03) |
+| 0 fidelity | srv1 card 0 | llama.cpp: arms `lcp-today` (the body as sent today), `lcp-kwargs` (the body the code will send, *ruled*), `lcp-rea-off` (server flag, comparison); vLLM `--logprobs-mode raw_logprobs --max-logprobs 20`, arms `vllm-today` / `vllm-kwargs` | Qwen3-4B Q4_K_M (on disk); `thewimo/Qwen3-4B-AWQ` (cached); Ling-3.0-tiny Q4_K_M (on disk, the P1 refusal) | 16k / 1 | fixed state, 4 questions, `--pad 300` arm; 10 slice rows today-vs-kwargs | first token + p, readable, warm wall, cached tokens | a candidate whose kwargs-body first token is not a label is filed REFUSED-on-protocol |
+| 1 ladder | srv1 card 0 | llama.cpp, every call with the ruled kwargs | on disk: Qwen2.5-Coder 1.5B/3B/7B(IQ4_XS)/14B Q4_K_M, Qwen3-4B, Qwen3-8B, Qwen3.5-4B-super-coder Q4_0; **downloaded 2026-10-03** (unsloth GGUF, decimal GB): Qwen3-4B-Instruct-2507 Q4_K_M 2.50, Qwen3.5-2B Q8_0 2.01, Qwen3.5-4B Q4_K_M 2.74, Qwen3.5-9B Q4_K_M 5.68, gemma-3-4b-it Q4_K_M 2.49 | 16k / 1 | `slice-400.jsonl` (200/200, 212 tasks) | per candidate, **primary arm** (rich state, *ruled*) and secondary (added lines): acc, AUROC, Brier, ECE10, yes-rate for `satisfies_task`; the same for `verdict`; `regression_risk` level by label; row wall med/p90 (7 questions); card MiB; load s | a candidate with > 5% `DecisionError` rows is filed REFUSED-on-protocol, not scored; the ladder stops adding size once two consecutive sizes are within the n=400 tie bar (AUROC ±0.03) |
 | 2 srv2 | srv2 card 0 (1660S) | llama.cpp L3 image | the step-1 candidates ≤ 7B | 16k / 1 | same slice | same + wall (the placement figure) | quality figures must agree with step 1's within ±0.03 AUROC or the card changed the answer → investigate the build |
-| 3 vLLM | srv1 card 0 | vLLM v0.26.0 fp16, util 0.45, `--max-num-seqs 4` | cached AWQ: Qwen2.5-Coder-1.5B/3B/7B-AWQ, `thewimo/Qwen3-4B-AWQ` | 16k / 4 | same slice | same; plus footprint at util 0.45 and the engine's KV readback | if AUROC differs from the GGUF twin by > 0.05, the quant/engine pair is a semantic key and both stay in the matrix |
+| 3 vLLM | srv1 card 0 | vLLM v0.26.0 fp16, util 0.45, `--max-num-seqs 4`, the ruled kwargs per request | cached AWQ: Qwen2.5-Coder-1.5B/3B/7B-AWQ, `thewimo/Qwen3-4B-AWQ` | 16k / 4 | same slice | same; plus footprint at util 0.45 and the engine's KV readback | if AUROC differs from the GGUF twin by > 0.05, the quant/engine pair is a semantic key and both stay in the matrix |
 
 **Use case 2 — the rung as the conversational agent** (steps 4, 6, 7)
 
 | step | host | engine + flags | candidates (both cards `-sm layer`) | ctx / slots | data | metrics | stop rule |
 |---|---|---|---|---|---|---|---|
-| 4 orch-modes | srv1 | llama.cpp `--jinja`; `--reasoning off` on thinking templates; Jev unit on card 0 (`JEV_MODEL`) bound as verifier and J's classifier | on disk: Coder-30B-A3B UD-IQ3_XXS (/data), Qwen3.6-35B-A3B UD-IQ3_XXS, gpt-oss-20b MXFP4, Coder-Next UD-Q3_K_XL (/data, cm24); **download**: `unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF` UD-Q4_K_XL 17.67 GB, `unsloth/GLM-4.7-Flash-GGUF` UD-Q4_K_XL 17.52 GB | 32k / 1 | 5 bench repos (`make_repos.py`), prompt = contract task + test command | per (repo, mode): emitted, valid, target/type match, wall, D's prompt/completion tokens, J refusal; per contract: `mcgyvr run` outcome, rungs | a mode with 0/5 valid on two candidates is dropped from later candidates |
+| 4 orch-modes | srv1 | llama.cpp `--jinja`; `--reasoning off` on thinking-by-default orchestrator templates (the rung's own thinking, not the Jev question); Jev unit on card 0 (`JEV_MODEL`) bound as verifier and J's classifier | on disk: Coder-30B-A3B UD-IQ3_XXS (/data), Qwen3.6-35B-A3B UD-IQ3_XXS, gpt-oss-20b MXFP4, Coder-Next UD-Q3_K_XL (/data, cm24); **downloaded**: `unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF` UD-Q4_K_XL 17.67 GB, `unsloth/GLM-4.7-Flash-GGUF` UD-Q4_K_XL 17.52 GB | 32k / 1 | 5 bench repos + 2 real tasks on a read-only clone of mcgyvr@417a2a9b (`make_repos.py`, `real-tasks.json`); acceptance green, tests as `demonstration` (*ruled*) | per (repo, mode): emitted, valid, target/type match, wall, D's prompt/completion tokens, J refusal; per contract: `mcgyvr run` outcome, rungs | a mode with 0/5 valid on two candidates is dropped from later candidates |
 | 6 tool-loop | srv1 | same; tool calls parsed by the engine (`--jinja` + GGUF template; flags on the LAUNCH row) | same candidates | 64k / 1 | same repos; compact mcorch prompt + 4 tools | per turn: wall (TTFT-bound), prompt/completion/cached tokens, parsed calls, unparsed call-text; per repo: turns, contract written, `mcgyvr run` invoked, result outcome, accept.py passes, finished in plain text, max prompt tokens | a candidate that emits unparsed tool text on > 20% of turns is filed as "no tool protocol" and its vLLM parser twin is queued |
-| 7 ctx-cost | srv1 | same | same | 4k…64k | synthetic mcorch transcript (tool results), cold then +1 turn | cold wall (prompt processing tok/s), warm wall, cached tokens | TTFT > 30 s at 32k cold on a candidate removes it from the "conversational" column, not from the ladder |
+| 6b ctx-cost | srv1 | same | same | 4k…64k | synthetic mcorch transcript (tool results), cold then +1 turn | cold wall (prompt processing tok/s), warm wall, cached tokens | TTFT > 30 s at 32k cold on a candidate removes it from the "conversational" column, not from the ladder |
+| 7 ref (*ruled*) | door on srv1, nothing launched | Anthropic Messages API, `claude-opus-5-5`, `fallbacks: "default"`, raw HTTP; P over the product's own transport to the compatibility endpoint | one hosted model | the step-4/6 corpus; D, P and the agent loop | the same MODE/RUN/TURN/LOOP rows plus tokens and `cost_usd` at $4 / $20 per MTok | skipped with a REFUSED row when the credential variable is unset |
+| 8 jev-items (*ruled*) | srv1 card 0 | llama.cpp as step 1 | the step-1 ladder's small candidates + Coder-30B Q4_XL | `items-<date>.jsonl`: 60 items × {J1 intent, J2 ready_to_run, J3 next, in_scope, regression_risk} from the step-6 transcripts, Opus-labelled, 10% spot-check sample listed | acc, mean p(label), refusal rate at confidence 0.5 per question | an item set with < 40 usable items per question is reported as such, not scored |
 
 **Use case 3 — fill the hardware** (step 5)
 
@@ -288,15 +305,20 @@ Evidence lands in `records/evidence/<date>-jev-mcorch/<artifact>.tsv`.
 | 4 | 2 srv2 (7 candidates) | srv2 | 1.5 h (runs in parallel with 3) |
 | 5 | 3 vLLM (4 × load 2–3 min + 400 rows) | srv1 | 50 min |
 | 6 | 4 orch-modes (6 candidates × 5 repos × 3 modes + runs) | srv1 | 2.5 h |
-| 7 | 6 tool-loop + 7 ctx (5 candidates) | srv1 | 2.5 h |
-| 8 | 5 fill (9 cells, Coder-Next loads from HDD ~4 min each) | srv1 | 1.5 h |
-| | total rig time | | ≈ 9.5 h srv1, 1.5 h srv2, over 2–3 sessions |
+| 7 | 6 tool-loop + 6b ctx (5 candidates, 7 repos) | srv1 | 3 h |
+| 8 | labelling (Opus subagent over the step-6 transcripts) | — | off-rig |
+| 9 | 7 ref (one hosted model, 7 repos) | door only | 30 min |
+| 10 | 8 jev-items (9 candidates × 300 items) | srv1 | 1 h |
+| 11 | 5 fill (9 cells, Coder-Next loads from HDD ~4 min each) | srv1 | 1.5 h |
+| | total rig time | | ≈ 11 h srv1, 1.5 h srv2 |
 
 ### 4.4 Disk plan
 
-Downloads (srv1 `~/models/dense|moe`, 85 GB free → ~34 GB after): the seven
-GGUFs in §4.2. srv2 (`~/models`, 269 GB free): the five Jev GGUFs (15.4 GB) for
-step 2. **No deletion in this stage.** Candidates for a later cleanup, each to
+Downloads (*ruled* approved, started 2026-10-03 18:36 UTC, public HF files
+over curl, no token; log `~/models/jev-mcorch-downloads-2026-10-03.log` on
+each rig): srv1 `~/models/dense|moe` (NVMe, 85 GB free before) the seven GGUFs
+in §4.2 (50.6 GB); srv2 `~/models/dense` the five Jev GGUFs (15.4 GB). **No
+deletion in this stage** (*ruled*: as planned). Candidates for a later cleanup, each to
 be grepped against `fleet-setup/`, `records/fleet/` and `tools/runs/campaigns/`
 before any `rm`, and hashed if a twin exists (`touching-models.md`): srv1
 `~/models.bak/dense/Qwen2.5-Coder-32B-Instruct-Q4_K_M.gguf` (19.9 GB; the Q5_K_M
@@ -328,7 +350,7 @@ logged in the evidence dir with path and size.
 | P3 | step 5 (fill) | P2 names the orchestrator candidates that complete the loop |
 | P4 (later) | end-to-end through real pi / Claude CLI against `/v1/messages`: the same 5 repos plus two real repositories, scoring replan quality after findings and multi-turn conversation; J1/J2/J3 Jev questions over labelled transcripts | the code agent's mcorch PR exists; labels for J1–J3 exist (§6 Q3) |
 
-## 6. Open questions for the owner (below the 90% floor)
+## 6. Questions put to the owner — all ruled 2026-10-03 (§0.1); kept as asked
 
 1. **Fix for the thinking template**: launch flag per Jev unit (`--reasoning off`, no code) or `chat_template_kwargs: {enable_thinking: false}` in `decision.classify`'s body (code, portable across engines)? The pilot shows both work on llama.cpp; vLLM needs `--default-chat-template-kwargs` or the body field.
 2. **The Jev state for the gate rung**: `added_lines` alone is at chance on every candidate; may the rung's state carry the whole `original`/`change` (what verify.py sends), at the prompt-size cost (~1k → ~2–4k tokens)?
@@ -348,7 +370,8 @@ logged in the evidence dir with path and size.
 - The gate's preflight wording (`acceptance-mutates-tree`, `acceptance-baseline-failing`) was read by the rung as "the tool is broken", after which it edited the target itself. The result file could name the fix (`-B`, move the command to `demonstration`) so a model-driven replan has something to act on.
 - The gate rung's `build_state` carries added lines only (Q2).
 - `mcgyvr run` requires `--orchestrator ID` outside a Claude Code / Pi session; the harness passes `RUN_ID`.
-- Nothing in the product serves `/v1/messages` yet; steps 6–7 measure the rung over OpenAI chat/completions with `tools`, which is what the mcorch adapter will translate. Record the tool-call parser flags on every LAUNCH row so the adapter's engine choice is traceable.
+- Nothing in the product serves `/v1/messages` yet; step 6 measures the rung over OpenAI chat/completions with `tools`, which is what the mcorch adapter will translate. Record the tool-call parser flags on every LAUNCH row so the adapter's engine choice is traceable.
+- The product's transport has one protocol (`pool.Protocol.OPENAI`); the Ref arm's P mode reaches Anthropic through its OpenAI-compatibility endpoint because that is the only way `mcgyvr delegate` can reach a hosted non-OpenAI model today.
 
 ## 8. Sources (online, 2026-10-03)
 

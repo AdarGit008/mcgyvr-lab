@@ -1,0 +1,30 @@
+{
+  "mcgyvr": [
+    {
+      "id": "doc-doorlinks-start",
+      "task_type": "docstring",
+      "target": "src/mcgyvr/fleet/linkread.py",
+      "task": "Add a docstring to the method DoorLinks.start in src/mcgyvr/fleet/linkread.py (the method that spawns `python -m mcgyvr.serving.run link --host H ...` and returns a Pending). One short paragraph in the file's existing voice: what it starts, what it returns, and that stdin is closed. Change nothing else in the file.",
+      "interface": "class DoorLinks:\n    def start(self, host: str, args: Sequence[str]) -> Pending",
+      "acceptance": [
+        "python -B -m py_compile src/mcgyvr/fleet/linkread.py"
+      ],
+      "demonstration": [
+        "python -B -c \"import ast,sys; t=ast.parse(open('src/mcgyvr/fleet/linkread.py').read()); c=[n for n in ast.walk(t) if isinstance(n,ast.ClassDef) and n.name=='DoorLinks'][0]; f=[n for n in c.body if isinstance(n,ast.FunctionDef) and n.name=='start'][0]; sys.exit(0 if ast.get_docstring(f) else 1)\""
+      ]
+    },
+    {
+      "id": "doc-rename-summary",
+      "task_type": "docstring",
+      "target": "src/mcgyvr/rename.py",
+      "task": "Add a docstring to the method RenameReport.summary in src/mcgyvr/rename.py: one or two sentences in the file's voice saying what the returned text lists (the rename, its occurrence and file counts, every touched file, and the references the index could not resolve). Change nothing else in the file.",
+      "interface": "class RenameReport:\n    def summary(self) -> str",
+      "acceptance": [
+        "python -B -m py_compile src/mcgyvr/rename.py"
+      ],
+      "demonstration": [
+        "python -B -c \"import ast,sys; t=ast.parse(open('src/mcgyvr/rename.py').read()); c=[n for n in ast.walk(t) if isinstance(n,ast.ClassDef) and n.name=='RenameReport'][0]; f=[n for n in c.body if isinstance(n,ast.FunctionDef) and n.name=='summary'][0]; sys.exit(0 if ast.get_docstring(f) else 1)\""
+      ]
+    }
+  ]
+}

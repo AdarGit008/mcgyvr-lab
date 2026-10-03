@@ -3,6 +3,8 @@
 
     tool_loop.py LABEL PORT MODEL REPOS_DIR WORK_DIR [--max-turns N]
     tool_loop.py LABEL PORT MODEL --ctx-ladder 4096,16384,32768,65536
+    tool_loop.py LABEL 0 claude-opus-5-5 REPOS_DIR WORK_DIR --api anthropic \
+                 --api-key-env ANTHROPIC_API_KEY [--price-in 4 --price-out 20]
 
 Under the door only. The rung is offered the harness's four tools (read_file,
 write_file, bash, grep) over OpenAI chat/completions with `tools`, a compact
@@ -31,6 +33,17 @@ The repos come from make_repos.py (a .truth.json beside each). With
 MCGYVR_CONFIG exported by the step, `mcgyvr run` inside a bash tool call lands
 on the config the step wrote (orch_modes.write_config), so the rung's worker
 is the same local unit — the skill flow on a local model.
+
+Every loop's full transcript (the messages list as sent, plus each tool call's
+result) is written to WORK_DIR/<repo>.transcript.json: the labelling corpus
+for J1/J2/J3, in_scope and regression_risk (owner answer 3).
+
+`--api anthropic` is the Ref arm (owner answer 4): the same loop against the
+Anthropic Messages API (`POST /v1/messages`, raw HTTP because the lab's frozen
+environment holds no SDK), the key read from the environment variable named
+by --api-key-env and never printed; TURN rows carry input/output tokens and
+LOOP rows the cost at the prices passed in (USD per million tokens). Thinking
+blocks are echoed back unchanged (the model's preserved-thinking rule).
 """
 
 from __future__ import annotations
@@ -44,6 +57,7 @@ import shutil
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 from typing import Any
@@ -228,6 +242,44 @@ def run_tool(name: str, args: dict[str, Any], work: Path, env: dict[str, str]) -
         return f"error: {type(exc).__name__}: {exc}"
 
 
+API_URL = "https://api.anthropic.com/v1/messages"
+
+
+def api_tools() -> list[dict[str, Any]]:
+    return [
+        {
+            "name": t["function"]["name"],
+            "description": t["function"]["description"],
+            "input_schema": t["function"]["parameters"],
+        }
+        for t in TOOLS
+    ]
+
+
+def api_post(body: dict[str, Any], key_env: str) -> tuple[dict[str, Any], float]:
+    key = os.environ.get(key_env, "")
+    if not key:
+        raise RuntimeError(f"{key_env} is not set; the Ref arm has no credential")
+    req = urllib.request.Request(
+        API_URL,
+        data=json.dumps(body).encode(),
+        headers={
+            "Content-Type": "application/json",
+            "x-api-key": key,
+            "anthropic-version": "2023-06-01",
+            "anthropic-beta": "server-side-fallback-2026-07-01",
+        },
+    )
+    t0 = time.perf_counter()
+    try:
+        with urllib.request.urlopen(req, timeout=1800) as resp:
+            doc = json.loads(resp.read())
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", "replace")[:300]
+        raise RuntimeError(f"Messages API HTTP {exc.code}: {detail}") from None
+    return doc, time.perf_counter() - t0
+
+
 def post(url: str, body: dict[str, Any]) -> tuple[dict[str, Any], float]:
     req = urllib.request.Request(
         url,
@@ -241,7 +293,15 @@ def post(url: str, body: dict[str, Any]) -> tuple[dict[str, Any], float]:
 
 
 def loop(
-    label: str, url: str, model: str, repo: Path, work_root: Path, max_turns: int
+    label: str,
+    url: str,
+    model: str,
+    repo: Path,
+    work_root: Path,
+    max_turns: int,
+    api: str = "",
+    key_env: str = "",
+    prices: tuple[float, float] = (0.0, 0.0),
 ) -> None:
     truth = json.loads((repo / ".truth.json").read_text())
     work = work_root / repo.name
@@ -262,7 +322,9 @@ def loop(
         {"role": "system", "content": SYSTEM},
         {"role": "user", "content": prompt},
     ]
+    api_messages: list[dict[str, Any]] = [{"role": "user", "content": prompt}]
     tools_used: list[str] = []
+    in_tok = out_tok = 0
     unparsed = bad_args = runs = 0
     contract_written = False
     outcomes: list[str] = []
@@ -271,34 +333,97 @@ def loop(
     t_all = time.perf_counter()
     turn = 0
     for turn in range(max_turns):
-        body = {
-            "model": model,
-            "messages": messages,
-            "tools": TOOLS,
-            "tool_choice": "auto",
-            "temperature": 0.0,
-            "max_tokens": 4096,
-            "stream": False,
-        }
-        try:
-            doc, wall = post(url, body)
-        except Exception as exc:
-            emit(
-                label,
-                "TURN",
-                f"repo={tok(repo.name)}",
-                f"turn={turn}",
-                free=f"{type(exc).__name__}: {exc}",
+        if api == "anthropic":
+            body = {
+                "model": model,
+                "max_tokens": 16000,
+                "system": SYSTEM,
+                "tools": api_tools(),
+                "fallbacks": "default",
+                "messages": api_messages,
+            }
+            try:
+                doc, wall = api_post(body, key_env)
+            except Exception as exc:
+                emit(
+                    label,
+                    "TURN",
+                    f"repo={tok(repo.name)}",
+                    f"turn={turn}",
+                    free=f"{type(exc).__name__}: {exc}",
+                )
+                break
+            usage = doc.get("usage") or {}
+            in_tok += int(usage.get("input_tokens") or 0)
+            out_tok += int(usage.get("output_tokens") or 0)
+            blocks = doc.get("content") or []
+            content = "".join(
+                b.get("text", "") for b in blocks if b.get("type") == "text"
             )
-            break
-        usage = doc.get("usage") or {}
-        msg = doc["choices"][0]["message"]
-        calls = msg.get("tool_calls") or []
-        content = msg.get("content") or ""
-        cached = (usage.get("prompt_tokens_details") or {}).get("cached_tokens") or 0
-        ptok = usage.get("prompt_tokens") or 0
+            uses = [b for b in blocks if b.get("type") == "tool_use"]
+            calls = [
+                {
+                    "id": b["id"],
+                    "function": {
+                        "name": b["name"],
+                        "arguments": json.dumps(b.get("input") or {}),
+                    },
+                }
+                for b in uses
+            ]
+            cached = int(usage.get("cache_read_input_tokens") or 0)
+            ptok = int(usage.get("input_tokens") or 0)
+            finish = doc.get("stop_reason")
+            # append-only: the whole content array (thinking blocks included)
+            api_messages.append({"role": "assistant", "content": blocks})
+            messages.append(
+                {"role": "assistant", "content": content or None, "tool_calls": calls}
+                if calls
+                else {"role": "assistant", "content": content}
+            )
+        else:
+            body = {
+                "model": model,
+                "messages": messages,
+                "tools": TOOLS,
+                "tool_choice": "auto",
+                "temperature": 0.0,
+                "max_tokens": 4096,
+                "stream": False,
+            }
+            try:
+                doc, wall = post(url, body)
+            except Exception as exc:
+                emit(
+                    label,
+                    "TURN",
+                    f"repo={tok(repo.name)}",
+                    f"turn={turn}",
+                    free=f"{type(exc).__name__}: {exc}",
+                )
+                break
+            usage = doc.get("usage") or {}
+            msg = doc["choices"][0]["message"]
+            calls = msg.get("tool_calls") or []
+            content = msg.get("content") or ""
+            cached = int(
+                (usage.get("prompt_tokens_details") or {}).get("cached_tokens") or 0
+            )
+            ptok = int(usage.get("prompt_tokens") or 0)
+            finish = doc["choices"][0].get("finish_reason")
+            if calls:
+                messages.append(
+                    {
+                        "role": "assistant",
+                        "content": content or None,
+                        "tool_calls": calls,
+                    }
+                )
+            else:
+                messages.append({"role": "assistant", "content": content})
         max_prompt = max(max_prompt, ptok)
         sum_cached += cached
+        ctok = usage.get("completion_tokens") or usage.get("output_tokens") or "na"
         looks_like_call = bool(
             re.search(
                 r"<tool_call>|\"name\"\s*:\s*\"(read_file|write_file|bash|grep)\"",
@@ -314,21 +439,17 @@ def loop(
             f"turn={turn}",
             f"wall_s={wall:.2f}",
             f"prompt_tokens={ptok}",
-            f"completion_tokens={usage.get('completion_tokens', 'na')}",
+            f"completion_tokens={ctok}",
             f"cached_tokens={cached}",
             f"n_calls={len(calls)}",
-            f"finish={tok(doc['choices'][0].get('finish_reason'))}",
+            f"finish={tok(finish)}",
             f"unparsed={int(not calls and looks_like_call)}",
             free=content[:120],
         )
-        if calls:
-            messages.append(
-                {"role": "assistant", "content": content or None, "tool_calls": calls}
-            )
-        else:
-            messages.append({"role": "assistant", "content": content})
+        if not calls:
             final = content
             break
+        results: list[dict[str, Any]] = []
         for c in calls:
             fn = c.get("function", {})
             name = fn.get("name")
@@ -366,6 +487,15 @@ def loop(
                     "content": result,
                 }
             )
+            results.append(
+                {
+                    "type": "tool_result",
+                    "tool_use_id": c.get("id", f"call_{turn}"),
+                    "content": result,
+                }
+            )
+        if api == "anthropic":
+            api_messages.append({"role": "user", "content": results})
     # the task's own tests: the demonstration when the corpus carries one
     check = (truth.get("demonstration") or truth["acceptance"])[0]
     accept = subprocess.run(
@@ -382,11 +512,27 @@ def loop(
         capture_output=True,
         text=True,
     ).stdout.strip()
+    (work_root / f"{repo.name}.transcript.json").write_text(
+        json.dumps(
+            {
+                "label": label,
+                "model": model,
+                "repo": repo.name,
+                "truth": truth,
+                "messages": messages,
+            },
+            indent=1,
+        )
+    )
+    cost = in_tok * prices[0] / 1e6 + out_tok * prices[1] / 1e6
     emit(
         label,
         "LOOP",
         f"repo={tok(repo.name)}",
         f"turns={turn + 1}",
+        f"input_tokens={in_tok}",
+        f"output_tokens={out_tok}",
+        f"cost_usd={cost:.4f}",
         f"wall_total_s={time.perf_counter() - t_all:.1f}",
         f"tools={tok(','.join(tools_used) or 'none')}",
         f"unparsed={unparsed}",
@@ -537,6 +683,16 @@ def main() -> int:
     ap.add_argument("work", nargs="?")
     ap.add_argument("--max-turns", type=int, default=20)
     ap.add_argument("--ctx-ladder", default="")
+    ap.add_argument(
+        "--api", default="", help="anthropic: the Ref arm over /v1/messages"
+    )
+    ap.add_argument("--api-key-env", default="ANTHROPIC_API_KEY")
+    ap.add_argument(
+        "--price-in", type=float, default=0.0, help="USD per 1M input tokens"
+    )
+    ap.add_argument(
+        "--price-out", type=float, default=0.0, help="USD per 1M output tokens"
+    )
     args = ap.parse_args()
     url = f"http://{H}:{args.port}/v1/chat/completions"
     if args.ctx_ladder:
@@ -552,7 +708,17 @@ def main() -> int:
         return 2
     for repo in sorted(Path(args.repos).iterdir()):
         if (repo / ".truth.json").is_file():
-            loop(args.label, url, args.model, repo, Path(args.work), args.max_turns)
+            loop(
+                args.label,
+                url,
+                args.model,
+                repo,
+                Path(args.work),
+                args.max_turns,
+                api=args.api,
+                key_env=args.api_key_env,
+                prices=(args.price_in, args.price_out),
+            )
     return 0
 
 
