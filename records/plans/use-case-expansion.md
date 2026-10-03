@@ -262,3 +262,17 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   agent/media-gen are judged by their own structural evidence through the
   gate's output-checks rung. Reviewed
   (`records/review-p3-chat-agent-types.md`).
+- P3 second increment (prose carries no output cap, done — product `e2d9af54`):
+  the ruling "prose (chat/agent) and the orchestrator carry no output cap" is
+  implemented on the contract path. ``limits.max_output_tokens`` is now
+  optional (``None`` = uncapped): the loader derives a cap only for
+  ``whole_file``, ``_cap_undeclared`` no longer refuses a raw-text contract,
+  ``reply_cap`` returns ``None`` for an uncapped reply (before the rung's own
+  ``output_tokens`` is consulted), the OpenAI payload omits ``max_tokens``,
+  and the runner's truncation/overran checks stand down when no cap was
+  issued. A raw-text contract that *explicitly* declares a cap is still
+  honored. The orchestrator/verifier half of the ruling
+  (``delegate.py`` ``ORCHESTRATOR_OUTPUT_TOKENS``, ``verify.py``
+  ``REVIEW_OUTPUT_TOKENS``) is deferred to P4 — those are internal structured
+  dispatches, not the chat/agent prose path. Reviewed
+  (`records/review-p3-prose-no-cap.md`).
