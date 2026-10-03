@@ -3,28 +3,110 @@
 
     jev_items.py LABEL PORT MODEL ITEMS.jsonl [--limit N] [--no-kwargs]
 
-Under the door only. ITEMS.jsonl is the labelled corpus owner answer 3 asked
-for (60 items per question, labelled by an Opus subagent from the step-6
-transcripts, 10% set aside for the owner's spot check): one JSON object per
-line with
-
-    id        a stable id
-    question  the question's name: j1_intent | j2_ready | j3_next | in_scope |
-              regression_risk
-    kind      choice | noul | score
-    instructions, and `options` ({key: description}) for a choice or `levels`
-    (lowest first) for a score
-    state     the JSON state the question is asked over
-    label     the gold answer: an option key, "Yes"/"No", or a level name
-
-Each item is one ``mcgyvr.decision.classify`` call (the product's body, with
-the owner's chat_template_kwargs injected as jev_slice.py does). Rows:
+Under the door only. Each item is one ``mcgyvr.decision.classify`` call (the
+product's body, with the owner's chat_template_kwargs injected as
+jev_slice.py does). Rows:
 
   ITEM     id, question, kind, label, answer (the primitive's peak), p_label
            (probability on the gold answer), confidence, correct, wall_s
   ERR      an item the primitive could not read
   SUMMARY  per question: n, acc, mean p_label, refusal rate at confidence 0.5
            (ClassifierProposer's MIN_CONFIDENCE), errors
+
+THE ITEMS FILE (owner answer 3, 2026-10-03)
+
+Read by `jev_items.py` (step 8). One JSON object per line; the first line is a
+`{"_provenance": ...}` header naming the transcripts, the labeller, the date
+and the spot-check sample. Every other line:
+
+| key | value |
+|---|---|
+| `id` | stable, `<question>-<nnn>` |
+- `question`:
+    `j1_intent` \\
+    `j2_ready` \\
+    `j3_next` \\
+    `in_scope` \\
+    `regression_risk`
+| `kind` | `choice` \\| `noul` \\| `score` |
+| `instructions` | the question text the model reads (fixed per question, below) |
+| `options` | choice only: `{key: description}`, fixed per question, below |
+| `levels` | score only: `["low", "medium", "high"]` |
+| `state` | the JSON state the question is asked over (below) |
+| `label` | the gold answer: an option key, `"Yes"`/`"No"`, or a level name |
+| `source` | `{transcript, turn}` the item was drawn from |
+| `spot_check` | `true` on the owner's 10% sample |
+
+## The five questions
+
+| question | kind | instructions | options / levels | state |
+|---|---|---|---|---|
+- `j1_intent`:
+    choice
+    "What does the user's latest message ask the agent to do?"
+    `chat`: talk, explain or answer, no change to the repository; `work`: change the
+    repository or run a task in it; `status`: report where the current work stands;
+    `abort`: stop the current work
+    `{request: <the user's original request>, recent: [<the last 2-4 transcript turns,
+    abridged>], latest_user_message: <text>}`
+- `j2_ready`:
+    noul
+    "Is this contract ready to run as written — complete, consistent with the request,
+    and with an acceptance or demonstration command that can judge it?"
+    Yes/No
+    `{request, contract_yaml: <the text written>, validator_output: <`mcgyvr contract`
+    stdout/stderr if it was run, else ""> }`
+- `j3_next`:
+    choice
+    "Given the last result, what should the agent do next?"
+    `done`: the work is accepted or the request is answered; `replan`: change the
+    contract or the approach and run again; `ask_user`: a decision the user must make
+    is blocking; `abort`: the loop cannot make progress and should stop
+    `{request, last_tool_call: {name, arguments}, last_result: <text, abridged>,
+    attempts_so_far: N}`
+- `in_scope`:
+    noul
+    gate/jev.py's: "Is every added line within the scope the contract allows?"
+    Yes/No
+    gate/jev.py's rich state: `{task, path, added_lines, original, change, scope:
+    {allow: [...]}}` — `path` is the file the lines were added to
+- `regression_risk`:
+    score
+    gate/jev.py's: "How likely is the added change to break existing behaviour?"
+    low/medium/high
+    the same rich state
+
+## Where the items come from
+
+The step-6 transcripts (`records/evidence/<date>-jev-
+mcorch/work-<tag>/loops/*.transcript.json`
+and the Ref arm's `work-ref/loops/*.transcript.json`): each is the messages
+list the harness player sent (system, user, assistant with tool_calls, tool
+results) for one repo and one rung.
+
+- `j2_ready`: every `write_file` of a `.yaml` contract, paired with the next
+  `mcgyvr contract` tool result when there is one. Gold: the validator's
+  verdict when it ran (exit 0 → Yes); else the labeller's reading against the
+  schema and the request.
+- `j3_next`: every tool result that is a `mcgyvr run` result file read, a
+  failing test run, or the final plain-text turn. Gold: what a careful
+  operator would do next.
+- `in_scope`: every `write_file` of a non-contract file, as added lines against
+  the file's prior content, with the open contract's `scope.allow` (or the
+  task's `target` when no contract was written). Gold: No when the path is
+  outside the allow list (e.g. the rung's own `test_*.py`), else Yes.
+- `regression_risk`: the same edits. Gold: the labeller's judgment of the diff
+  against the stub (low: additive, interface kept; medium: changes a path
+  other code may take; high: alters existing behaviour or deletes).
+- `j1_intent`: the user's original request (`work`) and, for the other three
+  classes, follow-up messages the labeller writes *in the transcript's
+  context* at a chosen turn (a status question, a stop, a remark that asks
+  for no change). These are authored, not observed — the header says so and
+  `source.authored` is true on them.
+
+60 items per question; the classes balanced as far as the transcripts allow
+(stated per question in the header). 10% of each question's items drawn at
+random (seed in the header) carry `spot_check: true`.
 """
 
 from __future__ import annotations
