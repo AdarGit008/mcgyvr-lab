@@ -138,8 +138,9 @@ stays separate.
 | 5 | done: the e2e record, draft lab PR #52, through hub#14 and rig#569 (§8) |
 
 **Overlap.** The hub's draft mcgyvr-hub#7 (`pool-fleets`, standing units, slice
-2a of the hub plan) is based on #4, and will merge #8 to give each standing
-unit a width. Hitchhike 6b (slot advertising, another session's hub slice, #46
+2a of the hub plan) is based on #8 (`pool-session-width`, as of 2026-10-03),
+which gives each standing unit a width; its merge order is in §10. Hitchhike
+6b (slot advertising, another session's hub slice, #46
 § Terms) reuses Step 2's `Slots` type on a unit advertisement message and rides
 the same schema change (§5). **Per-card allocation** (the other session's
 decision of 2026-10-03, built by another session as a hub slice): a unit takes
@@ -619,10 +620,11 @@ merging, not each PR's GitHub base, and several bases differ from it.
   (`web-feed`) contains web-home #2, which can close or merge into `connect`
   first. #16 is `fix/live-b`. #15 is the hitchhike 6b relay; it contains #14,
   and will contain #16 after its next push.
-- **product:** #565 is the single-rig fix. #568 is the relief rungs; it merges
-  in #561 (`ladder-pressure-manager`), which GitHub shows merged to product
-  `main`. #570 is the agent flush. #571 is the 6b serve; it contains #569, and
-  will contain #570.
+- **product:** #565 is the single-rig fix. #568 is the relief rungs. #568
+  already contains #561 (merged to product `main` 2026-10-02); #562's branch
+  (`mcgyvr-social`) is behind `main` and must take `main` before merging. #570
+  is the agent flush. #571 is the 6b serve; it contains #569, and will contain
+  #570.
 - **lab:** #49 is live-a and #51 is live-b.
 
 **Constraints:**
@@ -632,6 +634,8 @@ merging, not each PR's GitHub base, and several bases differ from it.
   `busy` for the 2nd to 4th.
 - The product's schema pin (`rig#569:tests/rig_schema.py:41-45`) must equal the
   final hub schema once both hub#14 and hub#15 have landed. Re-check it then.
+- Product #562 (`mcgyvr-social`) takes product `main` before it merges (the
+  product note above).
 - Lab #42 merges after product #562.
 - Per-card allocation comes after 6b (§2, Overlap).
 
