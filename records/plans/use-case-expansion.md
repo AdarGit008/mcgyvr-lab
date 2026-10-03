@@ -67,7 +67,9 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   missing-validator posture flip, `media_valid` deepened past header-only for
   image / audio / video, the three validators (`safety_pass` / `asr_wer` /
   `grounded`) landed, and the `media_artifact` output schema.
-- **P3** chat + agent verticals → in progress (chat + agent task types landed)
+- **P3** chat + agent verticals → done: chat + agent task types, prose carries
+  no output cap, and the prose-aware serving path (raw-text replies are the
+  answer, gated only by the output checks the contract declares).
 - **P4** packaging (`mcgyvr init --use-case` + the deployment choice)
 
 ## Rulings
