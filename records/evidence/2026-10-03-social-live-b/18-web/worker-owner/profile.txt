@@ -1,0 +1,101 @@
+Profile · mcgyvr-hub 
+ mcgyvr hub 
+ Network 
+ Rigs 
+ Pool 
+ Feed 
+ Profile 
+ My rigs 
+ Crews 
+ Hitchhike 
+ W @worker-owner 
+ Settings 
+ Sign out 
+ W 
+ worker-owner 
+ @worker-owner · Public profile · Settings 
+ Your endpoint 
+ Use the pool from your own tools. Any tool that works with the OpenAI API can use it: set the tool's base URL to this address and its API key to one of your keys below. 
+ Base URL 
+ Copy 
+ Models you can use now: GET /models . Chat: POST /chat/completions . 
+ Requests to the general pool run on other members' rigs. The owner of the rig that runs the start of the model can read your prompts and the answers. Choose whose rigs may serve you in Settings . 
+ Balance 
+ 98.290005 credits 
+ You earn credits while your cards work for the pool (and a little while they stand ready); you spend them on answers from the pool, at each model's price. 
+ When What Model Tokens in / out Credits 
+ 3 min ago 
+ Your cards stood ready 
+ +0.004055 
+ 5 min ago 
+ Your cards answered 
+ Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf 
+ 44 / 16 
+ +0.026125 
+ 5 min ago 
+ Answer from the pool 
+ Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf 
+ 44 / 16 
+ -0.152 
+ 5 min ago 
+ Your cards answered 
+ Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf 
+ 44 / 103 
+ +0.085937 
+ 5 min ago 
+ Your cards answered 
+ Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf 
+ 44 / 32 
+ +0.037125 
+ 5 min ago 
+ Your cards stood ready 
+ +0.001666 
+ 6 min ago 
+ Your cards answered 
+ Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf 
+ 44 / 103 
+ +0.085937 
+ 7 min ago 
+ Your cards stood ready 
+ +0.003333 
+ 9 min ago 
+ Your cards stood ready 
+ +0.001666 
+ 12 min ago 
+ Your cards stood ready 
+ +0.003333 
+ The latest 10. All of them: GET /api/v1/me/credits . 
+ Keys 
+ A key lets a tool use your endpoint. The same key also signs you in here and in the mcgyvr CLI. Revoking a key stops everything that uses it and signs out every browser that used it. 
+ New key name 
+ Create 
+ default 
+ this browser 
+ mhu_1ef1951e3430427c_… 
+ created 46 min ago · used just now 
+ Revoke 
+ My rigs 1 
+ Add or manage rigs 
+ worker-rig 
+ online crew 
+1 card · 6 GB VRAM · 46 GB RAM
+ NVIDIA GeForce GTX 1660 SUPER 
+ 6 GB 
+ 5.6 GB free 
+ Sharing: crew: live-b-crew 
+ New join command 
+ Delete 
+ Models on your endpoint now 
+ What GET /models lists for you right now, with prices. 
+ No models are running for your endpoint right now. The hub starts them from its list on the cards lent to the pool. 
+ The pool 
+ Every online rig lending to the pool, seen as one machine. More on the pool page → 
+ 0 GB 
+ pooled VRAM · 0 cards
+ across 0 rigs
+ from 0 people
+ No cards in the pool right now. Rigs in pool mode join it while their agent is online. 
+ mcgyvr-hub 0.1.0 
+ Status 
+ API 
+ Theme: auto

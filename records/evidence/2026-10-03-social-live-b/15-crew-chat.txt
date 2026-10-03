@@ -1,0 +1,43 @@
+$ GET /v1/models scope=crew (head-owner)
+200 {"object": "list", "data": [{"id": "Qwen3-8B-Q4_K_M.gguf", "object": "model", "created": 0, "owned_by": "pool", "pricing": {"currency": "credits", "per_tokens": 1000, "input": "1", "output": "2"}}]}
+$ GET /v1/models scope=crew (worker-owner)
+200 {"object": "list", "data": []}
+$ GET /v1/models scope=crew (requester)
+200 {"object": "list", "data": []}
+# crew chat, owner (rig lent to the crew)
+08:58:05Z start who=head-owner model=Qwen3-8B-Q4_K_M.gguf stream=False max=128 scope=crew
+08:58:09Z HTTP 200 wall=3.95s prompt_tok=23 completion_tok=128 tok/s(wall)=32.4 timings={"cache_n": 3, "prompt_n": 20, "prompt_ms": 30.97, "prompt_per_token_ms": 1.5485, "prompt_per_second": 645.7862447529868, "predicted_n": 128, "predicted_ms": 2080.529, "predicted_per_token_ms": 16.38211811023622, "predicted_per_second": 61.04216764101822}
+answer: "Okay, I need to write a Python function to check if a number is prime. Let me think about how to approach this.\n\nFirst, what's a prime number? A prime number is"
+08:58:09Z start who=head-owner model=Qwen3-8B-Q4_K_M.gguf stream=True max=128 scope=crew
+08:58:13Z HTTP 200 headers=1.11s first_token=1.11s wall=4.38s chunks=126 completion_tok=128 decode tok/s=38.8 done=True error=null
+answer: "Okay, I need to write a Python function to check if a number is prime. Let me think about how to approach this.\n\nFirst, what's a prime number? A prime number is" | last line: data: [DONE]
+# crew chat, member whose rig is still in pool mode
+08:58:13Z start who=worker-owner model=Qwen3-8B-Q4_K_M.gguf stream=False max=128 scope=crew
+08:58:14Z HTTP 403 after 0.05s retry-after=None body={"error":{"message":"Other people's rigs can run this model, but you can use them only while you lend too: put one of your rigs online lending to that crew (crew mode, lent to it). Right now none of your online rigs lends to that audience.","type":"permission_error","code":"not_giving","param":null}}
+# non-member
+08:58:14Z start who=requester model=Qwen3-8B-Q4_K_M.gguf stream=False max=128 scope=crew
+08:58:14Z HTTP 404 after 0.04s retry-after=None body={"error":{"message":"Qwen3-8B-Q4_K_M.gguf is not running in your crews, and the hub does not start models on request. Running now: nothing you can use.","type":"invalid_request_error","code":"model_not_found","param":null}}
+# general pool scope for the crew-only model
+08:58:14Z start who=worker-owner model=Qwen3-8B-Q4_K_M.gguf stream=False max=128 scope=None
+08:58:14Z HTTP 404 after 0.03s retry-after=None body={"error":{"message":"Qwen3-8B-Q4_K_M.gguf is not running in the general pool, and the hub does not start models on request. Running now: nothing you can use. Your crew runs it: send the request with X-Mcgyvr-Scope: crew.","type":"invalid_request_error","code":"model_not_found","param":null}}
+$ hubctl share worker-rig crew; mcgyvr-hub rigs crew worker-rig live-b-crew --as worker-owner
+worker-rig crew
+# crew chat, member now lending to the crew
+08:58:16Z start who=worker-owner model=Qwen3-8B-Q4_K_M.gguf stream=False max=128 scope=crew
+08:58:19Z HTTP 200 wall=3.10s prompt_tok=23 completion_tok=128 tok/s(wall)=41.3 timings={"cache_n": 22, "prompt_n": 1, "prompt_ms": 16.767, "prompt_per_token_ms": 16.767, "prompt_per_second": 59.64096141229797, "predicted_n": 128, "predicted_ms": 2077.541, "predicted_per_token_ms": 16.358590551181102, "predicted_per_second": 61.12996085275814}
+answer: "Okay, I need to write a Python function to check if a number is prime. Let me think about how to approach this.\n\nFirst, what's a prime number? A prime number is"
+08:58:19Z start who=worker-owner model=Qwen3-8B-Q4_K_M.gguf stream=True max=64 scope=crew
+08:58:22Z HTTP 200 headers=0.74s first_token=0.75s wall=3.11s chunks=62 completion_tok=64 decode tok/s=26.7 done=True error=null
+answer: "Okay, I need to write a Python function to check if a number is prime. Let me think about how to approach this.\n\nFirst, what's a prime number? A prime number is" | last line: data: [DONE]
+$ credits ledger head-owner --limit 4
+when	kind	credits	model	in	out	rig	request	reason	estimated
+2026-10-03 08:57:21	earn_standby	0.001472	-	-	-	0385c97b274149b4b01961f87ae596a8	-	-	no
+2026-10-03 08:55:21	earn_work	0.125875	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	16	0385c97b274149b4b01961f87ae596a8	271165831c444b9aafcbefad1c41a494	-	no
+2026-10-03 08:55:16	earn_work	0.414063	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	0385c97b274149b4b01961f87ae596a8	44ee3ac29ed14245b2f6754160262e65	-	no
+2026-10-03 08:55:16	spend	-0.5	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	-	44ee3ac29ed14245b2f6754160262e65	-	no
+$ credits ledger worker-owner --limit 4
+when	kind	credits	model	in	out	rig	request	reason	estimated
+2026-10-03 08:57:21	earn_standby	0.004055	-	-	-	98eaf6d3cb2c4f79a1840b8725c8d0f8	-	-	no
+2026-10-03 08:55:21	earn_work	0.026125	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	16	98eaf6d3cb2c4f79a1840b8725c8d0f8	271165831c444b9aafcbefad1c41a494	-	no
+2026-10-03 08:55:21	spend	-0.152	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	16	-	271165831c444b9aafcbefad1c41a494	-	no
+2026-10-03 08:55:16	earn_work	0.085937	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	98eaf6d3cb2c4f79a1840b8725c8d0f8	44ee3ac29ed14245b2f6754160262e65	-	no

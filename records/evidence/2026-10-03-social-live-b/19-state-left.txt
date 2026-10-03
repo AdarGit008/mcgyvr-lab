@@ -1,0 +1,10 @@
+# state left for the owner
+head-rig pool
+worker-rig pool
+priority	name	min	max	state	in/1k	out/1k
+1	Qwen3-8B-Q4_K_M.gguf	0	0	enabled	1	2
+2	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	1	1	enabled	2	4
+priority	name	min	max	state
+1	Qwen3-8B-Q4_K_M.gguf	1	1	enabled
+id	rig	model	width	riders' slots	in/1k	out/1k	state	riders
+5006f8e8f5cb4891adf5f999e7a7cffb	head-rig	Qwen3-8B-Q4_K_M.gguf	2	1	0.5	1	not_hitchhike	0

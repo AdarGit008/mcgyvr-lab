@@ -1,0 +1,16 @@
+== srv1 head
+started 2026-10-03T08:33:48.93817696Z
+"-m","/models/Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf","-ngl","999","-sm","layer","-np","1","-c","12288","-fa","on","-ctk","q8_0","-ctv","q8_0","--host","172.17.0.2","--port","8080","--rpc","10.211.0.2:50052","-dev","CUDA0,CUDA1,RPC0","-ts","27,26,12"]
+2026-10-03T08:34:44.137013967Z 0.55.024.122 I srv  llama_server: model loaded
+2026-10-03T08:34:44.137023067Z 0.55.024.127 I srv  llama_server: listening on http://172.17.0.2:8080
+tunnel started 2026-10-03T08:33:42.637965699Z
+7h2eLLgHbUIlaO88Zcu+84bjhlgRjgIA+fXl+XPIxjY=	192.168.1.167:51820
+== srv2 worker
+started 2026-10-03T08:33:46.806664762Z
+2026-10-03T08:33:50.163055967Z Client connection closed
+2026-10-03T08:33:52.168724254Z Accepted client connection
+2026-10-03T08:33:52.171874082Z Client connection closed
+2026-10-03T08:33:52.172638570Z Accepted client connection
+2026-10-03T08:35:16.606655126Z ggml_backend_cuda_graph_compute: CUDA graph warmup complete
+mwiEehXWrY1onXuakY+q+TAZUj4xNnmNLKhr0Xc17gg=	192.168.1.144:51820
+4.2G	/home/adaramir/mcgyvr-pool-tmp/e2e/data/rpc-cache

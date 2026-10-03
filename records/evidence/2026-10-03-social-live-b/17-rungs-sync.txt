@@ -1,0 +1,23 @@
+$ (srv2) MCGYVR_CONFIG=~/mcgyvr-pool-tmp/e2e/rider-setup MCGYVR_HUB_API_KEY=<worker-owner key> mcgyvr rig rungs sync
+Riding sends your prompts to other people's machines: the host of each rung runs the model on hardware they control and can read your prompts and the answers. Ride only with prompts you would show them.
+kept 1 relief rung(s) in /home/adaramir/mcgyvr-pool-tmp/e2e/rider-setup/relief.yaml
+  hitchhike-5006f8e8f5cb4891adf5f999e7a7cffb  within  x1  Qwen3-8B-Q4_K_M.gguf, hosted by head-owner
+exit 0
+total 20
+drwxrwxr-x 2 adaramir adaramir 4096 Oct  3 08:59 .
+drwx------ 5 adaramir adaramir 4096 Oct  3 08:59 ..
+-rw-rw-r-- 1 adaramir adaramir  183 Oct  3 08:59 fleet.yaml
+-rw-rw-r-- 1 adaramir adaramir   35 Oct  3 08:59 policy.yaml
+-rw-rw-r-- 1 adaramir adaramir  440 Oct  3 08:59 relief.yaml
+# Written by `mcgyvr rig rungs sync`, which rewrites it whole: an edit
+# here lasts until the next sync. Each host can read the prompts sent
+# to their rung.
+relief:
+  hitchhike-5006f8e8f5cb4891adf5f999e7a7cffb:
+    address: http://127.0.0.1:18765/v1
+    model: hitchhike@5006f8e8f5cb4891adf5f999e7a7cffb
+    api_key_env: MCGYVR_HUB_API_KEY
+    width: 1
+    position: within
+    hosted_by: head-owner
+    served_model: Qwen3-8B-Q4_K_M.gguf

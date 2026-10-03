@@ -1,0 +1,26 @@
+Feed · mcgyvr-hub 
+ mcgyvr hub 
+ Network 
+ Rigs 
+ Pool 
+ Feed 
+ Profile 
+ My rigs 
+ Crews 
+ Hitchhike 
+ H @head-owner 
+ Settings 
+ Sign out 
+ Feed 
+ Share a setup 
+ What happened on the network: your crews, ride offers, setups people shared, and the pool's units starting and stopping. Your endpoint, keys and balance are on your profile . 
+ All 
+ Crews 
+ Hitchhike 
+ Setups 
+ @head-owner offers rides on Qwen3-8B-Q4_K_M.gguf (rig head-rig ): up to 1 rider at once, 0.5 in / 1 out credits per 1000 tokens.
+ 1 min ago 
+ mcgyvr-hub 0.1.0 
+ Status 
+ API 
+ Theme: auto

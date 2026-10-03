@@ -1,0 +1,27 @@
+[demo-up] hub already running (pid 1883068)
+already bootstrapped
+[demo-up] tunnel to srv1 up (pid 1883369)
+[demo-up] tunnel to srv2 up (pid 1883427)
+[demo-up] agent on srv1 started (rig join http://127.0.0.1:18765 --token -)
+[demo-up] agent on srv2 started (rig join http://127.0.0.1:18765 --token -)
+head-rig    owner=head-owner    pool     online   ram 45363/47104 MiB agent 0.0.1.dev1371+g12fa907c1 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=worker-owner  pool     online   ram 45261/46797 MiB agent 0.0.1.dev1371+g12fa907c1 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+[demo-up] up
+13:INFO:     100.119.117.59:56468 - "WebSocket /api/v1/agent" [accepted]
+15:INFO:     rig joined rig=0385c97b274149b4b01961f87ae596a8 remote=100.119.117.59 cards=2 models=10 again=False
+16:INFO:     credits starter granted user=191786e5a64d48059f86e7bb42c7ae49 amount=100
+18:INFO:     100.119.117.59:57996 - "WebSocket /api/v1/agent" [accepted]
+20:INFO:     rig joined rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 remote=100.119.117.59 cards=1 models=0 again=False
+21:INFO:     credits starter granted user=04152dd6545843478980f5d9d66dcb7a amount=100
+== srv1 agent.log
+joined http://127.0.0.1:18765 as mhr_7dd2e3bc22267e34_<redacted>; the token is kept in /home/adaramir/mcgyvr-pool-tmp/e2e/home/rig-credentials.json
+agent for http://127.0.0.1:18765 as mhr_7dd2e3bc22267e34_<redacted>; Ctrl-C stops it
+lending: head on llamacpp:b10644-L3-rpc
+note: max_vram_mb: no longer a setting; a lent card is lent whole
+online as 0385c97b274149b4b01961f87ae596a8: 2 card(s), 47104 MiB RAM; a heartbeat every 15 s
+== srv2 agent.log
+joined http://127.0.0.1:18765 as mhr_3ddd12ad8f2f5125_<redacted>; the token is kept in /home/adaramir/mcgyvr-pool-tmp/e2e/home/rig-credentials.json
+agent for http://127.0.0.1:18765 as mhr_3ddd12ad8f2f5125_<redacted>; Ctrl-C stops it
+lending: worker on llamacpp:b10644-L3-rpc
+note: max_vram_mb: no longer a setting; a lent card is lent whole
+online as 98eaf6d3cb2c4f79a1840b8725c8d0f8: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s

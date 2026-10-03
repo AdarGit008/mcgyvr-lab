@@ -1,0 +1,3 @@
+08:54:08Z start who=head-owner model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf stream=True max=300 scope=None
+08:54:17Z HTTP 200 headers=1.11s first_token=1.11s wall=9.76s chunks=102 completion_tok=103 decode tok/s=11.8 done=True error=null
+answer: "```python\ndef is_prime(n):\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n    i = " | last line: data: [DONE]

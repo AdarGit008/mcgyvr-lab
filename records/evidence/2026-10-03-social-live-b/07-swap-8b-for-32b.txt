@@ -1,0 +1,7 @@
+worker-owner: 99.324666 credits now
+$ 08:31:36 mcgyvr-hub models set Qwen3-8B-Q4_K_M.gguf --copies 0 --max 0
+$ 08:31:38 mcgyvr-hub fleet replan
+asked the running hub to apply the fleet policies once: it does within 5 s
+priority	name	min	max	state	in/1k	out/1k
+1	Qwen3-8B-Q4_K_M.gguf	0	0	enabled	1	2
+2	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	1	1	enabled	0	0

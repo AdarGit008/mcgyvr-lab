@@ -1,0 +1,42 @@
+GET /v1/models 200 {"object": "list", "data": [{"id": "Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf", "object": "model", "created": 0, "owned_by": "pool", "pricing": {"currency": "credits", "per_tokens": 1000, "input": "2", "output": "4"}}]}
+# first request after ready (warm-up), then repeats
+08:35:42Z start who=worker-owner model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf stream=False max=128 scope=None
+08:35:52Z HTTP 200 wall=10.23s prompt_tok=44 completion_tok=103 tok/s(wall)=10.1 timings={"cache_n": 24, "prompt_n": 20, "prompt_ms": 201.174, "prompt_per_token_ms": 10.0587, "prompt_per_second": 99.41642558183462, "predicted_n": 103, "predicted_ms": 8764.162, "predicted_per_token_ms": 85.9231568627451, "predicted_per_second": 11.638306092470678}
+answer: "```python\ndef is_prime(n):\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n    i = "
+08:35:52Z start who=worker-owner model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf stream=False max=128 scope=None
+08:36:01Z HTTP 200 wall=9.13s prompt_tok=44 completion_tok=103 tok/s(wall)=11.3 timings={"cache_n": 43, "prompt_n": 1, "prompt_ms": 85.525, "prompt_per_token_ms": 85.525, "prompt_per_second": 11.69248757673195, "predicted_n": 103, "predicted_ms": 8788.231, "predicted_per_token_ms": 86.15912745098039, "predicted_per_second": 11.606431373959106}
+answer: "```python\ndef is_prime(n):\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n    i = "
+08:36:01Z start who=worker-owner model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf stream=True max=200 scope=None
+08:36:10Z HTTP 200 headers=1.11s first_token=1.11s wall=9.05s chunks=102 completion_tok=103 decode tok/s=12.8 done=True error=null
+answer: "```python\ndef is_prime(n):\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n    i = " | last line: data: [DONE]
+08:36:10Z start who=head-owner model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf stream=True max=200 scope=None
+08:36:20Z HTTP 200 headers=1.11s first_token=1.11s wall=9.19s chunks=102 completion_tok=103 decode tok/s=12.6 done=True error=null
+answer: "```python\ndef is_prime(n):\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n    i = " | last line: data: [DONE]
+$ credits ledger worker-owner
+when	kind	credits	model	in	out	rig	request	reason	estimated
+2026-10-03 08:36:20	earn_work	0.085937	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	98eaf6d3cb2c4f79a1840b8725c8d0f8	446553f13ca54fe1bd67a05f4c80bb8e	-	no
+2026-10-03 08:36:10	earn_work	0.085937	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	98eaf6d3cb2c4f79a1840b8725c8d0f8	5848586346e948bca6a8171174abf5d5	-	no
+2026-10-03 08:36:10	spend	-0.5	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	-	5848586346e948bca6a8171174abf5d5	-	no
+2026-10-03 08:36:01	earn_work	0.085937	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	98eaf6d3cb2c4f79a1840b8725c8d0f8	63413c1e52e24d9a8fa871f5cfa217ac	-	no
+2026-10-03 08:36:01	spend	-0.5	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	-	63413c1e52e24d9a8fa871f5cfa217ac	-	no
+2026-10-03 08:35:52	earn_work	0.085937	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	98eaf6d3cb2c4f79a1840b8725c8d0f8	59c088a155fe4e3aa7d8c188e79ba157	-	no
+2026-10-03 08:35:52	spend	-0.5	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	-	59c088a155fe4e3aa7d8c188e79ba157	-	no
+2026-10-03 08:35:42	earn_standby	0.003333	-	-	-	98eaf6d3cb2c4f79a1840b8725c8d0f8	-	-	no
+$ credits ledger head-owner
+when	kind	credits	model	in	out	rig	request	reason	estimated
+2026-10-03 08:36:20	earn_work	0.414063	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	0385c97b274149b4b01961f87ae596a8	446553f13ca54fe1bd67a05f4c80bb8e	-	no
+2026-10-03 08:36:20	spend	-0.5	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	-	446553f13ca54fe1bd67a05f4c80bb8e	-	no
+2026-10-03 08:36:10	earn_work	0.414063	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	0385c97b274149b4b01961f87ae596a8	5848586346e948bca6a8171174abf5d5	-	no
+2026-10-03 08:36:01	earn_work	0.414063	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	0385c97b274149b4b01961f87ae596a8	63413c1e52e24d9a8fa871f5cfa217ac	-	no
+2026-10-03 08:35:52	earn_work	0.414063	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	44	103	0385c97b274149b4b01961f87ae596a8	59c088a155fe4e3aa7d8c188e79ba157	-	no
+2026-10-03 08:35:42	earn_standby	0.006666	-	-	-	0385c97b274149b4b01961f87ae596a8	-	-	no
+2026-10-03 08:33:42	earn_standby	0.008722	-	-	-	0385c97b274149b4b01961f87ae596a8	-	-	no
+2026-10-03 08:31:05	earn_standby	0.006666	-	-	-	0385c97b274149b4b01961f87ae596a8	-	-	no
+2.02.299.313 I slot print_timing: id  0 | task 33 | prompt eval time =     201.17 ms /    20 tokens (   10.06 ms per token,    99.42 tokens per second)
+2.02.299.316 I slot print_timing: id  0 | task 33 |        eval time =    8764.16 ms /   103 tokens (   85.92 ms per token,    11.64 tokens per second)
+2.12.334.260 I slot print_timing: id  0 | task 137 | prompt eval time =      85.53 ms /     1 tokens (   85.53 ms per token,    11.69 tokens per second)
+2.12.334.268 I slot print_timing: id  0 | task 137 |        eval time =    8788.23 ms /   103 tokens (   86.16 ms per token,    11.61 tokens per second)
+2.21.554.516 I slot print_timing: id  0 | task 241 | prompt eval time =      85.53 ms /     1 tokens (   85.53 ms per token,    11.69 tokens per second)
+2.21.554.519 I slot print_timing: id  0 | task 241 |        eval time =    8789.45 ms /   103 tokens (   86.17 ms per token,    11.60 tokens per second)
+2.30.709.608 I slot print_timing: id  0 | task 345 | prompt eval time =      85.22 ms /     1 tokens (   85.22 ms per token,    11.73 tokens per second)
+2.30.709.611 I slot print_timing: id  0 | task 345 |        eval time =    8805.68 ms /   103 tokens (   86.33 ms per token,    11.58 tokens per second)

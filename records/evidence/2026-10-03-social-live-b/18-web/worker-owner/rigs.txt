@@ -1,0 +1,54 @@
+My rigs · mcgyvr-hub 
+ mcgyvr hub 
+ Network 
+ Rigs 
+ Pool 
+ Feed 
+ Profile 
+ My rigs 
+ Crews 
+ Hitchhike 
+ W @worker-owner 
+ Settings 
+ Sign out 
+ My rigs 
+ Add a rig 
+ Name 
+ Letters, digits, dots, hyphens, underscores. You can have up to 32 rigs. 
+ Sharing mode 
+ solo Yours alone: runs only your own requests, on your own rigs. It neither lends nor borrows. Seen by you only. 
+ crew Lent to your crews, whole cards. While it is online you may use your crewmates' crew rigs. 
+ pool Lent to the general pool, whole cards. While it is online you may use other people's pool rigs. 
+ hitchhike Runs your own units for you; riders the hub matches to you may use the slots you offer (you keep one, and yours go first). Listed publicly; never split across users. 
+ Add rig 
+ Your rigs 1 
+ worker-rig 
+ online crew 
+1 card · 6 GB VRAM · 46 GB RAM
+ NVIDIA GeForce GTX 1660 SUPER 
+ 6 GB 
+ 5.6 GB free 
+ Sharing: crew: live-b-crew 
+ New join command 
+ Delete 
+ Sharing modes 
+ solo Yours alone: runs only your own requests, on your own rigs. It neither lends nor borrows. Seen by you only. 
+ crew Lent to your crews, whole cards. While it is online you may use your crewmates' crew rigs. 
+ pool Lent to the general pool, whole cards. While it is online you may use other people's pool rigs. 
+ hitchhike Runs your own units for you; riders the hub matches to you may use the slots you offer (you keep one, and yours go first). Listed publicly; never split across users. 
+ worker-rig 
+ Sharing mode of worker-rig 
+ solo 
+ crew 
+ pool 
+ hitchhike 
+ Set mode 
+ Lent to live-b-crew. 
+ Crew worker-rig is lent to in crew mode 
+ my only crew (default) 
+ live-b-crew 
+ Set crew 
+ mcgyvr-hub 0.1.0 
+ Status 
+ API 
+ Theme: auto

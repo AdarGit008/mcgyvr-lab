@@ -1,0 +1,9 @@
+08:48:35.267 SIGTERM worker agent on srv2
+08:48:39.887 old worker agent has exited
+08:48:40.709 on srv2: mv ~/mcgyvr-pool-tmp/e2e/data/rpc-cache ~/mcgyvr-pool-tmp/e2e/data/rpc-cache.live-b-aside && ls ~/mcgyvr-pool-tmp/e2e/data
+rig-state.json
+rig-state.json.2026-10-02-aside
+rpc-cache.live-b-aside
+08:49:41.533 starting worker agent again (rig run)
+08:49:42.506 request A finished
+08:49:42.509 request B finished

@@ -1,0 +1,3 @@
+08:55:18Z start who=worker-owner model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf stream=False max=16 scope=None
+08:55:21Z HTTP 200 wall=2.50s prompt_tok=44 completion_tok=16 tok/s(wall)=6.4 timings={"cache_n": 43, "prompt_n": 1, "prompt_ms": 88.636, "prompt_per_token_ms": 88.636, "prompt_per_second": 11.282097567579765, "predicted_n": 16, "predicted_ms": 1285.705, "predicted_per_token_ms": 85.71366666666667, "predicted_per_second": 11.666750926534469}
+answer: "```python\ndef is_prime(n):\n    if n <= 1:\n       "

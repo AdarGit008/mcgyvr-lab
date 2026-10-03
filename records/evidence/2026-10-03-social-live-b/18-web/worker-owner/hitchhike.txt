@@ -1,0 +1,48 @@
+Hitchhike · mcgyvr-hub 
+ mcgyvr hub 
+ Network 
+ Rigs 
+ Pool 
+ Feed 
+ Profile 
+ My rigs 
+ Crews 
+ Hitchhike 
+ W @worker-owner 
+ Settings 
+ Sign out 
+ Hitchhike 
+ Ride on open slots of other people's units, or offer open slots of yours. The hub matches riders to hosts; nobody browses. 
+ Ride on others' units 
+ Hosts can read your prompts. Riding sends your prompts to other people's machines: the host of each rung runs the model on hardware they control and can read your prompts and the answers. Ride only with prompts you would show them. 
+ Riding is on: the hub may match hosts' units to you. 
+ Turn riding off 
+ Your rungs 1 
+ Hosts' units the hub matched to you: extra rungs for your own ladder, to cut queue time, never a step up. Send a rung's model to http://100.119.117.59:18765/v1 with your usual key. 
+ Host Model to send Host's unit runs Your width Position Price in / out 
+ @head-owner 
+ hitchhike@5006f8e8f5cb4891adf5f999e7a7cffb 
+ Qwen3-8B-Q4_K_M.gguf 
+ 1 
+ within your ladder 
+ 0.5 / 1 credits per 1000 tokens 
+ Your offers 0 
+ Share open slots of a unit you run. As the host you keep at least one slot, your own requests go first, and riders pay your price in credits. An offer is active only while its rig is online in hitchhike mode. 
+ No offers yet. Offer a unit below. 
+ Offer a unit 
+ Rig 
+ worker-rig 
+ Model 
+ The model file the unit runs, as your rig names it. 
+ Width 
+ The unit's slots: requests it runs at once. 2 or more, since you keep one. 
+ Riders' slots (optional) 
+ The most riders' requests at once, below the width. Blank: the width less one. 
+ Price in (optional) 
+ Price out (optional) 
+ Credits per 1000 input and output tokens. Blank: the general pool's price for this model if it lists one, else 0 (free). 
+ Offer 
+ mcgyvr-hub 0.1.0 
+ Status 
+ API 
+ Theme: auto

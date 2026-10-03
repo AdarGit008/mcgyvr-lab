@@ -1,0 +1,59 @@
+mcgyvr-hub · the network 
+ mcgyvr hub 
+ Network 
+ Rigs 
+ Pool 
+ Feed 
+ Profile 
+ My rigs 
+ Crews 
+ Hitchhike 
+ W @worker-owner 
+ Settings 
+ Sign out 
+ The network 
+ Everyone here, and the rigs they lend to the pool. 
+ 3 
+ people 
+ 2 
+ rigs online 
+ 3 
+ cards online 
+ 0 GB 
+ pooled VRAM 
+ Online now 
+ head-rig 
+ @head-owner 
+ online hitchhike 
+2 cards · 24 GB VRAM · 46 GB RAM
+ NVIDIA GeForce RTX 3060 
+ 12 GB 
+ 12 GB free 
+ NVIDIA GeForce RTX 3060 
+ 12 GB 
+ 12 GB free 
+ worker-rig 
+ @worker-owner 
+ online crew 
+1 card · 6 GB VRAM · 46 GB RAM
+ NVIDIA GeForce GTX 1660 SUPER 
+ 6 GB 
+ 5.6 GB free 
+ All online rigs → 
+ People 3 
+ H 
+ head-owner 
+ @head-owner ·
+ 1 rig · 1 online 
+ W 
+ worker-owner 
+ @worker-owner ·
+ 1 rig · 1 online 
+ R 
+ requester 
+ @requester ·
+ no rigs yet
+ mcgyvr-hub 0.1.0 
+ Status 
+ API 
+ Theme: auto

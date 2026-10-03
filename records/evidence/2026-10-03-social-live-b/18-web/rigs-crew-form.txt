@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+  File "/home/adaramir/claude/mcgyvr-lab-live-b/records/evidence/2026-10-03-social-live-b/instruments/web_walk.py", line 80, in <module>
+    t = save("signed-out", "landing", body)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adaramir/claude/mcgyvr-lab-live-b/records/evidence/2026-10-03-social-live-b/instruments/web_walk.py", line 71, in save
+    d.mkdir(parents=True, exist_ok=True)
+  File "/usr/lib/python3.12/pathlib.py", line 1313, in mkdir
+    os.mkdir(self, mode)
+NotADirectoryError: [Errno 20] Not a directory: '/dev/null/signed-out'

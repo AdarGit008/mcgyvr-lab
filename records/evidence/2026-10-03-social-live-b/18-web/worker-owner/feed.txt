@@ -1,0 +1,56 @@
+Feed · mcgyvr-hub 
+ mcgyvr hub 
+ Network 
+ Rigs 
+ Pool 
+ Feed 
+ Profile 
+ My rigs 
+ Crews 
+ Hitchhike 
+ W @worker-owner 
+ Settings 
+ Sign out 
+ Feed 
+ Share a setup 
+ What happened on the network: your crews, ride offers, setups people shared, and the pool's units starting and stopping. Your endpoint, keys and balance are on your profile . 
+ All 
+ Crews 
+ Hitchhike 
+ Setups 
+ @head-owner offers rides on Qwen3-8B-Q4_K_M.gguf (rig head-rig ): up to 1 rider at once, 0.5 in / 1 out credits per 1000 tokens.
+ 1 min ago 
+ live-b-crew started a unit of Qwen3-8B-Q4_K_M.gguf .
+ 3 min ago 
+ @head-owner added Qwen3-8B-Q4_K_M.gguf to the model list of live-b-crew (place 1, 1 to 1 copies).
+ 4 min ago 
+ @worker-owner joined live-b-crew.
+ 4 min ago 
+ @head-owner started the crew live-b-crew.
+ 4 min ago 
+ A pool unit of Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf stopped.
+ 5 min ago 
+ The pool started a unit of Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf .
+ 10 min ago 
+ The pool started a unit of Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf .
+ 21 min ago 
+ The pool started a unit of Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf .
+ 23 min ago 
+ The pool started a unit of Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf .
+ 26 min ago 
+ The pool started a unit of Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf .
+ 28 min ago 
+ A pool unit of Qwen3-8B-Q4_K_M.gguf stopped.
+ 28 min ago 
+ The pool started a unit of Qwen3-8B-Q4_K_M.gguf .
+ 31 min ago 
+ The pool started a unit of Qwen3-8B-Q4_K_M.gguf .
+ 33 min ago 
+ A pool unit of Qwen3-8B-Q4_K_M.gguf stopped.
+ 33 min ago 
+ The pool started a unit of Qwen3-8B-Q4_K_M.gguf .
+ 43 min ago 
+ mcgyvr-hub 0.1.0 
+ Status 
+ API 
+ Theme: auto

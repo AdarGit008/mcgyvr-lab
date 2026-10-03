@@ -1,0 +1,6 @@
+[demo-up] fresh database
+[demo-up] hub up on 100.119.117.59:18765 (pid 1883068, default ctx 12288)
+users: head-owner, worker-owner, requester | rigs: head-rig, worker-rig
+[demo-up] hub only: rigs not touched
+[('0012',)]
+['alembic_version', 'api_tokens', 'credit_entries', 'crew_members', 'crews', 'feed_items', 'fleet_replans', 'hitchhike_matches', 'hitchhike_offers', 'inference_sessions', 'pool_models', 'profiles', 'rig_cards', 'rig_tokens', 'rigs', 'session_members', 'setups', 'users', 'web_sessions']

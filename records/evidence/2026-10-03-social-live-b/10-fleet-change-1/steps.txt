@@ -1,0 +1,5 @@
+08:37:21.411 SIGTERM worker agent on srv2
+08:37:26.018 old worker agent has exited
+08:37:26.843 starting worker agent again (rig run)
+08:47:59.547 request A finished
+08:47:59.550 request B finished

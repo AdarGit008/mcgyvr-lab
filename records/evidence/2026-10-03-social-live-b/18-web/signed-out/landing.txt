@@ -1,0 +1,39 @@
+mcgyvr-hub · pool your GPUs 
+ mcgyvr hub 
+ Network 
+ Rigs 
+ Pool 
+ Sign in 
+ Join 
+ Pool your GPUs. Use the whole pool. 
+ Lend your graphics cards to the pool. The hub runs models across everyone's cards at once, so together we can run models that are too big for any one of us. 
+ 3 
+ people 
+ 1 
+ rigs online 
+ 2 
+ cards online 
+ 0 GB 
+ pooled VRAM 
+ Join with your rig 
+ Sign in 
+ How it works 
+ Add your rig. Run one command on the machine with the GPUs. Its cards join the pool while it is online. 
+ The hub runs the models. It splits each model across cards from many people's rigs. 
+ You get an endpoint and a key. Plug them into any tool that works with the OpenAI API. You use the pool from your own tools; there is no chat on this site. 
+ Give to take. You can use other people's cards only while one of your own rigs is online and lending. 
+ See the pool now → 
+ Four ways to share 
+ You pick one for each rig, and can change it any time. 
+ General pool (the default) 
+ Your cards join everyone's. The hub runs models across them, and you use the pool through your endpoint. Your requests run on other members' rigs, and the owner of the rig that runs the start of the model can read your prompts. 
+ Hitchhike 
+ You run your own model on your own rig and let others ride in its spare slots; your requests go first. You can ride on other people's models too, if you turn it on. Whoever runs the model can read the prompts that ride on it. 
+ Crew 
+ Lend your cards to a group you trust. People join a crew with its invite code, and the crew's owner picks the models it runs. 
+ Solo 
+ Your rig runs only for you, outside the hub's sharing: it neither lends nor borrows. You can still share your setup with others. 
+ mcgyvr-hub 0.1.0 
+ Status 
+ API 
+ Theme: auto

@@ -1,0 +1,33 @@
+PASS  signed out: / is the landing page  | mcgyvr-hub · pool your GPUs 
+ mcgyvr hub 
+ Network 
+ Rigs 
+ Pool 
+ Sign in 
+ Join 
+ Pool your GPUs. Use the whole pool. 
+ Lend your graphics cards to the pool. The hub runs models across everyone's ca
+PASS  signed out: /profile is not shown  | 303 /signin
+PASS  signed out: /me/hitchhike is not shown  | 303 /signin
+PASS  signed out: /me/rigs is not shown  | 303 /signin
+PASS  signed out: /me/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b is not shown  | 303 /signin
+PASS  head-owner: sign in with the personal key  | 303 /
+PASS  head-owner: GET / -> 200  | 1639 chars
+PASS  head-owner: GET /feed?show=crews -> 200  | 635 chars
+PASS  head-owner: GET /feed?show=hitchhike -> 200  | 564 chars
+PASS  head-owner: GET /profile -> 200  | 2829 chars
+PASS  head-owner: GET /me/hitchhike -> 200  | 1845 chars
+PASS  head-owner: GET /me/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b -> 200  | 951 chars
+PASS  head-owner: GET /me/rigs -> 200  | 1715 chars
+PASS  head-owner: GET /network -> 200  | 823 chars
+DONE 14 / 14
+PASS  worker-owner: sign in with the personal key  | 303 /
+PASS  worker-owner: GET / -> 200  | 1641 chars
+PASS  worker-owner: GET /feed?show=crews -> 200  | 637 chars
+PASS  worker-owner: GET /feed?show=hitchhike -> 200  | 566 chars
+PASS  worker-owner: GET /profile -> 200  | 2707 chars
+PASS  worker-owner: GET /me/hitchhike -> 200  | 1803 chars
+PASS  worker-owner: GET /me/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b -> 200  | 818 chars
+PASS  worker-owner: GET /me/rigs -> 200  | 1708 chars
+PASS  worker-owner: GET /network -> 200  | 825 chars
+DONE 23 / 23

@@ -1,0 +1,204 @@
+08:37:16.579 INFO:     100.119.117.59:38070 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+08:37:22.357 INFO:     rig left rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 why=closed
+08:37:22.363 INFO:     fleet unit held unit=5567168cc3ff433090e00c0955ca4c68 model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=0 why=rig_away
+08:37:28.543 INFO:     100.119.117.59:36270 - "WebSocket /api/v1/agent" [accepted]
+08:37:28.546 INFO:     connection open
+08:37:28.614 INFO:     rig joined rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 remote=100.119.117.59 cards=1 models=0 again=False
+08:37:28.617 INFO:     fleet unit failed unit=5567168cc3ff433090e00c0955ca4c68 model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' code=member_lost_session served=True
+08:37:28.710 INFO:     fleet unit started unit=ae22a294f8844b84a661b2c99fb5166c model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' rigs=0385c97b274149b4b01961f87ae596a8,98eaf6d3cb2c4f79a1840b8725c8d0f8 why=reload_of:5567168cc3ff433090e00c0955ca4c68
+08:37:28.715 INFO:     fleet unit replaced unit=5567168cc3ff433090e00c0955ca4c68 by=ae22a294f8844b84a661b2c99fb5166c model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=1 why=reload
+08:37:30.782 INFO:     fleet unit failed unit=ae22a294f8844b84a661b2c99fb5166c model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' code=busy served=False
+08:37:30.789 INFO:     request refused user=191786e5a64d48059f86e7bb42c7ae49 model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' status=502 code=session_failed
+08:37:30.791 INFO:     100.119.117.59:36260 - "POST /v1/chat/completions HTTP/1.1" 502 Bad Gateway
+08:39:30.866 INFO:     fleet unit started unit=8a58430415ec4b57b1989ca92d319eec model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' rigs=0385c97b274149b4b01961f87ae596a8,98eaf6d3cb2c4f79a1840b8725c8d0f8 why=below_min scope=pool
+08:41:08.361 INFO:     fleet unit ready unit=8a58430415ec4b57b1989ca92d319eec model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=0
+08:48:30.440 INFO:     100.119.117.59:42014 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+08:48:36.828 INFO:     rig left rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 why=closed
+08:48:36.831 INFO:     fleet unit held unit=8a58430415ec4b57b1989ca92d319eec model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=0 why=rig_away
+08:49:06.828 INFO:     fleet unit failed unit=8a58430415ec4b57b1989ca92d319eec model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' code=agent_gone served=True
+08:49:06.914 INFO:     fleet unit lost unit=8a58430415ec4b57b1989ca92d319eec model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=1 why=no_heir
+08:49:06.933 INFO:     request refused user=191786e5a64d48059f86e7bb42c7ae49 model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' status=502 code=session_failed
+08:49:06.936 INFO:     100.119.117.59:58986 - "POST /v1/chat/completions HTTP/1.1" 502 Bad Gateway
+08:49:43.411 INFO:     100.119.117.59:40416 - "WebSocket /api/v1/agent" [accepted]
+08:49:43.413 INFO:     connection open
+08:49:43.504 INFO:     rig joined rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 remote=100.119.117.59 cards=1 models=0 again=False
+08:49:43.528 INFO:     fleet unit started unit=d07ffa3e9ab44870b34314462efbddad model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' rigs=0385c97b274149b4b01961f87ae596a8,98eaf6d3cb2c4f79a1840b8725c8d0f8 why=below_min scope=pool
+08:51:59.378 INFO:     fleet unit ready unit=d07ffa3e9ab44870b34314462efbddad model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=0
+08:54:09.212 INFO:     100.119.117.59:36030 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+08:54:12.050 INFO:     rig left rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 why=closed
+08:54:12.052 INFO:     fleet unit held unit=d07ffa3e9ab44870b34314462efbddad model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=0 why=rig_away
+08:54:14.142 INFO:     request refused user=04152dd6545843478980f5d9d66dcb7a model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' status=404 code=model_not_found
+08:54:14.145 INFO:     100.119.117.59:53278 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+08:54:17.865 INFO:     credits spend user=191786e5a64d48059f86e7bb42c7ae49 model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' tokens_in=44 tokens_out=103 amount=0.5 estimated=no request=9e5ad76aa6fe4f37a8fbf2354683f4ca
+08:54:17.869 INFO:     credits earn split request=9e5ad76aa6fe4f37a8fbf2354683f4ca unit=d07ffa3e9ab44870b34314462efbddad shares=0385c97b274149b4b01961f87ae596a8:0.414063,98eaf6d3cb2c4f79a1840b8725c8d0f8:0.085937
+08:54:25.602 INFO:     100.119.117.59:41984 - "WebSocket /api/v1/agent" [accepted]
+08:54:25.605 INFO:     connection open
+08:54:25.674 INFO:     rig joined rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 remote=100.119.117.59 cards=1 models=0 again=False
+08:54:25.677 INFO:     fleet unit resumed unit=d07ffa3e9ab44870b34314462efbddad model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=0
+08:54:38.961 INFO:     rig left rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 why=closed
+08:54:38.963 INFO:     fleet unit held unit=d07ffa3e9ab44870b34314462efbddad model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=0 why=rig_away
+08:54:41.069 INFO:     request refused user=04152dd6545843478980f5d9d66dcb7a model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' status=404 code=model_not_found
+08:54:41.072 INFO:     100.119.117.59:53948 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+08:54:54.522 INFO:     100.119.117.59:46858 - "WebSocket /api/v1/agent" [accepted]
+08:54:54.525 INFO:     connection open
+08:54:54.593 INFO:     rig joined rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 remote=100.119.117.59 cards=1 models=0 again=False
+08:54:54.595 INFO:     fleet unit resumed unit=d07ffa3e9ab44870b34314462efbddad model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=1
+08:54:57.669 INFO:     credits spend user=191786e5a64d48059f86e7bb42c7ae49 model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' tokens_in=44 tokens_out=32 amount=0.216 estimated=no request=0f9c76be530d4a258b3c2abd8950423c
+08:54:57.672 INFO:     credits earn split request=0f9c76be530d4a258b3c2abd8950423c unit=d07ffa3e9ab44870b34314462efbddad shares=0385c97b274149b4b01961f87ae596a8:0.178875,98eaf6d3cb2c4f79a1840b8725c8d0f8:0.037125
+08:54:57.675 INFO:     100.119.117.59:53954 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+08:55:08.103 INFO:     100.119.117.59:34962 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+08:55:16.761 INFO:     credits spend user=191786e5a64d48059f86e7bb42c7ae49 model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' tokens_in=44 tokens_out=103 amount=0.5 estimated=no request=44ee3ac29ed14245b2f6754160262e65
+08:55:16.765 INFO:     credits earn split request=44ee3ac29ed14245b2f6754160262e65 unit=d07ffa3e9ab44870b34314462efbddad shares=0385c97b274149b4b01961f87ae596a8:0.414063,98eaf6d3cb2c4f79a1840b8725c8d0f8:0.085937
+08:55:19.638 INFO:     fleet unit retiring unit=d07ffa3e9ab44870b34314462efbddad model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' why=over_max in_flight=1 waiting=0 heir=None
+08:55:21.353 INFO:     credits spend user=04152dd6545843478980f5d9d66dcb7a model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' tokens_in=44 tokens_out=16 amount=0.152 estimated=no request=271165831c444b9aafcbefad1c41a494
+08:55:21.356 INFO:     credits earn split request=271165831c444b9aafcbefad1c41a494 unit=d07ffa3e9ab44870b34314462efbddad shares=0385c97b274149b4b01961f87ae596a8:0.125875,98eaf6d3cb2c4f79a1840b8725c8d0f8:0.026125
+08:55:21.359 INFO:     100.119.117.59:37700 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+08:55:21.362 INFO:     fleet unit stopped unit=d07ffa3e9ab44870b34314462efbddad model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' reason=retired
+08:55:54.279 INFO:     100.119.117.59:52136 - "POST /api/v1/crews HTTP/1.1" 201 Created
+08:55:54.296 INFO:     100.119.117.59:52150 - "POST /api/v1/crews/join HTTP/1.1" 200 OK
+08:55:54.307 INFO:     100.119.117.59:52158 - "POST /api/v1/crews/join HTTP/1.1" 404 Not Found
+08:55:54.321 INFO:     100.119.117.59:52172 - "GET /api/v1/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b HTTP/1.1" 200 OK
+08:55:54.327 INFO:     100.119.117.59:52180 - "GET /api/v1/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b HTTP/1.1" 404 Not Found
+08:55:54.338 INFO:     100.119.117.59:52192 - "PATCH /api/v1/rigs/0385c97b274149b4b01961f87ae596a8 HTTP/1.1" 200 OK
+08:55:54.365 INFO:     100.119.117.59:52206 - "PUT /api/v1/rigs/0385c97b274149b4b01961f87ae596a8/crew HTTP/1.1" 200 OK
+08:55:54.381 INFO:     100.119.117.59:52214 - "POST /api/v1/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b/models HTTP/1.1" 403 Forbidden
+08:55:54.403 INFO:     100.119.117.59:52226 - "POST /api/v1/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b/models HTTP/1.1" 201 Created
+08:55:54.413 INFO:     100.119.117.59:52238 - "GET /api/v1/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b/models HTTP/1.1" 200 OK
+08:56:54.391 INFO:     fleet unit started unit=9da29351cb8b4e21a5d553561b1fae37 model='Qwen3-8B-Q4_K_M.gguf' rigs=0385c97b274149b4b01961f87ae596a8 why=below_min scope=crew:b44dbbdfc8934a1d8f9970d3acaaeb1b
+08:57:53.364 INFO:     fleet unit ready unit=9da29351cb8b4e21a5d553561b1fae37 model='Qwen3-8B-Q4_K_M.gguf' waiting=0
+08:58:09.427 INFO:     100.119.117.59:33890 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+08:58:10.633 INFO:     100.119.117.59:33892 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+08:58:14.059 INFO:     request refused user=04152dd6545843478980f5d9d66dcb7a model='Qwen3-8B-Q4_K_M.gguf' status=403 code=not_giving
+08:58:14.063 INFO:     100.119.117.59:50538 - "POST /v1/chat/completions HTTP/1.1" 403 Forbidden
+08:58:14.188 INFO:     request refused user=5de142a89fdf4740a78f5675615f95c5 model='Qwen3-8B-Q4_K_M.gguf' status=404 code=model_not_found
+08:58:14.191 INFO:     100.119.117.59:50548 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+08:58:14.300 INFO:     request refused user=04152dd6545843478980f5d9d66dcb7a model='Qwen3-8B-Q4_K_M.gguf' status=404 code=model_not_found
+08:58:14.303 INFO:     100.119.117.59:50562 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+08:58:14.416 INFO:     100.119.117.59:50576 - "PATCH /api/v1/rigs/98eaf6d3cb2c4f79a1840b8725c8d0f8 HTTP/1.1" 200 OK
+08:58:19.211 INFO:     100.119.117.59:50588 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+08:58:20.051 INFO:     100.119.117.59:50594 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+08:58:56.999 INFO:     100.119.117.59:50036 - "PATCH /api/v1/rigs/0385c97b274149b4b01961f87ae596a8 HTTP/1.1" 200 OK
+08:58:57.013 INFO:     fleet unit rig left unit=9da29351cb8b4e21a5d553561b1fae37 rig=0385c97b274149b4b01961f87ae596a8 why=not_lent_to_crew
+08:58:57.016 INFO:     fleet unit held unit=9da29351cb8b4e21a5d553561b1fae37 model='Qwen3-8B-Q4_K_M.gguf' waiting=0 why=rig_left_crew
+08:58:57.019 INFO:     100.119.117.59:50052 - "POST /api/v1/me/hitchhike/offers HTTP/1.1" 400 Bad Request
+08:58:57.033 INFO:     100.119.117.59:50060 - "POST /api/v1/me/hitchhike/offers HTTP/1.1" 201 Created
+08:58:57.051 INFO:     100.119.117.59:50068 - "GET /api/v1/me/hitchhike/offers HTTP/1.1" 200 OK
+08:58:57.064 INFO:     hitchhike matched offers=1 riders=0 matches=0
+08:58:57.072 INFO:     100.119.117.59:50084 - "GET /api/v1/me/rungs HTTP/1.1" 200 OK
+08:58:57.079 INFO:     100.119.117.59:50094 - "PUT /api/v1/me/hitchhike/ride HTTP/1.1" 200 OK
+08:58:57.092 INFO:     100.119.117.59:50104 - "GET /api/v1/me/rungs HTTP/1.1" 200 OK
+08:58:57.104 INFO:     hitchhike matched offers=1 riders=1 matches=1
+08:58:58.108 INFO:     100.119.117.59:50120 - "GET /api/v1/me/rungs HTTP/1.1" 200 OK
+08:58:58.118 INFO:     100.119.117.59:50126 - "GET /api/v1/me/rungs HTTP/1.1" 200 OK
+08:58:58.125 INFO:     request refused user=04152dd6545843478980f5d9d66dcb7a model='hitchhike@5006f8e8f5cb4891adf5f999e7a7cffb' status=503 code=hitchhike_not_served_yet
+08:58:58.128 INFO:     100.119.117.59:50130 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+08:58:58.132 INFO:     request refused user=5de142a89fdf4740a78f5675615f95c5 model='hitchhike@5006f8e8f5cb4891adf5f999e7a7cffb' status=404 code=model_not_found
+08:58:58.134 INFO:     100.119.117.59:50144 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+08:59:12.998 INFO:     100.119.117.59:56984 - "POST /api/v1/me/rungs HTTP/1.1" 200 OK
+08:59:27.014 INFO:     fleet unit failed unit=9da29351cb8b4e21a5d553561b1fae37 model='Qwen3-8B-Q4_K_M.gguf' code=rig_left_crew served=True
+08:59:27.097 INFO:     fleet unit lost unit=9da29351cb8b4e21a5d553561b1fae37 model='Qwen3-8B-Q4_K_M.gguf' waiting=0 why=no_heir
+08:59:27.109 INFO:     hitchhike matched offers=1 riders=1 matches=1
+08:59:52.770 INFO:     100.119.117.59:40658 - "GET / HTTP/1.1" 200 OK
+08:59:52.776 INFO:     100.119.117.59:40674 - "GET /profile HTTP/1.1" 303 See Other
+08:59:52.801 INFO:     100.119.117.59:40688 - "GET /me/hitchhike HTTP/1.1" 303 See Other
+08:59:52.804 INFO:     100.119.117.59:40702 - "GET /me/rigs HTTP/1.1" 303 See Other
+08:59:52.808 INFO:     100.119.117.59:40708 - "GET /me/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b HTTP/1.1" 303 See Other
+08:59:52.836 INFO:     100.119.117.59:40716 - "GET /signin HTTP/1.1" 200 OK
+08:59:52.848 INFO:     100.119.117.59:40720 - "POST /signin HTTP/1.1" 303 See Other
+08:59:52.889 INFO:     100.119.117.59:40734 - "GET / HTTP/1.1" 200 OK
+08:59:52.900 INFO:     100.119.117.59:40750 - "GET /feed?show=crews HTTP/1.1" 200 OK
+08:59:52.912 INFO:     100.119.117.59:40756 - "GET /feed?show=hitchhike HTTP/1.1" 200 OK
+08:59:52.957 INFO:     100.119.117.59:40762 - "GET /profile HTTP/1.1" 200 OK
+08:59:52.982 INFO:     100.119.117.59:40770 - "GET /me/hitchhike HTTP/1.1" 200 OK
+08:59:53.007 INFO:     100.119.117.59:40780 - "GET /me/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b HTTP/1.1" 200 OK
+08:59:53.030 INFO:     100.119.117.59:40786 - "GET /me/rigs HTTP/1.1" 200 OK
+08:59:53.081 INFO:     100.119.117.59:40802 - "GET /network HTTP/1.1" 200 OK
+08:59:53.105 INFO:     100.119.117.59:40806 - "GET /signin HTTP/1.1" 200 OK
+08:59:53.113 INFO:     100.119.117.59:40820 - "POST /signin HTTP/1.1" 303 See Other
+08:59:53.124 INFO:     100.119.117.59:40826 - "GET / HTTP/1.1" 200 OK
+08:59:53.134 INFO:     100.119.117.59:40838 - "GET /feed?show=crews HTTP/1.1" 200 OK
+08:59:53.144 INFO:     100.119.117.59:40854 - "GET /feed?show=hitchhike HTTP/1.1" 200 OK
+08:59:53.162 INFO:     100.119.117.59:40866 - "GET /profile HTTP/1.1" 200 OK
+08:59:53.175 INFO:     100.119.117.59:40876 - "GET /me/hitchhike HTTP/1.1" 200 OK
+08:59:53.189 INFO:     100.119.117.59:40882 - "GET /me/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b HTTP/1.1" 200 OK
+08:59:53.203 INFO:     100.119.117.59:40898 - "GET /me/rigs HTTP/1.1" 200 OK
+08:59:53.223 INFO:     100.119.117.59:40906 - "GET /network HTTP/1.1" 200 OK
+08:59:53.326 INFO:     100.119.117.59:40910 - "GET / HTTP/1.1" 200 OK
+08:59:53.333 INFO:     100.119.117.59:40922 - "GET /profile HTTP/1.1" 303 See Other
+08:59:53.336 INFO:     100.119.117.59:40924 - "GET /me/hitchhike HTTP/1.1" 303 See Other
+08:59:53.341 INFO:     100.119.117.59:40934 - "GET /me/rigs HTTP/1.1" 303 See Other
+08:59:53.343 INFO:     100.119.117.59:40938 - "GET /me/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b HTTP/1.1" 303 See Other
+08:59:53.367 INFO:     100.119.117.59:40944 - "GET /signin HTTP/1.1" 200 OK
+08:59:53.375 INFO:     100.119.117.59:40948 - "POST /signin HTTP/1.1" 303 See Other
+08:59:53.384 INFO:     100.119.117.59:40950 - "GET / HTTP/1.1" 200 OK
+08:59:53.396 INFO:     100.119.117.59:40958 - "GET /feed?show=crews HTTP/1.1" 200 OK
+08:59:53.405 INFO:     100.119.117.59:40966 - "GET /feed?show=hitchhike HTTP/1.1" 200 OK
+08:59:53.427 INFO:     100.119.117.59:40976 - "GET /profile HTTP/1.1" 200 OK
+08:59:53.441 INFO:     100.119.117.59:40978 - "GET /me/hitchhike HTTP/1.1" 200 OK
+08:59:53.461 INFO:     100.119.117.59:40992 - "GET /me/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b HTTP/1.1" 200 OK
+08:59:53.476 INFO:     100.119.117.59:41006 - "GET /me/rigs HTTP/1.1" 200 OK
+08:59:53.495 INFO:     100.119.117.59:41020 - "GET /network HTTP/1.1" 200 OK
+08:59:53.518 INFO:     100.119.117.59:41028 - "GET /signin HTTP/1.1" 200 OK
+08:59:53.526 INFO:     100.119.117.59:41038 - "POST /signin HTTP/1.1" 303 See Other
+08:59:53.536 INFO:     100.119.117.59:41044 - "GET / HTTP/1.1" 200 OK
+08:59:53.546 INFO:     100.119.117.59:41054 - "GET /feed?show=crews HTTP/1.1" 200 OK
+08:59:53.556 INFO:     100.119.117.59:41066 - "GET /feed?show=hitchhike HTTP/1.1" 200 OK
+08:59:53.575 INFO:     100.119.117.59:41080 - "GET /profile HTTP/1.1" 200 OK
+08:59:53.591 INFO:     100.119.117.59:41096 - "GET /me/hitchhike HTTP/1.1" 200 OK
+08:59:53.602 INFO:     100.119.117.59:41100 - "GET /me/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b HTTP/1.1" 200 OK
+08:59:53.622 INFO:     100.119.117.59:41106 - "GET /me/rigs HTTP/1.1" 200 OK
+08:59:53.652 INFO:     100.119.117.59:41114 - "GET /network HTTP/1.1" 200 OK
+09:00:14.419 INFO:     100.119.117.59:37446 - "GET /api/v1/me/credits?limit=1 HTTP/1.1" 200 OK
+09:00:14.430 INFO:     100.119.117.59:37462 - "GET /api/v1/me/credits?limit=1 HTTP/1.1" 200 OK
+09:00:21.079 INFO:     100.119.117.59:37468 - "GET / HTTP/1.1" 200 OK
+09:00:27.139 INFO:     hitchhike matched offers=1 riders=1 matches=1
+09:00:33.336 INFO:     100.119.117.59:57964 - "GET /signin HTTP/1.1" 200 OK
+09:00:33.346 INFO:     100.119.117.59:57966 - "POST /signin HTTP/1.1" 303 See Other
+09:00:33.357 INFO:     100.119.117.59:57976 - "GET /me/rigs HTTP/1.1" 200 OK
+09:00:33.369 INFO:     100.119.117.59:57980 - "POST /me/rigs/98eaf6d3cb2c4f79a1840b8725c8d0f8/crew HTTP/1.1" 303 See Other
+09:00:33.408 INFO:     100.119.117.59:57994 - "GET /me/rigs HTTP/1.1" 200 OK
+09:00:33.412 INFO:     hitchhike matched offers=1 riders=1 matches=1
+09:00:33.425 INFO:     100.119.117.59:57998 - "POST /me/rigs/98eaf6d3cb2c4f79a1840b8725c8d0f8/crew HTTP/1.1" 303 See Other
+09:00:33.460 INFO:     100.119.117.59:58012 - "GET /me/rigs HTTP/1.1" 200 OK
+09:00:33.465 INFO:     hitchhike matched offers=1 riders=1 matches=1
+09:00:33.472 INFO:     100.119.117.59:58022 - "POST /me/rigs/98eaf6d3cb2c4f79a1840b8725c8d0f8/crew HTTP/1.1" 404 Not Found
+09:00:33.479 INFO:     100.119.117.59:58038 - "GET /me/rigs HTTP/1.1" 200 OK
+09:00:33.492 INFO:     100.119.117.59:58054 - "GET /me/hitchhike HTTP/1.1" 200 OK
+09:00:33.512 INFO:     100.119.117.59:58056 - "POST /me/hitchhike/ride HTTP/1.1" 303 See Other
+09:00:33.537 INFO:     100.119.117.59:58068 - "GET /me/hitchhike HTTP/1.1" 200 OK
+09:00:33.550 INFO:     hitchhike matched offers=1 riders=0 matches=0
+09:00:33.553 INFO:     100.119.117.59:58072 - "POST /me/hitchhike/ride HTTP/1.1" 303 See Other
+09:00:33.567 INFO:     hitchhike matched offers=1 riders=1 matches=1
+09:00:33.659 INFO:     100.119.117.59:58080 - "GET / HTTP/1.1" 200 OK
+09:00:33.663 INFO:     100.119.117.59:58094 - "GET /profile HTTP/1.1" 303 See Other
+09:00:33.666 INFO:     100.119.117.59:58100 - "GET /me/hitchhike HTTP/1.1" 303 See Other
+09:00:33.669 INFO:     100.119.117.59:58106 - "GET /me/rigs HTTP/1.1" 303 See Other
+09:00:33.673 INFO:     100.119.117.59:58112 - "GET /me/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b HTTP/1.1" 303 See Other
+09:00:33.696 INFO:     100.119.117.59:58124 - "GET /signin HTTP/1.1" 200 OK
+09:00:33.703 INFO:     100.119.117.59:58130 - "POST /signin HTTP/1.1" 303 See Other
+09:00:33.711 INFO:     100.119.117.59:58144 - "GET / HTTP/1.1" 200 OK
+09:00:33.720 INFO:     100.119.117.59:58158 - "GET /feed?show=crews HTTP/1.1" 200 OK
+09:00:33.732 INFO:     100.119.117.59:58174 - "GET /feed?show=hitchhike HTTP/1.1" 200 OK
+09:00:33.754 INFO:     100.119.117.59:58178 - "GET /profile HTTP/1.1" 200 OK
+09:00:33.766 INFO:     100.119.117.59:58180 - "GET /me/hitchhike HTTP/1.1" 200 OK
+09:00:33.779 INFO:     100.119.117.59:58184 - "GET /me/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b HTTP/1.1" 200 OK
+09:00:33.797 INFO:     100.119.117.59:58188 - "GET /me/rigs HTTP/1.1" 200 OK
+09:00:33.825 INFO:     100.119.117.59:58192 - "GET /network HTTP/1.1" 200 OK
+09:00:33.847 INFO:     100.119.117.59:58198 - "GET /signin HTTP/1.1" 200 OK
+09:00:33.879 INFO:     100.119.117.59:58210 - "POST /signin HTTP/1.1" 303 See Other
+09:00:33.902 INFO:     100.119.117.59:58220 - "GET / HTTP/1.1" 200 OK
+09:00:33.914 INFO:     100.119.117.59:58234 - "GET /feed?show=crews HTTP/1.1" 200 OK
+09:00:33.926 INFO:     100.119.117.59:58246 - "GET /feed?show=hitchhike HTTP/1.1" 200 OK
+09:00:33.941 INFO:     100.119.117.59:58250 - "GET /profile HTTP/1.1" 200 OK
+09:00:33.956 INFO:     100.119.117.59:58266 - "GET /me/hitchhike HTTP/1.1" 200 OK
+09:00:33.970 INFO:     100.119.117.59:58270 - "GET /me/crews/b44dbbdfc8934a1d8f9970d3acaaeb1b HTTP/1.1" 200 OK
+09:00:33.984 INFO:     100.119.117.59:58286 - "GET /me/rigs HTTP/1.1" 200 OK
+09:00:34.005 INFO:     100.119.117.59:58288 - "GET /network HTTP/1.1" 200 OK
+09:00:59.099 INFO:     100.119.117.59:43762 - "PATCH /api/v1/rigs/0385c97b274149b4b01961f87ae596a8 HTTP/1.1" 200 OK
+09:00:59.124 INFO:     hitchhike matched offers=1 riders=1 matches=0
+09:00:59.212 INFO:     100.119.117.59:43772 - "PATCH /api/v1/rigs/98eaf6d3cb2c4f79a1840b8725c8d0f8 HTTP/1.1" 200 OK
+09:00:59.224 INFO:     hitchhike matched offers=1 riders=1 matches=0
+09:01:17.015 INFO:     rig left rig=0385c97b274149b4b01961f87ae596a8 why=closed
+09:01:17.035 INFO:     hitchhike matched offers=1 riders=1 matches=0
+09:01:19.400 INFO:     rig left rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 why=closed
+09:01:19.414 INFO:     hitchhike matched offers=1 riders=1 matches=0
