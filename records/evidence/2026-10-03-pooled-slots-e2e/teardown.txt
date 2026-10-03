@@ -1,0 +1,40 @@
+[agents.sh 10:40:44] agent on srv1 stopped
+[agents.sh 10:40:46] agent on srv2 stopped
+[agents.sh 10:40:47] agent vps-a stopped
+[agents.sh 10:40:48] agent vps-b stopped
+[agents.sh 10:40:48] tunnel to srv1 closed
+[agents.sh 10:40:48] tunnel to srv2 closed
+0
+Untagged: mcgyvr-tunnel:e072940be18f
+Deleted: sha256:5f8ea9044db2d150d38d375fdee51acc588526408bcae37550c734f895ccd158
+0
+Untagged: mcgyvr-tunnel:e072940be18f
+Deleted: sha256:127615626e8c442a4a49d3c49d1b50a7768fb5ccab74cec24a25241068adc071
+625M	product-slots
+228K	e2e-slots
+data
+e2e
+guard.sh
+home
+open_head.sh
+product
+product-live-b.bundle
+product.bundle
+sidecar.sh
+up.sh
+uv-cache
+uv-python
+625M	product-slots
+4.0G	e2e-slots
+data
+e2e
+guard.sh
+home
+product
+product-live-b.bundle
+product.bundle
+rpc-cache
+sidecar.sh
+up.sh
+uv-cache
+uv-python

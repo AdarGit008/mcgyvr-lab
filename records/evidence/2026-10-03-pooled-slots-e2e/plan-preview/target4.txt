@@ -1,0 +1,80 @@
+== ctx 2304
+could hold up to 10,963
+Requests 4 requests at once
+Rigs 2
+Expect about 11.9 tokens/s
+worker-rig · @usr2 NVIDIA GeForce GTX 1660 SUPER worker 12 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 26 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 26 layers
+== ctx 2560
+could hold up to 10,963
+Requests 4 requests at once
+Rigs 2
+Expect about 11.9 tokens/s
+worker-rig · @usr2 NVIDIA GeForce GTX 1660 SUPER worker 12 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 26 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 26 layers
+== ctx 3072
+could hold up to 10,963
+Requests 4 requests at once
+Rigs 2
+Expect about 11.9 tokens/s
+worker-rig · @usr2 NVIDIA GeForce GTX 1660 SUPER worker 12 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 27 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 25 layers
+== ctx 4096
+could hold up to 10,963
+Requests 4 requests at once
+Rigs 2
+Expect about 11.9 tokens/s
+worker-rig · @usr2 NVIDIA GeForce GTX 1660 SUPER worker 12 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 27 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 25 layers
+== ctx 6144
+could hold up to 10,963
+Requests 4 requests at once
+Rigs 2
+Expect about 11.9 tokens/s
+worker-rig · @usr2 NVIDIA GeForce GTX 1660 SUPER worker 12 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 27 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 25 layers
+== ctx 8192
+could hold up to 10,963
+Requests 4 requests at once
+Rigs 2
+Expect about 11.9 tokens/s
+worker-rig · @usr2 NVIDIA GeForce GTX 1660 SUPER worker 12 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 26 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 26 layers
+== ctx 9216
+could hold up to 10,963
+Requests 4 requests at once
+Rigs 2
+Expect about 11.9 tokens/s
+worker-rig · @usr2 NVIDIA GeForce GTX 1660 SUPER worker 12 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 27 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 25 layers
+== ctx 10240
+could hold up to 10,963
+Requests 4 requests at once
+Rigs 2
+Expect about 11.9 tokens/s
+worker-rig · @usr2 NVIDIA GeForce GTX 1660 SUPER worker 12 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 27 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 25 layers
+== ctx 11264
+could hold up to 21,927
+Requests 2 requests at once
+Rigs 2
+Expect about 11.9 tokens/s
+worker-rig · @usr2 NVIDIA GeForce GTX 1660 SUPER worker 12 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 27 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 25 layers
+== ctx 12288
+could hold up to 21,927
+Requests 2 requests at once
+Rigs 2
+Expect about 11.9 tokens/s
+worker-rig · @usr2 NVIDIA GeForce GTX 1660 SUPER worker 12 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 27 layers
+head-rig · @usr1 NVIDIA GeForce RTX 3060 head 25 layers

@@ -1,0 +1,55 @@
+### 2026-10-03T09:22:26Z ../product-slots/.venv/bin/mcgyvr rig join http://127.0.0.1:18766 --token -
+joined http://127.0.0.1:18766 as mhr_<redacted>_…; the token is kept in /home/adaramir/mcgyvr-pool-tmp/e2e-slots/home/rig-credentials.json
+agent for http://127.0.0.1:18766 as mhr_<redacted>_…; Ctrl-C stops it
+lending: worker on llamacpp:b10644-L3-rpc
+note: max_vram_mb: no longer a setting; a lent card is lent whole
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 0.6 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.9 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 0.7 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.6 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 1.0 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.2 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 0.6 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.4 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 0.5 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.7 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 0.8 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.2 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 0.8 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.9 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 1.0 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.8 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 0.6 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.2 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 0.6 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.1 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 0.7 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.8 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 0.8 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 2.0 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 1.0 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.1 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 0.6 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.2 s
+online as 6136c47597e7452f9a629935da13840d: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+lost the hub: the channel closed with 1012; trying again in 0.7 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 1.4 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 3.5 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 7.7 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 12.8 s
+lost the hub: the hub could not be reached: the handshake failed: ConnectionResetError; trying again in 29.8 s
+stopped

@@ -1,0 +1,640 @@
+### 2026-10-03T09:21:57.719Z start target_slots=4 default_ctx=2048 chat_wait_slot_s=30
+INFO:     Started server process [2369223]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:48890 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48904 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48912 - "POST /api/v1/users HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:39888 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     127.0.0.1:39898 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     127.0.0.1:39908 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     127.0.0.1:39916 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     127.0.0.1:39918 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     127.0.0.1:39930 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     127.0.0.1:39938 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     127.0.0.1:39948 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     127.0.0.1:37822 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:37832 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:37834 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58894 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58900 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58902 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48438 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=2048 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59792 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=2304 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59796 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=2560 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59802 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=3072 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59810 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=4096 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59822 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=6144 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59826 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=8192 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59832 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=9216 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59842 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=10240 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59858 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=11264 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59868 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=12288 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33060 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2369223]
+### 2026-10-03T09:23:19.464Z stopped
+### 2026-10-03T09:23:19.486Z start target_slots=1 default_ctx=10240 chat_wait_slot_s=30
+INFO:     Started server process [2373469]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:33134 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:33148 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33164 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33180 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:33192 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37116 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:37124 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:37134 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37142 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37146 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=2048 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37154 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=8192 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37158 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=9216 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37170 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=10240 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37186 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=10963 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33042 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:34234 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:60866 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:48086 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:42786 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:55760 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34770 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34798 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34814 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34784 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34812 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54416 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54430 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57942 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59728 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43248 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37776 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49614 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49630 - "POST /api/v1/sessions/e9e6d35921204c3da28d4e8d558af5cc/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2373469]
+### 2026-10-03T09:31:12.064Z stopped
+### 2026-10-03T09:31:12.083Z start target_slots=4 default_ctx=10240 chat_wait_slot_s=30
+INFO:     Started server process [2501338]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54754 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54760 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:54776 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54782 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54796 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:54800 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:54806 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:54814 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54826 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54836 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:34272 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:38906 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45098 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:49744 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53100 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53102 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53088 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53104 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53110 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53134 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53148 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55960 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55992 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55968 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55980 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56002 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53332 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53344 - "POST /api/v1/sessions/ce9b7089c3ed40f08cd8415adb995065/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2501338]
+### 2026-10-03T09:34:58.329Z stopped
+### 2026-10-03T09:34:58.347Z start target_slots=4 default_ctx=10240 chat_wait_slot_s=900
+INFO:     Started server process [2515596]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53438 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:53440 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53452 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53460 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:53468 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53476 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:49144 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:49156 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49170 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49172 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:54904 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:56682 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:53192 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:44300 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44996 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44990 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44976 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45006 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40526 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40530 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40520 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40538 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40542 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40550 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40564 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40574 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51252 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51266 - "POST /api/v1/sessions/a1b0f1df63784dbc8010673c1c2ff74b/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2515596]
+### 2026-10-03T09:39:22.462Z stopped
+### 2026-10-03T09:39:22.481Z start target_slots=1 default_ctx=10240 chat_wait_slot_s=900
+INFO:     Started server process [2525800]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:47242 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47250 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47258 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47268 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:47278 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:47288 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:47304 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47314 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:47326 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47328 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47340 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:40780 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43626 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:52236 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:42450 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51492 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51494 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51504 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51508 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42938 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42948 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42962 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42970 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42972 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42974 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42978 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42990 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35886 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35900 - "POST /api/v1/sessions/14087986428e480087f1de0cdb5fab5c/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2525800]
+### 2026-10-03T09:45:52.515Z stopped
+### 2026-10-03T09:45:52.536Z start target_slots=4 default_ctx=10240 chat_wait_slot_s=900
+INFO:     Started server process [2536333]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:52904 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52906 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52908 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52922 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:52938 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:52946 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:52962 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:52964 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52976 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52986 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:36550 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:57474 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:40680 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:56926 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43862 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43872 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43852 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43886 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37886 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37896 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37880 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37904 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37906 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37922 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37932 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37944 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43686 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43688 - "POST /api/v1/sessions/5d5f2d2efaee44bfb60a61b81559b513/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2536333]
+### 2026-10-03T09:50:16.256Z stopped
+### 2026-10-03T09:50:16.280Z start target_slots=1 default_ctx=10240 chat_wait_slot_s=900
+INFO:     Started server process [2546694]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:43762 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43774 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43778 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43782 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:43788 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:43800 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:43814 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:43824 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43828 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43842 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:60722 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45988 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:60880 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:55992 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43066 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43072 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43080 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43094 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34312 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34318 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34326 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34336 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34340 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34342 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34354 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34370 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53220 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53224 - "POST /api/v1/sessions/ef9b58b627dc4970962f294b24b4310b/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2546694]
+### 2026-10-03T09:56:42.435Z stopped
+### 2026-10-03T09:56:42.454Z start target_slots=4 default_ctx=10240 chat_wait_slot_s=900
+INFO:     Started server process [2559709]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:46392 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46396 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46398 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46408 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:46416 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:46424 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:46428 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:46444 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46458 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46474 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:60960 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:51728 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:41560 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:59462 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59144 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59166 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59138 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38234 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38250 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38218 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38256 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38268 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38280 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38284 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38290 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41724 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41738 - "POST /api/v1/sessions/5be43f9354154c968c1aceb62516c29d/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2559709]
+### 2026-10-03T10:01:06.976Z stopped
+### 2026-10-03T10:01:07.048Z start target_slots=1 default_ctx=10240 chat_wait_slot_s=900
+INFO:     Started server process [2566606]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:41816 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41832 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41834 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41846 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:41856 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:41862 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:41868 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:36764 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36766 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36774 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:36860 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:36176 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:34166 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:34308 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55854 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55860 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55864 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55880 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52186 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52192 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52194 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52202 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52208 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52212 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52224 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52234 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58062 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58076 - "POST /api/v1/sessions/4e3f4d772ec749018446309833d15d4c/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2566606]
+### 2026-10-03T10:07:36.555Z stopped
+### 2026-10-03T10:07:36.573Z start target_slots=4 default_ctx=10240 chat_wait_slot_s=900
+INFO:     Started server process [2575436]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:58156 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58170 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58182 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58194 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58196 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58200 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58210 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58222 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58236 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58246 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:55974 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:60998 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:52598 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:36270 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38592 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38576 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38570 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39786 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39768 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39788 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39772 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39796 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39800 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39808 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39818 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60858 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60870 - "POST /api/v1/sessions/67bf7ab608624000b266e9c01e6486ac/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2575436]
+### 2026-10-03T10:11:59.887Z stopped
+### 2026-10-03T10:11:59.906Z start target_slots=1 default_ctx=10240 chat_wait_slot_s=900
+INFO:     Started server process [2584773]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60950 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:51970 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51984 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51994 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52008 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:52010 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:52020 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:52030 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52042 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52044 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:50708 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:52496 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:47928 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:40732 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56316 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56332 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56336 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56352 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47894 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47898 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47914 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47926 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47930 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47936 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47942 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47950 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40944 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40946 - "POST /api/v1/sessions/9800b5e2c8dc40a29f6ae0e7cc0f6c61/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2584773]
+### 2026-10-03T10:18:25.839Z stopped
+### 2026-10-03T10:18:25.859Z start target_slots=4 default_ctx=10240 chat_wait_slot_s=900
+INFO:     Started server process [2602452]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:41016 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41024 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41032 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41048 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:41060 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:41070 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:41074 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:41078 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41092 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41094 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:50002 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:48110 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:38358 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:36336 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33482 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33478 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33472 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33494 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52006 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52014 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51996 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52024 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52038 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52054 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52070 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52084 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45548 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45554 - "POST /api/v1/sessions/7472627fce3247e39a6cf6aa773b11d6/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2602452]
+### 2026-10-03T10:22:56.487Z stopped
+### 2026-10-03T10:22:56.506Z start target_slots=1 default_ctx=10240 chat_wait_slot_s=900
+INFO:     Started server process [2610749]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:45626 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45638 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45644 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45660 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:45676 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:45678 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:45694 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:45696 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53868 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53872 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53876 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:55950 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:50030 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:60480 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:36320 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36242 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36254 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36268 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36270 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45458 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45472 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45482 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45486 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45498 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45512 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45516 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45526 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48144 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48152 - "POST /api/v1/sessions/c92002856fc5463d9f6ea55419a55ec3/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2610749]
+### 2026-10-03T10:29:26.638Z stopped
+### 2026-10-03T10:29:26.657Z start target_slots=4 default_ctx=10240 chat_wait_slot_s=900
+INFO:     Started server process [2625646]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:48194 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:48210 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48212 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48216 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:48228 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48244 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:48254 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:48256 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48264 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48274 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45018 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45734 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45700 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:33288 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47704 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47694 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47692 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47710 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50520 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50514 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50498 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50524 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50536 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50544 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50556 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50570 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57660 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57670 - "POST /api/v1/sessions/598dc7721654421e8d58f2e38f831838/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2625646]
+### 2026-10-03T10:33:49.762Z stopped
+### 2026-10-03T10:33:49.777Z start target_slots=1 default_ctx=10240 chat_wait_slot_s=900
+INFO:     Started server process [2631950]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18766 (Press CTRL+C to quit)
+INFO:     127.0.0.1:57752 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:57764 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57780 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41046 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:41056 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41072 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:41080 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:41090 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41098 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41112 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:52498 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:48122 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:55170 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:36420 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58300 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58310 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58316 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58320 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38396 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38406 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38412 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38424 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38438 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38444 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38452 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38454 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37482 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37492 - "POST /api/v1/sessions/f1110f05ff8542569ceafea076c42b68/stop HTTP/1.1" 204 No Content
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2631950]
+### 2026-10-03T10:40:15.717Z stopped

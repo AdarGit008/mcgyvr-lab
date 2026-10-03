@@ -1,0 +1,160 @@
+2026-10-03T09:34:54Z BEGIN T4-a target_slots=4
+stopped ce9b7089c3ed40f08cd8415adb995065 ready
+[hub.sh 09:34:57] pooled containers left on the rigs: 0
+[hub.sh 09:34:58] hub stopped
+[hub.sh 09:34:59] hub up on 127.0.0.1:18766 pid 2515596 target_slots=4 ctx=10240 wait_slot=900
+already bootstrapped
+head-rig    owner=usr1 pool   online   ram 45363/47104 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=usr2 pool   online   ram 45261/46797 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+vps-a       owner=usr3 pool   online   ram 19968/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+vps-b       owner=usr4 pool   online   ram 19968/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+2026-10-03T09:37:08Z warm done T4-a
+2026-10-03T09:37:52Z c4 done T4-a
+2026-10-03T09:39:19Z END T4-a
+2026-10-03T09:39:19Z BEGIN T1-a target_slots=1
+stopped a1b0f1df63784dbc8010673c1c2ff74b ready
+[hub.sh 09:39:21] pooled containers left on the rigs: 0
+[hub.sh 09:39:22] hub stopped
+[hub.sh 09:39:24] hub up on 127.0.0.1:18766 pid 2525800 target_slots=1 ctx=10240 wait_slot=900
+already bootstrapped
+head-rig    owner=usr1 pool   online   ram 45363/47104 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=usr2 pool   online   ram 45261/46797 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+vps-a       owner=usr3 pool   online   ram 20070/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+vps-b       owner=usr4 pool   online   ram 20070/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+2026-10-03T09:41:34Z warm done T1-a
+2026-10-03T09:42:55Z c4 done T1-a
+2026-10-03T09:45:49Z END T1-a
+2026-10-03T09:45:49Z BEGIN T4N-a target_slots=4
+stopped 14087986428e480087f1de0cdb5fab5c ready
+[hub.sh 09:45:51] pooled containers left on the rigs: 0
+[hub.sh 09:45:52] hub stopped
+[hub.sh 09:45:54] hub up on 127.0.0.1:18766 pid 2536333 target_slots=4 ctx=10240 wait_slot=900
+already bootstrapped
+head-rig    owner=usr1 pool   online   ram 45363/47104 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=usr2 pool   online   ram 45261/46797 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+vps-a       owner=usr3 pool   online   ram 19968/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+vps-b       owner=usr4 pool   online   ram 19968/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+2026-10-03T09:48:02Z warm done T4N-a
+2026-10-03T09:48:46Z c4 done T4N-a
+2026-10-03T09:50:13Z END T4N-a
+2026-10-03T09:50:13Z BEGIN T1N-a target_slots=1
+stopped 5d5f2d2efaee44bfb60a61b81559b513 ready
+[hub.sh 09:50:15] pooled containers left on the rigs: 0
+[hub.sh 09:50:16] hub stopped
+[hub.sh 09:50:17] hub up on 127.0.0.1:18766 pid 2546694 target_slots=1 ctx=10240 wait_slot=900
+already bootstrapped
+head-rig    owner=usr1 pool   online   ram 45363/47104 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=usr2 pool   online   ram 45261/46797 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+vps-a       owner=usr3 pool   online   ram 19866/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+vps-b       owner=usr4 pool   online   ram 19866/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+2026-10-03T09:52:26Z warm done T1N-a
+2026-10-03T09:53:46Z c4 done T1N-a
+2026-10-03T09:56:38Z END T1N-a
+2026-10-03T09:56:38Z BEGIN T4-b target_slots=4
+stopped ef9b58b627dc4970962f294b24b4310b ready
+[hub.sh 09:56:41] pooled containers left on the rigs: 0
+[hub.sh 09:56:42] hub stopped
+[hub.sh 09:56:44] hub up on 127.0.0.1:18766 pid 2559709 target_slots=4 ctx=10240 wait_slot=900
+already bootstrapped
+head-rig    owner=usr1 pool   online   ram 45363/47104 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=usr2 pool   online   ram 45261/46797 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+vps-a       owner=usr3 pool   online   ram 20070/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+vps-b       owner=usr4 pool   online   ram 20070/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+2026-10-03T09:58:52Z warm done T4-b
+2026-10-03T09:59:36Z c4 done T4-b
+2026-10-03T10:01:03Z END T4-b
+2026-10-03T10:01:03Z BEGIN T1-b target_slots=1
+stopped 5be43f9354154c968c1aceb62516c29d ready
+[hub.sh 10:01:05] pooled containers left on the rigs: 0
+[hub.sh 10:01:06] hub stopped
+[hub.sh 10:01:09] hub up on 127.0.0.1:18766 pid 2566606 target_slots=1 ctx=10240 wait_slot=900
+already bootstrapped
+head-rig    owner=usr1 pool   online   ram 45363/47104 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=usr2 pool   online   ram 45261/46797 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+vps-a       owner=usr3 pool   online   ram 20070/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+vps-b       owner=usr4 pool   online   ram 20070/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+2026-10-03T10:03:18Z warm done T1-b
+2026-10-03T10:04:39Z c4 done T1-b
+2026-10-03T10:07:33Z END T1-b
+2026-10-03T10:07:33Z BEGIN T4N-b target_slots=4
+stopped 4e3f4d772ec749018446309833d15d4c ready
+[hub.sh 10:07:35] pooled containers left on the rigs: 0
+[hub.sh 10:07:36] hub stopped
+[hub.sh 10:07:38] hub up on 127.0.0.1:18766 pid 2575436 target_slots=4 ctx=10240 wait_slot=900
+already bootstrapped
+head-rig    owner=usr1 pool   online   ram 45363/47104 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=usr2 pool   online   ram 45261/46797 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+vps-a       owner=usr3 pool   online   ram 19968/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+vps-b       owner=usr4 pool   online   ram 19968/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+2026-10-03T10:09:45Z warm done T4N-b
+2026-10-03T10:10:29Z c4 done T4N-b
+2026-10-03T10:11:56Z END T4N-b
+2026-10-03T10:11:56Z BEGIN T1N-b target_slots=1
+stopped 67bf7ab608624000b266e9c01e6486ac ready
+[hub.sh 10:11:58] pooled containers left on the rigs: 0
+[hub.sh 10:11:59] hub stopped
+[hub.sh 10:12:01] hub up on 127.0.0.1:18766 pid 2584773 target_slots=1 ctx=10240 wait_slot=900
+already bootstrapped
+head-rig    owner=usr1 pool   online   ram 45363/47104 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=usr2 pool   online   ram 45261/46797 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+vps-a       owner=usr3 pool   online   ram 19968/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+vps-b       owner=usr4 pool   online   ram 19866/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+2026-10-03T10:14:09Z warm done T1N-b
+2026-10-03T10:15:30Z c4 done T1N-b
+2026-10-03T10:18:22Z END T1N-b
+2026-10-03T10:18:22Z BEGIN T4-c target_slots=4
+stopped 9800b5e2c8dc40a29f6ae0e7cc0f6c61 ready
+[hub.sh 10:18:24] pooled containers left on the rigs: 0
+[hub.sh 10:18:25] hub stopped
+[hub.sh 10:18:27] hub up on 127.0.0.1:18766 pid 2602452 target_slots=4 ctx=10240 wait_slot=900
+already bootstrapped
+head-rig    owner=usr1 pool   online   ram 45363/47104 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=usr2 pool   online   ram 45261/46797 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+vps-a       owner=usr3 pool   online   ram 20070/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+vps-b       owner=usr4 pool   online   ram 20070/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+2026-10-03T10:20:38Z warm done T4-c
+2026-10-03T10:21:26Z c4 done T4-c
+2026-10-03T10:22:53Z END T4-c
+2026-10-03T10:22:53Z BEGIN T1-c target_slots=1
+stopped 7472627fce3247e39a6cf6aa773b11d6 ready
+[hub.sh 10:22:55] pooled containers left on the rigs: 0
+[hub.sh 10:22:56] hub stopped
+[hub.sh 10:22:58] hub up on 127.0.0.1:18766 pid 2610749 target_slots=1 ctx=10240 wait_slot=900
+already bootstrapped
+head-rig    owner=usr1 pool   online   ram 45363/47104 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=usr2 pool   online   ram 45261/46797 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+vps-a       owner=usr3 pool   online   ram 19968/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+vps-b       owner=usr4 pool   online   ram 19968/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+2026-10-03T10:25:08Z warm done T1-c
+2026-10-03T10:26:29Z c4 done T1-c
+2026-10-03T10:29:23Z END T1-c
+2026-10-03T10:29:23Z BEGIN T4N-c target_slots=4
+stopped c92002856fc5463d9f6ea55419a55ec3 ready
+[hub.sh 10:29:25] pooled containers left on the rigs: 0
+[hub.sh 10:29:26] hub stopped
+[hub.sh 10:29:28] hub up on 127.0.0.1:18766 pid 2625646 target_slots=4 ctx=10240 wait_slot=900
+already bootstrapped
+head-rig    owner=usr1 pool   online   ram 45363/47104 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=usr2 pool   online   ram 45261/46797 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+vps-a       owner=usr3 pool   online   ram 20173/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+vps-b       owner=usr4 pool   online   ram 20173/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+2026-10-03T10:31:35Z warm done T4N-c
+2026-10-03T10:32:19Z c4 done T4N-c
+2026-10-03T10:33:46Z END T4N-c
+2026-10-03T10:33:46Z BEGIN T1N-c target_slots=1
+stopped 598dc7721654421e8d58f2e38f831838 ready
+[hub.sh 10:33:48] pooled containers left on the rigs: 0
+[hub.sh 10:33:49] hub stopped
+[hub.sh 10:33:51] hub up on 127.0.0.1:18766 pid 2631950 target_slots=1 ctx=10240 wait_slot=900
+already bootstrapped
+head-rig    owner=usr1 pool   online   ram 45363/47104 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce RTX 3060 11909/12288 MiB, #1 NVIDIA GeForce RTX 3060 11909/12288 MiB
+worker-rig  owner=usr2 pool   online   ram 45261/46797 MiB agent 0.0.1.dev1308+gabccb9022 | #0 NVIDIA GeForce GTX 1660 SUPER 5729/6144 MiB
+vps-a       owner=usr3 pool   online   ram 20275/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+vps-b       owner=usr4 pool   online   ram 20275/24064 MiB agent 0.1.1.dev875+gabccb902 | no card
+2026-10-03T10:35:58Z warm done T1N-c
+2026-10-03T10:37:20Z c4 done T1N-c
+2026-10-03T10:40:12Z END T1N-c
+stopped f1110f05ff8542569ceafea076c42b68 ready
+[hub.sh 10:40:14] pooled containers left on the rigs: 0
+[hub.sh 10:40:15] hub stopped
+2026-10-03T10:40:15Z CAMPAIGN DONE
