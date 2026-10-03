@@ -162,7 +162,13 @@ def test_declared_rungs_name_emitted_checks() -> None:
     # `jev` is the third, the same shape again: it runs only when a caller hands
     # `Gate.run` a `JevCheck`, which `tools/bench/score.py` does not, and it
     # reports rather than rejects unless built with `blocking=True`.
-    opt_in = {"semantic", "typecheck", "jev"}
+    #
+    # The output checks (`media_valid`, `safety_pass`, `asr_wer`, `grounded`)
+    # are the same shape once more: they run only when a caller hands
+    # `Gate.run` an `OutputChecks`, which `tools/bench/score.py` does not, and
+    # they judge the artifact a media-gen or agent contract names, not a diff.
+    output_checks = {"media_valid", "safety_pass", "asr_wer", "grounded"}
+    opt_in = {"semantic", "typecheck", "jev"} | output_checks
     uncovered = sorted(set(emitted) - covered - opt_in)
     assert not uncovered, (
         f"the gate emits {uncovered}, which no declared rung covers — a "

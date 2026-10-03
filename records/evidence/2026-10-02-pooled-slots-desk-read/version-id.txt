@@ -1,0 +1,36 @@
+How the engine version was pinned (2026-10-02, desk only, no rig touched).
+
+1. The image the pooled head and workers ran in, lab PR #42 (branch mcgyvr-social, head cf53dc3b8cbbd7bd7fce58234327d80034ba4118):
+$ git grep -h 'lending:' origin/mcgyvr-social -- records/evidence/2026-10-02-pooled-e2e/live/run3.agent-srv1.out records/evidence/2026-10-02-pooled-e2e/live/run3.agent-srv2.out
+lending: head on llamacpp:b10644-L3-rpc
+lending: worker on llamacpp:b10644-L3-rpc
+The rig hellos in run3.jsonl carry the same tag as "runtime": "llamacpp:b10644-L3-rpc".
+
+2. The product names no engine image. The owner names it (mcgyvr rig share --image); the product only fixes the
+   binaries inside it. Product branch origin/mcgyvr-connect at 11415cc690e0a45b6af1ac93d706a0c418837d17:
+   src/mcgyvr/rig/sharing.py:8-9    ``image`` — the engine image the head and the workers run in
+   src/mcgyvr/rig/sharing.py:56-57  DEFAULT_HEAD_BINARY = "/app/llama-server" / DEFAULT_WORKER_BINARY = "/app/ggml-rpc-server"
+   src/mcgyvr/rig/verbs.py:550      share.add_argument("--image", help="the engine image sessions run in (none)")
+   src/mcgyvr/sandbox/image.py builds per-repository task images only; it does not touch the engine image.
+
+3. The tag to a commit, from the lab's build record for that tag (on main):
+   records/evidence/2026-09-27-l3-rpc-build/PROVENANCE.txt
+     image     llamacpp:b10644-L3-rpc
+     image id  sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841
+     commit    d7a2074112d27649303fa107eb8c94db1ee435f3 (build 10644); baked into /app/LLAMA_CPP_COMMIT
+   records/evidence/2026-09-27-l3-rpc-build/srv1-llama-server-version.txt, srv2-llama-server-version.txt:
+     version: 0.3.0-dev (build 10644, commit d7a207411)
+   The image adds one patch (patch_mmvq.py), confined to ggml/src/ggml-cuda/mmvq.cu (MoE batch limit). No file read below is patched.
+
+4. The source at that commit:
+$ git clone --filter=blob:none --no-checkout https://github.com/ggml-org/llama.cpp
+$ git checkout d7a2074112d27649303fa107eb8c94db1ee435f3
+$ git log -1 --format='%H %ci %s'
+d7a2074112d27649303fa107eb8c94db1ee435f3 2026-08-27 07:55:31 +0300 models : support nanbeige4.2-3B (#27730)
+$ git tag --points-at HEAD
+b10644
+$ git rev-list --count HEAD
+10644
+
+Not verified: that the tag llamacpp:b10644-L3-rpc on the rigs on 2026-10-02 was still image sha256:c49d9cd3...
+PR #42 records the tag, not the image id, and this desk read did not touch the rigs.

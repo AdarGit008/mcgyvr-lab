@@ -1,0 +1,19 @@
+layers per device (-ngl 999 -ts 27,26,12, 64 layers):
+  CUDA0: 27 layers (il 0..26)
+  CUDA1: 26 layers (il 27..52)
+  RPC0: 11 layers (il 53..63)
+  output layer (il 64): RPC0
+KV bytes per layer per token (hello estimate / n_layer): 2176
+
+case                                N   n_ctx  ctx/slot  streams   CUDA0 MiB   CUDA1 MiB    RPC0 MiB
+-c 12288 -np 1                      1   12288     12288        1       688.5       663.0       280.5
+-c 12288 -np 2                      2   12288      6144        2       688.5       663.0       280.5
+-c 12288 -np 3                      3   12288      4096        3       688.5       663.0       280.5
+-c 12288 -np 4                      4   12288      3072        4       688.5       663.0       280.5
+-c 12288 -np 5                      5   12800      2560        5       717.2       690.6       292.2
+-c 12288 -np 2 -kvu                 2   12288     12288        1       688.5       663.0       280.5
+-c 12288 -np 4 -kvu                 4   12288     12288        1       688.5       663.0       280.5
+-c 24576 -np 2 (same ctx/slot)      2   24576     12288        2      1377.0      1326.0       561.0
+-c 49152 -np 4 (same ctx/slot)      4   49152     12288        4      2754.0      2652.0      1122.0
+
+ctx/slot under -kvu is the shared pool every slot draws from, not a per-slot reservation.

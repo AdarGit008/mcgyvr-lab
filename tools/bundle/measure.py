@@ -448,7 +448,7 @@ def check_c2_is_the_shipped_bundle(language: Language = DEFAULT_LANGUAGE) -> Non
     vendored file that ``prompts/python.md`` was derived from. Either way the
     equality is what makes a rate quotable about a shipped prompt.
     """
-    shipped = bundle_for(language.solution)
+    shipped = bundle_for("coding", language.solution)
     if shipped is None:  # unreachable while an adapter owns the extension
         raise MeasureError(f"no bundle is registered for {language.solution}")
     measured = condition_text("c2", language)
