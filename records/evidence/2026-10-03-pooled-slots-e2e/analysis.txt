@@ -1,0 +1,133 @@
+# analysis.txt — recomputed by instruments/analyse.py from rows/, traces/, args/
+# srv1 clock offset used for `flush`: -6.0 ms (clock.txt)
+
+## Launched head per invocation (args/*.txt)
+
+T1-a     -np 1 -c 10240 -dev RPC0,CUDA0,CUDA1 -ts 12,26,27  | initializing, n_slots = 1, n_ctx_slot = 10240, kv_unified = 'false'
+T1-b     -np 1 -c 10240 -dev RPC0,CUDA0,CUDA1 -ts 12,26,27  | initializing, n_slots = 1, n_ctx_slot = 10240, kv_unified = 'false'
+T1-c     -np 1 -c 10240 -dev RPC0,CUDA0,CUDA1 -ts 12,26,27  | initializing, n_slots = 1, n_ctx_slot = 10240, kv_unified = 'false'
+T1N-a    -np 1 -c 10240 -dev RPC0,CUDA0,CUDA1 -ts 12,26,27  | initializing, n_slots = 1, n_ctx_slot = 10240, kv_unified = 'false'
+T1N-b    -np 1 -c 10240 -dev RPC0,CUDA0,CUDA1 -ts 12,26,27  | initializing, n_slots = 1, n_ctx_slot = 10240, kv_unified = 'false'
+T1N-c    -np 1 -c 10240 -dev RPC0,CUDA0,CUDA1 -ts 12,26,27  | initializing, n_slots = 1, n_ctx_slot = 10240, kv_unified = 'false'
+T4-a     -np 4 -c 40960 -dev RPC0,CUDA0,CUDA1 -ts 12,27,26  | initializing, n_slots = 4, n_ctx_slot = 10240, kv_unified = 'false'
+T4-b     -np 4 -c 40960 -dev RPC0,CUDA0,CUDA1 -ts 12,27,26  | initializing, n_slots = 4, n_ctx_slot = 10240, kv_unified = 'false'
+T4-c     -np 4 -c 40960 -dev RPC0,CUDA0,CUDA1 -ts 12,27,26  | initializing, n_slots = 4, n_ctx_slot = 10240, kv_unified = 'false'
+T4N-a    -np 4 -c 40960 -dev RPC0,CUDA0,CUDA1 -ts 12,27,26  | initializing, n_slots = 4, n_ctx_slot = 10240, kv_unified = 'false'
+T4N-b    -np 4 -c 40960 -dev RPC0,CUDA0,CUDA1 -ts 12,27,26  | initializing, n_slots = 4, n_ctx_slot = 10240, kv_unified = 'false'
+T4N-c    -np 4 -c 40960 -dev RPC0,CUDA0,CUDA1 -ts 12,27,26  | initializing, n_slots = 4, n_ctx_slot = 10240, kv_unified = 'false'
+q1       -np 1 -c 10240 -dev RPC0,CUDA0,CUDA1 -ts 12,26,27  | initializing, n_slots = 1, n_ctx_slot = 10240, kv_unified = 'false'
+q4       -np 4 -c 40960 -dev RPC0,CUDA0,CUDA1 -ts 12,27,26  | initializing, n_slots = 4, n_ctx_slot = 10240, kv_unified = 'false'
+
+## Per invocation and cell (throughput campaign)
+
+| invocation | -np | cell | n | ok | agg tok/s | p50 latency | ttft p50 | queue p50 / max | a_ttft p50 | flush p50 | ptok | otok | at cap | non-200 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| T1-a | 1 | c4 | 4 | 4 | 10.55 | 52.10 | 31.26 | 28.71 / 64.76 | 2.18 | 0.83 | 625 | 208 | 3/4 | - |
+| T1-b | 1 | c4 | 4 | 4 | 10.55 | 52.06 | 31.22 | 28.71 / 64.69 | 2.18 | 0.76 | 625 | 208 | 3/4 | - |
+| T1-c | 1 | c4 | 4 | 4 | 10.55 | 52.04 | 31.20 | 28.64 / 64.71 | 2.19 | 0.79 | 625 | 208 | 3/4 | - |
+| T1N-a | 1 | c4 | 4 | 4 | 10.67 | 52.34 | 31.18 | 28.80 / 65.23 | 2.18 | 0.56 | 625 | 208 | 3/4 | - |
+| T1N-b | 1 | c4 | 4 | 4 | 10.67 | 52.26 | 31.13 | 28.69 / 65.12 | 2.19 | 0.65 | 625 | 208 | 3/4 | - |
+| T1N-c | 1 | c4 | 4 | 4 | 10.52 | 52.42 | 31.38 | 28.79 / 65.33 | 2.20 | 0.71 | 625 | 208 | 3/4 | - |
+| T4-a | 4 | c4 | 4 | 4 | 20.04 | 34.92 | 7.23 | 0.00 / 0.00 | 6.09 | 1.10 | 625 | 208 | 3/4 | - |
+| T4-b | 4 | c4 | 4 | 4 | 20.09 | 34.79 | 7.10 | 0.00 / 0.00 | 6.07 | 0.98 | 625 | 208 | 3/4 | - |
+| T4-c | 4 | c4 | 4 | 4 | 19.36 | 34.68 | 6.38 | 0.00 / 0.00 | 6.07 | 0.26 | 625 | 223 | 4/4 | - |
+| T4N-a | 4 | c4 | 4 | 4 | 20.18 | 34.64 | 7.03 | 0.00 / 0.00 | 6.05 | 0.93 | 625 | 208 | 3/4 | - |
+| T4N-b | 4 | c4 | 4 | 4 | 20.14 | 34.49 | 6.77 | 0.00 / 0.00 | 6.08 | 0.65 | 625 | 208 | 3/4 | - |
+| T4N-c | 4 | c4 | 4 | 4 | 20.14 | 34.62 | 6.81 | 0.00 / 0.00 | 6.09 | 0.68 | 625 | 208 | 3/4 | - |
+| T1-a | 1 | c8 | 8 | 8 | 11.07 | 84.50 | 69.95 | 67.19 / 141.32 | 1.29 | 0.65 | 651 | 240 | 5/8 | - |
+| T1-b | 1 | c8 | 8 | 8 | 11.08 | 84.39 | 69.85 | 67.10 / 141.05 | 1.29 | 0.65 | 651 | 240 | 5/8 | - |
+| T1-c | 1 | c8 | 8 | 8 | 11.07 | 84.47 | 69.91 | 67.16 / 141.18 | 1.31 | 0.61 | 651 | 240 | 5/8 | - |
+| T1N-a | 1 | c8 | 8 | 8 | 11.15 | 82.13 | 67.87 | 65.78 / 139.86 | 1.30 | 0.62 | 651 | 240 | 5/8 | - |
+| T1N-b | 1 | c8 | 8 | 8 | 11.17 | 83.26 | 68.78 | 66.69 / 139.84 | 1.28 | 0.48 | 651 | 240 | 5/8 | - |
+| T1N-c | 1 | c8 | 8 | 8 | 11.15 | 82.18 | 67.91 | 65.83 / 139.95 | 1.30 | 0.49 | 651 | 240 | 5/8 | - |
+| T4-a | 4 | c8 | 8 | 8 | 22.18 | 53.32 | 11.56 | 9.86 / 46.31 | 1.39 | 0.17 | 651 | 240 | 5/8 | - |
+| T4-b | 4 | c8 | 8 | 8 | 22.04 | 53.31 | 11.58 | 9.88 / 46.35 | 1.29 | 0.15 | 651 | 239 | 5/8 | - |
+| T4-c | 4 | c8 | 8 | 8 | 22.19 | 53.20 | 11.68 | 10.00 / 45.56 | 1.26 | 0.16 | 651 | 240 | 6/8 | - |
+| T4N-a | 4 | c8 | 8 | 8 | 22.26 | 53.85 | 11.43 | 9.81 / 47.39 | 1.36 | 0.17 | 651 | 241 | 6/8 | - |
+| T4N-b | 4 | c8 | 8 | 8 | 22.13 | 53.21 | 11.43 | 9.81 / 46.24 | 1.25 | 0.15 | 651 | 239 | 5/8 | - |
+| T4N-c | 4 | c8 | 8 | 8 | 22.12 | 53.25 | 11.60 | 9.90 / 46.33 | 1.27 | 0.20 | 651 | 239 | 5/8 | - |
+
+## Per arm (six invocations each: rounds a, b, c x arm and its null)
+
+| arm | cell | agg median [min-max] | spread | p50 latency | ttft p50 | queue p50 | a_ttft p50 | otok per invocation |
+|---|---|---|---|---|---|---|---|---|
+| slots 4 | c4 | 20.12 [19.36-20.18] | 4.2% | 34.66 | 6.92 | 0.00 | 6.08 | 208,208,223,208,208,208 |
+| slots 1 | c4 | 10.55 [10.52-10.67] | 1.4% | 52.18 | 31.21 | 28.71 | 2.19 | 208,208,208,208,208,208 |
+| slots 4 | c8 | 22.15 [22.04-22.26] | 1.0% | 53.28 | 11.57 | 9.87 | 1.28 | 240,239,240,241,239,239 |
+| slots 1 | c8 | 11.11 [11.07-11.17] | 0.9% | 83.83 | 69.31 | 66.90 | 1.30 | 240,240,240,240,240,240 |
+
+## Tie bar and verdict, slots 4 vs slots 1
+
+Bar per cell = the larger of the two arms' spreads, (max - min) / min of agg over
+each arm's six invocations (arm and null together, as step 1 priced it).
+
+c4: bar 4.2%; worst slots-4 invocation 19.36 vs best slots-1 10.67: +81.4% -> slots 4 beats slots 1 beyond the bar in every invocation
+   round a T4-a 20.04 vs T1-a 10.55: +90.0%
+   round a T4N-a 20.18 vs T1N-a 10.67: +89.0%
+   round b T4-b 20.09 vs T1-b 10.55: +90.5%
+   round b T4N-b 20.14 vs T1N-b 10.67: +88.8%
+   round c T4-c 19.36 vs T1-c 10.55: +83.5%
+   round c T4N-c 20.14 vs T1N-c 10.52: +91.4%
+c8: bar 1.0%; worst slots-4 invocation 22.04 vs best slots-1 11.17: +97.3% -> slots 4 beats slots 1 beyond the bar in every invocation
+   round a T4-a 22.18 vs T1-a 11.07: +100.4%
+   round a T4N-a 22.26 vs T1N-a 11.15: +99.5%
+   round b T4-b 22.04 vs T1-b 11.08: +98.9%
+   round b T4N-b 22.13 vs T1N-b 11.17: +98.1%
+   round c T4-c 22.19 vs T1-c 11.07: +100.4%
+   round c T4N-c 22.12 vs T1N-c 11.15: +98.4%
+
+## Queue and order cells (chat_wait_slot_s 30)
+
+burst-q1-a           k=0 usr1 status=200 code=None retry_after=None send=1791019667.63 latency=3.37 ttft=1.11 queue=0.000 q_outcome=admitted http_error=None gen=32
+burst-q1-a           k=1 usr1 status=200 code=None retry_after=None send=1791019667.70 latency=13.00 ttft=10.70 queue=9.579 q_outcome=admitted http_error=None gen=32
+burst-q1-a           k=2 usr2 status=200 code=None retry_after=None send=1791019667.75 latency=6.25 ttft=4.35 queue=3.198 q_outcome=admitted http_error=None gen=32
+burst-q1-a           k=3 usr2 status=200 code=None retry_after=None send=1791019667.80 latency=16.20 ttft=14.00 queue=12.893 q_outcome=admitted http_error=None gen=32
+burst-q1-a           k=4 usr3 status=200 code=None retry_after=None send=1791019667.85 latency=9.45 ttft=7.25 queue=6.091 q_outcome=admitted http_error=None gen=32
+burst-q1-a           k=5 usr3 status=200 code=None retry_after=None send=1791019667.90 latency=19.50 ttft=17.21 queue=16.079 q_outcome=admitted http_error=None gen=32
+busy-q1-holder       k=0 usr1 status=200 code=None retry_after=None send=1791019696.60 latency=31.20 ttft=3.10 queue=0.000 q_outcome=admitted http_error=None gen=347
+busy-q1-waiter       k=0 usr2 status=200 code=None retry_after=None send=1791019698.61 latency=33.57 ttft=30.30 queue=29.169 q_outcome=admitted http_error=None gen=32
+busy-q1-holder2      k=0 usr1 status=200 code=None retry_after=None send=1791019741.19 latency=49.63 ttft=1.10 queue=0.000 q_outcome=admitted http_error=None gen=600
+busy-q1-waiter2      k=0 usr2 status=503 code=pool_busy retry_after=1 send=1791019743.19 latency=30.02 ttft=- queue=30.000 q_outcome=busy http_error=None gen=None
+hangup-q1-holder     k=0 usr1 status=200 code=None retry_after=None send=1791019799.71 latency=25.28 ttft=1.09 queue=0.000 q_outcome=admitted http_error=None gen=300
+hangup-q1-next       k=0 usr3 status=200 code=None retry_after=None send=1791019808.91 latency=19.30 ttft=17.16 queue=16.058 q_outcome=admitted http_error=None gen=32
+hangup-q1            k=0 usr2 status=client_closed code=None retry_after=None send=1791019801.80 latency=5.03 ttft=- queue=4.937 q_outcome=CancelledError http_error=None gen=None
+warm-q1              k=0 usr1 status=200 code=None retry_after=None send=1791019588.57 latency=33.34 ttft=10.24 queue=0.000 q_outcome=admitted http_error=None gen=281
+burst-q4-a           k=0 usr1 status=200 code=None retry_after=None send=1791020011.46 latency=6.26 ttft=1.73 queue=0.000 q_outcome=admitted http_error=None gen=32
+burst-q4-a           k=1 usr1 status=200 code=None retry_after=None send=1791020011.52 latency=6.21 ttft=1.68 queue=0.000 q_outcome=admitted http_error=None gen=32
+burst-q4-a           k=2 usr2 status=200 code=None retry_after=None send=1791020011.57 latency=6.16 ttft=1.62 queue=0.000 q_outcome=admitted http_error=None gen=32
+burst-q4-a           k=3 usr2 status=200 code=None retry_after=None send=1791020011.62 latency=6.11 ttft=1.57 queue=0.000 q_outcome=admitted http_error=None gen=32
+burst-q4-a           k=4 usr3 status=200 code=None retry_after=None send=1791020011.67 latency=11.41 ttft=7.19 queue=6.041 q_outcome=admitted http_error=None gen=32
+burst-q4-a           k=5 usr3 status=200 code=None retry_after=None send=1791020011.72 latency=11.42 ttft=7.14 queue=5.996 q_outcome=admitted http_error=None gen=32
+burst-q4-a           k=6 usr4 status=200 code=None retry_after=None send=1791020011.77 latency=11.37 ttft=7.09 queue=5.944 q_outcome=admitted http_error=None gen=32
+burst-q4-a           k=7 usr4 status=200 code=None retry_after=None send=1791020011.82 latency=11.32 ttft=7.04 queue=5.893 q_outcome=admitted http_error=None gen=32
+hangup-q4-holders    k=0 usr1 status=200 code=None retry_after=None send=1791020042.44 latency=21.67 ttft=1.15 queue=0.000 q_outcome=admitted http_error=None gen=150
+hangup-q4-holders    k=1 usr2 status=200 code=None retry_after=None send=1791020042.46 latency=21.64 ttft=1.24 queue=0.000 q_outcome=admitted http_error=None gen=150
+hangup-q4-holders    k=2 usr3 status=200 code=None retry_after=None send=1791020042.48 latency=21.62 ttft=1.21 queue=0.000 q_outcome=admitted http_error=None gen=150
+hangup-q4-holders    k=3 usr4 status=200 code=None retry_after=None send=1791020042.51 latency=21.60 ttft=1.19 queue=0.000 q_outcome=admitted http_error=None gen=150
+hangup-q4-next       k=0 usr2 status=200 code=None retry_after=None send=1791020050.52 latency=16.80 ttft=14.66 queue=13.576 q_outcome=admitted http_error=None gen=32
+hangup-q4            k=0 usr1 status=client_closed code=None retry_after=None send=1791020044.44 latency=5.00 ttft=- queue=4.993 q_outcome=CancelledError http_error=499 gen=None
+warm-q4              k=0 usr1 status=200 code=None retry_after=None send=1791019976.17 latency=25.34 ttft=3.09 queue=0.000 q_outcome=admitted http_error=503 gen=281
+
+## Order of service in the burst cells (the hub's admissions, in time order)
+
+burst-q1-a: arrival usr1 usr1 usr2 usr2 usr3 usr3
+            served  usr1 usr2 usr3 usr1 usr2 usr3
+burst-q4-a: arrival usr1 usr1 usr2 usr2 usr3 usr3 usr4 usr4
+            served  usr1 usr1 usr2 usr2 usr3 usr4 usr3 usr4
+
+## Rig cap: any `busy` from the head agent
+
+agent relay_request refused (taken=false): 0 []
+hub relay_end frames with code busy: 0
+client 502 responses: 0
+agent relay_requests taken: 182; most relays active at once on the head rig: 4
+hub relays in use right after each admission (relays: count): {1: 112, 2: 14, 3: 14, 4: 42}
+
+## Time to first token, client side and agent side (throughput cells, ok rows)
+
+| arm | cell | client ttft p50 | queue p50 | hub->agent p50 | a_ttft p50 | flush p50 | engine prompt_ms p50 |
+|---|---|---|---|---|---|---|---|
+| slots 4 | c4 | 7.06 | 0.00 | 0.035 | 6.08 | 0.78 | 5.76 |
+| slots 1 | c4 | 31.30 | 28.76 | 0.035 | 2.19 | 0.76 | 1.89 |
+| slots 4 | c8 | 11.44 | 9.81 | 0.034 | 1.25 | 0.17 | 0.83 |
+| slots 1 | c8 | 68.87 | 66.19 | 0.035 | 1.30 | 0.53 | 0.88 |

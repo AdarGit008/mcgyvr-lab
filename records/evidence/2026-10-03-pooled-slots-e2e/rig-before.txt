@@ -1,0 +1,26 @@
+## 2026-10-03T09:11:25Z srv1 before
+# docker ps -a
+5187217a5efdba34e0853a660565e18a7397201f41ac27fd876f0195592ac3c9 mcgyvr-lcpp ghcr.io/ggml-org/llama.cpp:server-cuda-b10481 Exited (255) 4 weeks ago "/app/llama-server -m /root/.cache/huggingface/hub/models--unsloth--Qwen3-Coder-30B-A3B-Instruct-GGUF/snapshots/b17cb02dd882d5b6ab62fc777ad2995f19668350/Qwen3-Coder-30B-A3B-Instruct-Q2_K.gguf -ngl 99 --n-cpu-moe 36 -c 4096 --parallel 8 -t 4 -tb 6 -fa on --cache-type-k q8_0 --cache-type-v q8_0 --host 0.0.0.0 --port 8080"
+18ed1a47afa77eb7ee71c77bdb70e467a72ae275fd0ea6cff4ae256df11cc8be vllm-nemotron-4b vllm/vllm-openai:latest Exited (1) 7 weeks ago "vllm serve /model --served-model-name nemotron-3-nano-4b --host 0.0.0.0 --port 8000 --trust-remote-code --mamba-backend triton --max-num-seqs 8 --max-model-len 4096 --gpu-memory-utilization 0.90"
+# nvidia-smi --query-gpu
+0, NVIDIA GeForce RTX 3060, 00000000:01:00.0, 12288 MiB, 379 MiB, 1 MiB, 11909 MiB, 8.6, 580.178.04
+1, NVIDIA GeForce RTX 3060, 00000000:02:00.0, 12288 MiB, 379 MiB, 1 MiB, 11909 MiB, 8.6, 580.178.04
+# nvidia-smi --query-compute-apps
+# image llamacpp:b10644-L3-rpc
+sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841 created=2026-09-27T05:15:29.118229945Z
+# lease
+none
+MemAvailable:   46507580 kB
+## 2026-10-03T09:11:26Z srv2 before
+# docker ps -a
+26d51cc18607975a8c8c619b651807dee8be7cde0a88ed8593290bccd43ae87a vllm-7b-coder vllm/vllm-openai:v0.26.0 Exited (0) 6 weeks ago "vllm serve Qwen/Qwen2.5-Coder-7B-Instruct-AWQ --max-model-len 16384 --gpu-memory-utilization 0.90 --max-num-seqs 16 --enable-prefix-caching --enable-sleep-mode"
+90d4db5ec53e4e017a93a7dca80e9d8ac624a00a61d79806bf55f06d2a25522a vllm-nemotron-30b vllm/vllm-openai:latest Exited (0) 7 weeks ago "vllm serve /model --served-model-name nemotron-3-nano-30b --host 0.0.0.0 --port 8000 --trust-remote-code --mamba-backend triton --max-num-seqs 4 --max-model-len 2048 --gpu-memory-utilization 0.80 --cpu-offload-gb 8 --cpu-offload-params experts --enforce-eager"
+c5355959a8e5722fe8f402138923afb163ddd4703331ed6f4a7f891284481140 vllm-nemotron-4b vllm/vllm-openai:latest Exited (1) 7 weeks ago "vllm serve /model --served-model-name nemotron-3-nano-4b --host 0.0.0.0 --port 8000 --trust-remote-code --mamba-backend triton --max-num-seqs 16 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-flashinfer-autotune"
+# nvidia-smi --query-gpu
+0, NVIDIA GeForce GTX 1660 SUPER, 00000000:01:00.0, 6144 MiB, 399 MiB, 17 MiB, 5729 MiB, 7.5, 580.178.04
+# nvidia-smi --query-compute-apps
+# image llamacpp:b10644-L3-rpc
+sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841 created=2026-09-27T05:15:29.118229945Z
+# lease
+none
+MemAvailable:   46445696 kB

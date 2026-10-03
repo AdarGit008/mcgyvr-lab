@@ -1,0 +1,19 @@
+# Step 1 (lab#50, branch lab/pooled-slots-measure @ cd02fc40, records/evidence/2026-10-03-pooled-slots/round-{a,b,c}.tsv):
+# the n=4 level rows of the split cells, direct to the engine, draws 4..7 (the same draws as this record's c4).
+# S1/S1N: -np 1, -dev CUDA0,CUDA1,RPC0 -ts 27,26,12 (output on the worker); S4/S4N: the same at -np 4;
+# D6OUT1: -np 4, -dev RPC0,CUDA0,CUDA1 -ts 11,27,27 (output on a head card). ctx 2048 per slot.
+round-a.tsv S1-a np=1 agg=10.5 p50=54.54 ttft_p50=32.867 tpot_ms_p50=85.7 ptok=625 otok=206 otok_req=223 failed=0/4
+round-a.tsv S4-a np=4 agg=18.5 p50=38.41 ttft_p50=7.004 tpot_ms_p50=149.4 ptok=625 otok=206 otok_req=223 failed=0/4
+round-a.tsv S1N-a np=1 agg=10.5 p50=54.67 ttft_p50=36.775 tpot_ms_p50=85.8 ptok=625 otok=206 otok_req=223 failed=0/4
+round-a.tsv S4N-a np=4 agg=18.5 p50=38.35 ttft_p50=7.001 tpot_ms_p50=149.2 ptok=625 otok=206 otok_req=223 failed=0/4
+round-a.tsv D6OUT1-a np=4 agg=20.8 p50=33.27 ttft_p50=6.012 tpot_ms_p50=129.7 ptok=625 otok=208 otok_req=223 failed=0/4
+round-b.tsv S1-b np=1 agg=10.5 p50=44.07 ttft_p50=30.464 tpot_ms_p50=85.7 ptok=625 otok=208 otok_req=223 failed=0/4
+round-b.tsv S4-b np=4 agg=17.7 p50=39.38 ttft_p50=7.019 tpot_ms_p50=153.8 ptok=625 otok=208 otok_req=223 failed=0/4
+round-b.tsv S1N-b np=1 agg=10.6 p50=55.61 ttft_p50=30.949 tpot_ms_p50=85.8 ptok=625 otok=223 otok_req=223 failed=0/4
+round-b.tsv S4N-b np=4 agg=18.5 p50=38.49 ttft_p50=6.998 tpot_ms_p50=149.8 ptok=625 otok=206 otok_req=223 failed=0/4
+round-b.tsv D6OUT1-b np=4 agg=21.3 p50=33.09 ttft_p50=6.281 tpot_ms_p50=127.5 ptok=625 otok=206 otok_req=223 failed=0/4
+round-c.tsv S1-c np=1 agg=10.5 p50=54.61 ttft_p50=32.867 tpot_ms_p50=85.7 ptok=625 otok=206 otok_req=223 failed=0/4
+round-c.tsv S4-c np=4 agg=17.7 p50=39.16 ttft_p50=6.958 tpot_ms_p50=154.4 ptok=625 otok=208 otok_req=223 failed=0/4
+round-c.tsv S1N-c np=1 agg=10.5 p50=54.62 ttft_p50=36.748 tpot_ms_p50=85.7 ptok=625 otok=206 otok_req=223 failed=0/4
+round-c.tsv S4N-c np=4 agg=17.6 p50=40.58 ttft_p50=6.991 tpot_ms_p50=159.4 ptok=625 otok=206 otok_req=223 failed=0/4
+round-c.tsv D6OUT1-c np=4 agg=21.3 p50=33.13 ttft_p50=6.303 tpot_ms_p50=127.6 ptok=625 otok=206 otok_req=223 failed=0/4

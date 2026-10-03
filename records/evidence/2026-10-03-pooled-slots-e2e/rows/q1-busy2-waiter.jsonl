@@ -1,0 +1,1 @@
+{"user": "usr2", "uid": null, "want": 32, "run": "q1", "cell": "burst", "k": 0, "tag": 1974319400, "label": "busy-q1-waiter2", "send": 1791019743.194939, "hdr": 1791019773.2136886, "status": 503, "retry_after": "1", "end": 1791019773.2137265, "code": "pool_busy", "message": "the session is serving as many requests as it may", "loading_retries": 0}

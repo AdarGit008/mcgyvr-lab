@@ -1,0 +1,2 @@
+2026-10-03T09:24:12Z srv1 rtt=66.9ms offset=-6.0ms
+2026-10-03T09:24:15Z srv2 rtt=68.7ms offset=-3.1ms

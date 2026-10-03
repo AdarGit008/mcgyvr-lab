@@ -1,0 +1,171 @@
+## 2026-10-03T10:41:41Z srv1 after (extra)
+# docker images -a
+02f9dd83dd4a <none>:<none> 4 weeks ago 5.78GB
+0494a6bae82f llamacpp:b10644-L1 4 weeks ago 5.78GB
+06e02608466f <none>:<none> 4 weeks ago 5.75GB
+0bcf13b9f7f9 <none>:<none> 4 weeks ago 5.76GB
+0d82f0cc5d15 <none>:<none> 4 weeks ago 5.75GB
+0fd7426f7633 openmmlab/lmdeploy:v0.16.0-cu12.8 6 weeks ago 16.5GB
+182a14ae5c20 ghcr.io/ggml-org/llama.cpp:full-b10644 5 weeks ago 4.2GB
+1d5191061db7 llamacpp:b10644-nomma-dp4a-v2 4 weeks ago 5.76GB
+2260313b31c8 ubuntu:26.04 6 weeks ago 160MB
+25fa0eeadbd0 ghcr.io/ggml-org/llama.cpp:full-cuda 3 weeks ago 10.3GB
+26187f0b5563 <none>:<none> 4 weeks ago 6.05GB
+2b4cbb995eb2 <none>:<none> 4 weeks ago 5.78GB
+2d46ab5f4fce <none>:<none> 4 weeks ago 5.76GB
+2d918fb96157 <none>:<none> 4 weeks ago 5.76GB
+327764267c86 <none>:<none> 4 weeks ago 6.05GB
+32e1c5485bdc <none>:<none> 4 weeks ago 5.75GB
+36d9d27c870c <none>:<none> 4 weeks ago 5.76GB
+3db42a30a901 ghcr.io/ggml-org/llama.cpp:full-cuda-b10644 5 weeks ago 10.3GB
+404664468f4a <none>:<none> 4 weeks ago 5.78GB
+4335f89a75f2 <none>:<none> 4 weeks ago 5.75GB
+4acbb07541ca <none>:<none> 4 weeks ago 5.78GB
+4d902a970461 <none>:<none> 4 weeks ago 5.75GB
+4fbb8e6a8395 ubuntu:24.04 3 months ago 119MB
+528e28adaa91 <none>:<none> 4 weeks ago 5.78GB
+52fc5b7a78c4 <none>:<none> 4 weeks ago 5.78GB
+5c6ba2fd9278 <none>:<none> 4 weeks ago 5.74GB
+5d14989165ec <none>:<none> 4 weeks ago 5.74GB
+638a0da4544e <none>:<none> 4 weeks ago 5.78GB
+64f74adbf42f llamacpp:b10644-A3 4 weeks ago 6.05GB
+65aa7ccd8b68 <none>:<none> 4 weeks ago 5.76GB
+66d94713b4c0 <none>:<none> 4 weeks ago 5.78GB
+6e6c91a5add7 <none>:<none> 4 weeks ago 5.76GB
+6f84d77b65c1 llamacpp:b10644-A3-spirvfix 4 weeks ago 5.74GB
+7f1798fd2a8c <none>:<none> 4 weeks ago 5.78GB
+810d3bc2a5ff <none>:<none> 4 weeks ago 5.76GB
+85c54c0631d0 <none>:<none> 4 weeks ago 5.76GB
+8f7600d3b302 <none>:<none> 4 weeks ago 5.74GB
+936367cfb28e <none>:<none> 4 weeks ago 5.75GB
+93f96a47d35f <none>:<none> 4 weeks ago 5.76GB
+9aec7cb55718 llamacpp:b10644-L4 4 weeks ago 5.75GB
+9b9977cc5340 diag-vk:strace 4 weeks ago 420MB
+9f0a986a78ab ghcr.io/ggml-org/llama.cpp:server-cuda 5 weeks ago 6.98GB
+9f0a986a78ab ghcr.io/ggml-org/llama.cpp:server-cuda-b10644 5 weeks ago 6.98GB
+9f989eb73e0f <none>:<none> 4 weeks ago 5.78GB
+a77621c171aa llamacpp:b10644-L2 4 weeks ago 5.76GB
+aa269ef1546e llamacpp:b10644-nomma-dp4a-v3 4 weeks ago 5.76GB
+acda1c939417 <none>:<none> 4 weeks ago 5.76GB
+b1e0b80cb4ef <none>:<none> 4 weeks ago 5.76GB
+b2497f8834f5 ghcr.io/ggml-org/llama.cpp:server-cuda-b10481 6 weeks ago 6.98GB
+c49d9cd3e2d6 llamacpp:b10644-L3-rpc 6 days ago 5.76GB
+c9f25a3f7f7c <none>:<none> 4 weeks ago 5.78GB
+ce5966e960d1 <none>:<none> 4 weeks ago 5.76GB
+d869b98f2b7b llamacpp:b10644-L3 4 weeks ago 5.76GB
+d955f674efac <none>:<none> 4 weeks ago 5.78GB
+e11d4252dbea <none>:<none> 4 weeks ago 5.76GB
+e48510bfd22c llamacpp:b10644-nomma-dp4a 4 weeks ago 5.74GB
+e49cef4aec7a <none>:<none> 4 weeks ago 5.78GB
+e51b2605a3ef mcgyvr-tunnel:f6dec4a3b3a0 35 hours ago 27.6MB
+e755dd07a106 llamacpp:b10644-L0 4 weeks ago 5.78GB
+e8c4c4998f78 <none>:<none> 4 weeks ago 5.76GB
+ea2f3617249e <none>:<none> 4 weeks ago 5.74GB
+ea4f063ff57a <none>:<none> 4 weeks ago 5.78GB
+f74d02871a7b <none>:<none> 4 weeks ago 5.75GB
+fa675d6665e0 ghcr.io/ggml-org/llama.cpp:full 3 weeks ago 4.21GB
+ffb2d59b1c05 vllm/vllm-openai:latest 2 months ago 28.1GB
+ffb2d59b1c05 vllm/vllm-openai:v0.26.0 2 months ago 28.1GB
+# processes: agents, llama-server, ggml-rpc-server
+ 925741 bash -c  echo "## $(date -u +%FT%TZ) srv1 after (extra)" echo '# docker images -a' docker images -a --format '{{.ID}} {{.Repository}}:{{.Tag}} {{.CreatedSince}} {{.Size}}' | sort echo '# processes: agents, llama-server, ggml-rpc-server' ps -eo pid,args | grep -E '[m]cgyvr rig|[l]lama-server|[g]gml-rpc-server' || echo none echo '# listening on 18765/18766' ss -ltn | grep -E ':1876[56] ' || echo none echo '# ~/mcgyvr-pool-tmp' ls -1 ~/mcgyvr-pool-tmp echo '# product checkout' git -C ~/mcgyvr-pool-tmp/product log --oneline -1 git -C ~/mcgyvr-pool-tmp/product status -sb | head -3 echo '# e2e dirs' ls -1A ~/mcgyvr-pool-tmp/e2e ~/mcgyvr-pool-tmp/e2e/home 2>&1 ls -1A ~/mcgyvr-pool-tmp/e2e-slots 2>&1 | head -20 
+# listening on 18765/18766
+none
+# ~/mcgyvr-pool-tmp
+data
+e2e
+guard.sh
+home
+open_head.sh
+product
+product-live-b.bundle
+product.bundle
+sidecar.sh
+up.sh
+uv-cache
+uv-python
+# product checkout
+12fa907c1 feat(rig): a sync reports the rider's ladder to the hub, and nothing else
+## ladder-relief-rungs
+# e2e dirs
+/home/adaramir/mcgyvr-pool-tmp/e2e:
+agent.log
+agent.log.2026-10-02-aside
+data
+home
+
+/home/adaramir/mcgyvr-pool-tmp/e2e/home:
+rig-credentials.json
+rig-credentials.json.2026-10-02-aside
+rig-sharing.json
+ls: cannot access '/home/adaramir/mcgyvr-pool-tmp/e2e-slots': No such file or directory
+## 2026-10-03T10:41:43Z srv2 after (extra)
+# docker images -a
+0494a6bae82f llamacpp:b10644-L1 4 weeks ago 5.78GB
+0fd7426f7633 openmmlab/lmdeploy:v0.16.0-cu12.8 6 weeks ago 16.5GB
+1d5191061db7 llamacpp:b10644-nomma-dp4a-v2 4 weeks ago 5.76GB
+1de233a5c656 mcgyvr-tunnel:f6dec4a3b3a0 35 hours ago 27.6MB
+231c9b443446 diag-vk:bisect2 4 weeks ago 418MB
+3db42a30a901 ghcr.io/ggml-org/llama.cpp:full-cuda-b10644 5 weeks ago 10.3GB
+4fbb8e6a8395 ubuntu:24.04 3 months ago 119MB
+5291449c3df7 alpine:3.22 2 weeks ago 12.8MB
+5c1b3f51e398 llamacpp:b10644-vulkan 4 weeks ago 265MB
+5db9e907e127 diag-vk:bisect3 4 weeks ago 167MB
+64f74adbf42f llamacpp:b10644-A3 4 weeks ago 6.05GB
+66a8e46343f9 diag-vk:mesa 4 weeks ago 494MB
+6f84d77b65c1 llamacpp:b10644-A3-spirvfix 4 weeks ago 5.74GB
+92f03ee961bf diag-vk:bisect1 4 weeks ago 167MB
+9a6182326691 llamacpp-lidenburg:e85e4d9 2 weeks ago 6.77GB
+9a8fffc32a95 nvidia/cuda:12.8.0-devel-ubuntu24.04 20 months ago 14.6GB
+9aec7cb55718 llamacpp:b10644-L4 4 weeks ago 5.75GB
+9cec6d3ca8f5 diag-vk:nvidia_cuda_12_8_0-runtime-ubuntu24_04 4 weeks ago 5.62GB
+9f0a986a78ab ghcr.io/ggml-org/llama.cpp:server-cuda 5 weeks ago 6.98GB
+9f0a986a78ab ghcr.io/ggml-org/llama.cpp:server-cuda-b10644 5 weeks ago 6.98GB
+a07daf5557d8 ghcr.io/ggml-org/llama.cpp:server-vulkan 4 weeks ago 1.22GB
+a2029429e6bb diag-vk:ubuntu_26_04 4 weeks ago 167MB
+a704ce85ede7 diag-vk:strace 4 weeks ago 170MB
+a77621c171aa llamacpp:b10644-L2 4 weeks ago 5.76GB
+aa269ef1546e llamacpp:b10644-nomma-dp4a-v3 4 weeks ago 5.76GB
+b2497f8834f5 ghcr.io/ggml-org/llama.cpp:server-cuda-b10481 6 weeks ago 6.98GB
+c26b8f7bd8ea diag-vk:ubuntu_24_04 4 weeks ago 127MB
+c49d9cd3e2d6 llamacpp:b10644-L3-rpc 6 days ago 5.76GB
+d869b98f2b7b llamacpp:b10644-L3 4 weeks ago 5.76GB
+e48510bfd22c llamacpp:b10644-nomma-dp4a 4 weeks ago 5.74GB
+e755dd07a106 llamacpp:b10644-L0 4 weeks ago 5.78GB
+e81c87bad63a diag-vk:bisect4 4 weeks ago 417MB
+efb6ddae7df5 diag-vk:bisect5 4 weeks ago 424MB
+f960e6dad3c3 ghcr.io/ggml-org/llama.cpp:full-cuda-b10481 6 weeks ago 10.3GB
+ffb2d59b1c05 vllm/vllm-openai:latest 2 months ago 28.1GB
+ffb2d59b1c05 vllm/vllm-openai:v0.26.0 2 months ago 28.1GB
+# processes: agents, llama-server, ggml-rpc-server
+ 512278 bash -c  echo "## $(date -u +%FT%TZ) srv2 after (extra)" echo '# docker images -a' docker images -a --format '{{.ID}} {{.Repository}}:{{.Tag}} {{.CreatedSince}} {{.Size}}' | sort echo '# processes: agents, llama-server, ggml-rpc-server' ps -eo pid,args | grep -E '[m]cgyvr rig|[l]lama-server|[g]gml-rpc-server' || echo none echo '# listening on 18765/18766' ss -ltn | grep -E ':1876[56] ' || echo none echo '# ~/mcgyvr-pool-tmp' ls -1 ~/mcgyvr-pool-tmp echo '# product checkout' git -C ~/mcgyvr-pool-tmp/product log --oneline -1 git -C ~/mcgyvr-pool-tmp/product status -sb | head -3 echo '# e2e dirs' ls -1A ~/mcgyvr-pool-tmp/e2e ~/mcgyvr-pool-tmp/e2e/home 2>&1 ls -1A ~/mcgyvr-pool-tmp/e2e-slots 2>&1 | head -20 
+# listening on 18765/18766
+none
+# ~/mcgyvr-pool-tmp
+data
+e2e
+guard.sh
+home
+product
+product-live-b.bundle
+product.bundle
+rpc-cache
+sidecar.sh
+up.sh
+uv-cache
+uv-python
+# product checkout
+12fa907c1 feat(rig): a sync reports the rider's ladder to the hub, and nothing else
+## ladder-relief-rungs
+# e2e dirs
+/home/adaramir/mcgyvr-pool-tmp/e2e:
+agent.log
+agent.log.2026-10-02-aside
+data
+home
+rider-setup
+
+/home/adaramir/mcgyvr-pool-tmp/e2e/home:
+rig-credentials.json
+rig-credentials.json.2026-10-02-aside
+rig-sharing.json
+ls: cannot access '/home/adaramir/mcgyvr-pool-tmp/e2e-slots': No such file or directory

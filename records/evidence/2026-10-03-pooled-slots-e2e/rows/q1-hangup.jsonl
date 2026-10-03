@@ -1,0 +1,1 @@
+{"user": "usr2", "uid": null, "want": 32, "hangup_after": 5.0, "run": "q1", "cell": "hangup", "k": 0, "tag": 1980179300, "label": "hangup-q1", "send": 1791019801.795419, "hangup": 1791019806.8212934, "end": 1791019806.8214602, "status": "client_closed", "loading_retries": 0}

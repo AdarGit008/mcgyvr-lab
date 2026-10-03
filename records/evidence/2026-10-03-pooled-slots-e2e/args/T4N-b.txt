@@ -1,0 +1,6 @@
+## 2026-10-03T10:09:45Z T4N-b
+srv1 /mcgyvr-pool-c1de44c390c8-head head sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841 mcgyvr-guard /app/llama-server -m /models/Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf -ngl 999 -sm layer -np 4 -c 40960 -fa on -ctk q8_0 -ctv q8_0 --host 172.17.0.2 --port 8080 --rpc 10.211.0.2:50052 -dev RPC0,CUDA0,CUDA1 -ts 12,27,26
+srv1 head-log: 0.54.368.053 I srv    load_model: initializing, n_slots = 4, n_ctx_slot = 10240, kv_unified = 'false'
+srv1 /mcgyvr-pool-c1de44c390c8-tunnel tunnel sha256:5f8ea9044db2d150d38d375fdee51acc588526408bcae37550c734f895ccd158 mcgyvr-tunnel 51820 60
+srv2 /mcgyvr-pool-c1de44c390c8-worker-0 worker-0 sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841 mcgyvr-guard /app/ggml-rpc-server -H 10.211.0.2 -p 50052 -d CUDA0 -c
+srv2 /mcgyvr-pool-c1de44c390c8-tunnel tunnel sha256:127615626e8c442a4a49d3c49d1b50a7768fb5ccab74cec24a25241068adc071 mcgyvr-tunnel 51820 60
