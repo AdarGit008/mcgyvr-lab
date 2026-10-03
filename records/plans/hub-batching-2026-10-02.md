@@ -1,8 +1,9 @@
 # Social batching on the hub — planned 2026-10-02
 
 **Issue #46. PLAN-ONLY. Nothing has been launched or merged, and nothing here
-authorises a launch.** Step 3 is built as a draft PR. §2 gives each step's
-state. The owner approved this work plan on 2026-10-02. It
+authorises a launch.** Steps 3 and 4, and the session width, are built as
+draft PRs. §2 gives each step's state. The owner approved this work plan on
+2026-10-02, and #46 records the decisions of 2026-10-02 and 2026-10-03. It
 covers many users' requests on one pooled session, sent through the hub. Solo
 batching (one user's own rigs, `n=`, the local-exhaustion line) is #32. Its plan
 is `records/plans/request-batching-2026-10-01.md`, and nothing in it is restated
@@ -12,9 +13,9 @@ here.
 hides the per-token RPC round trip across rigs. Each decode step would then pay
 the round trip once for every slot, not once per request. Step 0 read the
 mechanism in source (§3). Only the wall-clock answer is left, and Step 1
-settles that. Step 3 (the wait queue) goes ahead of the measurement, by owner
-approval. It removes the instant refusal even at one slot, so it does not
-depend on the answer.
+settles that. Steps 3 and 4 (the wait queue and its order) go ahead of the
+measurement, by owner approval. They remove the instant refusal and order the
+wait even at one slot, so they do not depend on the answer.
 
 **Citations.** Each one names its repository and commit:
 
@@ -22,20 +23,23 @@ depend on the answer.
 |---|---|---|
 | `hub:` | AdarGit008/mcgyvr-hub, branch `connect` (draft mcgyvr-hub#1) | `1d59722` (`main` is `5a85d0c`) |
 | `rig:` | AdarGit008/mcgyvr, branch `mcgyvr-connect` (draft mcgyvr#564, stacked on #562) | `11415cc6` |
-| `hub#4:` | AdarGit008/mcgyvr-hub, branch `pool-wait-queue` (draft mcgyvr-hub#4, base `connect`) | `57de2ffe` |
+| `hub#4:` | AdarGit008/mcgyvr-hub, branch `pool-wait-queue` (draft mcgyvr-hub#4, base `connect`) | `d389c20` |
+| `hub#5:` | AdarGit008/mcgyvr-hub, branch `pool-fair-order` (draft mcgyvr-hub#5, base `pool-wait-queue`) | `dc9d626` |
+| `hub#8:` | AdarGit008/mcgyvr-hub, branch `pool-session-width` (draft mcgyvr-hub#8, base `pool-fair-order`) | `275cb5c` |
 | `lab#42:` | this repository, branch `mcgyvr-social` (draft lab PR #42, unmerged) | `cf53dc3b` |
 | `lab#48:` | this repository, branch `lab/pooled-slots-desk-read` (draft lab PR #48, unmerged) | `5c1ef3bd` |
 | no prefix | this repository, `main` | `b242f46a` |
 
 **"The desk read"** below means Step 0's record,
 `lab#48:records/evidence/2026-10-02-pooled-slots-desk-read/README.md`. It is
-cited by its sections, §Q1 to §Q4.
+cited by its sections, §Q1 to §Q5.
 
 ---
 
 ## 1. What exists
 
-This is `connect` as cited. A row that hub#4 (Step 3) changes says so.
+This is `connect` as cited. A row that hub#4 (Step 3) or hub#8 (the session
+width) changes says so.
 
 ```text
 client ─ POST /v1/chat/completions ─► HUB (one process, state in memory)
@@ -56,16 +60,16 @@ llama-server -np 1 -c <ctx>  (+ --rpc to workers on other users' cards)
 | The hub is one process, and its live state is in memory | `hub:README.md:47-49`, `hub:src/mcgyvr_hub/pool_sessions.py:23-24` |
 | Per-user rate is 60 per 60 s, in fixed windows. Every attempt counts, a refused one included | `hub:src/mcgyvr_hub/config.py:35`, `hub:src/mcgyvr_hub/ratelimit.py:45-59`, `hub:src/mcgyvr_hub/completions.py:217-225` |
 | At most 2 in flight per user. The slot is taken **before** the lease and released when the completion closes, so a request that waits keeps holding it | `hub:src/mcgyvr_hub/config.py:120`, `hub:src/mcgyvr_hub/ratelimit.py:75-96`, `hub:src/mcgyvr_hub/completions.py:226-235` |
-| Join, don't plan: a joinable session is returned whether or not it is full, the ready ones with the fewest relays first | `hub:src/mcgyvr_hub/pool_sessions.py:463-479` |
+| Join, don't plan: a joinable session is returned whether or not it is full, the ready ones with the fewest relays first. hub#8 picks the most free seats instead, and when every session is full, the shortest queue per seat | `hub:src/mcgyvr_hub/pool_sessions.py:463-479`; `hub#8:src/mcgyvr_hub/pool_sessions.py:603`, `:1642-1645` |
 | A rig is in at most one active session | `hub:src/mcgyvr_hub/models.py:371-383`, `hub:src/mcgyvr_hub/protocol.py:18` |
-| `session_max_relays = 4`, a constant for every session | `hub:src/mcgyvr_hub/config.py:74` |
+| `session_max_relays = 4`, a constant for every session. hub#8 removes it: each live session has a `width`, taken from `HEAD_SLOTS = 1` as it starts | `hub:src/mcgyvr_hub/config.py:74`; `hub#8:src/mcgyvr_hub/pool_sessions.py:74-80`, `:278`, `:973` |
 | The full-session refusal: `SessionError(BUSY, retry_after_s=1)`, counted and released around the yield. hub#4 makes it a bounded wait first (§6) | `hub:src/mcgyvr_hub/pool_sessions.py:690-703`; `hub#4:src/mcgyvr_hub/pool_sessions.py:789-822` |
 | `BUSY` maps to 503 `pool_busy`, and `retry_after_s` becomes the `Retry-After` header | `hub:src/mcgyvr_hub/completions.py:127-134`, `hub:src/mcgyvr_hub/api/openai.py:49-53` |
 | Other `BUSY` refusals, which are not the full-session case: a rig is reconnecting, or the model's rigs are in another session (`_RETRY_AFTER_S = 5`) | `hub:src/mcgyvr_hub/pool_sessions.py:70`, `:678-684`, `:719-724` |
 | The ready-wait is separate: up to `chat_wait_ready_s` (20 s) for a loading session, then 503 `model_loading` | `hub:src/mcgyvr_hub/completions.py:237-241`, `hub:src/mcgyvr_hub/config.py:117`, `hub:src/mcgyvr_hub/pool_sessions.py:729-757` |
 | The idle sweep stops a ready session only when it has `relays == 0`. hub#4 also spares a session that has waiters | `hub:src/mcgyvr_hub/pool_sessions.py:299-310`; `hub#4:src/mcgyvr_hub/pool_sessions.py:358-371` |
 | `PoolSessions.drain` waits for the hub's own background tasks. It is **not** a fleet drain, and no fleet drain exists. hub#4 adds the hold that a drain would use, `hold()` / `resume()`, and nothing calls it yet | `hub:src/mcgyvr_hub/pool_sessions.py:276-282`; `hub#4:src/mcgyvr_hub/pool_sessions.py:725-739` |
-| Nothing watches the client's HTTP connection while `start` waits. hub#4 adds `while_connected`, which cancels the start on `http.disconnect` | `hub:src/mcgyvr_hub/api/openai.py:134-137`; no hit for `is_disconnected` or `http.disconnect` in `hub:src/`. `hub#4:src/mcgyvr_hub/completions.py:275-291`, `hub#4:src/mcgyvr_hub/api/openai.py:134-141` |
+| Nothing watches the client's HTTP connection while `start` waits. hub#4 adds `_while_connected` in `api/openai.py`, on `/v1` only, which cancels the start on `http.disconnect`. The pool page's Try-it box is left as `connect` has it, because hub#2 deletes Try-it | `hub:src/mcgyvr_hub/api/openai.py:134-137`; no hit for `is_disconnected` or `http.disconnect` in `hub:src/`. `hub#4:src/mcgyvr_hub/api/openai.py:123-139`, `:157-163` |
 | `n` must be 1 | `hub:src/mcgyvr_hub/completions.py:75` |
 | `HeadStartBody`: `session_id`, `model`, `ctx`, `devices`, `tensor_split`, `n_gpu_layers`, `split_mode`. No slot field. The hub fills it at `_head_start` | `hub:src/mcgyvr_hub/protocol.py:664-674`, `hub:src/mcgyvr_hub/pool_sessions.py:1193-1223` |
 | Wire compatibility: a new optional field keeps `v = 1`, and receivers ignore unknown fields. An optional behaviour is used only with an agent that lists it in `capabilities.features` | `hub:src/mcgyvr_hub/protocol.py:148-149`, `:55-57` |
@@ -83,7 +87,9 @@ llama-server -np 1 -c <ctx>  (+ --rpc to workers on other users' cards)
 So on `connect` the hub admits up to four relays into a one-slot head and
 refuses the fifth at once. The head holds relays two to four in its own queue
 (the desk read §Q2). With hub#4 the fifth waits in the hub's queue instead.
-Nothing yet weighs what a user lends.
+With hub#8 a session admits only its width, 1 today, so the second request
+already waits in the hub's queue, in hub#5's weighted turns (§7). The weight is
+a placeholder of 1.0 for everyone until the credits ledger supplies it.
 
 ## 2. The plan
 
@@ -98,18 +104,36 @@ Nothing yet weighs what a user lends.
  Steps 2 + 4 ──► Step 5  e2e evidence through the real hub and rig agent
 ```
 
-**Order.** Steps 0 and 3 ran first, in parallel. Step 4 follows Step 3. Step 1
+**Order.** Steps 0 and 3 ran first, in parallel. Step 4 followed Step 3. Step 1
 needs lab PR #42's tooling. Step 2 needs Step 1's GO and the product branches
 #562 → #564. Step 5 reads whatever has landed by then. #32 stays separate.
 
-**State, 2026-10-02:**
+**State, 2026-10-03:**
 
 | step | state |
 |---|---|
 | 0 | done: the desk read, draft lab PR #48 (§3) |
 | 1, 2, 5 | not started |
 | 3 | built: draft mcgyvr-hub#4 (§6) |
-| 4 | in progress on hub branch `pool-fair-order`, base `pool-wait-queue` |
+| 4 | built: draft mcgyvr-hub#5, stacked on #4 (§7) |
+| session width | built: draft mcgyvr-hub#8, stacked on #5. It is the hub half of Step 2's "caps follow slots", taken ahead by the owner's decision of 2026-10-03 (§5) |
+
+**Overlap.** The hub's draft mcgyvr-hub#7 (`pool-fleets`, standing units, slice
+2a of the hub plan) is based on #4, and will merge #8 to give each standing
+unit a width.
+
+**Open, 2026-10-03:**
+
+- Nothing in the hub enforces a width ≤ the rig's `MAX_ACTIVE = 4`. Only a
+  comment says a width must not pass it
+  (`hub#8:src/mcgyvr_hub/pool_sessions.py:74-80`). Today's width of 1 is under
+  it. Step 2's slot count could pass it (§5).
+- Tests that fail intermittently, already on `connect`: the member-state tests
+  in `test_pool_access.py` (`hub:tests/test_pool_access.py:280`, `:296`), and
+  `test_relay.py::test_the_byte_cap_ends_the_allocation`
+  (`hub:tests/test_relay.py:220`). hub#4, #5 and #8 change neither test file.
+- The desk read's §Q5 cell, the prompt-cache save read back over RPC, was left
+  out of Step 1. It is now cell 7 in §4, optional.
 
 **Build steps follow the test-first loop by hand** while `wf` is paused: a
 failing test, shown failing, then the change, shown passing, then the repo's own
@@ -259,6 +283,12 @@ same level list and draws as the arms:
    slots, and cross RPC when the worker holds the output layer, as it does in
    today's pooled launch (§Q3, §Q4). A pair of S4 cells differs only in which
    device holds the output layer.
+7. **Prompt-cache save read-back, optional.** S2 with `--cache-ram 0` against
+   the default, read at C = 4, where the requests past its two slots make the
+   slots turn over. Saving an idle slot reads its KV back from every device,
+   the RPC worker included, and its cost per slot switch is open (§Q5). The
+   flag goes in the cell's extra, which the driver passes verbatim
+   (`mgpu_sweep.py:28-29`).
 
 ### Go / no-go
 
@@ -295,7 +325,7 @@ hub planner ── slots × ctx-per-slot KV fit ──► Plan.slots
      ▼
 HeadStartBody.slots (optional, default 1) ──► rig HeadSpec.slots ──► head_argv: -np slots, -c slots × ctx, no -kvu
      │
-     ├─► hub lease: relays < plan.slots           (was session_max_relays = 4)
+     ├─► hub session width = slots               (was HEAD_SLOTS = 1, hub#8)
      └─► rig Relays: active < the session's slots (was MAX_ACTIVE = 4)
 ```
 
@@ -305,7 +335,8 @@ HeadStartBody.slots (optional, default 1) ──► rig HeadSpec.slots ──►
   So the hub sends `slots > 1` only to an agent that lists a slots feature in
   `capabilities.features` (`protocol.py:55-57`). Otherwise the hub would admit N
   relays into one slot.
-- **Split KV, not `-kvu`.** An explicit `-np` gives each slot its own window
+- **Split KV, not `-kvu`. Decided** by the owner on 2026-10-03, as #46
+  records. An explicit `-np` gives each slot its own window
   of `-c / slots` (the desk read §Q1), so `-c` is `slots × ctx` for the same
   context per user. `-kvu` would keep the total at `ctx` but share it, and a
   full shared pool fails every running request together (§Q1). Step 1's `-kvu`
@@ -316,15 +347,23 @@ HeadStartBody.slots (optional, default 1) ──► rig HeadSpec.slots ──►
   term against Step 1's `CONFIG` buffer readings, as the existing calibration
   cases do (`planner.py:84-90`). Whether that term grows with slots is open
   (§Q3). The new count gets a name other than `_slots` (`planner.py:355`).
-- **Caps follow slots.** The hub's lease cap becomes the session's slot count,
-  not `session_max_relays` (`config.py:74`). The rig's cap becomes the head
-  session's slot count, not the per-agent `MAX_ACTIVE` (`relay.py:43-44`,
-  `verbs.py:213`). The rig's refusal stays as the backstop. The cap must
-  equal the slot count exactly. The engine holds any request past its slots in
-  its own FIFO, with no bound and no timeout (the desk read §Q2), and the hub's
-  order of service (Step 4) cannot reach it there. Until this lands, hub#4's
-  cap is still 4 over a one-slot head, so the hub orders only the requests past
-  the fourth relay.
+- **Caps follow slots.** The hub's half is built ahead of this step, by the
+  owner's decision of 2026-10-03 (#46): the hub admits each session's own
+  width, and the mcgyvr client is unchanged. hub#8 removes `session_max_relays` and admits `relays < width`, with
+  the width taken from the one constant `HEAD_SLOTS = 1`
+  (`hub#8:src/mcgyvr_hub/pool_sessions.py:74-80`, `:857`, `:886`, `:973`).
+  Step 2 replaces `HEAD_SLOTS` with the `HeadStartBody.slots` the session was
+  launched with. The rig's cap becomes the head session's slot count, not the
+  per-agent `MAX_ACTIVE` (`relay.py:43-44`, `verbs.py:213`). The rig's refusal
+  stays as the backstop. The cap must equal the slot count exactly. The engine
+  holds any request past its slots in its own FIFO, with no bound and no
+  timeout (the desk read §Q2), and the hub's order of service (Step 4) cannot
+  reach it there. **Resolved:** the plan said that hub#4's cap of 4 over a
+  one-slot head meant Step 4's order reached only the requests past the fourth
+  relay. hub#8 makes the cap the width, 1, which equals the head's `-np 1`, so
+  no request waits in the engine and every request past the first is ordered
+  by the hub. Step 2 keeps the two equal by carrying both from one field. A
+  width above the rig's `MAX_ACTIVE` is not checked by the hub (§2, open).
 - **Silence while held.** A request the engine holds sends no byte until its
   first token (§Q2). The relay's and client's idle timeouts must allow for that
   silence. With caps equal to slots, the wait moves to the hub, where
@@ -341,7 +380,9 @@ Hub branch `pool-wait-queue` off `connect`, as a draft PR with base `connect`.
 
 **Built:** draft mcgyvr-hub#4. Its new setting, `chat_wait_slot_s`, defaults to
 30 s (`hub#4:src/mcgyvr_hub/config.py:118`). The ordering seam is
-`_Queue._next()` (`hub#4:src/mcgyvr_hub/pool_sessions.py:190-193`).
+`_Queue._next()` (`hub#4:src/mcgyvr_hub/pool_sessions.py:190-193`), which
+Step 4 fills (§7). Its cap is `session_max_relays` until hub#8 makes it the
+session's width (§5).
 
 ```text
 lease(user, model)
@@ -364,10 +405,11 @@ lease(user, model)
   (`config.py:117`). On timeout, it raises the existing `BUSY`, which becomes 503
   `pool_busy` with `Retry-After` (`completions.py:127-134`, `openai.py:49-53`).
 - **Cancel on client disconnect.** Nothing watches the client on `connect`
-  (§1). hub#4's `while_connected` makes a disconnect during the wait cancel it,
-  and a test proves it against the real ASGI stack rather than assuming the
-  server cancels the handler. A cancelled waiter leaves the queue and is never
-  handed a slot.
+  (§1). hub#4's `_while_connected`, on `/v1` only, makes a disconnect during
+  the wait cancel it, and a test proves it against the real ASGI stack rather
+  than assuming the server cancels the handler. A cancelled waiter leaves the
+  queue and is never handed a slot. Try-it is not wrapped, because hub#2
+  deletes it (§1).
 - **Depth is already bounded.** A waiter holds one of its user's in-flight slots
   (`completions.py:226-235`). So one user queues at most
   `chat_max_concurrent_per_user` (`config.py:120`). Fewer refused retries also
@@ -385,25 +427,40 @@ lease(user, model)
 
 ## 7. Step 4 — order of service
 
-Follows Step 3, on the same queue. In progress (§2).
+Follows Step 3, on the same queue. **Built:** draft mcgyvr-hub#5, which fills
+`_Queue._next()`.
 
-- **Weighted fair queue over one seam,** `contribution_weight(user_id) -> float`.
-  It is a placeholder that returns equal weights until the hub's credits ledger
-  supplies the real weight. That ledger is slice 4 of 7 on hub `connect`, and it
-  is not built (#46). It owns the unit, earning, spending and balance-gated
-  admission. **None of those is defined here.** The queue orders requests that
-  have already been admitted.
+- **Weighted fair queue over one seam,** `contribution_weight(user_id) -> float`
+  (`hub#5:src/mcgyvr_hub/pool_sessions.py:156-168`), injected as
+  `PoolSessions(..., weight=)` (`:338`, `:344`). It is a placeholder that
+  returns 1.0 for everyone until the hub's credits ledger supplies the real
+  weight. That ledger is slice 4 of 7 on hub `connect`, and it is not built
+  (#46). It owns the unit, earning, spending and balance-gated admission.
+  **None of those is defined here.** The queue orders requests that have
+  already been admitted.
+- **Scheme: start-time fair queueing,** one unit of cost per relay, which gives
+  the same order as stride scheduling
+  (`hub#5:src/mcgyvr_hub/pool_sessions.py:181-204`). A turn is charged when it
+  is given, not on arrival (`:236-240`, `:250`, `:848`), so a request that
+  gives up costs nothing. There are no banked turns: a user who was away comes
+  back at the queue's virtual time (`:225-226`).
 - **Equal weights: users take turns. Decided** by the owner on 2026-10-02, as
   #46 records. With equal weights the queue is round-robin across users, with
-  arrival order within a user, not strict FIFO. A weight later skews the turns
-  toward users who give more. A test pins the equal-weight order.
-- **Hitchhike:** the host's own requests go first. Riders are admitted only while
-  their count is under the host's rider-slot cap. No cap exists yet (§1), and
-  slice 6 is not started, so the queue reads the cap through a second seam that
-  has no cap by default.
-- **Tests:** equal weights give turns across users, in arrival order within
-  each user; under saturation, unequal weights give shares within a stated
-  bound of the weight ratio; the host jumps the riders; the rider cap holds.
+  arrival order within a user, not strict FIFO. A test pins the equal-weight
+  order.
+- **Priority by what you give means weighted turns. Decided** by the owner on
+  2026-10-03, as #46 records: users who give more get more turns, not strict
+  priority over the others. A user of weight w gets about w turns to another's
+  one, and no weight above 0 starves
+  (`hub#5:src/mcgyvr_hub/pool_sessions.py:188-204`).
+- **Hitchhike: no rider ordering was built,** because hitchhike has no serving
+  path today. `access.may_hitchhike` has no caller in `hub:src/`, and
+  `may_split` refuses a hitchhike rig to anyone but its owner
+  (`hub:src/mcgyvr_hub/access.py:110-119`, `:133`). `_next()`'s docstring says
+  where host-first order and the rider-slot cap plug in once riders can join
+  (`hub#5:src/mcgyvr_hub/pool_sessions.py:228-234`).
+- **Tests:** hub#5's description lists them, with the red run and the
+  mutation checks.
 
 ## 8. Step 5 — e2e evidence
 
