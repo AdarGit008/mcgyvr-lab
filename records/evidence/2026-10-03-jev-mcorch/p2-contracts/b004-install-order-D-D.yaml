@@ -1,0 +1,16 @@
+version: 1
+id: fix-install-order
+task_type: bug_fix
+task: "Fix the install_order function to correctly handle package installation order according to prerequisites, with proper validation and alphabetical ordering when multiple packages are ready."
+target: solution.py
+scope:
+  allow:
+    - solution.py
+acceptance:
+  - python accept.py
+stop_conditions:
+  - "The task requires fixing a specific function implementation with known edge cases"
+  - "The function must handle cycles, duplicates, and unknown packages correctly"
+  - "The function must maintain proper alphabetical ordering when multiple packages are ready"
+limits:
+  max_output_tokens: 1024

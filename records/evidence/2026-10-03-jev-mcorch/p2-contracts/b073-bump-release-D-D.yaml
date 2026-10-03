@@ -1,0 +1,12 @@
+version: 1
+id: bump_release_implementation
+task_type: function_implementation
+task: Implement the bump_release function that advances semantic version components according to the specified part (major, minor, or patch)
+target: solution.py
+scope:
+  allow:
+    - solution.py
+acceptance:
+  - python -B accept.py
+limits:
+  max_output_tokens: 512

@@ -1,0 +1,12 @@
+version: 1
+id: implement-swipe-dedupe
+task_type: function_implementation
+task: Implement the swipe_dedupe function that removes consecutive duplicate elements from a list while preserving non-consecutive duplicates.
+target: solution.py
+scope:
+  allow:
+    - solution.py
+acceptance:
+  - python -B accept.py
+limits:
+  max_output_tokens: 200

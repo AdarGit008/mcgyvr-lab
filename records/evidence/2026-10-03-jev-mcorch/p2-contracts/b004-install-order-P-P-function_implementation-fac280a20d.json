@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "id": "function_implementation-fac280a20d",
+  "task_type": "function_implementation",
+  "task": "Fix the install_order function to correctly handle package installation order with proper validation and alphabetical tie-breaking.",
+  "target": "solution.py",
+  "target_content": "\"\"\"An installation order for packages under prerequisite pairs.\"\"\"\n\n\ndef install_order(packages, requires):\n    needs = {name: 0 for name in packages}\n    enables = {name: [] for name in packages}\n    for pkg, needed in requires:\n        needs[pkg] += 1\n        enables[needed].append(pkg)\n    ready = [name for name in packages if needs[name] == 0]\n    order = []\n    while ready:\n        next_name = ready.pop()\n        order.append(next_name)\n        for follower in enables[next_name]:\n            needs[follower] -= 1\n            if needs[follower] == 0:\n                ready.append(follower)\n    return order\n",
+  "interface": "install_order(packages, requires)",
+  "deps": [],
+  "stop_conditions": [
+    "The function must validate for duplicate package names.",
+    "The function must validate that all packages in requirements exist in the packages list.",
+    "The function must detect and reject cyclic dependencies.",
+    "The function must install packages in correct order respecting dependencies.",
+    "The function must break ties alphabetically when multiple packages are ready."
+  ],
+  "output_schema": "whole_file",
+  "context": {
+    "max_input_tokens": 4096
+  },
+  "scope": {
+    "allow": [
+      "solution.py"
+    ],
+    "forbid": []
+  },
+  "acceptance": [
+    "python -B accept.py"
+  ],
+  "demonstration": [],
+  "risk": "high",
+  "verification": {
+    "policy": "gate_only"
+  },
+  "limits": {
+    "max_output_tokens": null,
+    "attempts": 2
+  }
+}

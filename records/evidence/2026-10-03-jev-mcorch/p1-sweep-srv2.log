@@ -1,0 +1,14 @@
+=== lcp-qwen3-4b-q4km-rea-off-srv2 2026-10-03T17:34:51Z
+launch: docker run -d --name jev-p0 --gpus device=0 -v $HOME/models:/models:ro   -p 8080:8080 llamacpp:b10644-L3-rpc --model /models/dense/Qwen3-4B-Q4_K_M.gguf -c 16384 -np 1 --jinja -lv 4 --no-warmup --host 0.0.0.0 --port 8080 -a jev --reasoning off
+load_s=21
+0, 4672 MiB 0.03.691.518 I load_tensors:        CUDA0 model buffer size =  2254.05 MiB
+0.04.043.112 I llama_kv_cache:      CUDA0 KV buffer size =  2176.00 MiB
+{"tag": "lcp-qwen3-4b-q4km-rea-off-srv2", "rows": 80, "errors": 0, "wall_total_s": 154.4, "wall_per_row_med_s": 1.741, "wall_per_row_p90_s": 2.601, "satisfies_task": {"q": "satisfies_task", "n": 80, "acc": 0.463, "auroc": 0.443, "brier": 0.536, "ece10": 0.539, "yes_rate": 0.887}, "verdict": {"q": "verdict", "n": 80, "acc": 0.475, "auroc": 0.557, "brier": 0.5, "ece10": 0.51, "yes_rate": 0.925}, "regression_level_mean_pass": 1.118, "regression_level_mean_fail": 1.152}
+=== lcp-qwen35-4b-supercoder-q40-rea-off-srv2 2026-10-03T17:37:53Z
+launch: docker run -d --name jev-p0 --gpus device=0 -v $HOME/models:/models:ro   -p 8080:8080 llamacpp:b10644-L3-rpc --model /models/dense/qwen3.5-4B-super-coder.Q4_0.gguf -c 16384 -np 1 --jinja -lv 4 --no-warmup --host 0.0.0.0 --port 8080 -a jev --reasoning off
+load_s=23
+0, 3158 MiB 0.03.374.831 I load_tensors:        CUDA0 model buffer size =  2415.59 MiB
+0.03.700.296 I llama_kv_cache:      CUDA0 KV buffer size =   512.00 MiB
+{"tag": "lcp-qwen35-4b-supercoder-q40-rea-off-srv2", "rows": 80, "errors": 0, "wall_total_s": 227.3, "wall_per_row_med_s": 2.69, "wall_per_row_p90_s": 3.685, "satisfies_task": {"q": "satisfies_task", "n": 80, "acc": 0.562, "auroc": 0.664, "brier": 0.247, "ece10": 0.158, "yes_rate": 0.688}, "verdict": {"q": "verdict", "n": 80, "acc": 0.662, "auroc": 0.588, "brier": 0.264, "ece10": 0.217, "yes_rate": 0.738}, "regression_level_mean_pass": 0.704, "regression_level_mean_fail": 0.839}
+0, 17 MiB
+done 2026-10-03T17:42:14Z

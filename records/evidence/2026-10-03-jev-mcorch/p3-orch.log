@@ -1,0 +1,33 @@
+launch: docker run -d --name orch-p3 --gpus all -v $HOME/models:/models:ro -v /data/models:/data:ro -p 8080:8080 llamacpp:b10644-L3-rpc --model /data/moe/Qwen3-Coder-30B-A3B-Instruct-UD-IQ3_XXS.gguf -sm layer -c 32768 -np 1 --jinja -lv 4 --no-warmup --host 0.0.0.0 --port 8080 -a orch
+{"status":"ok"}0, 7897 MiB 1, 7971 MiB 0.01.036.428 I load_tensors:   CPU_Mapped model buffer size =   166.92 MiB
+0.01.036.429 I load_tensors:        CUDA0 model buffer size =  5939.54 MiB
+0.01.036.430 I load_tensors:        CUDA1 model buffer size =  6141.38 MiB
+0.03.044.594 I llama_kv_cache:      CUDA0 KV buffer size =  1600.00 MiB
+0.03.049.662 I llama_kv_cache:      CUDA1 KV buffer size =  1472.00 MiB
+=== tool-loop b002-option-pairs 17:35:31
+=== tool-loop b004-install-order 17:42:54
+    accept = subprocess.run(truth["acceptance"][0], shell=True, cwd=work, capture_output=True, text=True, timeout=120)
+                            ~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+=== tool-loop b073-bump-release 17:43:43
+{"tag": "lcp-c30-a3b-iq3xxs-layer2-32k", "repo": "b073-bump-release", "turns": 16, "wall_total_s": 38.0, "tools_used": ["bash", "read_file", "read_file", "write_file", "bash", "bash", "read_file", "read_file", "bash", "bash", "write_file", "bash", "write_file", "bash", "bash"], "unparsed_tool_text_turns": 0, "bad_args": 0, "contract_written": true, "mcgyvr_runs": 1, "run_outcomes": ["error"], "accept_passes": true, "target_changed": true, "finished_plain": true, "final_head": "The implementation is complete and working correctly. Let me provide a summary of what was implemented:\n\nI have successfully implemented the `bump_release` function in `solution.py` according to the specifications. The function:\n\n1. Takes a version tag string (in format major.minor.patch) and a part", "max_prompt_tokens": 4823, "sum_prompt_tokens": 45728, "sum_cached_tokens": 43651, "ttft_proxy_wall_s": [1.27, 0.66, 0.7, 5.6, 0.53, 0.86, 1.96, 1.02, 1.1, 0.98, 4.6, 0.76, 6.93, 0.65, 1.11, 3.96]}
+=== p2 modes 17:44:22
+{"repo": "b002-option-pairs", "mode": "D", "wall_s": 5.89, "valid": true, "emitted": [{"id": "scan_pairs_implementation", "task_type": "function_implementation", "target": "solution.py"}], "target_match": true, "type_match": true, "error": null, "refusals": null}
+{"repo": "b002-option-pairs", "mode": "P", "wall_s": 1.19, "valid": false, "emitted": [], "target_match": false, "type_match": false, "error": null, "refusals": null}
+{"repo": "b002-option-pairs", "mode": "J", "wall_s": null, "valid": null, "emitted": null, "target_match": false, "type_match": false, "error": "ImportError: cannot import name 'load_config' from 'mcgyvr.config' (/tmp/claude-1000/-home-adaramir/15b6132f-a502-4a0c-9d7f-4c7b9b894f37/scratchpad/wt/mc-run/src/mcgyvr/config.py)", "refusals": null}
+{"repo": "b003-carve-shift", "mode": "D", "wall_s": 4.68, "valid": false, "emitted": null, "target_match": false, "type_match": false, "error": null, "refusals": null}
+{"repo": "b003-carve-shift", "mode": "P", "wall_s": 0.86, "valid": false, "emitted": [], "target_match": false, "type_match": false, "error": null, "refusals": null}
+{"repo": "b003-carve-shift", "mode": "J", "wall_s": null, "valid": null, "emitted": null, "target_match": false, "type_match": false, "error": "ImportError: cannot import name 'load_config' from 'mcgyvr.config' (/tmp/claude-1000/-home-adaramir/15b6132f-a502-4a0c-9d7f-4c7b9b894f37/scratchpad/wt/mc-run/src/mcgyvr/config.py)", "refusals": null}
+{"repo": "b004-install-order", "mode": "D", "wall_s": 2.39, "valid": false, "emitted": null, "target_match": false, "type_match": false, "error": null, "refusals": null}
+{"repo": "b004-install-order", "mode": "P", "wall_s": 0.91, "valid": false, "emitted": [], "target_match": false, "type_match": false, "error": null, "refusals": null}
+{"repo": "b004-install-order", "mode": "J", "wall_s": null, "valid": null, "emitted": null, "target_match": false, "type_match": false, "error": "ImportError: cannot import name 'load_config' from 'mcgyvr.config' (/tmp/claude-1000/-home-adaramir/15b6132f-a502-4a0c-9d7f-4c7b9b894f37/scratchpad/wt/mc-run/src/mcgyvr/config.py)", "refusals": null}
+{"repo": "b073-bump-release", "mode": "D", "wall_s": 1.6, "valid": false, "emitted": null, "target_match": false, "type_match": false, "error": null, "refusals": null}
+{"repo": "b073-bump-release", "mode": "P", "wall_s": 1.09, "valid": false, "emitted": [], "target_match": false, "type_match": false, "error": null, "refusals": null}
+{"repo": "b073-bump-release", "mode": "J", "wall_s": null, "valid": null, "emitted": null, "target_match": false, "type_match": false, "error": "ImportError: cannot import name 'load_config' from 'mcgyvr.config' (/tmp/claude-1000/-home-adaramir/15b6132f-a502-4a0c-9d7f-4c7b9b894f37/scratchpad/wt/mc-run/src/mcgyvr/config.py)", "refusals": null}
+{"repo": "b252-swipe-dedupe", "mode": "D", "wall_s": 1.51, "valid": false, "emitted": null, "target_match": false, "type_match": false, "error": null, "refusals": null}
+{"repo": "b252-swipe-dedupe", "mode": "P", "wall_s": 2.02, "valid": false, "emitted": [], "target_match": false, "type_match": false, "error": null, "refusals": null}
+{"repo": "b252-swipe-dedupe", "mode": "J", "wall_s": null, "valid": null, "emitted": null, "target_match": false, "type_match": false, "error": "ImportError: cannot import name 'load_config' from 'mcgyvr.config' (/tmp/claude-1000/-home-adaramir/15b6132f-a502-4a0c-9d7f-4c7b9b894f37/scratchpad/wt/mc-run/src/mcgyvr/config.py)", "refusals": null}
+=== ctx probe 17:44:53
+0, 1 MiB
+1, 1 MiB
+done 17:44:55

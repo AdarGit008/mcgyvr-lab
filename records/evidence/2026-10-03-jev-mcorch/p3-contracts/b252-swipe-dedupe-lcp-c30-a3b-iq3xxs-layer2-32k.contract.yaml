@@ -1,0 +1,26 @@
+id: implement-swipe-dedupe
+task_type: function_implementation
+task: Implement the swipe_dedupe function that removes consecutive duplicate card swipes while preserving non-consecutive duplicates.
+target: solution.py
+interface: |
+  def swipe_dedupe(swipes):
+      """
+      Given card swipes in the order they were recorded, drop any swipe that 
+      simply repeats the one immediately before it, keeping the first of each such run.
+      
+      Args:
+          swipes: List of card swipes (strings)
+          
+      Returns:
+          List of swipes with consecutive duplicates removed
+      """
+      pass
+stop_conditions:
+  - The function signature doesn't match the interface
+acceptance:
+  - python -B accept.py
+scope:
+  allow:
+    - solution.py
+limits:
+  max_output_tokens: 2048

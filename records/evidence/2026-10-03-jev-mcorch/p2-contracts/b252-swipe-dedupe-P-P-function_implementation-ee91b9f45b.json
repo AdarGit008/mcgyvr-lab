@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "id": "function_implementation-ee91b9f45b",
+  "task_type": "function_implementation",
+  "task": "Implement the swipe_dedupe function that removes consecutive duplicate elements from a list while preserving non-consecutive duplicates.",
+  "target": "solution.py",
+  "target_content": "",
+  "interface": "swipe_dedupe(swipes: list) -> list",
+  "deps": [],
+  "stop_conditions": [
+    "The function handles empty lists and single-element lists correctly.",
+    "The function drops consecutive duplicates but keeps non-consecutive duplicates.",
+    "All test cases from accept.py pass."
+  ],
+  "output_schema": "whole_file",
+  "context": {
+    "max_input_tokens": 4096
+  },
+  "scope": {
+    "allow": [
+      "solution.py"
+    ],
+    "forbid": []
+  },
+  "acceptance": [
+    "python -B accept.py"
+  ],
+  "demonstration": [],
+  "risk": "medium",
+  "verification": {
+    "policy": "gate_only"
+  },
+  "limits": {
+    "max_output_tokens": null,
+    "attempts": 2
+  }
+}
