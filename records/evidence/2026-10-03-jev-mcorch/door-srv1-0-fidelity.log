@@ -1,0 +1,13 @@
+=== 2026-10-03T18:46:44Z srv1 0-fidelity.sh /models/dense/Qwen3-4B-Q4_K_M.gguf 16384 JEV_NEED_VLLM=1
+gate 1: round=r46-03-10-2026 product_sha256=1e06e08ded1fd8e5... profile=dev config=/tmp/claude-1000/-home-adaramir/15b6132f-a502-4a0c-9d7f-4c7b9b894f37/scratchpad/run/p2cfg
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+gate 4: workload 2f2bb7932a0b6606... matches the pin
+gate 5: RUN_ID=2026-10-03-jev-mcorch-fidelity -> /tmp/claude-1000/-home-adaramir/15b6132f-a502-4a0c-9d7f-4c7b9b894f37/scratchpad/wt/lab-run/records/evidence/2026-10-03-jev-mcorch
+data-10-scan: card free=11909 MiB, host available=45323 MiB
+data-20-geometry: qwen3 n_layer=36 placeable=0 experts=0 MiB
+data-30-placement: dense checkpoint, nothing to place
+gate 6: /tmp/claude-1000/-home-adaramir/15b6132f-a502-4a0c-9d7f-4c7b9b894f37/scratchpad/wt/lab-run/tools/runs/campaigns/jev-mcorch/0-fidelity.sh --host srv1 -> /tmp/claude-1000/-home-adaramir/15b6132f-a502-4a0c-9d7f-4c7b9b894f37/scratchpad/wt/lab-run/records/evidence/2026-10-03-jev-mcorch (RUN_ID=2026-10-03-jev-mcorch-fidelity)
+jev-mcorch: wrote /tmp/claude-1000/-home-adaramir/15b6132f-a502-4a0c-9d7f-4c7b9b894f37/scratchpad/wt/lab-run/records/evidence/2026-10-03-jev-mcorch/fidelity.tsv
+gate 8: 1 artifact(s) parse
+=== exit=0 2026-10-03T18:54:39Z
