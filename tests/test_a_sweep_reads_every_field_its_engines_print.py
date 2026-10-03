@@ -38,7 +38,9 @@ load_tensors: offloading 28 repeating layers to GPU
 load_tensors:          CPU_Mapped model buffer size =   292.36 MiB
 load_tensors:        CUDA0 model buffer size =  1949.84 MiB
 load_tensors:        CUDA1 model buffer size =  1949.83 MiB
+llama_context: n_seq_max     = 1
 llama_context: n_ctx_seq     = 2048
+llama_context: kv_unified    = false
 llama_context: n_ubatch      = 512
 llama_kv_cache:      CUDA0 KV buffer size =    30.47 MiB
 llama_kv_cache:      CUDA1 KV buffer size =    30.47 MiB
