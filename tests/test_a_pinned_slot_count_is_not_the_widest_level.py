@@ -13,7 +13,6 @@ per-slot window by asking for `-c = K x ctx`, and the engine's own
 from __future__ import annotations
 
 import pytest
-
 from tools.runs.drivers import mgpu_cell as mc
 from tools.runs.drivers import mgpu_read as rd
 

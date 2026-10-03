@@ -10,7 +10,6 @@ the slot the server actually launched each task on, from its own log.
 from __future__ import annotations
 
 import pytest
-
 from tools.runs.drivers import mgpu_cell as mc
 from tools.runs.drivers import mgpu_read as rd
 

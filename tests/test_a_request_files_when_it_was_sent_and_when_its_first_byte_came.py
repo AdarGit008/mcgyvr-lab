@@ -40,12 +40,12 @@ def test_an_error_the_stream_carries_is_kept_not_swallowed() -> None:
     got = mc.read_sse(
         _sse(
             (1.5, 'data: {"choices":[{"delta":{"content":"x"}}]}'),
-            (3.0, 'data: {"error":{"code":500,"message":"Context size has\\tbeen exceeded."}}'),
+            (3.0, 'data: {"error":{"code":500,"message":"ctx\\tfull"}}'),
         ),
         t0=0.0,
     )
     assert got.chunks == 1
-    assert "Context size has" in got.error
+    assert got.error == "ctx full"
     assert "\t" not in got.error
 
 

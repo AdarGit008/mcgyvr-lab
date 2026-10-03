@@ -14,7 +14,6 @@ import threading
 import time
 
 import pytest
-
 from tools.runs.drivers import mgpu_cell as mc
 
 
