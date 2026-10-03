@@ -1,19 +1,21 @@
 # Social batching on the hub — planned 2026-10-02
 
-**Issue #46. PLAN-ONLY. Nothing has been launched or merged, and nothing here
-authorises a launch.** Steps 3 and 4, and the session width, are built as
-draft PRs. §2 gives each step's state. The owner approved this work plan on
-2026-10-02, and #46 records the decisions of 2026-10-02 and 2026-10-03. It
-covers many users' requests on one pooled session, sent through the hub. Solo
-batching (one user's own rigs, `n=`, the local-exhaustion line) is #32. Its plan
-is `records/plans/request-batching-2026-10-01.md`, and nothing in it is restated
+**Issue #46. PLAN-ONLY. Nothing has been merged, and nothing here authorises a
+launch.** Step 1 has run as a draft lab PR, Steps 3 and 4 and the session
+width are built as draft PRs, and Step 2 is in progress. §2 gives each step's
+state. The owner approved this work plan on 2026-10-02, and #46 records the
+decisions of 2026-10-02 and 2026-10-03. It covers many users' requests on one
+pooled session, sent through the hub: the pooled sessions of path (b), giving
+hardware to a pool, in #46 § Terms, which defines "solo". Batching on the
+user's own network (`n=`, the local-exhaustion line) is #32. Its plan is
+`records/plans/request-batching-2026-10-01.md`, and nothing in it is restated
 here.
 
-**Open prediction, not fact:** serving several requests at once on a pooled head
-hides the per-token RPC round trip across rigs. Each decode step would then pay
-the round trip once for every slot, not once per request. Step 0 read the
-mechanism in source (§3). Only the wall-clock answer is left, and Step 1
-settles that. Steps 3 and 4 (the wait queue and its order) go ahead of the
+**The prediction, now measured:** serving several requests at once on a pooled
+head would hide the per-token RPC round trip across rigs, so that each decode
+step paid the round trip once for every slot, not once per request. Step 0 read
+the mechanism in source (§3), and Step 1 measured the wall clock: it does not
+(§4). Steps 3 and 4 (the wait queue and its order) went ahead of the
 measurement, by owner approval. They remove the instant refusal and order the
 wait even at one slot, so they do not depend on the answer.
 
@@ -28,11 +30,17 @@ wait even at one slot, so they do not depend on the answer.
 | `hub#8:` | AdarGit008/mcgyvr-hub, branch `pool-session-width` (draft mcgyvr-hub#8, base `pool-fair-order`) | `275cb5c` |
 | `lab#42:` | this repository, branch `mcgyvr-social` (draft lab PR #42, unmerged) | `cf53dc3b` |
 | `lab#48:` | this repository, branch `lab/pooled-slots-desk-read` (draft lab PR #48, unmerged) | `5c1ef3bd` |
+| `lab#50:` | this repository, branch `lab/pooled-slots-measure` (draft lab PR #50, base `mcgyvr-social`, unmerged) | `cd02fc40` |
 | no prefix | this repository, `main` | `b242f46a` |
 
 **"The desk read"** below means Step 0's record,
 `lab#48:records/evidence/2026-10-02-pooled-slots-desk-read/README.md`. It is
 cited by its sections, §Q1 to §Q5.
+
+**"The measurement"** below means Step 1's record,
+`lab#50:records/evidence/2026-10-03-pooled-slots/README.md`. It is cited by its
+section headings, and its numbers are not copied here except the verdict's
+margin (§4).
 
 ---
 
@@ -96,7 +104,7 @@ a placeholder of 1.0 for everyone until the credits ledger supplies it.
 ```text
  Step 0  desk read (llama.cpp source) ───────┐
                                              ├──► Step 1  measure ──GO──► Step 2  multi-slot head
- lab PR #42 rpc-split tooling ───────────────┘         (needs product #562 → #564, hub `connect`)
+ lab PR #42 rpc-split tooling ───────────────┘         (on product #566, hub #8)
 
  Step 3  wait queue (hub `pool-wait-queue`, off `connect`) ──► Step 4  order of service
                                                                   (weight seam; ledger later)
@@ -105,29 +113,30 @@ a placeholder of 1.0 for everyone until the credits ledger supplies it.
 ```
 
 **Order.** Steps 0 and 3 ran first, in parallel. Step 4 followed Step 3. Step 1
-needs lab PR #42's tooling. Step 2 needs Step 1's GO and the product branches
-#562 → #564. Step 5 reads whatever has landed by then. #32 stays separate.
+needs lab PR #42's tooling. Step 2 needs Step 1's GO, which it has, and builds
+on product #566 and hub #8 (§5). Step 5 reads whatever has landed by then. #32
+stays separate.
 
 **State, 2026-10-03:**
 
 | step | state |
 |---|---|
 | 0 | done: the desk read, draft lab PR #48 (§3) |
-| 1, 2, 5 | not started |
+| 1 | done, **GO**: the measurement, draft lab PR #50 (§4) |
+| 2 | in progress, owner-approved on 2026-10-03: hub branch `pool-head-slots`, product branch `rig-head-slots` (§5) |
 | 3 | built: draft mcgyvr-hub#4 (§6) |
 | 4 | built: draft mcgyvr-hub#5, stacked on #4 (§7) |
 | session width | built: draft mcgyvr-hub#8, stacked on #5. It is the hub half of Step 2's "caps follow slots", taken ahead by the owner's decision of 2026-10-03 (§5) |
+| 5 | not started |
 
 **Overlap.** The hub's draft mcgyvr-hub#7 (`pool-fleets`, standing units, slice
 2a of the hub plan) is based on #4, and will merge #8 to give each standing
-unit a width.
+unit a width. Hitchhike 6b (slot advertising, another session's hub slice, #46
+§ Terms) reuses Step 2's `Slots` type on a unit advertisement message and rides
+the same schema change (§5).
 
 **Open, 2026-10-03:**
 
-- Nothing in the hub enforces a width ≤ the rig's `MAX_ACTIVE = 4`. Only a
-  comment says a width must not pass it
-  (`hub#8:src/mcgyvr_hub/pool_sessions.py:74-80`). Today's width of 1 is under
-  it. Step 2's slot count could pass it (§5).
 - Tests that fail intermittently, already on `connect`: the member-state tests
   in `test_pool_access.py` (`hub:tests/test_pool_access.py:280`, `:296`), and
   `test_relay.py::test_the_byte_cap_ends_the_allocation`
@@ -180,6 +189,8 @@ each one supports.
 | (4) one batched decode over RPC | a reading, not a measurement (§Q4) | Step 1 prices what splits the batch and what grows with it (§4) |
 
 ## 4. Step 1 — measure
+
+**Done: GO** (§4 Result, at the end of this section).
 
 **Rules it obeys:** `okf/must-read/reading-results.md`,
 `okf/must-read/touching-engine.md`, `okf/must-read/touching-rigs.md`. Every
@@ -313,66 +324,104 @@ Read at each rung every arm ran, never as one number:
 The run record goes in `records/evidence/<run date>-pooled-slots/`, shaped like
 rpc-split's.
 
-## 5. Step 2 — multi-slot head (after GO)
+### Result: done, GO (2026-10-03)
 
-Product branch `mcgyvr-connect` (mcgyvr#564, stacked on #562) and hub branch
-`connect` (draft mcgyvr-hub#1). It travels as `okf/must-read/the-split.md` says:
-a product PR from `product/`, then `make product-check` and `make guard`.
+The record is the measurement (draft lab PR #50), at
+`lab#50:records/evidence/2026-10-03-pooled-slots/`.
+
+- **Verdict: GO.** At C = 2 and C = 4, every invocation of S*C* beat S1 by more
+  than the tie bar. The worst margin was +18.7% against a 0.9% bar at C = 2,
+  and +67.0% against a 5.1% bar at C = 4 (the measurement's "Go / no-go for
+  step 2" and "Tie bar" sections).
+- **The open prediction: no.** Batching does not hide the RPC round trip, and
+  the logits read-back grows with busy slots (the measurement's "The open
+  prediction" section, and its desk-read cell 6).
+- **Deviations** from this section are listed in the measurement's
+  "Deviations" section, and what it leaves unverified in its "Not verified"
+  section.
+
+## 5. Step 2 — multi-slot head (in progress)
+
+**In progress, owner-approved on 2026-10-03,** after Step 1's GO (§4):
+
+- hub branch `pool-head-slots`, base `pool-session-width` (draft mcgyvr-hub#8);
+- product branch `rig-head-slots`, base `fix/single-rig-session-connect`
+  (draft mcgyvr#566).
+
+The product half travels as `okf/must-read/the-split.md` says: a product PR from
+`product/`, then `make product-check` and `make guard`.
 
 ```text
-hub planner ── slots × ctx-per-slot KV fit ──► Plan.slots
-     │
+hub planner ── fits slots × ctx of KV on every device, RPC worker included;
+     │         target 4, then 2, then 1 (a setting) ──► Plan.slots
+     │         devices ordered with a head-rig card last (output layer off the worker)
      ▼
-HeadStartBody.slots (optional, default 1) ──► rig HeadSpec.slots ──► head_argv: -np slots, -c slots × ctx, no -kvu
-     │
-     ├─► hub session width = slots               (was HEAD_SLOTS = 1, hub#8)
-     └─► rig Relays: active < the session's slots (was MAX_ACTIVE = 4)
+HeadStartBody.slots: Slots (≤ 16, default 1; > 1 only with "head_slots")
+     │                                 ──► rig: -np slots, -c slots × ctx, never -kvu
+     ├─► hub session width = slots         (HEAD_SLOTS removed; it was 1, hub#8)
+     └─► rig relay cap per head = slots    (an overall rig bound stays as a safety net)
 ```
 
-- **Wire.** `HeadStartBody.slots` is an optional field with default 1, which is
-  additive under `v = 1` (`protocol.py:148-149`). An older agent drops it
-  silently and launches `-np 1` (`sessionwire.py:496-550`, `pooled.py:656-657`).
-  So the hub sends `slots > 1` only to an agent that lists a slots feature in
-  `capabilities.features` (`protocol.py:55-57`). Otherwise the hub would admit N
-  relays into one slot.
-- **Split KV, not `-kvu`. Decided** by the owner on 2026-10-03, as #46
-  records. An explicit `-np` gives each slot its own window
-  of `-c / slots` (the desk read §Q1), so `-c` is `slots × ctx` for the same
-  context per user. `-kvu` would keep the total at `ctx` but share it, and a
-  full shared pool fails every running request together (§Q1). Step 1's `-kvu`
-  arm is read on its own and does not change this launch by itself.
-- **Planner.** It charges `slots × ctx-per-slot` of KV per block on every device
-  the layer sits on, the RPC worker included (the desk read §Q3). So a worker
-  that fits one slot's KV may not fit four. It recalibrates the compute-buffer
-  term against Step 1's `CONFIG` buffer readings, as the existing calibration
-  cases do (`planner.py:84-90`). Whether that term grows with slots is open
-  (§Q3). The new count gets a name other than `_slots` (`planner.py:355`).
-- **Caps follow slots.** The hub's half is built ahead of this step, by the
-  owner's decision of 2026-10-03 (#46): the hub admits each session's own
-  width, and the mcgyvr client is unchanged. hub#8 removes `session_max_relays` and admits `relays < width`, with
-  the width taken from the one constant `HEAD_SLOTS = 1`
+**The contract, owner-approved on 2026-10-03:**
+
+- **Wire.** `HeadStartBody.slots` has a reusable type, `Slots`: at most 16,
+  default 1. The field is additive under `v = 1` (`protocol.py:148-149`), so
+  there is no protocol version bump. An older agent drops it silently and
+  launches `-np 1` (`sessionwire.py:496-550`, `pooled.py:656-657`). So the hub
+  sends `slots > 1` only to an agent that lists the feature tag `"head_slots"`
+  in `capabilities.features` (`protocol.py:55-57`). Otherwise the hub would
+  admit N relays into one slot. Hitchhike 6b reuses `Slots` (§2, Overlap).
+- **`ctx` is per slot: split KV, never `-kvu`. Decided** by the owner on
+  2026-10-03, as #46 records. The rig runs `-np slots -c slots × ctx`. An
+  explicit `-np` gives each slot its own window of `-c / slots` (the desk read
+  §Q1, confirmed by the measurement's desk-read cell 1). `-kvu` would keep the
+  total at `ctx` but share it, and a full shared pool fails every running
+  request together (§Q1, confirmed by cell 2).
+- **Planner. Decided** 2026-10-03. It fits `slots × ctx` of KV per block on
+  every device the layer sits on, the RPC worker included (the desk read §Q3).
+  So a worker that fits one slot's KV may not fit four. It tries a target of 4
+  slots, then 2, then 1, and the target is a hub setting. It recalibrates the
+  compute-buffer term against Step 1's `CONFIG` buffer readings, as the
+  existing calibration cases do (`planner.py:84-90`). That term does not follow
+  `-np` monotonically (the measurement's "Context ceiling per slot" section).
+  The new count gets a name other than `_slots` (`planner.py:355`).
+- **Output layer off the RPC worker. Decided** by the owner on 2026-10-03: the
+  hub orders the devices so that a head-rig card is last, which keeps the
+  output layer off the RPC worker (the measurement's desk-read cell 6).
+- **Width = slots. Decided** 2026-10-03. The hub's half of "caps follow slots"
+  was built ahead of this step, by the owner's decision of 2026-10-03 (#46): the
+  hub admits each session's own width, and the mcgyvr client is unchanged.
+  hub#8 removes `session_max_relays` and admits `relays < width`, with the
+  width taken from the one constant `HEAD_SLOTS = 1`
   (`hub#8:src/mcgyvr_hub/pool_sessions.py:74-80`, `:857`, `:886`, `:973`).
-  Step 2 replaces `HEAD_SLOTS` with the `HeadStartBody.slots` the session was
-  launched with. The rig's cap becomes the head session's slot count, not the
-  per-agent `MAX_ACTIVE` (`relay.py:43-44`, `verbs.py:213`). The rig's refusal
-  stays as the backstop. The cap must equal the slot count exactly. The engine
-  holds any request past its slots in its own FIFO, with no bound and no
-  timeout (the desk read §Q2), and the hub's order of service (Step 4) cannot
-  reach it there. **Resolved:** the plan said that hub#4's cap of 4 over a
-  one-slot head meant Step 4's order reached only the requests past the fourth
-  relay. hub#8 makes the cap the width, 1, which equals the head's `-np 1`, so
-  no request waits in the engine and every request past the first is ordered
-  by the hub. Step 2 keeps the two equal by carrying both from one field. A
-  width above the rig's `MAX_ACTIVE` is not checked by the hub (§2, open).
+  Step 2 removes `HEAD_SLOTS`, and a session's width is the slots its head was
+  launched with.
+- **Rig cap per head = slots. Decided** 2026-10-03. The rig caps relays per
+  head session at that session's slots, and keeps an overall rig bound as a
+  safety net. Today its only cap is the per-agent `MAX_ACTIVE`
+  (`relay.py:43-44`, `verbs.py:213`). **Resolved:** this plan had both "the
+  rig's cap becomes the slot count" and "`MAX_ACTIVE` stays the backstop",
+  with no hub check of a width against `MAX_ACTIVE`
+  (`hub#8:src/mcgyvr_hub/pool_sessions.py:74-80`). Both hold, at different
+  scopes: the per-head cap is the slots, and the overall bound is the safety
+  net. The per-head cap must equal the slot count exactly. The engine holds any
+  request past its slots in its own FIFO, with no bound and no timeout (the
+  desk read §Q2), and the hub's order of service (Step 4) cannot reach it
+  there. Step 2 keeps the hub's width and the rig's cap equal by carrying both
+  from one field.
+- **Resolved earlier:** the plan said that hub#4's cap of 4 over a one-slot
+  head meant Step 4's order reached only the requests past the fourth relay.
+  hub#8 makes the cap the width, 1, which equals the head's `-np 1`, so no
+  request waits in the engine and every request past the first is ordered by
+  the hub.
 - **Silence while held.** A request the engine holds sends no byte until its
-  first token (§Q2). The relay's and client's idle timeouts must allow for that
-  silence. With caps equal to slots, the wait moves to the hub, where
-  `chat_wait_slot_s` bounds it (§6).
-- **Left to Step 1's cells** (§4): whether the hub should name slot ids to keep
-  busy slots consecutive (cell 4), and which device should hold the output
-  layer (cell 6). Today the engine picks the slot (§Q4).
-- **How many slots a plan asks for** is decided in that PR, as a hub setting with
-  the planner's fit as its ceiling. It is not decided here.
+  task starts. The desk read §Q2 said its first token, and the measurement's
+  desk-read cell 3 corrects that. The relay's and client's idle timeouts must
+  allow for that silence. With caps equal to slots, the wait moves to the hub,
+  where `chat_wait_slot_s` bounds it (§6).
+- **Left open:** whether the hub should name slot ids to keep busy slots
+  consecutive (the measurement's desk-read cell 4). Today the engine picks the
+  slot (§Q4).
 
 ## 6. Step 3 — wait queue (owner-approved ahead of the measurement)
 
@@ -489,8 +538,10 @@ shaped like `lab#42:records/evidence/2026-10-02-pooled-e2e/`.
 
 ## 10. Not in scope
 
-- Solo batching, `n=` and the local-exhaustion line: #32.
-- Solo work spilling to the pool when local rungs are full: not chosen
-  (2026-10-02, #46).
+- Batching on the user's own network, `n=` and the local-exhaustion line: #32
+  (#46 § Terms).
+- Hitchhike spill, path (a) in #46 § Terms: hub slice 6. This plan does not
+  build it. The 2026-10-02 "not chosen" meant only that, and was not a ruling
+  against hitchhike spill (owner, 2026-10-03, #46 § Not in scope).
 - The credits ledger, the hitchhike slice and the fleet drain itself. Each
   plugs into a seam here, and none is built here.
