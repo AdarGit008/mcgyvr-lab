@@ -1,10 +1,10 @@
 # Social batching on the hub — planned 2026-10-02
 
 **Issue #46. PLAN-ONLY. Nothing has been merged, and nothing here authorises a
-launch.** Step 1 has run as a draft lab PR, Steps 3 and 4 and the session
-width are built as draft PRs, and Step 2 is in progress. §2 gives each step's
-state. The owner approved this work plan on 2026-10-02, and #46 records the
-decisions of 2026-10-02 and 2026-10-03. It covers many users' requests on one
+launch.** Steps 1 and 5 have run as draft lab PRs, and Steps 2, 3 and 4 and
+the session width are built as draft PRs. §2 gives each step's state. The
+owner approved this work plan on 2026-10-02, and #46 records the decisions of
+2026-10-02 and 2026-10-03. It covers many users' requests on one
 pooled session, sent through the hub: the pooled sessions of path (b), giving
 hardware to a pool, in #46 § Terms, which defines "solo". Batching on the
 user's own network (`n=`, the local-exhaustion line) is #32. Its plan is
@@ -28,9 +28,12 @@ wait even at one slot, so they do not depend on the answer.
 | `hub#4:` | AdarGit008/mcgyvr-hub, branch `pool-wait-queue` (draft mcgyvr-hub#4, base `connect`) | `d389c20` |
 | `hub#5:` | AdarGit008/mcgyvr-hub, branch `pool-fair-order` (draft mcgyvr-hub#5, base `pool-wait-queue`) | `dc9d626` |
 | `hub#8:` | AdarGit008/mcgyvr-hub, branch `pool-session-width` (draft mcgyvr-hub#8, base `pool-fair-order`) | `275cb5c` |
+| `hub#14:` | AdarGit008/mcgyvr-hub, branch `pool-head-slots` (draft mcgyvr-hub#14, base `pool-session-width`) | `35eb821` |
+| `rig#569:` | AdarGit008/mcgyvr, branch `rig-head-slots` (draft mcgyvr#569, base `fix/single-rig-session-connect`, draft mcgyvr#566) | `abccb902` |
 | `lab#42:` | this repository, branch `mcgyvr-social` (draft lab PR #42, unmerged) | `cf53dc3b` |
 | `lab#48:` | this repository, branch `lab/pooled-slots-desk-read` (draft lab PR #48, unmerged) | `5c1ef3bd` |
 | `lab#50:` | this repository, branch `lab/pooled-slots-measure` (draft lab PR #50, base `mcgyvr-social`, unmerged) | `cd02fc40` |
+| `lab#52:` | this repository, branch `lab/pooled-slots-e2e` (draft lab PR #52, base `mcgyvr-social`, unmerged) | `23c9d08d` |
 | no prefix | this repository, `main` | `b242f46a` |
 
 **"The desk read"** below means Step 0's record,
@@ -41,6 +44,11 @@ cited by its sections, §Q1 to §Q5.
 `lab#50:records/evidence/2026-10-03-pooled-slots/README.md`. It is cited by its
 section headings, and its numbers are not copied here except the verdict's
 margin (§4).
+
+**"The e2e record"** below means Step 5's record,
+`lab#52:records/evidence/2026-10-03-pooled-slots-e2e/README.md`. It is cited
+by its section headings, and its numbers are not copied here except the
+verdict's margin and the longest wait (§6, §8).
 
 ---
 
@@ -123,17 +131,22 @@ stays separate.
 |---|---|
 | 0 | done: the desk read, draft lab PR #48 (§3) |
 | 1 | done, **GO**: the measurement, draft lab PR #50 (§4) |
-| 2 | in progress, owner-approved on 2026-10-03: hub branch `pool-head-slots`, product branch `rig-head-slots` (§5) |
+| 2 | built, owner-approved on 2026-10-03: draft mcgyvr-hub#14 (`pool-head-slots`, stacked on #8) and draft mcgyvr#569 (`rig-head-slots`, stacked on #566) (§5) |
 | 3 | built: draft mcgyvr-hub#4 (§6) |
 | 4 | built: draft mcgyvr-hub#5, stacked on #4 (§7) |
 | session width | built: draft mcgyvr-hub#8, stacked on #5. It is the hub half of Step 2's "caps follow slots", taken ahead by the owner's decision of 2026-10-03 (§5) |
-| 5 | not started |
+| 5 | done: the e2e record, draft lab PR #52, through hub#14 and rig#569 (§8) |
 
 **Overlap.** The hub's draft mcgyvr-hub#7 (`pool-fleets`, standing units, slice
 2a of the hub plan) is based on #4, and will merge #8 to give each standing
 unit a width. Hitchhike 6b (slot advertising, another session's hub slice, #46
 § Terms) reuses Step 2's `Slots` type on a unit advertisement message and rides
-the same schema change (§5).
+the same schema change (§5). **Per-card allocation** (the other session's
+decision of 2026-10-03, built by another session as a hub slice): a unit takes
+the cards its layers and `slots × ctx` of KV need, no two units share a card,
+and one unit may span cards and rigs. It must keep hub#14's invariants, a
+head-rig card last in device order and KV charged per card, the RPC workers'
+included (§5), and it comes after 6b (§10).
 
 **Open, 2026-10-03:**
 
@@ -340,13 +353,19 @@ The record is the measurement (draft lab PR #50), at
   "Deviations" section, and what it leaves unverified in its "Not verified"
   section.
 
-## 5. Step 2 — multi-slot head (in progress)
+## 5. Step 2 — multi-slot head (built)
 
-**In progress, owner-approved on 2026-10-03,** after Step 1's GO (§4):
+**Built, owner-approved on 2026-10-03,** after Step 1's GO (§4), as two draft
+PRs. Each one's description holds its RED and GREEN runs, its gate output and
+what it leaves unverified:
 
-- hub branch `pool-head-slots`, base `pool-session-width` (draft mcgyvr-hub#8);
-- product branch `rig-head-slots`, base `fix/single-rig-session-connect`
-  (draft mcgyvr#566).
+- hub: draft mcgyvr-hub#14, `pool-head-slots` @ `35eb821`, base
+  `pool-session-width` (draft mcgyvr-hub#8). Step 5 ran `76cd212`; the later
+  commits only raise the slot-wait default (§6);
+- product: draft mcgyvr#569, `rig-head-slots` @ `abccb902`, base
+  `fix/single-rig-session-connect` (draft mcgyvr#566).
+
+Neither PR ran on a rig. Step 5 ran both on rigs (§8).
 
 The product half travels as `okf/must-read/the-split.md` says: a product PR from
 `product/`, then `make product-check` and `make guard`.
@@ -371,12 +390,16 @@ HeadStartBody.slots: Slots (≤ 16, default 1; > 1 only with "head_slots")
   sends `slots > 1` only to an agent that lists the feature tag `"head_slots"`
   in `capabilities.features` (`protocol.py:55-57`). Otherwise the hub would
   admit N relays into one slot. Hitchhike 6b reuses `Slots` (§2, Overlap).
+  **Built:** `hub#14:src/mcgyvr_hub/protocol.py:214`, `:283-285`, `:692`; the
+  rig reads the field in one helper (`rig#569:src/mcgyvr/rig/sessionwire.py:51-52`,
+  `:400-404`).
 - **`ctx` is per slot: split KV, never `-kvu`. Decided** by the owner on
   2026-10-03, as #46 records. The rig runs `-np slots -c slots × ctx`. An
   explicit `-np` gives each slot its own window of `-c / slots` (the desk read
   §Q1, confirmed by the measurement's desk-read cell 1). `-kvu` would keep the
   total at `ctx` but share it, and a full shared pool fails every running
-  request together (§Q1, confirmed by cell 2).
+  request together (§Q1, confirmed by cell 2). **Built:**
+  `rig#569:src/mcgyvr/sandbox/pooled.py:665-668`.
 - **Planner. Decided** 2026-10-03. It fits `slots × ctx` of KV per block on
   every device the layer sits on, the RPC worker included (the desk read §Q3).
   So a worker that fits one slot's KV may not fit four. It tries a target of 4
@@ -385,9 +408,23 @@ HeadStartBody.slots: Slots (≤ 16, default 1; > 1 only with "head_slots")
   existing calibration cases do (`planner.py:84-90`). That term does not follow
   `-np` monotonically (the measurement's "Context ceiling per slot" section).
   The new count gets a name other than `_slots` (`planner.py:355`).
+  **Built** in hub#14 as `PlannerParams.target_slots`, default 4
+  (`hub#14:src/mcgyvr_hub/planner.py:142`), and `Plan.slots`.
+- **The slot count is a per-unit input to planning. Decided** by the owner on
+  2026-10-03. `plan(..., target_slots=, exact_slots=)` takes it per unit: a
+  target is tried, then halved down to 1, and `exact_slots` takes that count
+  or no plan. With no target, the default tries 4, then 2, then 1
+  (`hub#14:src/mcgyvr_hub/planner.py:822-906`; `PoolSessions._plan_on`,
+  `hub#14:src/mcgyvr_hub/pool_sessions.py:548-579`). Choosing each unit's slots
+  from usage belongs to the other session's fleet logic (§2, Overlap), and
+  nothing in hub#14 decides it (hub#14's description, "A slot target per
+  unit").
 - **Output layer off the RPC worker. Decided** by the owner on 2026-10-03: the
   hub orders the devices so that a head-rig card is last, which keeps the
   output layer off the RPC worker (the measurement's desk-read cell 6).
+  **Built** in hub#14 with one fallback: only when the blocks fit no other way
+  does the head go first and a worker's card last
+  (`hub#14:src/mcgyvr_hub/planner.py:60-68`, `:421-448`).
 - **Width = slots. Decided** 2026-10-03. The hub's half of "caps follow slots"
   was built ahead of this step, by the owner's decision of 2026-10-03 (#46): the
   hub admits each session's own width, and the mcgyvr client is unchanged.
@@ -395,7 +432,8 @@ HeadStartBody.slots: Slots (≤ 16, default 1; > 1 only with "head_slots")
   width taken from the one constant `HEAD_SLOTS = 1`
   (`hub#8:src/mcgyvr_hub/pool_sessions.py:74-80`, `:857`, `:886`, `:973`).
   Step 2 removes `HEAD_SLOTS`, and a session's width is the slots its head was
-  launched with.
+  launched with. **Built:** `width=plan.slots`
+  (`hub#14:src/mcgyvr_hub/pool_sessions.py:952-983`).
 - **Rig cap per head = slots. Decided** 2026-10-03. The rig caps relays per
   head session at that session's slots, and keeps an overall rig bound as a
   safety net. Today its only cap is the per-agent `MAX_ACTIVE`
@@ -408,7 +446,11 @@ HeadStartBody.slots: Slots (≤ 16, default 1; > 1 only with "head_slots")
   request past its slots in its own FIFO, with no bound and no timeout (the
   desk read §Q2), and the hub's order of service (Step 4) cannot reach it
   there. Step 2 keeps the hub's width and the rig's cap equal by carrying both
-  from one field.
+  from one field. **Built** in rig#569: a relay past the head's slots is
+  answered `busy`, and the rig-wide bound `MAX_ACTIVE` is now `MAX_SLOTS`
+  (16), not 4 (`rig#569:src/mcgyvr/rig/relay.py:49-52`, `:136-147`). So a
+  one-slot head now takes one relay at a time, not 4, which constrains when
+  rig#569 may deploy (§10).
 - **Resolved earlier:** the plan said that hub#4's cap of 4 over a one-slot
   head meant Step 4's order reached only the requests past the fourth relay.
   hub#8 makes the cap the width, 1, which equals the head's `-np 1`, so no
@@ -428,7 +470,11 @@ HeadStartBody.slots: Slots (≤ 16, default 1; > 1 only with "head_slots")
 Hub branch `pool-wait-queue` off `connect`, as a draft PR with base `connect`.
 
 **Built:** draft mcgyvr-hub#4. Its new setting, `chat_wait_slot_s`, defaults to
-30 s (`hub#4:src/mcgyvr_hub/config.py:118`). The ordering seam is
+30 s (`hub#4:src/mcgyvr_hub/config.py:118`). **Owner decision, 2026-10-03:**
+raise that default to 180 s, because Step 5 measured hub queue waits up to
+141 s (the e2e record, "Throughput: slots 4 vs 1 through the hub" and "The
+wait queue"). **Built** in hub#14 (`hub#14:src/mcgyvr_hub/config.py:117`),
+whose description gives its RED, GREEN and gate. The ordering seam is
 `_Queue._next()` (`hub#4:src/mcgyvr_hub/pool_sessions.py:190-193`), which
 Step 4 fills (§7). Its cap is `session_max_relays` until hub#8 makes it the
 session's width (§5).
@@ -511,7 +557,7 @@ Follows Step 3, on the same queue. **Built:** draft mcgyvr-hub#5, which fills
 - **Tests:** hub#5's description lists them, with the red run and the
   mutation checks.
 
-## 8. Step 5 — e2e evidence
+## 8. Step 5 — e2e evidence (done)
 
 Several concurrent users go through the real hub and the real rig agent, using
 lab PR #42's demo tooling (`lab#42:tools/demo/demo-up`, `lab#42:tools/demo/chat.py`).
@@ -526,6 +572,27 @@ The record reads, per user and per run:
 The evidence directory is `records/evidence/<run date>-pooled-social-e2e/`,
 shaped like `lab#42:records/evidence/2026-10-02-pooled-e2e/`.
 
+### Result: done (2026-10-03)
+
+The record is the e2e record (draft lab PR #52), run on hub#14 and rig#569.
+Its directory is `lab#52:records/evidence/2026-10-03-pooled-slots-e2e/`, not
+the `…-pooled-social-e2e` named above (its "Deviations", item 2).
+
+- **Verdict:** slots 4 beat slots 1 through the real hub and rig agent in every
+  invocation. Worst slots-4 invocation against best slots-1: +81.4% at C = 4
+  against a 4.2% tie bar, and +97.3% at C = 8 against a 1.0% bar ("Throughput:
+  slots 4 vs 1 through the hub").
+- **Queue:** extras waited and were served inside `chat_wait_slot_s`; past it,
+  503 `pool_busy` with `Retry-After`; a client that hung up while queued left
+  the queue, and the next waiter took the seat ("The wait queue").
+- **Order of service:** with equal weights, users took alternating turns, not
+  arrival order. Weighted turns were not exercised with real weights ("Order of
+  service").
+- **Rig cap:** the head agent answered no `busy` and no client got a 502; the
+  hub admitted at most the width ("Rig cap: no `busy` from the head").
+- **Deviations** from this section are in the e2e record's "Deviations"
+  section, and what it leaves unverified in its "Not verified" section.
+
 ## 9. Gates, in one place
 
 | step | passes when |
@@ -536,7 +603,39 @@ shaped like `lab#42:records/evidence/2026-10-02-pooled-e2e/`.
 | 3, 4 | hub: tests first, then the hub's own gate, with real output in the draft PR |
 | 5 | the evidence directory holds the raw per-request rows, not only a summary |
 
-## 10. Not in scope
+## 10. Merge order
+
+**Agreed with the other session on 2026-10-03, pending the owner's OK.**
+Nothing in it is merged. `A ← B` means B merges after A. This is the order of
+merging, not each PR's GitHub base, and several bases differ from it.
+
+| repo | order |
+|---|---|
+| hub | `connect` #1 ← #6 ← #4 ← #5 ← #8 ← #14 ← #7 ← #9 ← #10 ← #11 ← #12 ← #13 ← #16 ← #15. Separately, #3 → `main` |
+| product | #562 ← #565 ← #564 ← #566 ← #569 ← #568 ← #570 ← #571 |
+| lab | #42 after product #562, then #49, #51, #50 and #52 on `mcgyvr-social`. #47 and #48 on `main` at any time |
+
+- **hub:** #6 is the single-rig port, which #7 needs. #12 is hitchhike 6a. #13
+  (`web-feed`) contains web-home #2, which can close or merge into `connect`
+  first. #16 is `fix/live-b`. #15 is the hitchhike 6b relay; it contains #14,
+  and will contain #16 after its next push.
+- **product:** #565 is the single-rig fix. #568 is the relief rungs; it merges
+  in #561 (`ladder-pressure-manager`), which GitHub shows merged to product
+  `main`. #570 is the agent flush. #571 is the 6b serve; it contains #569, and
+  will contain #570.
+- **lab:** #49 is live-a and #51 is live-b.
+
+**Constraints:**
+
+- rig#569 never deploys ahead of hub#8. At slots = 1 the rig now takes 1 relay
+  per head, not 4 (§5), so a hub that still admits 4 per session would get
+  `busy` for the 2nd to 4th.
+- The product's schema pin (`rig#569:tests/rig_schema.py:41-45`) must equal the
+  final hub schema once both hub#14 and hub#15 have landed. Re-check it then.
+- Lab #42 merges after product #562.
+- Per-card allocation comes after 6b (§2, Overlap).
+
+## 11. Not in scope
 
 - Batching on the user's own network, `n=` and the local-exhaustion line: #32
   (#46 § Terms).
