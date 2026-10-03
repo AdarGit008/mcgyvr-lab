@@ -118,9 +118,9 @@ def test_every_contract_loads_through_the_real_loader() -> None:
 def test_every_task_selects_the_jsts_bundle() -> None:
     """The experiment is about the JS/TS bundle; a target must reach it."""
     for contract in _contracts():
-        selected = bundle_for(contract.target)
+        selected = bundle_for(contract.type.use_case.name, contract.target)
         assert selected is not None, contract.id
-        assert selected.language == "js/ts", contract.id
+        assert selected.key == "js/ts", contract.id
 
 
 def test_every_task_declares_a_runnable_acceptance_command() -> None:
@@ -172,7 +172,7 @@ def test_c2_is_the_shipped_bundle_byte_for_byte() -> None:
     measure = _measure()
     measure.check_c2_is_the_shipped_bundle()
 
-    shipped = bundle_for("solution.ts")
+    shipped = bundle_for("coding", "solution.ts")
     assert shipped is not None
     assert shipped.text.encode("utf-8") == (CONDITIONS / "c2.md").read_bytes()
 
@@ -185,7 +185,7 @@ def test_the_provenance_marker_is_not_sent_to_the_worker() -> None:
     the ceiling and the opening of the system prompt were being spent on it.
     """
     raw = SHIPPED.read_text(encoding="utf-8")
-    shipped = bundle_for("solution.ts")
+    shipped = bundle_for("coding", "solution.ts")
     assert shipped is not None
 
     assert raw.startswith("<!--")
@@ -246,7 +246,7 @@ def test_the_shipped_bundle_declares_the_null_result_it_measured() -> None:
     # The superseded standing must not linger in the file that now disproves it.
     assert "UNMEASURED" not in text
 
-    shipped = bundle_for("solution.ts")
+    shipped = bundle_for("coding", "solution.ts")
     assert shipped is not None
     assert shipped.standing is BundleStanding.MEASURED_NO_EFFECT
     assert shipped.measured is True
@@ -263,8 +263,8 @@ def test_a_measured_bundle_does_not_imply_a_bundle_that_helped() -> None:
     other said, or writes off an artifact that is worth four tasks in twenty to a
     harness without output rules of its own.
     """
-    js = bundle_for("solution.ts")
-    python = bundle_for("solution.py")
+    js = bundle_for("coding", "solution.ts")
+    python = bundle_for("coding", "solution.py")
     assert js is not None and python is not None
 
     assert js.measured is python.measured is True

@@ -145,9 +145,9 @@ def test_every_contract_loads_through_the_real_loader() -> None:
 def test_every_task_selects_the_python_bundle() -> None:
     """The arm is about the Python bundle; a target must reach it."""
     for contract in _contracts():
-        selected = bundle_for(contract.target)
+        selected = bundle_for(contract.type.use_case.name, contract.target)
         assert selected is not None, contract.id
-        assert selected.language == "python", contract.id
+        assert selected.key == "python", contract.id
 
 
 def test_every_task_declares_a_runnable_acceptance_command() -> None:
@@ -225,7 +225,7 @@ def test_c2_is_the_shipped_bundle_byte_for_byte() -> None:
     measure = _measure()
     measure.check_c2_is_the_shipped_bundle(measure.PYTHON)
 
-    shipped = bundle_for("solution.py")
+    shipped = bundle_for("coding", "solution.py")
     assert shipped is not None
     assert shipped.text.encode("utf-8") == (CONDITIONS / "c2.md").read_bytes()
 
