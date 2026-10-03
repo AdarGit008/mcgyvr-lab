@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-10-01-rpc-split-pair-q5-rpc",
+  "campaign": "rpc-split",
+  "step": "pair-q5-rpc",
+  "host": "srv1",
+  "date": "2026-10-01",
+  "round": "r44-01-10-2026",
+  "product_sha256": "4e3b85c0bf984db0bd1b55ea09bc911a0f53a65c0c293e99be1ab8abdd458f01",
+  "profile": "live",
+  "config": "/home/adaramir/.mcgyvr/fleets/b-small@2026-09-16",
+  "mcgyvr_version": "0.1.1.dev855+g7e15d516",
+  "started_at": "2026-10-01T21:36:54Z"
+}

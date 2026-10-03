@@ -1,0 +1,4 @@
+uv sync --frozen --project /home/adaramir/claude/mcgyvr-lab-social
+Checked 20 packages in 3ms
+commits scanned: 6
+summary: 0 findings in 0 files

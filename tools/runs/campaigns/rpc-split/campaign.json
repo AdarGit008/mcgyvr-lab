@@ -1,0 +1,4 @@
+{
+  "_doc": "Read by gate 2b of the door (`src/mcgyvr/serving/gate-scripts/02-rig.py`). rpc-split measures llama.cpp layer split across two rigs: llama-server on the door's host (srv1, two cards) with --rpc to a ggml-rpc-server on srv2 (one card, optionally its CPU), both from llamacpp:b10644-L3-rpc, rig to rig on the LAN. The worker is started and removed by hand and filed as WORKER rows (_rpc.sh). Steps: a dense checkpoint that needs all three cards (1-xcard), the context ceiling on two cards against three (2-ctx), an 80B MoE with experts in host RAM on the head or on the worker (3-moe). It drives containers through tools/runs/drivers/mgpu_sweep.py and never the serving harness, so it is not held to that harness's markers.",
+  "serving": false
+}

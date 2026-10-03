@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+# Bring the pooled-inference demo up:
+#   the hub on this host's loopback (fresh temp database with --fresh, or the
+#   one from the last run), one `ssh -R` per rig giving the rig a loopback path
+#   to it, and the real rig agent on each rig (`mcgyvr rig join` the first
+#   time, `mcgyvr rig run` from its saved credentials after that).
+# Nothing binds a public interface; nothing on the rigs outside ~/mcgyvr-pool-tmp.
+#
+# BIND (default 127.0.0.1) may instead be this host's Tailscale address
+# (100.64.0.0/10) to open the web UI on the tailnet; anything else is refused.
+# The rigs still dial their own loopback, forwarded to $BIND:$PORT here.
+# PUBLIC_URL, if set, is the hub's MCGYVR_HUB_PUBLIC_URL (shown in join commands).
+# State (database, secrets) lives outside the repository, in $STATE.
+set -euo pipefail
+
+HERE="$(cd "$(dirname "$0")" && pwd)"
+STATE="${STATE:-${XDG_STATE_HOME:-$HOME/.local/state}/mcgyvr-demo}"
+HUB_REPO="${HUB_REPO:-/home/adaramir/claude/mcgyvr-hub}"
+PORT="${PORT:-18765}"
+BIND="${BIND:-127.0.0.1}"
+PUBLIC_URL="${PUBLIC_URL:-}"
+HEAD_HOST="${HEAD_HOST:-srv1}"
+WORKER_HOST="${WORKER_HOST:-srv2}"
+DEFAULT_CTX="${DEFAULT_CTX:-12288}"
+REMOTE_DIR='mcgyvr-pool-tmp/e2e'
+case "$BIND" in
+  127.*) ;;
+  100.*)
+    o2="$(printf '%s' "$BIND" | cut -d. -f2)"
+    [ "$o2" -ge 64 ] && [ "$o2" -le 127 ] || { echo "[demo-up] BIND=$BIND is not a Tailscale address" >&2; exit 2; }
+    ;;
+  *) echo "[demo-up] BIND=$BIND refused: loopback or Tailscale only" >&2; exit 2 ;;
+esac
+export STATE HUB="http://$BIND:$PORT"
+
+fresh=0
+[ "${1:-}" = "--fresh" ] && fresh=1
+
+say() { printf '[demo-up] %s\n' "$*"; }
+alive() { [ -f "$1" ] && kill -0 "$(cat "$1")" 2>/dev/null; }
+
+mkdir -p "$STATE"
+chmod 700 "$STATE"
+
+# --- hub ------------------------------------------------------------------------
+if alive "$STATE/hub.pid"; then
+  say "hub already running (pid $(cat "$STATE/hub.pid"))"
+else
+  if [ "$fresh" = 1 ]; then
+    rm -f "$STATE/hub.db" "$STATE/secrets.json"
+    say "fresh database"
+  fi
+  (
+    cd "$HUB_REPO"
+    MCGYVR_HUB_PLANNER_DEFAULT_CTX="$DEFAULT_CTX" MCGYVR_HUB_PUBLIC_URL="$PUBLIC_URL" \
+      setsid nohup \
+      "$HUB_REPO/.venv/bin/mcgyvr-hub" serve --host "$BIND" --port "$PORT" \
+      --db "$STATE/hub.db" >>"$STATE/hub.log" 2>&1 </dev/null &
+    echo $! >"$STATE/hub.pid"
+  )
+  echo "$HUB" >"$STATE/hub.url"
+  for _ in $(seq 1 60); do
+    curl -fsS "$HUB/api/v1/health" >/dev/null 2>&1 && break
+    sleep 0.5
+  done
+  curl -fsS "$HUB/api/v1/health" >/dev/null || { say "hub did not come up"; tail -20 "$STATE/hub.log"; exit 1; }
+  say "hub up on $BIND:$PORT (pid $(cat "$STATE/hub.pid"), default ctx $DEFAULT_CTX)"
+fi
+python3 "$HERE/hubctl.py" bootstrap
+
+# --- tunnels: the rig's 127.0.0.1:$PORT is this host's hub at $BIND:$PORT --------
+for host in "$HEAD_HOST" "$WORKER_HOST"; do
+  pidf="$STATE/tunnel-$host.pid"
+  if alive "$pidf"; then
+    say "tunnel to $host already up"
+    continue
+  fi
+  setsid nohup ssh -N -o BatchMode=yes -o ExitOnForwardFailure=yes \
+    -o ServerAliveInterval=15 -o ServerAliveCountMax=3 \
+    -R "127.0.0.1:$PORT:$BIND:$PORT" "$host" >>"$STATE/tunnel-$host.log" 2>&1 </dev/null &
+  echo $! >"$pidf"
+  sleep 2
+  alive "$pidf" || { say "tunnel to $host failed"; cat "$STATE/tunnel-$host.log"; exit 1; }
+  say "tunnel to $host up (pid $(cat "$pidf"))"
+done
+
+# --- agents ---------------------------------------------------------------------
+start_agent() {
+  local host="$1" rig="$2" verb
+  if ssh -o BatchMode=yes "$host" "cd ~/$REMOTE_DIR 2>/dev/null && [ -f agent.pid ] && kill -0 \$(cat agent.pid) 2>/dev/null"; then
+    say "agent on $host already running"
+    return 0
+  fi
+  # sharing settings: the ones the rig's owner set in the earlier pooled runs
+  ssh -o BatchMode=yes "$host" "set -eu; umask 077; mkdir -p ~/$REMOTE_DIR/home ~/$REMOTE_DIR/data
+    [ -f ~/$REMOTE_DIR/home/rig-sharing.json ] || cp ~/mcgyvr-pool-tmp/home/rig-sharing.json ~/$REMOTE_DIR/home/"
+  if ! ssh -o BatchMode=yes "$host" "test -f ~/$REMOTE_DIR/home/rig-credentials.json"; then
+    # the join token goes over ssh's stdin into a 0600 file the agent reads once
+    python3 "$HERE/hubctl.py" token "$rig" | ssh -o BatchMode=yes "$host" "umask 077; cat > ~/$REMOTE_DIR/join-token"
+    verb="rig join http://127.0.0.1:$PORT --token -"
+  else
+    verb="rig run"
+  fi
+  ssh -o BatchMode=yes "$host" "set -eu; cd ~/$REMOTE_DIR
+    in=/dev/null; [ -f join-token ] && in=join-token
+    MCGYVR_HOME=\$PWD/home MCGYVR_DATA=\$PWD/data setsid nohup \
+      ../product/.venv/bin/mcgyvr $verb <\"\$in\" >>agent.log 2>&1 &
+    echo \$! > agent.pid
+    sleep 3
+    rm -f join-token
+    kill -0 \$(cat agent.pid) || { tail -5 agent.log; exit 1; }"
+  say "agent on $host started ($verb)"
+}
+start_agent "$HEAD_HOST" head-rig
+start_agent "$WORKER_HOST" worker-rig
+
+python3 "$HERE/hubctl.py" wait-online 120
+say "up"

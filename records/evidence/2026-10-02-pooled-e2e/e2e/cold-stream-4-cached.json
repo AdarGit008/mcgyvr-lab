@@ -1,0 +1,1 @@
+{"mode": "stream", "status": 200, "loading_retries": 2, "ttft_s": 85.87, "elapsed_s": 92.88, "chunks": 3, "chunks_per_s": 0.29, "engine": {"prompt_n": 44, "prompt_per_second": 1.914453431594686, "predicted_n": 4, "predicted_per_second": 0.4158196651099302}, "answer": "391"}

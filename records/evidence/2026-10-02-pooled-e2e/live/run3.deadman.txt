@@ -1,0 +1,24 @@
+ 202185 /home/adaramir/mcgyvr-pool-tmp/product/.venv/bin/python /home/adaramir/m
+00:19:29
+mcgyvr-pool-62975da16f8f-worker-0 Up 13 seconds
+mcgyvr-pool-62975da16f8f-tunnel Up 15 seconds
+00:19:37 mcgyvr-pool-62975da16f8f-worker-0=Up 21 seconds mcgyvr-pool-62975da16f8f-tunnel=Up 23 seconds gpu_apps=1
+00:19:46 mcgyvr-pool-62975da16f8f-worker-0=Up 30 seconds mcgyvr-pool-62975da16f8f-tunnel=Up 32 seconds gpu_apps=1
+00:19:55 mcgyvr-pool-62975da16f8f-worker-0=Up 39 seconds mcgyvr-pool-62975da16f8f-tunnel=Up 41 seconds gpu_apps=1
+00:20:04 mcgyvr-pool-62975da16f8f-worker-0=Up 48 seconds mcgyvr-pool-62975da16f8f-tunnel=Up 50 seconds gpu_apps=1
+00:20:13 mcgyvr-pool-62975da16f8f-worker-0=Up 57 seconds mcgyvr-pool-62975da16f8f-tunnel=Up 59 seconds gpu_apps=1
+00:20:22 mcgyvr-pool-62975da16f8f-worker-0=Up About a minute mcgyvr-pool-62975da16f8f-tunnel=Up About a minute gpu_apps=1
+00:20:31 mcgyvr-pool-62975da16f8f-worker-0=Exited (70) 1 second ago mcgyvr-pool-62975da16f8f-tunnel=Exited (0) 3 seconds ago gpu_apps=0
+00:20:40 mcgyvr-pool-62975da16f8f-worker-0=Exited (70) 10 seconds ago mcgyvr-pool-62975da16f8f-tunnel=Exited (0) 12 seconds ago gpu_apps=0
+00:20:49 mcgyvr-pool-62975da16f8f-worker-0=Exited (70) 19 seconds ago mcgyvr-pool-62975da16f8f-tunnel=Exited (0) 21 seconds ago gpu_apps=0
+00:20:58 mcgyvr-pool-62975da16f8f-worker-0=Exited (70) 28 seconds ago mcgyvr-pool-62975da16f8f-tunnel=Exited (0) 30 seconds ago gpu_apps=0
+00:21:07 mcgyvr-pool-62975da16f8f-worker-0=Exited (70) 37 seconds ago mcgyvr-pool-62975da16f8f-tunnel=Exited (0) 39 seconds ago gpu_apps=0
+00:21:16 mcgyvr-pool-62975da16f8f-worker-0=Exited (70) 46 seconds ago mcgyvr-pool-62975da16f8f-tunnel=Exited (0) 48 seconds ago gpu_apps=0
+-- mcgyvr-pool-62975da16f8f-worker-0 exit=70
+Accepted client connection
+[set_tensor] saved to '/rpc-cache/rpc/4a71bd407b931f74'
+Terminated
+-- mcgyvr-pool-62975da16f8f-tunnel exit=0
+gateway 172.17.0.1
+ready
+lease ran out

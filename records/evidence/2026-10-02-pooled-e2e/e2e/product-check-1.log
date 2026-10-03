@@ -1,0 +1,26 @@
+# The project itself is rebuilt every time: its version is read from git
+# (hatch-vcs), and an editable install that was not rebuilt reports the
+# commit it was last built at, not HEAD — `mcgyvr --version` on a checkout
+# would name the wrong code.
+uv sync --frozen --reinstall-package mcgyvr
+   Building mcgyvr @ file:///home/adaramir/claude/mcgyvr-lab-social/product
+      Built mcgyvr @ file:///home/adaramir/claude/mcgyvr-lab-social/product
+Prepared 1 package in 1.20s
+Uninstalled 1 package in 4ms
+Installed 1 package in 1ms
+ - mcgyvr==0.1.1.dev859+g6864bf02 (from file:///home/adaramir/claude/mcgyvr-lab-social/product)
+ + mcgyvr==0.1.1.dev859+g6864bf02.d20261002 (from file:///home/adaramir/claude/mcgyvr-lab-social/product)
+uv run --no-sync ruff check .
+E501 Line too long (90 > 88)
+   --> tests/test_a_rigs_hello_names_its_models_and_never_their_paths.py:133:89
+    |
+132 |     folder = tmp_path / "models"
+133 |     embd, out = _tensor("token_embd.weight", 64, 1000), _tensor("output.weight", 64, 1000)
+    |                                                                                         ^^
+134 |     write_gguf(folder / "untied.gguf", tensors=(embd, out))
+135 |     write_gguf(folder / "tied.gguf", tensors=(embd,))
+    |
+
+Found 1 error.
+make: *** [Makefile:37: check] Error 1
+exit=2

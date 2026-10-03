@@ -1,0 +1,194 @@
+make -C product check
+make[1]: Entering directory '/home/adaramir/claude/mcgyvr-lab-social/product'
+# The project itself is rebuilt every time: its version is read from git
+# (hatch-vcs), and an editable install that was not rebuilt reports the
+# commit it was last built at, not HEAD — `mcgyvr --version` on a checkout
+# would name the wrong code.
+uv sync --frozen --reinstall-package mcgyvr
+   Building mcgyvr @ file:///home/adaramir/claude/mcgyvr-lab-social/product
+      Built mcgyvr @ file:///home/adaramir/claude/mcgyvr-lab-social/product
+Prepared 1 package in 1.07s
+Uninstalled 1 package in 1ms
+Installed 1 package in 1ms
+ - mcgyvr==0.1.1.dev860+g9902965d.d20261002 (from file:///home/adaramir/claude/mcgyvr-lab-social/product)
+ + mcgyvr==0.1.1.dev861+g5cb7910b (from file:///home/adaramir/claude/mcgyvr-lab-social/product)
+uv run --no-sync ruff check .
+All checks passed!
+uv run --no-sync ruff format --check .
+676 files already formatted
+uv run --no-sync mypy
+Success: no issues found in 636 source files
+uv run --no-sync python -m mcgyvr.docgen --check
+config reference: rendered to /tmp/mcgyvr-config-reference-3311293.md, checked, deleted
+uv run --no-sync pytest
+bringing up nodes...
+bringing up nodes...
+
+........................................................................ [  1%]
+...........................................................x............ [  2%]
+........................................................................ [  4%]
+..........................F............................................. [  5%]
+........................................................................ [  7%]
+........................................................................ [  8%]
+........................................................................ [ 10%]
+........................................................................ [ 11%]
+........................................................................ [ 13%]
+........................................................................ [ 14%]
+........................................................................ [ 16%]
+........................................................................ [ 17%]
+........................................................................ [ 19%]
+........................................................................ [ 20%]
+........................................................................ [ 21%]
+........................................................................ [ 23%]
+........................................................................ [ 24%]
+........................................................................ [ 26%]
+........................................................................ [ 27%]
+........................................................................ [ 29%]
+........................................................................ [ 30%]
+........................................................................ [ 32%]
+........................................................................ [ 33%]
+........................................................................ [ 35%]
+........................................................................ [ 36%]
+........................................................................ [ 38%]
+........................................................................ [ 39%]
+........................................................................ [ 41%]
+........................................................................ [ 42%]
+........................................................................ [ 43%]
+........................................................................ [ 45%]
+........................................................................ [ 46%]
+........................................................................ [ 48%]
+........................................................................ [ 49%]
+........................................................................ [ 51%]
+........................................................................ [ 52%]
+........................................................................ [ 54%]
+........................................................................ [ 55%]
+........................................................................ [ 57%]
+........................................................................ [ 58%]
+........................................................................ [ 60%]
+....................................s................................... [ 61%]
+........................................................................ [ 62%]
+........................................................................ [ 64%]
+........................................................................ [ 65%]
+........................................................................ [ 67%]
+........................................................................ [ 68%]
+........................................................................ [ 70%]
+........................................................................ [ 71%]
+........................................................................ [ 73%]
+........................................................................ [ 74%]
+........................................................................ [ 76%]
+........................................................................ [ 77%]
+........................................................................ [ 79%]
+........................................................................ [ 80%]
+........................................................................ [ 82%]
+........................................................................ [ 83%]
+........................................................................ [ 84%]
+........................................................................ [ 86%]
+........................................................................ [ 87%]
+.....................s.................................................. [ 89%]
+........................................................................ [ 90%]
+........................................................................ [ 92%]
+........................................................................ [ 93%]
+..............................................x......................... [ 95%]
+........................................................................ [ 96%]
+........................................................................ [ 98%]
+........................................................................ [ 99%]
+.....................                                                    [100%]
+=================================== FAILURES ===================================
+____________________ test_both_kinds_are_named_and_labelled ____________________
+[gw2] linux -- Python 3.12.7 /home/adaramir/claude/mcgyvr-lab-social/product/.venv/bin/python3
+
+tmp_path = PosixPath('/tmp/pytest-of-adaramir/pytest-534/popen-gw2/test_both_kinds_are_named_and_0')
+
+    def test_both_kinds_are_named_and_labelled(tmp_path: Path) -> None:
+>       root = onedoor.fixture_repo(tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_a_leftover_container_without_the_runs_prefix_is_still_named.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/onedoor.py:649: in fixture_repo
+    shutil.copytree(
+../../../.local/share/uv/python/cpython-3.12-linux-x86_64-gnu/lib/python3.12/shutil.py:600: in copytree
+    return _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entries = [<DirEntry 'gate-scripts'>, <DirEntry 'vramfit.py'>, <DirEntry '__init__.py'>, <DirEntry 'ggufscan.py'>, <DirEntry 'gatelib.py'>, <DirEntry 'servelib.py'>, ...]
+src = PosixPath('/home/adaramir/claude/mcgyvr-lab-social/product/src/mcgyvr/serving')
+dst = PosixPath('/tmp/pytest-of-adaramir/pytest-534/popen-gw2/test_both_kinds_are_named_and_0/repo/src/mcgyvr/serving')
+symlinks = False
+ignore = <function ignore_patterns.<locals>._ignore_patterns at 0x7ac9ac91f740>
+copy_function = <function copy2 at 0x7ac9b4c09c60>
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def _copytree(entries, src, dst, symlinks, ignore, copy_function,
+                  ignore_dangling_symlinks, dirs_exist_ok=False):
+        if ignore is not None:
+            ignored_names = ignore(os.fspath(src), [x.name for x in entries])
+        else:
+            ignored_names = ()
+    
+        os.makedirs(dst, exist_ok=dirs_exist_ok)
+        errors = []
+        use_srcentry = copy_function is copy2 or copy_function is copy
+    
+        for srcentry in entries:
+            if srcentry.name in ignored_names:
+                continue
+            srcname = os.path.join(src, srcentry.name)
+            dstname = os.path.join(dst, srcentry.name)
+            srcobj = srcentry if use_srcentry else srcname
+            try:
+                is_symlink = srcentry.is_symlink()
+                if is_symlink and os.name == 'nt':
+                    # Special check for directory junctions, which appear as
+                    # symlinks but we want to recurse.
+                    lstat = srcentry.stat(follow_symlinks=False)
+                    if lstat.st_reparse_tag == stat.IO_REPARSE_TAG_MOUNT_POINT:
+                        is_symlink = False
+                if is_symlink:
+                    linkto = os.readlink(srcname)
+                    if symlinks:
+                        # We can't just leave it to `copy_function` because legacy
+                        # code with a custom `copy_function` may rely on copytree
+                        # doing the right thing.
+                        os.symlink(linkto, dstname)
+                        copystat(srcobj, dstname, follow_symlinks=not symlinks)
+                    else:
+                        # ignore dangling symlink if the flag is on
+                        if not os.path.exists(linkto) and ignore_dangling_symlinks:
+                            continue
+                        # otherwise let the copy occur. copy2 will raise an error
+                        if srcentry.is_dir():
+                            copytree(srcobj, dstname, symlinks, ignore,
+                                     copy_function, ignore_dangling_symlinks,
+                                     dirs_exist_ok)
+                        else:
+                            copy_function(srcobj, dstname)
+                elif srcentry.is_dir():
+                    copytree(srcobj, dstname, symlinks, ignore, copy_function,
+                             ignore_dangling_symlinks, dirs_exist_ok)
+                else:
+                    # Will raise a SpecialFileError for unsupported file types
+                    copy_function(srcobj, dstname)
+            # catch the Error from the recursive copytree so that we can
+            # continue with other files
+            except Error as err:
+                errors.extend(err.args[0])
+            except OSError as why:
+                errors.append((srcname, dstname, str(why)))
+        try:
+            copystat(src, dst)
+        except OSError as why:
+            # Copying file access times may fail on Windows
+            if getattr(why, 'winerror', None) is None:
+                errors.append((src, dst, str(why)))
+        if errors:
+>           raise Error(errors)
+E           shutil.Error: [('/home/adaramir/claude/mcgyvr-lab-social/product/src/mcgyvr/serving/gate-scripts/default-step.sh', '/tmp/pytest-of-adaramir/pytest-534/popen-gw2/test_both_kinds_are_named_and_0/repo/src/mcgyvr/serving/gate-scripts/default-step.sh', "[Errno 2] No such file or directory: '/home/adaramir/claude/mcgyvr-lab-social/product/src/mcgyvr/serving/gate-scripts/default-step.sh'")]
+
+../../../.local/share/uv/python/cpython-3.12-linux-x86_64-gnu/lib/python3.12/shutil.py:554: Error
+=========================== short test summary info ============================
+FAILED tests/test_a_leftover_container_without_the_runs_prefix_is_still_named.py::test_both_kinds_are_named_and_labelled
+1 failed, 4912 passed, 2 skipped, 2 xfailed in 221.55s (0:03:41)
+make[1]: *** [Makefile:41: check] Error 1
+make[1]: Leaving directory '/home/adaramir/claude/mcgyvr-lab-social/product'
+make: *** [Makefile:54: product-check] Error 2

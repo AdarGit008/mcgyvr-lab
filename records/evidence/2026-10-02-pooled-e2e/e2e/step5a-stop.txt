@@ -1,0 +1,2 @@
+rig: containers=0 gpu_apps=0 wg_ifaces=0 0, 1 MiB 1, 1 MiB 
+rig: containers=0 gpu_apps=0 wg_ifaces=0 0, 17 MiB 

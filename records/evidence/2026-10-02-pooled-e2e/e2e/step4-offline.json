@@ -1,0 +1,1 @@
+{"mode": "stream", "status": 503, "code": "insufficient_vram", "message": "needs about 23307 MB of usable VRAM across at most 4 rigs; 22936 MB is available", "elapsed_s": 0.04}

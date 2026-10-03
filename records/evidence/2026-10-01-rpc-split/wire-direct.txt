@@ -1,0 +1,24 @@
+## before 2026-10-01T22:58:13+00:00
+0, NVIDIA GeForce RTX 3060, 00000000:01:00.0, 1 MiB, 11909 MiB, 580.178.04
+1, NVIDIA GeForce RTX 3060, 00000000:02:00.0, 1 MiB, 11909 MiB, 580.178.04
+apps:
+img=sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841
+MemAvailable:   46535540 kB
+if_rx_bytes=28682557 if_tx_bytes=49873429 if_rx_packets=123382 if_tx_packets=117668 
+load_wall_s=84.5
+## loaded 2026-10-01T22:59:40+00:00
+0, NVIDIA GeForce RTX 3060, 00000000:01:00.0, 7727 MiB, 4183 MiB, 580.178.04
+1, NVIDIA GeForce RTX 3060, 00000000:02:00.0, 8247 MiB, 3664 MiB, 580.178.04
+apps:
+265580, 7718 MiB
+265580, 8238 MiB
+img=sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841
+MemAvailable:   45706204 kB
+if_rx_bytes=36303316 if_tx_bytes=3960522925 if_rx_packets=268939 if_tx_packets=178830 
+## after 2026-10-01T23:00:54+00:00
+0, NVIDIA GeForce RTX 3060, 00000000:01:00.0, 1 MiB, 11909 MiB, 580.178.04
+1, NVIDIA GeForce RTX 3060, 00000000:02:00.0, 1 MiB, 11909 MiB, 580.178.04
+apps:
+img=sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841
+MemAvailable:   46508664 kB
+if_rx_bytes=153510478 if_tx_bytes=4050468697 if_rx_packets=278752 if_tx_packets=191441 

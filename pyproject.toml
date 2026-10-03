@@ -100,7 +100,7 @@ follow_imports = "skip"
 [[tool.mypy.overrides]]
 module = [
     "datasets", "tokenizers", "trl", "unsloth.*", "unsloth", "okf_rag.*",
-    "torch", "torch.*", "pynvml",
+    "torch", "torch.*", "pynvml", "playwright", "playwright.*",
 ]
 ignore_missing_imports = true
 

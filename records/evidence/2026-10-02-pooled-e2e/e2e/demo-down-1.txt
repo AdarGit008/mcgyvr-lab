@@ -1,0 +1,9 @@
+[demo-down] agent on srv1 stopped
+removing leftover pooled containers
+[demo-down] agent on srv2 stopped
+[demo-down] tunnel to srv1 closed
+[demo-down] tunnel to srv2 closed
+[demo-down] hub stopped
+[demo-down] srv1: agents=0 pooled_containers=0 gpu_apps=0 forwarded_port=0 vram_used: 0, 1 MiB 1, 1 MiB 
+[demo-down] srv2: agents=0 pooled_containers=0 gpu_apps=0 forwarded_port=0 vram_used: 0, 17 MiB 
+[demo-down] down: both rigs idle

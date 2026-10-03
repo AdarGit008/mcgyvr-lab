@@ -1,0 +1,24 @@
+hello {"body": {"machine_id": "mch-62535ed1dac1cfc44b214fc80947f0b12328b5a54913e316922ea7911bb44ebe", "agent_version": "0.0.1.dev1290+g8bfb80e61", "ram_total_mb": 46797, "cards": [{"index": 0, "name": "NVIDIA GeForce GTX 1660 SUPER", "vram_total_mb": 6144, "vram_free_mb": 5729}], "ram_free_mb": 45261, "ca
+hello {"body": {"machine_id": "mch-6fb5c730a2208f2ecbeb243c3581e7d1cd5f58870ab0562ea803cbbe118112d6", "agent_version": "0.0.1.dev1290+g8bfb80e61", "ram_total_mb": 47104, "cards": [{"index": 0, "name": "NVIDIA GeForce RTX 3060", "vram_total_mb": 12288, "vram_free_mb": 11909}, {"index": 1, "name": "NVIDIA G
+roles {"head": "mch-6fb5c730", "worker": "mch-62535ed1", "session": "live-6580f4e8"}
+hub->mch-6fb5c730 {"type": "session_prepare", "body": {"session_id": "live-6580f4e8", "role": "head"}}
+hub->mch-62535ed1 {"type": "session_prepare", "body": {"session_id": "live-6580f4e8", "role": "worker"}}
+rig->hub {"rig": "mch-62535ed1", "type": "session_prepared", "body": {"session_id": "live-6580f4e8", "public_key": "<wg-key-2-redacted>", "listen_port": 51820, "endpoints": [{"host": "192.168.1.167", "port": 51820, "kind": "lan"}]}}
+rig->hub {"rig": "mch-6fb5c730", "type": "session_prepared", "body": {"session_id": "live-6580f4e8", "public_key": "<wg-key-4-redacted>", "listen_port": 51820, "endpoints": [{"host": "192.168.1.144", "port": 51820, "kind": "lan"}]}}
+prepared {"seconds": 3.1}
+hub->mch-6fb5c730 {"type": "tunnel_up", "body": {"session_id": "live-6580f4e8", "address": "10.77.0.1/24", "listen_port": 51820, "peers": [{"rig_id": "rig-0", "public_key": "<wg-key-2-redacted>", "endpoints": [{"host": "192.168.1.167", "port": 51820, "kind": "lan"}], "allowed_ips": ["10.77.0.
+hub->mch-62535ed1 {"type": "tunnel_up", "body": {"session_id": "live-6580f4e8", "address": "10.77.0.2/24", "listen_port": 51820, "peers": [{"rig_id": "rig-1", "public_key": "<wg-key-4-redacted>", "endpoints": [{"host": "192.168.1.144", "port": 51820, "kind": "lan"}], "allowed_ips": ["10.77.0.
+rig->hub {"rig": "mch-6fb5c730", "type": "ack", "body": {}}
+rig->hub {"rig": "mch-62535ed1", "type": "ack", "body": {}}
+hub->mch-62535ed1 {"type": "worker_start", "body": {"session_id": "live-6580f4e8", "cards": [{"card_index": 0, "port": 50052}]}}
+rig->hub {"rig": "mch-62535ed1", "type": "ack", "body": {}}
+rig->hub {"rig": "mch-62535ed1", "type": "session_status", "body": {"session_id": "live-6580f4e8", "state": "ready", "role": "worker"}}
+worker ready {"seconds": 5.2}
+hub->mch-6fb5c730 {"type": "head_start", "body": {"session_id": "live-6580f4e8", "model": {"name": "Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf"}, "ctx": 12288, "devices": [{"kind": "local", "card_index": 0}, {"kind": "local", "card_index": 1}, {"kind": "rpc", "host": "10.77.0.2", "port": 50052}], "tensor_split": [20, 21,
+rig->hub {"rig": "mch-6fb5c730", "type": "ack", "body": {}}
+rig->hub {"rig": "mch-6fb5c730", "type": "session_status", "body": {"session_id": "live-6580f4e8", "state": "failed", "role": "head", "error_code": "start_failed", "log_excerpt": "docker exec failed (1):"}}
+Traceback (most recent call last):
+  File "/tmp/claude-1000/-home-adaramir-claude-mcgyvr-lab-social/4cd54137-501e-4782-bb7b-60c760d8d5a2/scratchpad/live/drive_hub.py", line 173, in <module>
+    assert m["body"]["state"] == "ready", m
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'v': 1, 'type': 'session_status', 'id': 'c482718a6d994172b5d8e840c5ba7dbd', 'body': {'session_id': 'live-6580f4e8', 'state': 'failed', 'role': 'head', 'error_code': 'start_failed', 'log_excerpt': 'docker exec failed (1):'}}

@@ -1,0 +1,9 @@
+joined http://127.0.0.1:18765 as a token of 17 characters; the token is kept in /home/adaramir/mcgyvr-pool-tmp/home/rig-credentials.json
+agent for http://127.0.0.1:18765 as a token of 17 characters; Ctrl-C stops it
+lending: worker on llamacpp:b10644-L3-rpc
+online as rig-0: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+connect_to 127.0.0.1 port 18765: failed.
+connect_to 127.0.0.1 port 18765: failed.
+connect_to 127.0.0.1 port 18765: failed.
+connect_to 127.0.0.1 port 18765: failed.
+Connection to 100.69.72.51 closed.

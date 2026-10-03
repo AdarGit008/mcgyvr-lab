@@ -1,0 +1,4 @@
+joined http://127.0.0.1:18765 as a token of 15 characters; the token is kept in /home/adaramir/mcgyvr-pool-tmp/home/rig-credentials.json
+agent for http://127.0.0.1:18765 as a token of 15 characters; Ctrl-C stops it
+lending: head on llamacpp:b10644-L3-rpc
+online as rig-1: 2 card(s), 47104 MiB RAM; a heartbeat every 15 s

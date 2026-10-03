@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# Take the pooled-inference demo fully down and prove it:
+#   stop each rig agent (SIGTERM: it stops its sessions and removes their
+#   containers), remove any pooled container still there, close the ssh
+#   tunnels, stop the hub, then check both rigs are idle.
+# --purge also removes the demo's state here and ~/mcgyvr-pool-tmp/e2e on the rigs.
+set -uo pipefail
+
+HERE="$(cd "$(dirname "$0")" && pwd)"
+STATE="${STATE:-${XDG_STATE_HOME:-$HOME/.local/state}/mcgyvr-demo}"
+PORT="${PORT:-18765}"
+HEAD_HOST="${HEAD_HOST:-srv1}"
+WORKER_HOST="${WORKER_HOST:-srv2}"
+REMOTE_DIR='mcgyvr-pool-tmp/e2e'
+
+say() { printf '[demo-down] %s\n' "$*"; }
+stop_pid() {  # pidfile, seconds
+  local f="$1" t="$2" p
+  [ -f "$f" ] || return 0
+  p="$(cat "$f")"
+  if kill -0 "$p" 2>/dev/null; then
+    kill -TERM "$p" 2>/dev/null
+    for _ in $(seq 1 "$t"); do kill -0 "$p" 2>/dev/null || break; sleep 1; done
+    kill -0 "$p" 2>/dev/null && { kill -KILL "$p" 2>/dev/null; say "killed $p hard"; }
+  fi
+  rm -f "$f"
+}
+
+for host in "$HEAD_HOST" "$WORKER_HOST"; do
+  ssh -o BatchMode=yes "$host" "cd ~/$REMOTE_DIR 2>/dev/null || exit 0
+    if [ -f agent.pid ]; then
+      p=\$(cat agent.pid)
+      if kill -0 \$p 2>/dev/null; then
+        kill -TERM \$p
+        for i in \$(seq 1 150); do kill -0 \$p 2>/dev/null || break; sleep 1; done
+        kill -0 \$p 2>/dev/null && { kill -KILL \$p; echo 'agent killed hard'; }
+      fi
+      rm -f agent.pid
+    fi
+    left=\$(docker ps -aq --filter label=mcgyvr.pool=1)
+    [ -n \"\$left\" ] && { echo \"removing leftover pooled containers\"; docker rm -f --volumes \$left >/dev/null; }
+    rm -f join-token
+    exit 0" && say "agent on $host stopped"
+done
+
+for host in "$HEAD_HOST" "$WORKER_HOST"; do
+  stop_pid "$STATE/tunnel-$host.pid" 10 && say "tunnel to $host closed"
+done
+stop_pid "$STATE/hub.pid" 20 && say "hub stopped"
+
+# --- verify ---------------------------------------------------------------------
+bad=0
+if pgrep -af "[s]sh -N .*127.0.0.1:$PORT" >/dev/null; then say "tunnel still running"; bad=1; fi
+if pgrep -af "[m]cgyvr-hub serve --host [^ ]* --port $PORT" >/dev/null; then say "hub still running"; bad=1; fi
+for host in "$HEAD_HOST" "$WORKER_HOST"; do
+  out="$(ssh -o BatchMode=yes "$host" '
+    a=$(pgrep -f "[m]cgyvr rig (run|join)" | wc -l)
+    c=$(docker ps -aq --filter label=mcgyvr.pool=1 | wc -l)
+    g=$(nvidia-smi --query-compute-apps=pid --format=csv,noheader | grep -c .)
+    l=$(ss -ltn | grep -c "127.0.0.1:'"$PORT"' ")
+    v=$(nvidia-smi --query-gpu=index,memory.used --format=csv,noheader | tr "\n" " ")
+    echo "agents=$a pooled_containers=$c gpu_apps=$g forwarded_port=$l vram_used: $v"')"
+  say "$host: $out"
+  case "$out" in "agents=0 pooled_containers=0 gpu_apps=0 forwarded_port=0"*) ;; *) bad=1 ;; esac
+done
+
+if [ "${1:-}" = "--purge" ]; then
+  for host in "$HEAD_HOST" "$WORKER_HOST"; do
+    ssh -o BatchMode=yes "$host" "rm -rf ~/$REMOTE_DIR"
+  done
+  rm -rf "$STATE"
+  say "purged demo state here and on the rigs"
+fi
+[ "$bad" = 0 ] && say "down: both rigs idle" || { say "NOT fully down"; exit 1; }

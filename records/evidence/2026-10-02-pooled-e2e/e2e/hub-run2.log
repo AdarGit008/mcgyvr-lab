@@ -1,0 +1,180 @@
+INFO:     Started server process [3170930]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18765 (Press CTRL+C to quit)
+INFO:     127.0.0.1:35966 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35978 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35988 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     127.0.0.1:36002 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     127.0.0.1:36010 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     127.0.0.1:36012 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     127.0.0.1:36022 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     127.0.0.1:42050 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:37672 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:37682 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37692 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54414 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57564 - "POST /v1/chat/completions HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:38532 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:53538 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:41316 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41308 - "POST /v1/chat/completions HTTP/1.1" 502 Bad Gateway
+INFO:     127.0.0.1:50622 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39450 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:36972 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:49606 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:58744 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34528 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48588 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49786 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47996 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38332 - "GET /signin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38332 - "GET /static/hub.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58730 - "GET /static/htmx-2.0.11.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58738 - "GET /static/hub.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58738 - "POST /signin HTTP/1.1" 303 See Other
+INFO:     127.0.0.1:58738 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58738 - "GET /pool HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58738 - "GET /pool/plan?model=Qwen2.5-Coder-1.5B-Instruct-Q4_K_M.gguf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38332 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38332 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38332 - "GET /pool/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38332 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38332 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38332 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38332 - "GET /pool/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38332 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38332 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59086 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59090 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3170930]
+INFO:     Started server process [3184382]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18765 (Press CTRL+C to quit)
+INFO:     127.0.0.1:51802 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51830 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51814 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:51838 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:54946 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54956 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60588 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40106 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40120 - "PATCH /api/v1/rigs/4faa91e1d86649a4849329efe50eb941 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40124 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40128 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:40130 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40132 - "PATCH /api/v1/rigs/4faa91e1d86649a4849329efe50eb941 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50690 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50692 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:50704 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:42288 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:42302 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:54790 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54804 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34662 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:39554 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:46528 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:40094 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:38014 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53076 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59258 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59272 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55626 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55950 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41968 - "GET /signin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41968 - "GET /static/hub.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41984 - "GET /static/htmx-2.0.11.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41984 - "GET /static/hub.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41984 - "POST /signin HTTP/1.1" 303 See Other
+INFO:     127.0.0.1:41984 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41984 - "GET /pool HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41968 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41984 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41968 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx= HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41968 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=12288 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41968 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=12288 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "GET /signin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53576 - "GET /static/htmx-2.0.11.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "GET /static/hub.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "GET /static/hub.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "POST /signin HTTP/1.1" 303 See Other
+INFO:     127.0.0.1:53574 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "GET /pool HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53576 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx= HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=12288 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=12288 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "POST /pool/try HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "GET /pool/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32858 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "GET /signin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32870 - "GET /static/htmx-2.0.11.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "GET /static/hub.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "GET /static/hub.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "POST /signin HTTP/1.1" 303 See Other
+INFO:     127.0.0.1:32860 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "GET /pool HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32870 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx= HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=12288 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "GET /pool/plan?model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf&ctx=12288 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "POST /pool/try HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "GET /pool/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52590 - "GET /pool/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54260 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54264 - "POST /api/v1/sessions/aaacf8a085c44324b2e59da8f52f51e6/stop HTTP/1.1" 204 No Content
+INFO:     127.0.0.1:54272 - "GET /api/v1/sessions/aaacf8a085c44324b2e59da8f52f51e6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52836 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52856 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52860 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52864 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52878 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52888 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52890 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52842 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:49110 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:49126 - "GET /api/v1/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49142 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52024 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:52034 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52050 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47782 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:33876 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:54148 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44282 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48976 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3184382]
+INFO:     Started server process [3305183]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18765 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60152 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60164 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34014 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58676 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58680 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58690 - "GET /api/v1/rigs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58706 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:53200 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:54984 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45172 - "POST /v1/chat/completions HTTP/1.1" 200 OK

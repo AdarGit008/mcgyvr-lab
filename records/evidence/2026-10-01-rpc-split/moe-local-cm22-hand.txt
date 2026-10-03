@@ -1,0 +1,10 @@
+# hand reproduction of moe.tsv n80-local-cm22 (DEGENERATE: warmup produced [1] tokens), outside the door, srv1 only
+# img=sha256:c49d9cd3e2d69c7a81305cd8ed15a7bc6cb957e90ff51413a8b864bdb5aa5841 driver=580.178.04, srv1 idle before (0 containers, 0 compute apps)
+# argv (the driver's, host network, port 8092):
+#   -m /models/moe/Qwen3-Next-80B-A3B-Instruct-Q3_K_M.gguf -ngl 99 -sm layer -np 1 -c 16384 -fa on -ctk q8_0 -ctv q8_0 --no-warmup -lv 4 --n-cpu-moe 22 -ts 35,14
+# load readback: CPU_Mapped 16797.57 MiB, CUDA0 10205.44 MiB, CUDA1 9978.95 MiB; KV CUDA0 136 / CUDA1 68; RS CUDA0 56.53 / CUDA1 18.84; compute CUDA0 676.00 / CUDA1 98.28 / CUDA_Host 24.28
+# launch 1, non-streamed "Say hello in five words." max_tokens 32 temp 0 -> "Hello, nice to meet you!" (8 tokens), prompt_ms 41607.6 for 14 tokens (first request after load)
+# launch 2, workload.mkprompt() first draw, system split off, non-streamed, temp 0, max_tokens=want:
+#   request 1: completion_tokens 263, prompt_tokens 711, finish stop, prompt_ms 43120.4, tg 20.95 t/s (first request after load, cold)
+#   request 2: completion_tokens 263, prompt_tokens 711 (707 cached), finish stop, prompt_ms 117.6, tg 43.14 t/s
+# reading: the config serves correct output; its first request after load spends ~40 s in prompt eval. Why the driver's streamed warm-up saw completion_tokens=1 is not resolved here.
