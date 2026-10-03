@@ -111,15 +111,31 @@ def read_lcp(log: str) -> list[str]:
         "kvbuf=" + join(kvb),
         "compbuf=" + join(comp),
         "real_ctx_slot=" + _first(r"n_ctx_(?:slot|seq)\s*=\s*(\d+)", log),
+        "n_seq_max=" + _first(r"n_seq_max\s*=\s*(\d+)", log),
+        "kv_unified=" + _first(r"kv_unified\s*=\s*'?(\w+)", log),
         "n_ubatch=" + _first(r"n_ubatch\s*=\s*(\d+)", log),
         "graph_splits=" + _first(r"graph splits = (\d+)", log),
     ]
 
 
+#: llama-server's SLT_INF line for a task taking a slot (b10644,
+#: tools/server/server-common.h:25 and server-context.cpp:1729):
+#: `slot launch_slot_: id  2 | task 7 | processing task, is_child = 0`.
+SLOT_LAUNCH = re.compile(
+    r"slot\s+launch_slot_: id\s+(\d+) \| task (\d+) \| processing task"
+)
+
+
+def slot_launches(log: str) -> list[tuple[int, int]]:
+    """``(slot id, task id)`` for every task the server launched, in log order."""
+    return [(int(s), int(t)) for s, t in SLOT_LAUNCH.findall(log)]
+
+
 #: The lines each reader looks for, filed raw when any field reads unread.
 EXCERPT = re.compile(
     r"NCCL INFO (?:Channel|Connected all|comm .* nRanks)|Custom allreduce|"
-    r"model buffer|KV buffer|compute buffer|n_ctx|n_ubatch|graph splits|"
+    r"model buffer|KV buffer|compute buffer|n_ctx|n_seq_max|kv_unified|n_ubatch|"
+    r"graph splits|"
     r"KV cache size|Maximum concurrency|backend|cudagraph|P2P access cache"
 )
 

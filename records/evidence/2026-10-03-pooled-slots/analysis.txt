@@ -1,0 +1,427 @@
+## per cell, per round: agg (tok/s) / p50 latency (s) / ttft_p50 / ptok / otok / early_stop / failed / slots
+H1-a  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:140,CUDA1:132  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=11.7 p50=8.64 ttft=1.394 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=8.6
+    n=2 agg=13.0 p50=21.94 ttft=5.131 dec=13.8 ptok=573 otok=232 early=1/2 failed=0/2 slots=0,0 wall=35.6
+    n=4 agg=12.9 p50=44.30 ttft=31.293 dec=13.8 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=64.3
+H1-b  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:140,CUDA1:132  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=11.7 p50=8.61 ttft=1.354 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=8.6
+    n=2 agg=13.0 p50=21.92 ttft=5.131 dec=13.8 ptok=573 otok=232 early=1/2 failed=0/2 slots=0,0 wall=35.6
+    n=4 agg=12.9 p50=44.84 ttft=26.455 dec=13.8 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=64.3
+H1-c  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:140,CUDA1:132  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=11.7 p50=8.62 ttft=1.359 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=8.6
+    n=2 agg=12.9 p50=19.73 ttft=5.128 dec=13.8 ptok=573 otok=202 early=1/2 failed=0/2 slots=0,0 wall=31.2
+    n=4 agg=12.9 p50=44.84 ttft=29.688 dec=13.8 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=64.3
+S1-a  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:115,CUDA1:110,RPC0[192.168.1.167:50052]:47  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.0 p50=11.20 ttft=2.616 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.2
+    n=2 agg=10.7 p50=26.69 ttft=6.890 dec=11.7 ptok=573 otok=232 early=1/2 failed=0/2 slots=0,0 wall=43.2
+    n=4 agg=10.5 p50=54.54 ttft=32.867 dec=11.7 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=78.6
+S1-b  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:115,CUDA1:110,RPC0[192.168.1.167:50052]:47  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.1 p50=11.10 ttft=2.573 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.1
+    n=2 agg=10.6 p50=24.11 ttft=6.873 dec=11.7 ptok=573 otok=202 early=1/2 failed=0/2 slots=0,0 wall=38.0
+    n=4 agg=10.5 p50=44.07 ttft=30.464 dec=11.7 ptok=625 otok=208 early=1/4 failed=0/4 slots=0,0,0,0 wall=79.2
+S1-c  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:115,CUDA1:110,RPC0[192.168.1.167:50052]:47  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.1 p50=11.10 ttft=2.585 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.1
+    n=2 agg=10.7 p50=26.74 ttft=6.909 dec=11.7 ptok=573 otok=232 early=1/2 failed=0/2 slots=0,0 wall=43.2
+    n=4 agg=10.5 p50=54.61 ttft=32.867 dec=11.7 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=78.7
+H2-a  n_seq_max=2  ctx_slot=2048  kvu=false  kv=CUDA0:280,CUDA1:264  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=11.7 p50=8.63 ttft=1.378 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=1 wall=8.6
+    n=2 agg=16.5 p50=17.18 ttft=1.710 dec=12.8 ptok=573 otok=202 early=1/2 failed=0/2 slots=1,0 wall=24.5
+    n=4 agg=2.1 p50=1.92 ttft=1.682 dec=11.9 ptok=0 otok=1 early=2/4 failed=2/4 slots=0,1 wall=1.9
+H2-b  n_seq_max=2  ctx_slot=2048  kvu=false  kv=CUDA0:280,CUDA1:264  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=11.6 p50=8.73 ttft=1.445 dec=13.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=1 wall=8.7
+    n=2 agg=16.4 p50=17.24 ttft=1.789 dec=12.8 ptok=573 otok=202 early=1/2 failed=0/2 slots=1,0 wall=24.6
+    n=4 agg=19.0 p50=27.54 ttft=9.920 dec=12.0 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,1,0,1 wall=43.6
+H2-c  n_seq_max=2  ctx_slot=2048  kvu=false  kv=CUDA0:280,CUDA1:264  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=11.7 p50=8.64 ttft=1.378 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=1 wall=8.6
+    n=2 agg=16.5 p50=17.16 ttft=1.707 dec=12.8 ptok=573 otok=202 early=1/2 failed=0/2 slots=1,0 wall=24.5
+    n=4 agg=21.9 p50=31.12 ttft=9.872 dec=12.0 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,1,1,0 wall=37.8
+S2-a  n_seq_max=2  ctx_slot=2048  kvu=false  kv=CUDA0:230,CUDA1:221,RPC0[192.168.1.167:50052]:94  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.1 p50=11.15 ttft=2.601 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=1 wall=11.2
+    n=2 agg=12.8 p50=22.86 ttft=3.719 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=1,0 wall=31.6
+    n=4 agg=16.0 p50=42.79 ttft=16.918 dec=9.2 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,1,0,1 wall=51.7
+S2-b  n_seq_max=2  ctx_slot=2048  kvu=false  kv=CUDA0:230,CUDA1:221,RPC0[192.168.1.167:50052]:94  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.1 p50=11.12 ttft=2.609 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=1 wall=11.1
+    n=2 agg=12.7 p50=24.75 ttft=3.690 dec=10.2 ptok=573 otok=224 early=1/2 failed=0/2 slots=1,0 wall=35.4
+    n=4 agg=16.0 p50=40.50 ttft=12.103 dec=9.2 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,1,1,0 wall=51.8
+S2-c  n_seq_max=2  ctx_slot=2048  kvu=false  kv=CUDA0:230,CUDA1:221,RPC0[192.168.1.167:50052]:94  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.1 p50=11.15 ttft=2.593 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=1 wall=11.1
+    n=2 agg=12.8 p50=22.87 ttft=3.712 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=1,0 wall=31.6
+    n=4 agg=14.3 p50=35.80 ttft=15.137 dec=9.1 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,1,0,1 wall=57.7
+H4-a  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:561,CUDA1:527  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=12.0 p50=8.45 ttft=1.184 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=8.4
+    n=2 agg=16.4 p50=17.23 ttft=1.777 dec=12.8 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=24.6
+    n=4 agg=23.5 p50=29.08 ttft=3.896 dec=8.3 ptok=625 otok=208 early=1/4 failed=0/4 slots=2,3,1,0 wall=35.5
+H4-b  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:561,CUDA1:527  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=12.0 p50=8.45 ttft=1.192 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=8.5
+    n=2 agg=16.5 p50=17.15 ttft=1.704 dec=12.8 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=24.5
+    n=4 agg=24.8 p50=27.27 ttft=3.422 dec=8.8 ptok=625 otok=208 early=1/4 failed=0/4 slots=2,3,1,0 wall=33.7
+H4-c  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:561,CUDA1:527  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=12.0 p50=8.42 ttft=1.162 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=8.4
+    n=2 agg=16.0 p50=20.10 ttft=1.707 dec=12.8 ptok=573 otok=242 early=1/2 failed=0/2 slots=3,2 wall=30.4
+    n=4 agg=25.8 p50=26.90 ttft=3.693 dec=9.0 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=32.1
+S4-a  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.5 p50=10.68 ttft=2.138 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.7
+    n=2 agg=12.8 p50=22.92 ttft=3.717 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=31.6
+    n=4 agg=18.5 p50=38.41 ttft=7.004 dec=6.7 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=44.7
+S4-b  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.4 p50=10.70 ttft=2.140 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.7
+    n=2 agg=12.8 p50=22.83 ttft=3.699 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=31.5
+    n=4 agg=17.7 p50=39.38 ttft=7.019 dec=6.5 ptok=625 otok=208 early=1/4 failed=0/4 slots=2,3,1,0 wall=47.2
+S4-c  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.4 p50=10.72 ttft=2.173 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.7
+    n=2 agg=12.8 p50=22.85 ttft=3.722 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=31.5
+    n=4 agg=17.7 p50=39.16 ttft=6.958 dec=6.5 ptok=625 otok=208 early=1/4 failed=0/4 slots=2,3,1,0 wall=47.1
+S1N-a  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:115,CUDA1:110,RPC0[192.168.1.167:50052]:47  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.1 p50=11.15 ttft=2.601 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.2
+    n=2 agg=10.7 p50=26.75 ttft=6.908 dec=11.7 ptok=573 otok=232 early=1/2 failed=0/2 slots=0,0 wall=43.3
+    n=4 agg=10.5 p50=54.67 ttft=36.775 dec=11.7 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=78.8
+S1N-b  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:115,CUDA1:110,RPC0[192.168.1.167:50052]:47  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.0 p50=11.20 ttft=2.619 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.2
+    n=2 agg=10.6 p50=24.11 ttft=6.872 dec=11.7 ptok=573 otok=202 early=1/2 failed=0/2 slots=0,0 wall=38.0
+    n=4 agg=10.6 p50=55.61 ttft=30.949 dec=11.7 ptok=625 otok=223 early=0/4 failed=0/4 slots=0,0,0,0 wall=84.6
+S1N-c  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:115,CUDA1:110,RPC0[192.168.1.167:50052]:47  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.1 p50=11.15 ttft=2.592 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.1
+    n=2 agg=10.7 p50=26.77 ttft=6.913 dec=11.7 ptok=573 otok=232 early=1/2 failed=0/2 slots=0,0 wall=43.3
+    n=4 agg=10.5 p50=54.62 ttft=36.748 dec=11.7 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=78.7
+S4N-a  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.5 p50=10.68 ttft=2.142 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.7
+    n=2 agg=12.8 p50=22.83 ttft=3.709 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=31.5
+    n=4 agg=18.5 p50=38.35 ttft=7.001 dec=6.7 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=44.6
+S4N-b  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.4 p50=10.69 ttft=2.149 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.7
+    n=2 agg=12.8 p50=22.84 ttft=3.698 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=31.5
+    n=4 agg=18.5 p50=38.49 ttft=6.998 dec=6.7 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=44.8
+S4N-c  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.4 p50=10.69 ttft=2.182 dec=11.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.7
+    n=2 agg=12.7 p50=23.02 ttft=3.906 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=31.7
+    n=4 agg=17.6 p50=40.58 ttft=6.991 dec=6.3 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=46.9
+H1N-a  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:140,CUDA1:132  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=11.7 p50=8.64 ttft=1.378 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=8.6
+    n=2 agg=13.0 p50=21.93 ttft=5.144 dec=13.8 ptok=573 otok=232 early=1/2 failed=0/2 slots=0,0 wall=35.6
+    n=4 agg=12.9 p50=34.29 ttft=21.274 dec=13.8 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=64.3
+H1N-b  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:140,CUDA1:132  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=11.6 p50=8.70 ttft=1.440 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=8.7
+    n=2 agg=13.1 p50=22.58 ttft=5.131 dec=13.8 ptok=573 otok=241 early=1/2 failed=0/2 slots=0,0 wall=36.9
+    n=4 agg=12.9 p50=44.84 ttft=29.690 dec=13.8 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=64.3
+H1N-c  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:140,CUDA1:132  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=11.7 p50=8.63 ttft=1.374 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=8.6
+    n=2 agg=13.0 p50=21.92 ttft=5.131 dec=13.8 ptok=573 otok=232 early=1/2 failed=0/2 slots=0,0 wall=35.6
+    n=4 agg=12.9 p50=44.84 ttft=29.686 dec=13.8 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=64.3
+H4N-a  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:561,CUDA1:527  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=12.0 p50=8.43 ttft=1.169 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=8.4
+    n=2 agg=16.4 p50=17.24 ttft=1.791 dec=12.8 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=24.6
+    n=4 agg=23.9 p50=28.75 ttft=3.430 dec=8.3 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=34.6
+H4N-b  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:561,CUDA1:527  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=11.9 p50=8.48 ttft=1.220 dec=13.8 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=8.5
+    n=2 agg=16.5 p50=17.16 ttft=1.708 dec=12.8 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=24.5
+    n=4 agg=25.8 p50=26.93 ttft=3.696 dec=9.0 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=32.1
+H4N-c  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:561,CUDA1:527  comp=CUDA0:240,CUDA1:240,CUDA_Host:28
+    n=1 agg=11.9 p50=8.47 ttft=1.183 dec=13.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=8.5
+    n=2 agg=16.5 p50=17.18 ttft=1.727 dec=12.8 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=24.5
+    n=4 agg=23.8 p50=28.97 ttft=3.685 dec=8.3 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=34.7
+D1S2-a  n_seq_max=2  ctx_slot=6144  kvu=false  kv=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280  comp=CUDA0:256,CUDA1:256,RPC0[192.168.1.167:50052]:256,CUDA_Host:44
+    n=1 agg=9.1 p50=11.14 ttft=2.587 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=1 wall=11.1
+    n=2 agg=12.8 p50=22.84 ttft=3.708 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=1,0 wall=31.5
+    n=4 agg=16.1 p50=42.65 ttft=14.629 dec=9.2 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,1,0,1 wall=51.5
+D1S2-b  n_seq_max=2  ctx_slot=6144  kvu=false  kv=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280  comp=CUDA0:256,CUDA1:256,RPC0[192.168.1.167:50052]:256,CUDA_Host:44
+    n=1 agg=9.1 p50=11.14 ttft=2.584 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=1 wall=11.1
+    n=2 agg=12.8 p50=22.87 ttft=3.710 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=1,0 wall=31.6
+    n=4 agg=16.1 p50=42.62 ttft=14.654 dec=9.2 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,1,1,0 wall=51.4
+D1S2-c  n_seq_max=2  ctx_slot=6144  kvu=false  kv=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280  comp=CUDA0:256,CUDA1:256,RPC0[192.168.1.167:50052]:256,CUDA_Host:44
+    n=1 agg=9.1 p50=11.13 ttft=2.586 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=1 wall=11.1
+    n=2 agg=12.8 p50=22.84 ttft=3.717 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=1,0 wall=31.6
+    n=4 agg=16.1 p50=42.61 ttft=14.603 dec=9.2 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,1,0,1 wall=51.5
+D1S4-a  n_seq_max=4  ctx_slot=3072  kvu=false  kv=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280  comp=CUDA0:244,CUDA1:244,RPC0[192.168.1.167:50052]:244,CUDA_Host:32
+    n=1 agg=9.4 p50=10.71 ttft=2.178 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.7
+    n=2 agg=12.8 p50=22.90 ttft=3.721 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=31.6
+    n=4 agg=18.9 p50=37.42 ttft=6.233 dec=6.7 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=43.8
+D1S4-b  n_seq_max=4  ctx_slot=3072  kvu=false  kv=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280  comp=CUDA0:244,CUDA1:244,RPC0[192.168.1.167:50052]:244,CUDA_Host:32
+    n=1 agg=9.4 p50=10.71 ttft=2.197 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.7
+    n=2 agg=12.8 p50=22.89 ttft=3.740 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=31.6
+    n=4 agg=18.5 p50=38.27 ttft=6.971 dec=6.7 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=44.6
+D1S4-c  n_seq_max=4  ctx_slot=3072  kvu=false  kv=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280  comp=CUDA0:244,CUDA1:244,RPC0[192.168.1.167:50052]:244,CUDA_Host:32
+    n=1 agg=9.5 p50=10.69 ttft=2.134 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.7
+    n=2 agg=12.8 p50=22.85 ttft=3.709 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=31.6
+    n=4 agg=17.8 p50=38.25 ttft=6.994 dec=6.7 ptok=625 otok=223 early=0/4 failed=0/4 slots=2,3,1,0 wall=50.3
+D2KVU-a  n_seq_max=4  ctx_slot=12288  kvu=true  kv=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280  comp=CUDA0:280,CUDA1:280,RPC0[192.168.1.167:50052]:280,CUDA_Host:68
+    n=1 agg=9.1 p50=11.12 ttft=2.566 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=11.1
+    n=2 agg=12.6 p50=23.20 ttft=3.817 dec=10.1 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=32.0
+    n=4 agg=15.8 p50=45.61 ttft=6.350 dec=5.3 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,1,0,3 wall=52.3
+D2KVU-b  n_seq_max=4  ctx_slot=12288  kvu=true  kv=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280  comp=CUDA0:280,CUDA1:280,RPC0[192.168.1.167:50052]:280,CUDA_Host:68
+    n=1 agg=9.1 p50=11.15 ttft=2.582 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=11.2
+    n=2 agg=12.6 p50=23.26 ttft=3.851 dec=10.1 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=32.1
+    n=4 agg=15.2 p50=46.08 ttft=6.767 dec=5.3 ptok=625 otok=223 early=0/4 failed=0/4 slots=2,1,0,3 wall=59.0
+D2KVU-c  n_seq_max=4  ctx_slot=12288  kvu=true  kv=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280  comp=CUDA0:280,CUDA1:280,RPC0[192.168.1.167:50052]:280,CUDA_Host:68
+    n=1 agg=9.1 p50=11.14 ttft=2.578 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=11.1
+    n=2 agg=12.6 p50=23.19 ttft=3.823 dec=10.1 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=32.0
+    n=4 agg=15.6 p50=46.06 ttft=6.814 dec=5.3 ptok=625 otok=208 early=1/4 failed=0/4 slots=2,1,0,3 wall=53.4
+D2FILL-a  n_seq_max=4  ctx_slot=3072  kvu=true  kv=CUDA0:172,CUDA1:166,RPC0[192.168.1.167:50052]:70  comp=CUDA0:244,CUDA1:244,RPC0[192.168.1.167:50052]:244,CUDA_Host:32
+    n=1 agg=9.1 p50=11.14 ttft=2.584 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=11.1
+    n=2 agg=12.6 p50=23.20 ttft=3.818 dec=10.1 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=32.0
+    n=4 agg=15.9 p50=45.53 ttft=6.355 dec=5.3 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,1,0,3 wall=52.2
+D2FILL-b  n_seq_max=4  ctx_slot=3072  kvu=true  kv=CUDA0:172,CUDA1:166,RPC0[192.168.1.167:50052]:70  comp=CUDA0:244,CUDA1:244,RPC0[192.168.1.167:50052]:244,CUDA_Host:32
+    n=1 agg=9.1 p50=11.11 ttft=2.568 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=11.1
+    n=2 agg=12.6 p50=23.19 ttft=3.815 dec=10.1 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=32.0
+    n=4 agg=15.9 p50=45.48 ttft=6.205 dec=5.4 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,1,0,3 wall=52.0
+D2FILL-c  n_seq_max=4  ctx_slot=3072  kvu=true  kv=CUDA0:172,CUDA1:166,RPC0[192.168.1.167:50052]:70  comp=CUDA0:244,CUDA1:244,RPC0[192.168.1.167:50052]:244,CUDA_Host:32
+    n=1 agg=9.1 p50=11.14 ttft=2.572 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=11.1
+    n=2 agg=12.6 p50=23.19 ttft=3.799 dec=10.1 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=32.0
+    n=4 agg=15.6 p50=46.19 ttft=6.896 dec=5.3 ptok=625 otok=208 early=1/4 failed=0/4 slots=2,1,0,3 wall=53.5
+D3HELD-a  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:115,CUDA1:110,RPC0[192.168.1.167:50052]:47  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.1 p50=11.14 ttft=2.584 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.1
+    n=2 agg=10.7 p50=26.48 ttft=6.653 dec=11.7 ptok=573 otok=232 early=1/2 failed=0/2 slots=0,0 wall=43.2
+    n=4 agg=10.5 p50=51.90 ttft=30.200 dec=11.7 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=78.7
+D3HELD-b  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:115,CUDA1:110,RPC0[192.168.1.167:50052]:47  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.0 p50=11.18 ttft=2.625 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.2
+    n=2 agg=10.7 p50=26.51 ttft=6.674 dec=11.7 ptok=573 otok=232 early=1/2 failed=0/2 slots=0,0 wall=43.3
+    n=4 agg=10.5 p50=51.96 ttft=30.234 dec=11.7 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=78.8
+D3HELD-c  n_seq_max=1  ctx_slot=2048  kvu=false  kv=CUDA0:115,CUDA1:110,RPC0[192.168.1.167:50052]:47  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.0 p50=11.16 ttft=2.615 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.2
+    n=2 agg=10.7 p50=26.49 ttft=6.665 dec=11.7 ptok=573 otok=232 early=1/2 failed=0/2 slots=0,0 wall=43.2
+    n=4 agg=10.5 p50=51.96 ttft=30.233 dec=11.7 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,0,0,0 wall=78.8
+D4GAP-a  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.1 p50=11.15 ttft=2.590 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.1
+    n=2 agg=11.3 p50=26.98 ttft=3.106 dec=7.7 ptok=573 otok=202 early=1/2 failed=0/2 slots=0,2 wall=35.7
+    n=4 agg=18.9 p50=37.10 ttft=6.217 dec=6.7 ptok=625 otok=208 early=1/4 failed=0/4 slots=1,0,2,3 wall=44.1
+D4GAP-b  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.1 p50=11.13 ttft=2.595 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.1
+    n=2 agg=11.3 p50=26.97 ttft=3.120 dec=7.7 ptok=573 otok=202 early=1/2 failed=0/2 slots=0,2 wall=35.7
+    n=4 agg=19.0 p50=37.00 ttft=6.235 dec=6.8 ptok=625 otok=208 early=1/4 failed=0/4 slots=1,0,2,3 wall=43.9
+D4GAP-c  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.0 p50=11.16 ttft=2.608 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.2
+    n=2 agg=11.3 p50=26.98 ttft=3.112 dec=7.7 ptok=573 otok=202 early=1/2 failed=0/2 slots=0,2 wall=35.7
+    n=4 agg=18.9 p50=37.12 ttft=6.237 dec=6.7 ptok=625 otok=208 early=1/4 failed=0/4 slots=1,0,2,3 wall=44.1
+D4SEQ-a  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.0 p50=11.18 ttft=2.623 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.2
+    n=2 agg=12.8 p50=23.25 ttft=3.721 dec=10.2 ptok=573 otok=206 early=1/2 failed=0/2 slots=0,1 wall=32.3
+    n=4 agg=18.9 p50=37.05 ttft=6.250 dec=6.8 ptok=625 otok=208 early=1/4 failed=0/4 slots=2,0,1,3 wall=44.0
+D4SEQ-b  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.1 p50=11.13 ttft=2.582 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.1
+    n=2 agg=12.8 p50=23.22 ttft=3.709 dec=10.2 ptok=573 otok=206 early=1/2 failed=0/2 slots=0,1 wall=32.3
+    n=4 agg=19.0 p50=37.01 ttft=6.254 dec=6.8 ptok=625 otok=208 early=1/4 failed=0/4 slots=0,1,2,3 wall=44.0
+D4SEQ-c  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.0 p50=11.17 ttft=2.609 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=0 wall=11.2
+    n=2 agg=12.8 p50=23.26 ttft=3.724 dec=10.2 ptok=573 otok=206 early=1/2 failed=0/2 slots=0,1 wall=32.4
+    n=4 agg=19.0 p50=37.04 ttft=6.250 dec=6.8 ptok=625 otok=208 early=1/4 failed=0/4 slots=2,0,1,3 wall=44.0
+D5STAG-a  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.5 p50=10.66 ttft=2.127 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.7
+    n=2 agg=12.3 p50=21.80 ttft=1.998 dec=9.4 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=32.8
+    n=4 agg=16.8 p50=38.61 ttft=2.422 dec=6.0 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=49.2
+D5STAG-b  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.4 p50=10.70 ttft=2.151 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.7
+    n=2 agg=12.3 p50=21.78 ttft=2.006 dec=9.5 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=32.8
+    n=4 agg=16.8 p50=38.44 ttft=2.303 dec=6.0 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=49.1
+D5STAG-c  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.4 p50=10.72 ttft=2.160 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.7
+    n=2 agg=12.3 p50=21.87 ttft=2.025 dec=9.4 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=32.9
+    n=4 agg=16.7 p50=38.47 ttft=2.299 dec=6.0 ptok=625 otok=208 early=1/4 failed=0/4 slots=2,3,1,0 wall=49.8
+D6OUT1-a  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=RPC0[192.168.1.167:50052]:240,CUDA0:240,CUDA1:240,CPU:28
+    n=1 agg=9.9 p50=10.20 ttft=2.244 dec=12.6 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.2
+    n=2 agg=14.2 p50=20.39 ttft=3.062 dec=11.3 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=28.5
+    n=4 agg=20.8 p50=33.27 ttft=6.012 dec=7.7 ptok=625 otok=208 early=1/4 failed=0/4 slots=2,3,1,0 wall=40.1
+D6OUT1-b  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=RPC0[192.168.1.167:50052]:240,CUDA0:240,CUDA1:240,CPU:28
+    n=1 agg=9.9 p50=10.21 ttft=2.249 dec=12.6 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.2
+    n=2 agg=14.2 p50=20.39 ttft=3.038 dec=11.3 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=28.5
+    n=4 agg=21.3 p50=33.09 ttft=6.281 dec=7.8 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=38.9
+D6OUT1-c  n_seq_max=4  ctx_slot=2048  kvu=false  kv=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187  comp=RPC0[192.168.1.167:50052]:240,CUDA0:240,CUDA1:240,CPU:28
+    n=1 agg=9.8 p50=10.26 ttft=2.297 dec=12.6 ptok=574 otok=101 early=0/1 failed=0/1 slots=3 wall=10.3
+    n=2 agg=14.2 p50=20.40 ttft=3.023 dec=11.3 ptok=573 otok=202 early=1/2 failed=0/2 slots=3,2 wall=28.5
+    n=4 agg=21.3 p50=33.13 ttft=6.303 dec=7.8 ptok=625 otok=206 early=1/4 failed=0/4 slots=2,3,1,0 wall=38.9
+D7NOCACHE-a  n_seq_max=2  ctx_slot=2048  kvu=false  kv=CUDA0:230,CUDA1:221,RPC0[192.168.1.167:50052]:94  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.4 p50=10.69 ttft=2.125 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=1 wall=10.7
+    n=2 agg=12.9 p50=22.65 ttft=3.495 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=1,0 wall=31.3
+    n=4 agg=15.4 p50=36.80 ttft=14.205 dec=9.5 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,1,0,1 wall=53.8
+D7NOCACHE-b  n_seq_max=2  ctx_slot=2048  kvu=false  kv=CUDA0:230,CUDA1:221,RPC0[192.168.1.167:50052]:94  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.5 p50=10.68 ttft=2.145 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=1 wall=10.7
+    n=2 agg=12.9 p50=22.66 ttft=3.516 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=1,0 wall=31.4
+    n=4 agg=16.4 p50=41.70 ttft=13.984 dec=9.3 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,1,1,0 wall=50.4
+D7NOCACHE-c  n_seq_max=2  ctx_slot=2048  kvu=false  kv=CUDA0:230,CUDA1:221,RPC0[192.168.1.167:50052]:94  comp=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28
+    n=1 agg=9.5 p50=10.67 ttft=2.136 dec=11.7 ptok=574 otok=101 early=0/1 failed=0/1 slots=1 wall=10.7
+    n=2 agg=12.9 p50=22.63 ttft=3.496 dec=10.2 ptok=573 otok=202 early=1/2 failed=0/2 slots=1,0 wall=31.3
+    n=4 agg=16.4 p50=41.67 ttft=14.006 dec=9.3 ptok=625 otok=206 early=1/4 failed=0/4 slots=0,1,1,0 wall=50.3
+
+## tie bar (split llama.cpp over RPC, priced from S1+S1N and S4+S4N)
+  C=1 S1-family n=6 agg=[9.0, 9.1, 9.1, 9.1, 9.0, 9.1] spread=1.1%
+  C=1 S4-family n=6 agg=[9.5, 9.4, 9.4, 9.5, 9.4, 9.4] spread=1.1%
+  C=1 bar=1.1%
+  C=2 S1-family n=6 agg=[10.7, 10.6, 10.7, 10.7, 10.6, 10.7] spread=0.9%
+  C=2 S4-family n=6 agg=[12.8, 12.8, 12.8, 12.8, 12.8, 12.7] spread=0.8%
+  C=2 bar=0.9%
+  C=4 S1-family n=6 agg=[10.5, 10.5, 10.5, 10.5, 10.6, 10.5] spread=1.0%
+  C=4 S4-family n=6 agg=[18.5, 17.7, 17.7, 18.5, 18.5, 17.6] spread=5.1%
+  C=4 bar=5.1%
+
+## head-only null spreads (H1+H1N, H4+H4N)
+  C=1 H1-family agg=[11.7, 11.7, 11.7, 11.7, 11.6, 11.7] spread=0.9%
+  C=1 H4-family agg=[12.0, 12.0, 12.0, 12.0, 11.9, 11.9] spread=0.8%
+  C=2 H1-family agg=[13.0, 13.0, 12.9, 13.0, 13.1, 13.0] spread=1.6%
+  C=2 H4-family agg=[16.4, 16.5, 16.0, 16.4, 16.5, 16.5] spread=3.1%
+  C=4 H1-family agg=[12.9, 12.9, 12.9, 12.9, 12.9, 12.9] spread=0.0%
+  C=4 H4-family agg=[23.5, 24.8, 25.8, 23.9, 25.8, 23.8] spread=9.8%
+
+## GO / NO-GO: S<C> agg against S1 agg, per round, at C=2 and C=4
+  C=2 round a: S2=12.8 S1=10.7 gain=+19.6% bar=0.9% beats=True ptok/otok S2=573/202 S1=573/232 match=False
+  C=2 round b: S2=12.7 S1=10.6 gain=+19.8% bar=0.9% beats=True ptok/otok S2=573/224 S1=573/202 match=False
+  C=2 round c: S2=12.8 S1=10.7 gain=+19.6% bar=0.9% beats=True ptok/otok S2=573/202 S1=573/232 match=False
+  C=2 min(S2)=12.7 vs max(S1,S1N)=10.7 gain=+18.7%
+  C=4 round a: S4=18.5 S1=10.5 gain=+76.2% bar=5.1% beats=True ptok/otok S4=625/206 S1=625/206 match=True
+  C=4 round b: S4=17.7 S1=10.5 gain=+68.6% bar=5.1% beats=True ptok/otok S4=625/208 S1=625/208 match=True
+  C=4 round c: S4=17.7 S1=10.5 gain=+68.6% bar=5.1% beats=True ptok/otok S4=625/208 S1=625/206 match=False
+  C=4 min(S4)=17.7 vs max(S1,S1N)=10.6 gain=+67.0%
+  reading: GO
+
+## open prediction: split penalty agg(S)/agg(H) at the same -np, per rung
+  C=1 np=1 S/H per round=['0.769', '0.778', '0.778'] mean=0.775
+  C=1 np=2 S/H per round=['0.778', '0.784', '0.778'] mean=0.780
+  C=1 np=4 S/H per round=['0.792', '0.783', '0.783'] mean=0.786
+  C=2 np=1 S/H per round=['0.823', '0.815', '0.829'] mean=0.823
+  C=2 np=2 S/H per round=['0.776', '0.774', '0.776'] mean=0.775
+  C=2 np=4 S/H per round=['0.780', '0.776', '0.800'] mean=0.785
+  C=4 np=1 S/H per round=['0.814', '0.814', '0.814'] mean=0.814
+  C=4 np=2 S/H per round=['0.842', '0.653'] mean=0.748
+  C=4 np=4 S/H per round=['0.787', '0.714', '0.686'] mean=0.729
+
+## ptok/otok match across arms at each rung (comparable rows only)
+  C=1 ptok,otok=('574', '101'): 60 rows: D1S2-a D1S2-b D1S2-c D1S4-a D1S4-b D1S4-c D2FILL-a D2FILL-b D2FILL-c D2KVU-a D2KVU-b D2KVU-c D3HELD-a D3HELD-b D3HELD-c D4GAP-a D4GAP-b D4GAP-c D4SEQ-a D4SEQ-b D4SEQ-c D5STAG-a D5STAG-b D5STAG-c D6OUT1-a D6OUT1-b D6OUT1-c D7NOCACHE-a D7NOCACHE-b D7NOCACHE-c H1-a H1-b H1-c H1N-a H1N-b H1N-c H2-a H2-b H2-c H4-a H4-b H4-c H4N-a H4N-b H4N-c S1-a S1-b S1-c S1N-a S1N-b S1N-c S2-a S2-b S2-c S4-a S4-b S4-c S4N-a S4N-b S4N-c
+  C=2 ptok,otok=('573', '202'): 43 rows: D1S2-a D1S2-b D1S2-c D1S4-a D1S4-b D1S4-c D2FILL-a D2FILL-b D2FILL-c D2KVU-a D2KVU-b D2KVU-c D4GAP-a D4GAP-b D4GAP-c D5STAG-a D5STAG-b D5STAG-c D6OUT1-a D6OUT1-b D6OUT1-c D7NOCACHE-a D7NOCACHE-b D7NOCACHE-c H1-c H2-a H2-b H2-c H4-a H4-b H4N-a H4N-b H4N-c S1-b S1N-b S2-a S2-c S4-a S4-b S4-c S4N-a S4N-b S4N-c
+  C=2 ptok,otok=('573', '232'): 11 rows: D3HELD-a D3HELD-b D3HELD-c H1-a H1-b H1N-a H1N-c S1-a S1-c S1N-a S1N-c
+  C=2 ptok,otok=('573', '206'): 3 rows: D4SEQ-a D4SEQ-b D4SEQ-c
+  C=2 ptok,otok=('573', '224'): 1 rows: S2-b
+  C=2 ptok,otok=('573', '241'): 1 rows: H1N-b
+  C=2 ptok,otok=('573', '242'): 1 rows: H4-c
+  C=4 ptok,otok=('625', '206'): 41 rows: D1S2-a D1S2-b D1S2-c D1S4-a D1S4-b D2FILL-a D2FILL-b D2KVU-a D3HELD-a D3HELD-b D3HELD-c D5STAG-a D5STAG-b D6OUT1-b D6OUT1-c D7NOCACHE-a D7NOCACHE-b D7NOCACHE-c H1-a H1-b H1-c H1N-a H1N-b H1N-c H2-b H2-c H4-c H4N-a H4N-b H4N-c S1-a S1-c S1N-a S1N-c S2-a S2-b S2-c S4-a S4N-a S4N-b S4N-c
+  C=4 ptok,otok=('625', '208'): 15 rows: D2FILL-c D2KVU-c D4GAP-a D4GAP-b D4GAP-c D4SEQ-a D4SEQ-b D4SEQ-c D5STAG-c D6OUT1-a H4-a H4-b S1-b S4-b S4-c
+  C=4 ptok,otok=('625', '223'): 3 rows: D1S4-c D2KVU-b S1N-b
+  C=4 ptok,otok=('0', '1'): 1 rows: H2-a
+
+## markdown: per cell and rung over the rounds (agg median [min-max] over invocations without a failed request)
+| cell | config | -np | ctx/slot (n_ctx_seq) | C | agg tok/s | p50 latency s | ttft_p50 s | invocations | otok |
+|---|---|---|---|---|---|---|---|---|---|
+| H1 | head-only | 1 | 2048 | 1 | 11.7 [11.7-11.7] | 8.62 | 1.36 | 3 | 101 |
+| H1 | head-only | 1 | 2048 | 2 | 13.0 [12.9-13.0] | 21.92 | 5.13 | 3 | 202,232 |
+| H1 | head-only | 1 | 2048 | 4 | 12.9 [12.9-12.9] | 44.84 | 29.69 | 3 | 206 |
+| S1 | split | 1 | 2048 | 1 | 9.1 [9.0-9.1] | 11.10 | 2.58 | 3 | 101 |
+| S1 | split | 1 | 2048 | 2 | 10.7 [10.6-10.7] | 26.69 | 6.89 | 3 | 202,232 |
+| S1 | split | 1 | 2048 | 4 | 10.5 [10.5-10.5] | 54.54 | 32.87 | 3 | 206,208 |
+| H2 | head-only | 2 | 2048 | 1 | 11.7 [11.6-11.7] | 8.64 | 1.38 | 3 | 101 |
+| H2 | head-only | 2 | 2048 | 2 | 16.5 [16.4-16.5] | 17.18 | 1.71 | 3 | 202 |
+| H2 | head-only | 2 | 2048 | 4 | 20.4 [19.0-21.9] | 29.33 | 9.90 | 2 (+1 with failed requests) | 206 |
+| S2 | split | 2 | 2048 | 1 | 9.1 [9.1-9.1] | 11.15 | 2.60 | 3 | 101 |
+| S2 | split | 2 | 2048 | 2 | 12.8 [12.7-12.8] | 22.87 | 3.71 | 3 | 202,224 |
+| S2 | split | 2 | 2048 | 4 | 16.0 [14.3-16.0] | 40.50 | 15.14 | 3 | 206 |
+| H4 | head-only | 4 | 2048 | 1 | 12.0 [12.0-12.0] | 8.45 | 1.18 | 3 | 101 |
+| H4 | head-only | 4 | 2048 | 2 | 16.4 [16.0-16.5] | 17.23 | 1.71 | 3 | 202,242 |
+| H4 | head-only | 4 | 2048 | 4 | 24.8 [23.5-25.8] | 27.27 | 3.69 | 3 | 206,208 |
+| S4 | split | 4 | 2048 | 1 | 9.4 [9.4-9.5] | 10.70 | 2.14 | 3 | 101 |
+| S4 | split | 4 | 2048 | 2 | 12.8 [12.8-12.8] | 22.85 | 3.72 | 3 | 202 |
+| S4 | split | 4 | 2048 | 4 | 17.7 [17.7-18.5] | 39.16 | 7.00 | 3 | 206,208 |
+| S1N | split | 1 | 2048 | 1 | 9.1 [9.0-9.1] | 11.15 | 2.60 | 3 | 101 |
+| S1N | split | 1 | 2048 | 2 | 10.7 [10.6-10.7] | 26.75 | 6.91 | 3 | 202,232 |
+| S1N | split | 1 | 2048 | 4 | 10.5 [10.5-10.6] | 54.67 | 36.75 | 3 | 206,223 |
+| S4N | split | 4 | 2048 | 1 | 9.4 [9.4-9.5] | 10.69 | 2.15 | 3 | 101 |
+| S4N | split | 4 | 2048 | 2 | 12.8 [12.7-12.8] | 22.84 | 3.71 | 3 | 202 |
+| S4N | split | 4 | 2048 | 4 | 18.5 [17.6-18.5] | 38.49 | 7.00 | 3 | 206 |
+| H1N | head-only | 1 | 2048 | 1 | 11.7 [11.6-11.7] | 8.64 | 1.38 | 3 | 101 |
+| H1N | head-only | 1 | 2048 | 2 | 13.0 [13.0-13.1] | 21.93 | 5.13 | 3 | 232,241 |
+| H1N | head-only | 1 | 2048 | 4 | 12.9 [12.9-12.9] | 44.84 | 29.69 | 3 | 206 |
+| H4N | head-only | 4 | 2048 | 1 | 11.9 [11.9-12.0] | 8.47 | 1.18 | 3 | 101 |
+| H4N | head-only | 4 | 2048 | 2 | 16.5 [16.4-16.5] | 17.18 | 1.73 | 3 | 202 |
+| H4N | head-only | 4 | 2048 | 4 | 23.9 [23.8-25.8] | 28.75 | 3.69 | 3 | 206 |
+| D1S2 | split | 2 | 6144 | 1 | 9.1 [9.1-9.1] | 11.14 | 2.59 | 3 | 101 |
+| D1S2 | split | 2 | 6144 | 2 | 12.8 [12.8-12.8] | 22.84 | 3.71 | 3 | 202 |
+| D1S2 | split | 2 | 6144 | 4 | 16.1 [16.1-16.1] | 42.62 | 14.63 | 3 | 206 |
+| D1S4 | split | 4 | 3072 | 1 | 9.4 [9.4-9.5] | 10.71 | 2.18 | 3 | 101 |
+| D1S4 | split | 4 | 3072 | 2 | 12.8 [12.8-12.8] | 22.89 | 3.72 | 3 | 202 |
+| D1S4 | split | 4 | 3072 | 4 | 18.5 [17.8-18.9] | 38.25 | 6.97 | 3 | 206,223 |
+| D2KVU | split | 4 | 12288 (kvu) | 1 | 9.1 [9.1-9.1] | 11.14 | 2.58 | 3 | 101 |
+| D2KVU | split | 4 | 12288 (kvu) | 2 | 12.6 [12.6-12.6] | 23.20 | 3.82 | 3 | 202 |
+| D2KVU | split | 4 | 12288 (kvu) | 4 | 15.6 [15.2-15.8] | 46.06 | 6.77 | 3 | 206,208,223 |
+| D2FILL | split | 4 | 3072 (kvu) | 1 | 9.1 [9.1-9.1] | 11.14 | 2.57 | 3 | 101 |
+| D2FILL | split | 4 | 3072 (kvu) | 2 | 12.6 [12.6-12.6] | 23.19 | 3.81 | 3 | 202 |
+| D2FILL | split | 4 | 3072 (kvu) | 4 | 15.9 [15.6-15.9] | 45.53 | 6.36 | 3 | 206,208 |
+| D3HELD | split | 1 | 2048 | 1 | 9.0 [9.0-9.1] | 11.16 | 2.62 | 3 | 101 |
+| D3HELD | split | 1 | 2048 | 2 | 10.7 [10.7-10.7] | 26.49 | 6.67 | 3 | 232 |
+| D3HELD | split | 1 | 2048 | 4 | 10.5 [10.5-10.5] | 51.96 | 30.23 | 3 | 206 |
+| D4GAP | split | 4 | 2048 | 1 | 9.1 [9.0-9.1] | 11.15 | 2.60 | 3 | 101 |
+| D4GAP | split | 4 | 2048 | 2 | 11.3 [11.3-11.3] | 26.98 | 3.11 | 3 | 202 |
+| D4GAP | split | 4 | 2048 | 4 | 18.9 [18.9-19.0] | 37.10 | 6.24 | 3 | 208 |
+| D4SEQ | split | 4 | 2048 | 1 | 9.0 [9.0-9.1] | 11.17 | 2.61 | 3 | 101 |
+| D4SEQ | split | 4 | 2048 | 2 | 12.8 [12.8-12.8] | 23.25 | 3.72 | 3 | 206 |
+| D4SEQ | split | 4 | 2048 | 4 | 19.0 [18.9-19.0] | 37.04 | 6.25 | 3 | 208 |
+| D5STAG | split | 4 | 2048 | 1 | 9.4 [9.4-9.5] | 10.70 | 2.15 | 3 | 101 |
+| D5STAG | split | 4 | 2048 | 2 | 12.3 [12.3-12.3] | 21.80 | 2.01 | 3 | 202 |
+| D5STAG | split | 4 | 2048 | 4 | 16.8 [16.7-16.8] | 38.47 | 2.30 | 3 | 206,208 |
+| D6OUT1 | split | 4 | 2048 | 1 | 9.9 [9.8-9.9] | 10.21 | 2.25 | 3 | 101 |
+| D6OUT1 | split | 4 | 2048 | 2 | 14.2 [14.2-14.2] | 20.39 | 3.04 | 3 | 202 |
+| D6OUT1 | split | 4 | 2048 | 4 | 21.3 [20.8-21.3] | 33.13 | 6.28 | 3 | 206,208 |
+| D7NOCACHE | split | 2 | 2048 | 1 | 9.5 [9.4-9.5] | 10.68 | 2.14 | 3 | 101 |
+| D7NOCACHE | split | 2 | 2048 | 2 | 12.9 [12.9-12.9] | 22.65 | 3.50 | 3 | 202 |
+| D7NOCACHE | split | 2 | 2048 | 4 | 16.4 [15.4-16.4] | 41.67 | 14.01 | 3 | 206 |
+
+## desk read cells
+### cell 1 (-c 12288 total) and cell 2 (-kvu): the engine's own lines
+  S2-a: n_seq_max=2 n_ctx_seq=2048 kv_unified=false kvbuf=CUDA0:230,CUDA1:221,RPC0[192.168.1.167:50052]:94 compbuf=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28 vram=0:9493,1:9073
+  S2-b: n_seq_max=2 n_ctx_seq=2048 kv_unified=false kvbuf=CUDA0:230,CUDA1:221,RPC0[192.168.1.167:50052]:94 compbuf=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28 vram=0:9493,1:9073
+  S2-c: n_seq_max=2 n_ctx_seq=2048 kv_unified=false kvbuf=CUDA0:230,CUDA1:221,RPC0[192.168.1.167:50052]:94 compbuf=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28 vram=0:9493,1:9073
+  S4-a: n_seq_max=4 n_ctx_seq=2048 kv_unified=false kvbuf=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187 compbuf=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28 vram=0:9723,1:9293
+  S4-b: n_seq_max=4 n_ctx_seq=2048 kv_unified=false kvbuf=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187 compbuf=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28 vram=0:9723,1:9293
+  S4-c: n_seq_max=4 n_ctx_seq=2048 kv_unified=false kvbuf=CUDA0:459,CUDA1:442,RPC0[192.168.1.167:50052]:187 compbuf=CUDA0:240,CUDA1:240,RPC0[192.168.1.167:50052]:240,CUDA_Host:28 vram=0:9723,1:9293
+  D1S2-a: n_seq_max=2 n_ctx_seq=6144 kv_unified=false kvbuf=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280 compbuf=CUDA0:256,CUDA1:256,RPC0[192.168.1.167:50052]:256,CUDA_Host:44 vram=0:9969,1:9531
+  D1S2-b: n_seq_max=2 n_ctx_seq=6144 kv_unified=false kvbuf=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280 compbuf=CUDA0:256,CUDA1:256,RPC0[192.168.1.167:50052]:256,CUDA_Host:44 vram=0:9969,1:9531
+  D1S2-c: n_seq_max=2 n_ctx_seq=6144 kv_unified=false kvbuf=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280 compbuf=CUDA0:256,CUDA1:256,RPC0[192.168.1.167:50052]:256,CUDA_Host:44 vram=0:9969,1:9531
+  D1S4-a: n_seq_max=4 n_ctx_seq=3072 kv_unified=false kvbuf=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280 compbuf=CUDA0:244,CUDA1:244,RPC0[192.168.1.167:50052]:244,CUDA_Host:32 vram=0:9957,1:9519
+  D1S4-b: n_seq_max=4 n_ctx_seq=3072 kv_unified=false kvbuf=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280 compbuf=CUDA0:244,CUDA1:244,RPC0[192.168.1.167:50052]:244,CUDA_Host:32 vram=0:9957,1:9519
+  D1S4-c: n_seq_max=4 n_ctx_seq=3072 kv_unified=false kvbuf=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280 compbuf=CUDA0:244,CUDA1:244,RPC0[192.168.1.167:50052]:244,CUDA_Host:32 vram=0:9957,1:9519
+  D2KVU-a: n_seq_max=4 n_ctx_seq=12288 kv_unified=true kvbuf=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280 compbuf=CUDA0:280,CUDA1:280,RPC0[192.168.1.167:50052]:280,CUDA_Host:68 vram=0:9993,1:9555
+  D2KVU-b: n_seq_max=4 n_ctx_seq=12288 kv_unified=true kvbuf=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280 compbuf=CUDA0:280,CUDA1:280,RPC0[192.168.1.167:50052]:280,CUDA_Host:68 vram=0:9993,1:9555
+  D2KVU-c: n_seq_max=4 n_ctx_seq=12288 kv_unified=true kvbuf=CUDA0:688,CUDA1:663,RPC0[192.168.1.167:50052]:280 compbuf=CUDA0:280,CUDA1:280,RPC0[192.168.1.167:50052]:280,CUDA_Host:68 vram=0:9993,1:9555
+  D2FILL-a: n_seq_max=4 n_ctx_seq=3072 kv_unified=true kvbuf=CUDA0:172,CUDA1:166,RPC0[192.168.1.167:50052]:70 compbuf=CUDA0:244,CUDA1:244,RPC0[192.168.1.167:50052]:244,CUDA_Host:32 vram=0:9441,1:9021
+  D2FILL-b: n_seq_max=4 n_ctx_seq=3072 kv_unified=true kvbuf=CUDA0:172,CUDA1:166,RPC0[192.168.1.167:50052]:70 compbuf=CUDA0:244,CUDA1:244,RPC0[192.168.1.167:50052]:244,CUDA_Host:32 vram=0:9441,1:9021
+  D2FILL-c: n_seq_max=4 n_ctx_seq=3072 kv_unified=true kvbuf=CUDA0:172,CUDA1:166,RPC0[192.168.1.167:50052]:70 compbuf=CUDA0:244,CUDA1:244,RPC0[192.168.1.167:50052]:244,CUDA_Host:32 vram=0:9441,1:9021
+### requests that carried an error, or a status other than 200
+  H2-a n=4 i=1 status=RemoteDisconnected gen=0 tok=unread end=1.922 err=Remote end closed connection without response
+  H2-a n=4 i=3 status=RemoteDisconnected gen=0 tok=unread end=1.922 err=Remote end closed connection without response
+### cell 3: the held request (S1 with @stagger=0.5)
+  D3HELD-a C=2 arrival=['0', '1'] first-token order=['0', '1'] fifo=True
+    i=0 send=0.001 byte=0.361 tok=1.685 end=10.227 status=200 byte_before_tok=1.324s gen=101
+    i=1 send=0.501 byte=10.415 tok=12.123 end=43.227 status=200 byte_before_tok=1.708s gen=363
+  D3HELD-a C=4 arrival=['0', '1', '2', '3'] first-token order=['0', '1', '2', '3'] fifo=True
+    i=0 send=0.001 byte=0.488 tok=2.212 end=18.296 status=200 byte_before_tok=1.724s gen=189
+    i=1 send=0.501 byte=18.522 tok=20.235 end=39.871 status=200 byte_before_tok=1.713s gen=230
+    i=2 send=1.001 byte=40.140 tok=41.665 end=65.431 status=200 byte_before_tok=1.525s gen=278
+    i=3 send=1.501 byte=65.672 tok=67.626 end=78.681 status=200 byte_before_tok=1.954s gen=130
+  D3HELD-b C=2 arrival=['0', '1'] first-token order=['0', '1'] fifo=True
+    i=0 send=0.001 byte=0.399 tok=1.722 end=10.229 status=200 byte_before_tok=1.323s gen=101
+    i=1 send=0.505 byte=10.416 tok=12.132 end=43.299 status=200 byte_before_tok=1.716s gen=363
+  D3HELD-b C=4 arrival=['0', '1', '2', '3'] first-token order=['0', '1', '2', '3'] fifo=True
+    i=0 send=0.001 byte=0.462 tok=2.192 end=18.319 status=200 byte_before_tok=1.730s gen=189
+    i=1 send=0.503 byte=18.540 tok=20.264 end=39.926 status=200 byte_before_tok=1.724s gen=230
+    i=2 send=1.000 byte=40.179 tok=41.706 end=65.504 status=200 byte_before_tok=1.527s gen=278
+    i=3 send=1.500 byte=65.755 tok=67.708 end=78.779 status=200 byte_before_tok=1.953s gen=130
+  D3HELD-c C=2 arrival=['0', '1'] first-token order=['0', '1'] fifo=True
+    i=0 send=0.001 byte=0.392 tok=1.712 end=10.226 status=200 byte_before_tok=1.320s gen=101
+    i=1 send=0.501 byte=10.413 tok=12.120 end=43.248 status=200 byte_before_tok=1.707s gen=363
+  D3HELD-c C=4 arrival=['0', '1', '2', '3'] first-token order=['0', '1', '2', '3'] fifo=True
+    i=0 send=0.001 byte=0.434 tok=2.164 end=18.305 status=200 byte_before_tok=1.730s gen=189
+    i=1 send=0.500 byte=18.528 tok=20.271 end=39.900 status=200 byte_before_tok=1.743s gen=230
+    i=2 send=1.001 byte=40.154 tok=41.696 end=65.524 status=200 byte_before_tok=1.542s gen=278
+    i=3 send=1.500 byte=65.775 tok=67.731 end=78.804 status=200 byte_before_tok=1.956s gen=130
+### cells 4-7 against their controls: agg, dec, and per-request tpot ms ((end-tok)/(gen-1))
+  C=2 round a: D4GAP: agg=11.3 dec=7.7 otok=202 wall=35.7 slots=0,2 req_tpot_ms=[152, 108] | D4SEQ: agg=12.8 dec=10.2 otok=206 wall=32.3 slots=0,1 req_tpot_ms=[105, 92]
+  C=2 round b: D4GAP: agg=11.3 dec=7.7 otok=202 wall=35.7 slots=0,2 req_tpot_ms=[152, 108] | D4SEQ: agg=12.8 dec=10.2 otok=206 wall=32.3 slots=0,1 req_tpot_ms=[104, 92]
+  C=2 round c: D4GAP: agg=11.3 dec=7.7 otok=202 wall=35.7 slots=0,2 req_tpot_ms=[152, 108] | D4SEQ: agg=12.8 dec=10.2 otok=206 wall=32.4 slots=0,1 req_tpot_ms=[104, 92]
+  C=2 round a: D5STAG: agg=12.3 dec=9.4 otok=202 wall=32.8 slots=3,2 req_tpot_ms=[121, 91] | S4: agg=12.8 dec=10.2 otok=202 wall=31.6 slots=3,2 req_tpot_ms=[105, 92]
+  C=2 round b: D5STAG: agg=12.3 dec=9.5 otok=202 wall=32.8 slots=3,2 req_tpot_ms=[121, 91] | S4: agg=12.8 dec=10.2 otok=202 wall=31.5 slots=3,2 req_tpot_ms=[104, 92]
+  C=2 round c: D5STAG: agg=12.3 dec=9.4 otok=202 wall=32.9 slots=3,2 req_tpot_ms=[121, 91] | S4: agg=12.8 dec=10.2 otok=202 wall=31.5 slots=3,2 req_tpot_ms=[104, 92]
+  C=4 round a: D5STAG: agg=16.8 dec=6.0 otok=206 wall=49.2 slots=2,3,1,0 req_tpot_ms=[180, 170, 148, 162] | S4: agg=18.5 dec=6.7 otok=206 wall=44.7 slots=2,3,1,0 req_tpot_ms=[152, 147, 136, 165]
+  C=4 round b: D5STAG: agg=16.8 dec=6.0 otok=206 wall=49.1 slots=2,3,1,0 req_tpot_ms=[179, 170, 148, 162] | S4: agg=17.7 dec=6.5 otok=208 wall=47.2 slots=2,3,1,0 req_tpot_ms=[155, 153, 142, 166]
+  C=4 round c: D5STAG: agg=16.7 dec=6.0 otok=208 wall=49.8 slots=2,3,1,0 req_tpot_ms=[179, 170, 146, 162] | S4: agg=17.7 dec=6.5 otok=208 wall=47.1 slots=2,3,1,0 req_tpot_ms=[155, 154, 139, 165]
+  C=2 round a: D6OUT1: agg=14.2 dec=11.3 otok=202 wall=28.5 slots=3,2 req_tpot_ms=[92, 84] | S4: agg=12.8 dec=10.2 otok=202 wall=31.6 slots=3,2 req_tpot_ms=[105, 92]
+  C=2 round b: D6OUT1: agg=14.2 dec=11.3 otok=202 wall=28.5 slots=3,2 req_tpot_ms=[93, 84] | S4: agg=12.8 dec=10.2 otok=202 wall=31.5 slots=3,2 req_tpot_ms=[104, 92]
+  C=2 round c: D6OUT1: agg=14.2 dec=11.3 otok=202 wall=28.5 slots=3,2 req_tpot_ms=[93, 84] | S4: agg=12.8 dec=10.2 otok=202 wall=31.5 slots=3,2 req_tpot_ms=[104, 92]
+  C=4 round a: D6OUT1: agg=20.8 dec=7.7 otok=208 wall=40.1 slots=2,3,1,0 req_tpot_ms=[132, 127, 120, 140] | S4: agg=18.5 dec=6.7 otok=206 wall=44.7 slots=2,3,1,0 req_tpot_ms=[152, 147, 136, 165]
+  C=4 round b: D6OUT1: agg=21.3 dec=7.8 otok=206 wall=38.9 slots=2,3,1,0 req_tpot_ms=[130, 125, 118, 140] | S4: agg=17.7 dec=6.5 otok=208 wall=47.2 slots=2,3,1,0 req_tpot_ms=[155, 153, 142, 166]
+  C=4 round c: D6OUT1: agg=21.3 dec=7.8 otok=206 wall=38.9 slots=2,3,1,0 req_tpot_ms=[130, 126, 118, 140] | S4: agg=17.7 dec=6.5 otok=208 wall=47.1 slots=2,3,1,0 req_tpot_ms=[155, 154, 139, 165]
+  C=4 round a: D7NOCACHE: agg=15.4 dec=9.5 otok=206 wall=53.8 slots=0,1,0,1 req_tpot_ms=[105, 112, 104, 105] | S2: agg=16.0 dec=9.2 otok=206 wall=51.7 slots=0,1,0,1 req_tpot_ms=[115, 105, 112, 105]
+  C=4 round b: D7NOCACHE: agg=16.4 dec=9.3 otok=206 wall=50.4 slots=0,1,1,0 req_tpot_ms=[105, 112, 111, 105] | S2: agg=16.0 dec=9.2 otok=206 wall=51.8 slots=0,1,1,0 req_tpot_ms=[104, 113, 112, 105]
+  C=4 round c: D7NOCACHE: agg=16.4 dec=9.3 otok=206 wall=50.3 slots=0,1,1,0 req_tpot_ms=[105, 112, 111, 105] | S2: agg=14.3 dec=9.1 otok=206 wall=57.7 slots=0,1,0,1 req_tpot_ms=[105, 114, 92, 119]

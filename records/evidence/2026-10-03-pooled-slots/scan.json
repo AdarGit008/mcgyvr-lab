@@ -1,0 +1,22 @@
+{
+ "cpu_max_mhz": "4600",
+ "cpu_model": "Intel(R)_Core(TM)_i5-9600K_CPU_@_3.70GHz",
+ "docker": "29.7.2",
+ "gpu": {
+  "compute_cap": "8.6",
+  "driver": "580.178.04",
+  "free_mib": 11909,
+  "name": "NVIDIA_GeForce_RTX_3060",
+  "reserved_mib": 379,
+  "total_mib": 12288,
+  "used_mib": 1
+ },
+ "host": "srv1",
+ "host_mem_available_mib": 45400,
+ "nproc": "6",
+ "pl1_uw": "95000000",
+ "pl2_uw": "120000000",
+ "ram_mt_s": "3600",
+ "run_id": "2026-10-03-pooled-slots-ceiling-retry",
+ "uptime_since": "2026-09-29T18:56:51Z"
+}

@@ -23,7 +23,8 @@ cell = tag:model:layout:p2p:ctx:levels[:extra]
                        bounces through host memory. lcp takes `built` only:
                        llama.cpp has no runtime switch this driver trusts.
   ctx      vllm: --max-model-len. lcp: the per-slot window; -np is the widest
-           level and -c is np * ctx, because llama.cpp divides -c across slots.
+           level (or @np) and -c is np * ctx, because an explicit -np splits -c
+           across slots (llama.cpp b10644, the 2026-10-02 desk read §Q1).
   levels   concurrency rungs, e.g. 1,4,16
   extra    appended VERBATIM to the engine argv, `+` read as a space and `:`
            kept (the rest of the cell is extra). A word starting `@` is a
@@ -37,6 +38,14 @@ cell = tag:model:layout:p2p:ctx:levels[:extra]
                           closed-loop streams for 30 s, steady tokens/s.
                           For A/B-ing one setting; the workload levels are
                           too short (0.7-3 s) for the sidecar to see
+             @np=K        the engine's slots (-np K, -c K * ctx; vLLM
+                          --max-num-seqs K) apart from the levels, so a
+                          one-slot head can be offered two or four requests
+             @id_slot=a,b request i of a level asks for slot a, b, ... in turn
+                          (llama.cpp's `id_slot`; wraps past the list)
+             @stagger=S   request i of a level is sent S * i seconds after
+                          the level opens (default: all at once)
+           The directives are parsed in mgpu_cell.py, which a test imports.
            A cell whose extra moves weights off the cards (--n-cpu-moe, -ot,
            --cpu-moe) is not fit-predicted: the engine's refusal decides.
 
@@ -71,7 +80,16 @@ What one cell prints, all tab-separated `host label kind k=v...`:
             rx/tx MB/s mean~peak and clock (nvidia-smi dmon); per core busy,
             the hottest core and %soft (mpstat); swap traffic and lowest free
             memory (vmstat); mean CPU MHz. cards=short when the level lasted
-            under 3 s: its 1 Hz samples are too few to read
+            under 3 s: its 1 Hz samples are too few to read. Also np= and img=
+            (the launch the row was measured on) and, for llama.cpp, slots=:
+            the slot ids the server launched the level's tasks on, in order,
+            read from its own log
+  REQ       one row per request of a workload level (not @knob): n= the
+            level, i= its index, then send= byte= tok= end=, seconds from the
+            level's start to the request being sent, the response's first
+            byte (status line), its first token and its end; gen ptok want,
+            the id_slot it asked for (- when none), the HTTP status and any
+            error text the stream carried
 
 The workload is `tools/runs/workload.py`, imported and never copied.
 """
@@ -86,12 +104,13 @@ import subprocess
 import sys
 import threading
 import time
+import urllib.error
 import urllib.request
-from dataclasses import dataclass, field
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 from tools.runs import workload
+from tools.runs.drivers import mgpu_cell as mc
 from tools.runs.drivers import mgpu_read as rd
 
 # THE DOOR'S REFUSALS, before argv is read and before docker is touched — the
@@ -168,41 +187,6 @@ KNOB_S = 30.0
 OFFLOAD = re.compile(
     r"(?:^|\s)(?:--n-cpu-moe|-ncmoe|--cpu-moe|-ot|--override-tensor)\b"
 )
-
-
-@dataclass
-class Cell:
-    """A cell's extra split into the engine's words and this driver's directives."""
-
-    extra: str = ""
-    env: dict[str, str] = field(default_factory=dict)
-    cpuset: str = ""
-    headroom: int = 0
-    prefill: int = 0
-    knob: bool = False
-
-
-def parse_extra(raw: str) -> Cell:
-    c = Cell()
-    words: list[str] = []
-    for w in raw.replace("+", " ").split():
-        if not w.startswith("@"):
-            words.append(w)
-        elif w == "@knob":
-            c.knob = True
-        elif w.startswith("@cpuset="):
-            c.cpuset = w.split("=", 1)[1]
-        elif w.startswith("@headroom="):
-            c.headroom = int(w.split("=", 1)[1])
-        elif w.startswith("@prefill="):
-            c.prefill = int(w.split("=", 1)[1])
-        elif re.fullmatch(r"@[A-Z][A-Z0-9_]*=\S*", w):
-            k, v = w[1:].split("=", 1)
-            c.env[k] = v
-        else:
-            raise ValueError(f"unknown directive {w!r}")
-    c.extra = " ".join(words)
-    return c
 
 
 #: One request: generated tokens, wall s, prompt tokens, asked-for budget,
@@ -351,6 +335,7 @@ def stream(
     messages: list[dict[str, str]],
     want: int,
     ignore_eos: bool = False,
+    sent: mc.Sent | None = None,
 ) -> Req:
     """One streamed chat request; the token clock is read off the stream.
 
@@ -358,65 +343,68 @@ def stream(
     but usage says a token was generated (a parser that swallowed a lone
     `<think>`), the usage chunk's arrival is the first-token clock and the
     request's ttft is marked negative so PREFILL can say ttft_src=usage.
+    ``sent``, when given, gets the request's own clock for its REQ row: the
+    send, the first byte (urlopen returns once the status line is in), the
+    first token, the end, the status and any error the stream carried.
     """
-    body: dict[str, object] = {
-        "messages": messages,
-        "max_tokens": want,
-        "temperature": 0,
-        "stream": True,
-        "stream_options": {"include_usage": True},
-    }
-    if ignore_eos:
-        body["ignore_eos"] = True
-    if ENGINE == "vllm":
-        body["model"] = model
-    else:
-        body["cache_prompt"] = True
+    body = mc.chat_body(
+        messages,
+        want,
+        engine=ENGINE,
+        model=model,
+        ignore_eos=ignore_eos,
+        id_slot=sent.id_slot if sent else None,
+    )
     r = urllib.request.Request(
         f"http://{H}:{port}/v1/chat/completions",
         data=json.dumps(body).encode(),
         headers={"Content-Type": "application/json"},
     )
+    rec = sent or mc.Sent(i=0, at=0.0, id_slot=None)
+    rec.want = want
     t0 = time.time()
-    first: float | None = None
-    last = t0
-    chunks = 0
-    usage: dict[str, int] = {}
-    usage_at: float | None = None
+    rec.send = t0
     try:
         with urllib.request.urlopen(r, timeout=3600) as f:
-            for raw in f:
-                line = raw.decode("utf-8", "replace").strip()
-                if not line.startswith("data:") or line == "data: [DONE]":
-                    continue
-                d = json.loads(line[5:])
-                if d.get("usage"):
-                    usage = d["usage"]
-                    usage_at = time.time()
-                for choice in d.get("choices") or []:
-                    if rd.streamed_token(choice.get("delta") or {}):
-                        now = time.time()
-                        first = now if first is None else first
-                        last = now
-                        chunks += 1
-    except Exception:
-        return (0, time.time() - t0, 0, want, None, 0.0)
-    gen = int(usage.get("completion_tokens", chunks))
-    ttft = None if first is None else first - t0
-    if ttft is None and gen >= 1 and usage_at is not None:
-        ttft = -(usage_at - t0)
+            rec.byte = time.time()
+            rec.status = str(f.status)
+            got = mc.read_sse(((time.time(), raw) for raw in f), t0)
+    except urllib.error.HTTPError as e:
+        rec.end = time.time()
+        rec.status = str(e.code)
+        rec.err = mc.one_line(e.read().decode("utf-8", "replace") or str(e))
+        return (0, rec.end - t0, 0, want, None, 0.0)
+    except Exception as e:  # a failed request is a row, not a crash
+        rec.end = time.time()
+        rec.status = rec.status or type(e).__name__
+        rec.err = mc.one_line(str(e))
+        return (0, rec.end - t0, 0, want, None, 0.0)
+    rec.end = time.time()
+    rec.err = got.error
+    rec.tok = got.first
+    gen = int(got.usage.get("completion_tokens", got.chunks))
+    rec.gen = gen
+    rec.ptok = int(got.usage.get("prompt_tokens", 0))
+    ttft = None if got.first is None else got.first - t0
+    if ttft is None and gen >= 1 and got.usage_at is not None:
+        ttft = -(got.usage_at - t0)
     return (
         gen,
-        time.time() - t0,
-        int(usage.get("prompt_tokens", 0)),
+        rec.end - t0,
+        rec.ptok,
         want,
         ttft,
-        0.0 if first is None else last - first,
+        0.0 if got.first is None else got.last - got.first,
     )
 
 
-def workload_request(port: int, model: str) -> Req:
-    prompt, want = workload.mkprompt()
+def workload_request(
+    port: int,
+    model: str,
+    drawn: tuple[str, int] | None = None,
+    sent: mc.Sent | None = None,
+) -> Req:
+    prompt, want = drawn or workload.mkprompt()
     return stream(
         port,
         model,
@@ -425,6 +413,7 @@ def workload_request(port: int, model: str) -> Req:
             {"role": "user", "content": prompt[len(workload.SYSTEM) :]},
         ],
         want,
+        sent=sent,
     )
 
 
@@ -440,23 +429,26 @@ def prefill_request(port: int, model: str, k: int, chars: int) -> Req:
     return stream(port, model, [{"role": "user", "content": body}], 4)
 
 
-def fanout(ports: tuple[int, ...], model: str, n: int) -> list[Req | None]:
-    """``n`` concurrent workload requests, alternated across ``ports``.
+def fanout(
+    ports: tuple[int, ...], model: str, n: int, cell: mc.Cell | None = None
+) -> tuple[list[Req | None], list[mc.Sent]]:
+    """``n`` workload requests, alternated across ``ports``, each sent at its
+    ``@stagger`` offset and asking for its ``@id_slot`` (mgpu_cell.schedule).
 
-    A slot still ``None`` afterwards is a thread that died, not a request that
-    returned nothing, and the level is refused rather than averaged over it.
+    The ``n`` prompts are drawn in index order before any is sent, so request
+    i carries the same draw in every cell that runs the same levels; a level
+    consumes the same draws it always consumed. A place still ``None``
+    afterwards is a thread that died, not a request that returned nothing, and
+    the level is refused rather than averaged over it.
     """
-    out: list[Req | None] = [None] * n
+    plan = mc.schedule(n, cell or mc.Cell())
+    drawn = [workload.mkprompt() for _ in range(n)]
 
-    def one(i: int) -> None:
-        out[i] = workload_request(ports[i % len(ports)], model)
+    def one(sent: mc.Sent) -> Req:
+        port = ports[sent.i % len(ports)]
+        return workload_request(port, model, drawn[sent.i], sent)
 
-    threads = [threading.Thread(target=one, args=(i,)) for i in range(n)]
-    for t in threads:
-        t.start()
-    for t in threads:
-        t.join()
-    return out
+    return mc.launch(plan, one), plan
 
 
 def knob_request(port: int, model: str) -> Req:
@@ -559,7 +551,14 @@ def fit(
 
 
 def argv(
-    slot: int, layout: str, p2p: str, model: str, ctx: int, np_: int, cell: Cell
+    slot: int,
+    layout: str,
+    p2p: str,
+    model: str,
+    ctx: int,
+    np_: int,
+    cell: mc.Cell,
+    total_ctx: int,
 ) -> str:
     """The docker line for replica ``slot`` of a cell."""
     name, port = NAMES[slot], PORTS[slot]
@@ -597,7 +596,7 @@ def argv(
         f"docker run -d --name {name} --gpus {gpus} {env}"
         f"-v $HOME/models:/models:ro -v $HOME/.cache/huggingface:/hf:ro "
         f"-p {port}:8080 {IMG} "
-        f"-m {model} -ngl 99 {split} -np {np_} -c {np_ * ctx} -fa on "
+        f"-m {model} -ngl 99 {split} -np {np_} -c {total_ctx} -fa on "
         f"-ctk q8_0 -ctv q8_0 --no-warmup -lv 4 --host 0.0.0.0 --port 8080 {extra}"
     )
 
@@ -662,7 +661,7 @@ def run_cell(cell: str) -> None:
     ctx = int(ctx_s)
     levels = [int(x) for x in lv.split(",")]
     extra = ":".join(rest).replace("+", " ")
-    c = parse_extra(extra)
+    c = mc.parse_extra(extra)
     lab = (
         f"{tag} engine={ENGINE} model={model.split('/')[-1]} "
         f"layout={layout} p2p={p2p} ctx={ctx}"
@@ -711,7 +710,7 @@ def run_cell(cell: str) -> None:
         emit(lab, "SKIP", why)
         return
     slots = 2 if layout == "dp2" else 1
-    np_ = max(levels)
+    np_, total_ctx = mc.engine_slots(levels, c, ctx)
     tries = 0
     failed: str | None = "not launched"
     load_s = 0.0
@@ -720,7 +719,7 @@ def run_cell(cell: str) -> None:
         down()
         t_load = time.time()
         for s in range(slots):
-            sh(argv(s, layout, p2p, model, ctx, np_, c))
+            sh(argv(s, layout, p2p, model, ctx, np_, c, total_ctx))
         failed = healthy(slots)
         load_s = time.time() - t_load
         if failed and not MEMORY_WORDS.search(failed):
@@ -732,7 +731,7 @@ def run_cell(cell: str) -> None:
 
     load = cards()
     vram = ",".join(f"{c[0]}:{c[2]}" for c in load)
-    warm = fanout(PORTS[:slots], model, slots)
+    warm, _ = fanout(PORTS[:slots], model, slots)
     if any(w is None or w[0] <= 1 for w in warm):
         emit(
             lab,
@@ -786,10 +785,12 @@ def run_cell(cell: str) -> None:
     else:
         emit(lab, "PREFILL", "pp=unread", "the long prompt returned no streamed token")
 
+    launched = len(rd.slot_launches(sh(f"docker logs {NAMES[0]} 2>&1")))
     for n in levels:
         sidecar = Sidecar()
         sidecar.start()
         t0 = time.time()
+        sent: list[mc.Sent] = []
         if c.knob and n == 1:
             out: list[Req | None] = [
                 knob_request(PORTS[0], model) for _ in range(KNOB_REPS)
@@ -797,9 +798,16 @@ def run_cell(cell: str) -> None:
         elif c.knob:
             out = list(closed_loop(PORTS[:slots], model, n))
         else:
-            out = fanout(PORTS[:slots], model, n)
+            out, sent = fanout(PORTS[:slots], model, n, c)
         wall = time.time() - t0
         gpu = sidecar.finish(wall)
+        on = ""
+        if ENGINE == "lcp":
+            seen = rd.slot_launches(sh(f"docker logs {NAMES[0]} 2>&1"))
+            on = ",".join(str(slot) for slot, _ in seen[launched:]) or "none"
+            launched = len(seen)
+        for rec in sent:
+            emit(lab, "REQ", *mc.req_fields(rec, t0, n))
         rows = [o for o in out if o is not None]
         gen = sum(o[0] for o in rows)
         if (not c.knob and len(rows) != n) or gen == 0:
@@ -832,6 +840,9 @@ def run_cell(cell: str) -> None:
             f"early_stop={sum(1 for o in rows if 0 < o[0] < o[3])}/{n_}",
             f"failed={sum(1 for o in rows if o[0] == 0)}/{n_}",
             f"wall={wall:.1f}",
+            f"np={np_}",
+            f"img={IMG}",
+            *([f"slots={on}"] if on else []),
             *spread,
             *gpu,
         )
