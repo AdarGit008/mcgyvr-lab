@@ -1,0 +1,15 @@
+gate 1: round=r45-03-10-2026 product_sha256=451ff6dc23c285cc... profile=live config=/home/adaramir/.mcgyvr/fleets/b-small@2026-09-16
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+gate 4: workload 2f2bb7932a0b6606... matches the pin
+gate 5: RUN_ID=2026-10-03-pooled-slots-fill -> /home/adaramir/claude/mcgyvr-lab-open-issues/.claude/worktrees/agent-a3f7b1468a0872694/records/evidence/2026-10-03-pooled-slots
+data-10-scan: card free=11909 MiB, host available=45392 MiB
+data-20-geometry: qwen2 n_layer=64 placeable=0 experts=0 MiB
+data-30-placement: dense checkpoint, nothing to place
+gate 6: /home/adaramir/claude/mcgyvr-lab-open-issues/.claude/worktrees/agent-a3f7b1468a0872694/tools/runs/campaigns/pooled-slots/5-fill.sh --host srv1 -> /home/adaramir/claude/mcgyvr-lab-open-issues/.claude/worktrees/agent-a3f7b1468a0872694/records/evidence/2026-10-03-pooled-slots (RUN_ID=2026-10-03-pooled-slots-fill)
+pooled-slots: lcp: D2FILL2048-t1
+pooled-slots: lcp: D2FILL2048-t2
+pooled-slots: lcp: D2FILL2048-t3
+pooled-slots: wrote /home/adaramir/claude/mcgyvr-lab-open-issues/.claude/worktrees/agent-a3f7b1468a0872694/records/evidence/2026-10-03-pooled-slots/fill.tsv
+gate 8: 1 artifact(s) parse
+exit=0

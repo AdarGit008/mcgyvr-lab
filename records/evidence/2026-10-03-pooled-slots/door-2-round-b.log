@@ -1,0 +1,32 @@
+gate 1: round=r45-03-10-2026 product_sha256=451ff6dc23c285cc... profile=live config=/home/adaramir/.mcgyvr/fleets/b-small@2026-09-16
+gate 2: srv1 matches its declaration on 11 keys
+gate 3: docker on srv1 answers, 29.7.2 as declared
+gate 4: workload 2f2bb7932a0b6606... matches the pin
+gate 5: RUN_ID=2026-10-03-pooled-slots-round-b -> /home/adaramir/claude/mcgyvr-lab-open-issues/.claude/worktrees/agent-a3f7b1468a0872694/records/evidence/2026-10-03-pooled-slots
+data-10-scan: card free=11909 MiB, host available=45450 MiB
+data-20-geometry: qwen2 n_layer=64 placeable=0 experts=0 MiB
+data-30-placement: dense checkpoint, nothing to place
+gate 6: /home/adaramir/claude/mcgyvr-lab-open-issues/.claude/worktrees/agent-a3f7b1468a0872694/tools/runs/campaigns/pooled-slots/2-round-b.sh --host srv1 -> /home/adaramir/claude/mcgyvr-lab-open-issues/.claude/worktrees/agent-a3f7b1468a0872694/records/evidence/2026-10-03-pooled-slots (RUN_ID=2026-10-03-pooled-slots-round-b)
+pooled-slots: lcp: H1-b
+pooled-slots: lcp: S1-b
+pooled-slots: lcp: H2-b
+pooled-slots: lcp: S2-b
+pooled-slots: lcp: H4-b
+pooled-slots: lcp: S4-b
+pooled-slots: lcp: S1N-b
+pooled-slots: lcp: S4N-b
+pooled-slots: lcp: H1N-b
+pooled-slots: lcp: H4N-b
+pooled-slots: lcp: D1S2-b
+pooled-slots: lcp: D1S4-b
+pooled-slots: lcp: D2KVU-b
+pooled-slots: lcp: D2FILL-b
+pooled-slots: lcp: D3HELD-b
+pooled-slots: lcp: D4GAP-b
+pooled-slots: lcp: D4SEQ-b
+pooled-slots: lcp: D5STAG-b
+pooled-slots: lcp: D6OUT1-b
+pooled-slots: lcp: D7NOCACHE-b
+pooled-slots: wrote /home/adaramir/claude/mcgyvr-lab-open-issues/.claude/worktrees/agent-a3f7b1468a0872694/records/evidence/2026-10-03-pooled-slots/round-b.tsv
+gate 8: 1 artifact(s) parse
+exit=0

@@ -1,0 +1,437 @@
+{
+ "arch": "qwen2",
+ "bytes_experts": 0,
+ "bytes_nonexpert": 23256178688,
+ "bytes_total_tensors": 23256178688,
+ "caching_layers": 64,
+ "caching_layers_from": "every layer caches",
+ "expert_blocks": [],
+ "expert_bytes_by_block": {},
+ "expert_layers": 0,
+ "file": "/home/adaramir/models/dense/Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf",
+ "full_attn_interval": null,
+ "key_length": 128,
+ "key_length_mla": null,
+ "key_length_swa": null,
+ "kv_layers": [
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 0,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 1,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 2,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 3,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 4,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 5,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 6,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 7,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 8,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 9,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 10,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 11,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 12,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 13,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 14,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 15,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 16,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 17,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 18,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 19,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 20,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 21,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 22,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 23,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 24,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 25,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 26,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 27,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 28,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 29,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 30,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 31,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 32,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 33,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 34,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 35,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 36,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 37,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 38,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 39,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 40,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 41,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 42,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 43,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 44,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 45,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 46,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 47,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 48,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 49,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 50,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 51,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 52,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 53,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 54,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 55,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 56,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 57,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 58,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 59,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 60,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 61,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 62,
+   "v_elems": 1024
+  },
+  {
+   "is_swa": false,
+   "k_elems": 1024,
+   "layer": 63,
+   "v_elems": 1024
+  }
+ ],
+ "mla_absorbed_v": false,
+ "mla_by_identity": false,
+ "n_ctx_train": 32768,
+ "n_embd": 5120,
+ "n_expert": null,
+ "n_expert_used": null,
+ "n_head_kv": 8,
+ "n_layer": 64,
+ "n_placeable": 0,
+ "n_recurrent": 0,
+ "name": "Qwen2.5 Coder 32B Instruct",
+ "nextn_blocks": [],
+ "nextn_predict_layers": null,
+ "output_bytes": 638668800,
+ "params_total": 32763876352,
+ "placeable_blocks": [],
+ "recurrent_blocks": [],
+ "rope_dim": null,
+ "size_bytes": 23262157792,
+ "sliding_window": null,
+ "sliding_window_pattern_declared": false,
+ "ssm_conv_kernel": null,
+ "ssm_group_count": null,
+ "ssm_inner_size": null,
+ "ssm_params_from": null,
+ "ssm_state_size": null,
+ "swa_pattern_from": "no sliding window declared",
+ "token_embd_bytes": 535265280,
+ "type_bytes": {
+  "F32": 4476928,
+  "Q5_K": 18759516160,
+  "Q6_K": 4492185600
+ },
+ "value_length": 128,
+ "value_length_swa": null
+}

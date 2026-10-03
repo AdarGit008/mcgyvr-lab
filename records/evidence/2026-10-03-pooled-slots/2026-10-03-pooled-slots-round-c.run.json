@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-10-03-pooled-slots-round-c",
+  "campaign": "pooled-slots",
+  "step": "round-c",
+  "host": "srv1",
+  "date": "2026-10-03",
+  "round": "r45-03-10-2026",
+  "product_sha256": "451ff6dc23c285cc45de9cf71bc12b158361f8f034cbbaed85f4ded4c1a6bd3a",
+  "profile": "live",
+  "config": "/home/adaramir/.mcgyvr/fleets/b-small@2026-09-16",
+  "mcgyvr_version": "0.1.1.dev861+g5cb7910b",
+  "started_at": "2026-10-03T05:37:57Z"
+}
