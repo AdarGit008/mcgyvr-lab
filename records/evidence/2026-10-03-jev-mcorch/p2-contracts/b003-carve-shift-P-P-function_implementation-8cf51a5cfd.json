@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "id": "function_implementation-8cf51a5cfd",
+  "task_type": "function_implementation",
+  "task": "Implement the carve_shift function according to the specification",
+  "target": "solution.py",
+  "target_content": "\"\"\"Work stretches of a shift: span-long, rest-separated, short tails dropped.\"\"\"\n\n\ndef carve_shift(start: int, end: int, span: int, rest: int, least: int) -> list:\n    for value in (start, end, span, rest, least):\n        if isinstance(value, bool) or not isinstance(value, int):\n            raise ValueError(\"every argument must be an integer\")\n    if start >= end:\n        raise ValueError(\"shift start must precede its end\")\n    if span < 1 or rest < 1:\n        raise ValueError(\"span and rest must be at least 1\")\n    if least < 1 or least > span:\n        raise ValueError(\"least must be between 1 and span\")\n    # TODO: walk the shift, cutting a stretch of at most span units, then\n    # skipping rest units, dropping a final stretch shorter than least.\n    return []\n",
+  "interface": "carve_shift(start: int, end: int, span: int, rest: int, least: int) -> list",
+  "deps": [],
+  "stop_conditions": [
+    "The function handles all edge cases as described in the specification",
+    "All assertions in accept.py pass after implementation"
+  ],
+  "output_schema": "whole_file",
+  "context": {
+    "max_input_tokens": 4096
+  },
+  "scope": {
+    "allow": [
+      "solution.py"
+    ],
+    "forbid": []
+  },
+  "acceptance": [
+    "python -B accept.py"
+  ],
+  "demonstration": [],
+  "risk": "low",
+  "verification": {
+    "policy": "gate_only"
+  },
+  "limits": {
+    "max_output_tokens": null,
+    "attempts": 2
+  }
+}

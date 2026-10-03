@@ -1,0 +1,47 @@
+=== lcp-qwen25c-3b-q4km 2026-10-03T17:13:46Z
+launch: docker run -d --name jev-p0 --gpus device=0 -v $HOME/models:/models:ro -v /data/models:/data:ro -p 8080:8080 llamacpp:b10644-L3-rpc --model /models/dense/Qwen2.5-Coder-3B-Instruct-Q4_K_M.gguf -c 16384 -np 1 --jinja -lv 4 --no-warmup --host 0.0.0.0 --port 8080 -a jev 
+load_s=27
+0, 2633 MiB 1, 1 MiB 0.02.380.232 I load_tensors:        CUDA0 model buffer size =  1834.83 MiB
+0.02.705.842 I llama_kv_cache:      CUDA0 KV buffer size =   576.00 MiB
+{"tag": "lcp-qwen25c-3b-q4km", "rows": 80, "errors": 0, "wall_total_s": 95.4, "wall_per_row_med_s": 0.948, "wall_per_row_p90_s": 1.1, "satisfies_task": {"q": "satisfies_task", "n": 80, "acc": 0.5, "auroc": 0.576, "brier": 0.382, "ece10": 0.369, "yes_rate": 1.0}, "verdict": {"q": "verdict", "n": 80, "acc": 0.5, "auroc": 0.475, "brier": 0.339, "ece10": 0.29, "yes_rate": 1.0}, "regression_level_mean_pass": 0.999, "regression_level_mean_fail": 1.03}
+=== lcp-qwen25c-7b-iq4xs 2026-10-03T17:15:53Z
+launch: docker run -d --name jev-p0 --gpus device=0 -v $HOME/models:/models:ro -v /data/models:/data:ro -p 8080:8080 llamacpp:b10644-L3-rpc --model /models/dense/Qwen2.5-Coder-7B-Instruct-IQ4_XS.gguf -c 16384 -np 1 --jinja -lv 4 --no-warmup --host 0.0.0.0 --port 8080 -a jev 
+load_s=29
+0, 4915 MiB 1, 1 MiB 0.04.187.140 I load_tensors:        CUDA0 model buffer size =  3741.25 MiB
+0.04.829.469 I llama_kv_cache:      CUDA0 KV buffer size =   896.00 MiB
+{"tag": "lcp-qwen25c-7b-iq4xs", "rows": 80, "errors": 0, "wall_total_s": 104.0, "wall_per_row_med_s": 1.026, "wall_per_row_p90_s": 1.307, "satisfies_task": {"q": "satisfies_task", "n": 80, "acc": 0.463, "auroc": 0.618, "brier": 0.404, "ece10": 0.429, "yes_rate": 0.963}, "verdict": {"q": "verdict", "n": 80, "acc": 0.525, "auroc": 0.556, "brier": 0.416, "ece10": 0.425, "yes_rate": 0.975}, "regression_level_mean_pass": 1.106, "regression_level_mean_fail": 1.2}
+=== lcp-qwen3-8b-q4km-rea-off 2026-10-03T17:18:11Z
+launch: docker run -d --name jev-p0 --gpus device=0 -v $HOME/models:/models:ro -v /data/models:/data:ro -p 8080:8080 llamacpp:b10644-L3-rpc --model /models/dense/Qwen3-8B-Q4_K_M.gguf -c 16384 -np 1 --jinja -lv 4 --no-warmup --host 0.0.0.0 --port 8080 -a jev --reasoning off
+load_s=29
+0, 7001 MiB 1, 1 MiB 0.00.858.113 I load_tensors:        CUDA0 model buffer size =  4455.34 MiB
+0.01.628.419 I llama_kv_cache:      CUDA0 KV buffer size =  2304.00 MiB
+{"tag": "lcp-qwen3-8b-q4km-rea-off", "rows": 80, "errors": 0, "wall_total_s": 116.8, "wall_per_row_med_s": 1.175, "wall_per_row_p90_s": 1.475, "satisfies_task": {"q": "satisfies_task", "n": 80, "acc": 0.512, "auroc": 0.583, "brier": 0.457, "ece10": 0.465, "yes_rate": 0.738}, "verdict": {"q": "verdict", "n": 80, "acc": 0.5, "auroc": 0.748, "brier": 0.484, "ece10": 0.488, "yes_rate": 1.0}, "regression_level_mean_pass": 0.647, "regression_level_mean_fail": 0.958}
+=== lcp-ling3-tiny-q4km 2026-10-03T17:20:41Z
+launch: docker run -d --name jev-p0 --gpus device=0 -v $HOME/models:/models:ro -v /data/models:/data:ro -p 8080:8080 llamacpp:b10644-L3-rpc --model /models/moe/Ling-3.0-tiny-Q4_K_M.gguf -c 16384 -np 1 --jinja -lv 4 --no-warmup --host 0.0.0.0 --port 8080 -a jev 
+load_s=42
+0, 4885 MiB 1, 1 MiB 0.05.046.112 I load_tensors:        CUDA0 model buffer size =  4553.83 MiB
+0.05.814.141 I llama_kv_cache:      CUDA0 KV buffer size =   108.00 MiB
+{"tag": "lcp-ling3-tiny-q4km", "rows": 80, "errors": 80, "wall_total_s": 58.4, "wall_per_row_med_s": null, "wall_per_row_p90_s": null, "satisfies_task": {"q": "satisfies_task", "n": 0}, "verdict": {"q": "verdict", "n": 0}, "regression_level_mean_pass": null, "regression_level_mean_fail": null}
+=== lcp-qwen35-4b-supercoder-q40-rea-off 2026-10-03T17:22:25Z
+launch: docker run -d --name jev-p0 --gpus device=0 -v $HOME/models:/models:ro -v /data/models:/data:ro -p 8080:8080 llamacpp:b10644-L3-rpc --model /data/dense/qwen3.5-4B-super-coder.Q4_0.gguf -c 16384 -np 1 --jinja -lv 4 --no-warmup --host 0.0.0.0 --port 8080 -a jev --reasoning off
+load_s=51
+0, 3189 MiB 1, 1 MiB 0.16.049.438 I load_tensors:        CUDA0 model buffer size =  2415.59 MiB
+0.16.466.208 I llama_kv_cache:      CUDA0 KV buffer size =   512.00 MiB
+{"tag": "lcp-qwen35-4b-supercoder-q40-rea-off", "rows": 80, "errors": 0, "wall_total_s": 149.6, "wall_per_row_med_s": 1.599, "wall_per_row_p90_s": 1.972, "satisfies_task": {"q": "satisfies_task", "n": 80, "acc": 0.575, "auroc": 0.672, "brier": 0.242, "ece10": 0.165, "yes_rate": 0.675}, "verdict": {"q": "verdict", "n": 80, "acc": 0.65, "auroc": 0.574, "brier": 0.267, "ece10": 0.219, "yes_rate": 0.7}, "regression_level_mean_pass": 0.705, "regression_level_mean_fail": 0.84}
+=== lcp-qwen25c-14b-q4km 2026-10-03T17:25:52Z
+launch: docker run -d --name jev-p0 --gpus device=0 -v $HOME/models:/models:ro -v /data/models:/data:ro -p 8080:8080 llamacpp:b10644-L3-rpc --model /models/dense/Qwen2.5-Coder-14B-Instruct-Q4_K_M.gguf -c 16384 -np 1 --jinja -lv 4 --no-warmup --host 0.0.0.0 --port 8080 -a jev 
+load_s=36
+0, 10823 MiB 1, 1 MiB 0.09.513.057 I load_tensors:        CUDA0 model buffer size =  7649.14 MiB
+0.10.888.506 I llama_kv_cache:      CUDA0 KV buffer size =  2880.00 MiB
+{"tag": "lcp-qwen25c-14b-q4km", "rows": 80, "errors": 0, "wall_total_s": 176.1, "wall_per_row_med_s": 1.834, "wall_per_row_p90_s": 2.56, "satisfies_task": {"q": "satisfies_task", "n": 80, "acc": 0.588, "auroc": 0.649, "brier": 0.258, "ece10": 0.175, "yes_rate": 0.637}, "verdict": {"q": "verdict", "n": 80, "acc": 0.713, "auroc": 0.732, "brier": 0.205, "ece10": 0.125, "yes_rate": 0.713}, "regression_level_mean_pass": 0.57, "regression_level_mean_fail": 0.87}
+=== lcp-qwen3coder-30b-a3b-iq3xxs-layer2 2026-10-03T17:29:29Z
+launch: docker run -d --name jev-p0 --gpus all -v $HOME/models:/models:ro -v /data/models:/data:ro -p 8080:8080 llamacpp:b10644-L3-rpc --model /data/moe/Qwen3-Coder-30B-A3B-Instruct-UD-IQ3_XXS.gguf -c 16384 -np 1 --jinja -lv 4 --no-warmup --host 0.0.0.0 --port 8080 -a jev -sm layer
+load_s=111
+0, 7033 MiB 1, 7171 MiB 1.13.577.541 I load_tensors:        CUDA0 model buffer size =  5939.54 MiB
+1.13.577.542 I load_tensors:        CUDA1 model buffer size =  6141.38 MiB
+1.15.585.398 I llama_kv_cache:      CUDA0 KV buffer size =   800.00 MiB
+1.15.587.985 I llama_kv_cache:      CUDA1 KV buffer size =   736.00 MiB
+{"tag": "lcp-qwen3coder-30b-a3b-iq3xxs-layer2", "rows": 80, "errors": 0, "wall_total_s": 146.5, "wall_per_row_med_s": 1.235, "wall_per_row_p90_s": 1.527, "satisfies_task": {"q": "satisfies_task", "n": 80, "acc": 0.588, "auroc": 0.628, "brier": 0.406, "ece10": 0.411, "yes_rate": 0.512}, "verdict": {"q": "verdict", "n": 80, "acc": 0.713, "auroc": 0.754, "brier": 0.283, "ece10": 0.282, "yes_rate": 0.613}, "regression_level_mean_pass": 0.987, "regression_level_mean_fail": 1.519}
+0, 1 MiB
+1, 1 MiB
+done 2026-10-03T17:33:51Z

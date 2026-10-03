@@ -1,0 +1,2 @@
+lcp-qwen3-4b-q4km-rea-off-srv2|device=0|/models/dense/Qwen3-4B-Q4_K_M.gguf|--reasoning off
+lcp-qwen35-4b-supercoder-q40-rea-off-srv2|device=0|/models/dense/qwen3.5-4B-super-coder.Q4_0.gguf|--reasoning off

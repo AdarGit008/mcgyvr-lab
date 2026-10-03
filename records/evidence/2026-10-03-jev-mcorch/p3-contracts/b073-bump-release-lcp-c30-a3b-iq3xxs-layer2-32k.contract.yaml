@@ -1,0 +1,29 @@
+id: bump_release-implementation
+task_type: function_implementation
+task: Implement the bump_release function that advances a semantic version tag (major.minor.patch) by the specified part. The function should validate the tag format and part name, then return the next version.
+target: ./solution.py
+interface: |
+  def bump_release(tag: str, part: str) -> str:
+      """
+      Advance a semantic version tag by the specified part.
+      
+      Args:
+          tag: A version string in format major.minor.patch
+          part: One of 'major', 'minor', or 'patch'
+          
+      Returns:
+          The next version string after advancing the specified part
+          
+      Raises:
+          ValueError: If tag format is invalid or part name is not recognized
+      """
+stop_conditions:
+  - The function signature doesn't match the interface
+  - The function doesn't handle all the test cases properly
+acceptance:
+  - python accept.py
+scope:
+  allow:
+    - ./solution.py
+limits:
+  max_output_tokens: 2048

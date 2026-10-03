@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "id": "function_implementation-5f9bd35780",
+  "task_type": "function_implementation",
+  "task": "Implement scan_pairs according to the specification",
+  "target": "solution.py",
+  "target_content": "import re\n\n\ndef parse_option(segment: str) -> list:\n    key, eq, raw = segment.partition(\"=\")\n    if not eq or re.fullmatch(r\"[A-Za-z][A-Za-z0-9_]*\", key) is None:\n        raise ValueError(\"malformed option segment: \" + segment)\n    if len(raw) >= 2 and raw.startswith('\"') and raw.endswith('\"'):\n        raw = raw[1:-1]\n    return [key, raw]\n\n\ndef scan_pairs(text: str) -> list:\n    # TODO: validate the input, split it on semicolons outside double\n    # quotes, reject an unterminated quote and a repeated key, and build\n    # the pairs with parse_option.\n    raise NotImplementedError\n",
+  "interface": "def scan_pairs(text: str) -> list:",
+  "deps": [
+    {
+      "path": "solution.py",
+      "signature": "def parse_option(segment: str) -> list:\n    ...",
+      "note": "scan_pairs uses parse_option to process each segment"
+    }
+  ],
+  "stop_conditions": [
+    "text is not a string",
+    "text is empty",
+    "a segment has no equals sign",
+    "a key is not a bare identifier",
+    "a quoted value is never closed",
+    "a key is repeated"
+  ],
+  "output_schema": "whole_file",
+  "context": {
+    "max_input_tokens": 4096
+  },
+  "scope": {
+    "allow": [
+      "solution.py"
+    ],
+    "forbid": []
+  },
+  "acceptance": [
+    "python -B accept.py"
+  ],
+  "demonstration": [],
+  "risk": "medium",
+  "verification": {
+    "policy": "gate_only"
+  },
+  "limits": {
+    "max_output_tokens": null,
+    "attempts": 2
+  }
+}

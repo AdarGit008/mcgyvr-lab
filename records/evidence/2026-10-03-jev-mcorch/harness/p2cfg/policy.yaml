@@ -1,0 +1,14 @@
+use_case: coding
+deployment: local-only
+ladder:
+  - orch
+fanout: none
+orchestrator:
+  unit: orch
+  model: orch
+verifier:
+  unit: orch
+sandbox:
+  mode: tempdir
+journal:
+  dir: /tmp/claude-1000/-home-adaramir/15b6132f-a502-4a0c-9d7f-4c7b9b894f37/scratchpad/run/p2journal

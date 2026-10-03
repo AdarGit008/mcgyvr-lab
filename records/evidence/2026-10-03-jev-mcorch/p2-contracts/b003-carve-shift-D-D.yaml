@@ -1,0 +1,35 @@
+version: 1
+id: implement-carve-shift
+task_type: function_implementation
+task: Implement the carve_shift function according to the specification
+target: solution.py
+target_content: """Work stretches of a shift: span-long, rest-separated, short tails dropped."""
+
+
+def carve_shift(start: int, end: int, span: int, rest: int, least: int) -> list:
+    for value in (start, end, span, rest, least):
+        if isinstance(value, bool) or not isinstance(value, int):
+            raise ValueError("every argument must be an integer")
+    if start >= end:
+        raise ValueError("shift start must precede its end")
+    if span < 1 or rest < 1:
+        raise ValueError("span and rest must be at least 1")
+    if least < 1 or least > span:
+        raise ValueError("least must be between 1 and span")
+    # TODO: walk the shift, cutting a stretch of at most span units, then
+    # skipping rest units, dropping a final stretch shorter than least.
+    return []
+
+"""
+interface: carve_shift(start: int, end: int, span: int, rest: int, least: int) -> list
+deps: []
+stop_conditions:
+  - "The function must handle all the specified edge cases and constraints"
+  - "The implementation must be efficient and not exceed time or space limits"
+acceptance:
+  - "python -B accept.py"
+scope:
+  allow:
+    - "solution.py"
+limits:
+  max_output_tokens: 500

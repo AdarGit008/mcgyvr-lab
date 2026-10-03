@@ -1,0 +1,17 @@
+version: 1
+id: scan_pairs_implementation
+task_type: function_implementation
+task: Implement the scan_pairs function in solution.py according to the specifications provided
+target: solution.py
+target_content: "import re\n\n\ndef parse_option(segment: str) -> list:\n    key, eq, raw = segment.partition(\"=\")\n    if not eq or re.fullmatch(r\"[A-Za-z][A-Za-z0-9_]*\", key) is None:\n        raise ValueError(\"malformed option segment: \" + segment)\n    if len(raw) >= 2 and raw.startswith('\"') and raw.endswith('\"'):\n        raw = raw[1:-1]\n    return [key, raw]\n\ndef scan_pairs(text: str) -> list:\n    # TODO: validate the input, split it on semicolons outside double\n    # quotes, reject an unterminated quote and a repeated key, and build\n    # the pairs with parse_option.\n    raise NotImplementedError\n"
+interface: "def scan_pairs(text: str) -> list"
+stop_conditions:
+  - "The task requires implementing a specific function with specific behavior"
+  - "The implementation must handle all the specified edge cases"
+acceptance:
+  - "python -B accept.py"
+scope:
+  allow:
+    - "solution.py"
+limits:
+  max_output_tokens: 500

@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "id": "function_implementation-f5919b9f35",
+  "task_type": "function_implementation",
+  "task": "Implement the bump_release function according to the specified requirements",
+  "target": "accept.py",
+  "target_content": "from solution import bump_release\n\nassert bump_release(\"1.2.3\", \"major\") == \"2.0.0\", \"major resets the rest\"\nassert bump_release(\"1.2.3\", \"minor\") == \"1.3.0\", \"minor resets patch\"\nassert bump_release(\"1.2.3\", \"patch\") == \"1.2.4\", \"patch advances alone\"\nassert bump_release(\"2.9.4\", \"minor\") == \"2.10.0\", \"components carry past 9\"\nassert bump_release(\"0.0.0\", \"major\") == \"1.0.0\", \"zero components are valid\"\n\n\ndef rejects(*args):\n    try:\n        bump_release(*args)\n    except Exception:\n        return True\n    return False\n\n\nassert rejects(42, \"major\"), \"non-string tag is rejected\"\nassert rejects(\"1.2\", \"patch\"), \"two components are rejected\"\nassert rejects(\"1..3\", \"patch\"), \"empty component is rejected\"\nassert rejects(\"1.02.3\", \"patch\"), \"leading zero is rejected\"\nassert rejects(\"1.2.x\", \"patch\"), \"non-digit component is rejected\"\nassert rejects(\"1.2.3\", \"micro\"), \"unknown part name is rejected\"\nprint(\"ok\")\n",
+  "interface": "bump_release(tag: str, part: str) -> str",
+  "deps": [],
+  "stop_conditions": [
+    "tag is not a string",
+    "tag does not have exactly three components",
+    "any component is empty",
+    "any component has leading zero",
+    "any component contains non-digit characters",
+    "part is not 'major', 'minor', or 'patch'"
+  ],
+  "output_schema": "whole_file",
+  "context": {
+    "max_input_tokens": 4096
+  },
+  "scope": {
+    "allow": [
+      "accept.py"
+    ],
+    "forbid": []
+  },
+  "acceptance": [
+    "python -B accept.py"
+  ],
+  "demonstration": [],
+  "risk": "medium",
+  "verification": {
+    "policy": "gate_only"
+  },
+  "limits": {
+    "max_output_tokens": null,
+    "attempts": 2
+  }
+}

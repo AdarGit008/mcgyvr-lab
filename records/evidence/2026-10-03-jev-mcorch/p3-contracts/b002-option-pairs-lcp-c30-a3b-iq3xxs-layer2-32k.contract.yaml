@@ -1,0 +1,31 @@
+id: scan-pairs-implementation
+task_type: function_implementation
+task: Implement the scan_pairs function that parses an options string into key-value pairs. The options string consists of key=value segments separated by semicolons. A semicolon inside double quotes should not be treated as a separator. The function should validate inputs and handle various error cases.
+target: ./solution.py
+interface: |
+  def scan_pairs(text: str) -> list:
+      """
+      Parse an options string into key-value pairs.
+      
+      Args:
+          text: A string of key=value segments separated by semicolons
+                (e.g., "mode=fast;retry=3")
+      
+      Returns:
+          A list of [key, value] pairs in input order
+          
+      Raises:
+          ValueError: For invalid inputs including non-string arguments,
+                      empty strings, malformed segments, repeated keys,
+                      or unterminated quotes
+      """
+stop_conditions:
+  - The function signature doesn't match the interface
+  - The function is not implemented in the target file
+acceptance:
+  - python -B accept.py
+scope:
+  allow:
+    - ./solution.py
+limits:
+  max_output_tokens: 2048

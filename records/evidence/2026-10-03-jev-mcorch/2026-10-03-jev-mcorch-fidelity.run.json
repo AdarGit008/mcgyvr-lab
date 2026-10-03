@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-10-03-jev-mcorch-fidelity",
+  "campaign": "jev-mcorch",
+  "step": "fidelity",
+  "host": "srv1",
+  "date": "2026-10-03",
+  "round": "r46-03-10-2026",
+  "product_sha256": "1e06e08ded1fd8e509ece39197bfa241d48cce77e6f8ed224a0880eec6da1621",
+  "profile": "dev",
+  "config": "/tmp/claude-1000/-home-adaramir/15b6132f-a502-4a0c-9d7f-4c7b9b894f37/scratchpad/run/p2cfg",
+  "mcgyvr_version": "0.1.1.dev1017+g417a2a9b",
+  "started_at": "2026-10-03T18:47:03Z"
+}

@@ -48,6 +48,7 @@ NOT_SCANNED = frozenset({"product", "records", "archive"})
 #: and one lab file that imports it (outside ``tests/`` when one does).
 LISTED = """mcgyvr                        config                   tests/test_a_locked_fleet_loads_as_the_run_config.py
 mcgyvr                        contract                 tests/test_bundle_ladder.py
+mcgyvr                        decision                 tools/runs/campaigns/jev-mcorch/jev_probe.py
 mcgyvr                        derived                  tests/lab_numbers.py
 mcgyvr                        drive                    tests/livejournal.py
 mcgyvr                        runner                   tests/conftest.py
@@ -66,6 +67,21 @@ mcgyvr.contract               ContractError            tools/bench/admit.py
 mcgyvr.contract               dumps                    tools/bundle/measure.py
 mcgyvr.contract               load                     tools/bench/admit.py
 mcgyvr.contract               loads                    tests/red_port/conftest.py
+mcgyvr.decision               BoolAnswer               tools/runs/campaigns/jev-mcorch/jev_slice.py
+mcgyvr.decision               Choice                   tools/runs/campaigns/jev-mcorch/jev_probe.py
+mcgyvr.decision               DecisionError            tools/runs/campaigns/jev-mcorch/jev_probe.py
+mcgyvr.decision               Noul                     tools/runs/campaigns/jev-mcorch/jev_probe.py
+mcgyvr.decision               Question                 tools/runs/campaigns/jev-mcorch/jev_probe.py
+mcgyvr.decision               Score                    tools/runs/campaigns/jev-mcorch/jev_probe.py
+mcgyvr.decision               ScoreAnswer              tools/runs/campaigns/jev-mcorch/jev_slice.py
+mcgyvr.decision               _top_logprobs            tools/runs/campaigns/jev-mcorch/jev_probe.py
+mcgyvr.decision               answer_for               tools/runs/campaigns/jev-mcorch/jev_probe.py
+mcgyvr.decision               build_prompt             tools/runs/campaigns/jev-mcorch/jev_probe.py
+mcgyvr.decision               classify                 tools/runs/campaigns/jev-mcorch/jev_slice.py
+mcgyvr.decision               confidence               tools/runs/campaigns/jev-mcorch/jev_probe.py
+mcgyvr.decision               labels_for               tools/runs/campaigns/jev-mcorch/jev_probe.py
+mcgyvr.decision               probabilities_from_logprobs tools/runs/campaigns/jev-mcorch/jev_probe.py
+mcgyvr.delegate               classifier_proposer_for  tools/runs/campaigns/jev-mcorch/orch_modes.py
 mcgyvr.deliver                Accepted                 tools/missions/attempt.py
 mcgyvr.deliver                DeliveryError            tools/missions/run.py
 mcgyvr.deliver                Identity                 tools/missions/run.py
@@ -101,11 +117,11 @@ mcgyvr.fleet.files            load_fleet               tools/runs/campaigns/lock
 mcgyvr.fleet.files            load_policy              tests/test_lock_fleets_assembles_only_what_its_runs_prove.py
 mcgyvr.fleet.harness          HARNESS_WORD             tools/runs/campaigns/lock-fleets/lockfleets.py
 mcgyvr.fleet.harness          __file__                 tools/runs/campaigns/lock-fleets/lockfleets.py
-mcgyvr.fleet.ids              digest                   fleet-setup/digests-srv1.json.py
-mcgyvr.fleet.ids              rig_id                   tests/lockfleets_window.py
 mcgyvr.fleet.ids              RIG_EXTRA_CARDS          fleet-setup/re-derive-rig-id.py
 mcgyvr.fleet.ids              RIG_HARDWARE             fleet-setup/re-derive-rig-id.py
 mcgyvr.fleet.ids              RIG_SYSTEM               fleet-setup/re-derive-rig-id.py
+mcgyvr.fleet.ids              digest                   fleet-setup/digests-srv1.json.py
+mcgyvr.fleet.ids              rig_id                   tests/lockfleets_window.py
 mcgyvr.fleet.layout           AWAKE                    tools/runs/campaigns/lock-fleets/lockfleets.py
 mcgyvr.fleet.lock             _combination_id_for      tests/test_lock_fleets_assembles_only_what_its_runs_prove.py
 mcgyvr.fleet.lock             _switch_moves            tools/runs/campaigns/lock-fleets/lockfleets.py
@@ -127,11 +143,15 @@ mcgyvr.gate.adapters          PythonAdapter            tools/bench/identity.py
 mcgyvr.gate.adapters.python   DEFAULT_RUFF_SELECT      tests/test_bench_score.py
 mcgyvr.gate.adapters.python   ruff_config_args         tools/bench/identity.py
 mcgyvr.gate.changeset         ChangeSet                tools/bench/score.py
+mcgyvr.gate.jev               JEV_QUESTIONS            tools/runs/campaigns/jev-mcorch/jev_slice.py
 mcgyvr.gate.preflight         check_prompt_fits        tools/breadth/measure.py
 mcgyvr.gate.runner            Gate                     tools/bench/lintless.py
 mcgyvr.gate.semantic          ENGINE_COMMIT            tests/test_the_engine_the_products_gate_pins_is_the_engine_the_labs_record_of_its_source_describes.py
 mcgyvr.gate.semantic          ENGINE_DIGESTS           tests/test_the_engine_the_products_gate_pins_is_the_engine_the_labs_record_of_its_source_describes.py
 mcgyvr.gate.typecheck         STYLE                    tests/test_a_bench_workspace_is_judged_as_a_repository_that_states_no_lint_configuration.py
+mcgyvr.orchestrator           attach                   tools/runs/campaigns/jev-mcorch/orch_modes.py
+mcgyvr.orchestrator           build_index              tools/runs/campaigns/jev-mcorch/orch_modes.py
+mcgyvr.orchestrator           decompose                tools/runs/campaigns/jev-mcorch/orch_modes.py
 mcgyvr.orchestrator.decompose Decomposition            tools/missions/run.py
 mcgyvr.orchestrator.decompose DepRef                   tools/missions/propose.py
 mcgyvr.orchestrator.decompose Evidence                 tools/missions/propose.py
@@ -202,6 +222,8 @@ mcgyvr.telemetry              _product_revision        tests/test_a_live_row_nam
 mcgyvr.telemetry              correct                  tests/test_a_review_prints_the_prompt_the_reply_and_how_it_landed.py
 mcgyvr.telemetry              fold                     tools/live/index.py
 mcgyvr.telemetry              observe                  tests/test_a_live_row_names_what_answered_it_and_under_which_round.py
+mcgyvr.verify                 VERDICT_KEY              tools/runs/campaigns/jev-mcorch/jev_slice.py
+mcgyvr.verify                 VERDICT_QUESTION         tools/runs/campaigns/jev-mcorch/jev_slice.py
 mcgyvr.worker.bundle          BundleStanding           tests/test_bundle_ladder.py
 mcgyvr.worker.bundle          MAX_BUNDLE_BYTES         tests/test_bundle_ladder.py
 mcgyvr.worker.bundle          bundle_for               tools/bundle/measure.py
@@ -212,7 +234,8 @@ mcgyvr.worker.prompt          render_user_message      tools/bundle/measure.py
 mcgyvr.worker.reply           ParsedFile               tools/missions/attempt.py
 mcgyvr.worker.reply           ReplyError               tools/bench/gate_rescore.py
 mcgyvr.worker.reply           WHOLE_FILE               tools/replies/pin.py
-mcgyvr.worker.reply           parse_reply              tools/bench/gate_rescore.py"""  # noqa: E501
+mcgyvr.worker.reply           parse_reply              tools/bench/gate_rescore.py
+"""  # noqa: E501
 
 SHELL_FROM = re.compile(r"\bfrom\s+(mcgyvr(?:\.\w+)*)\s+import\s+([\w ,]+)")
 SHELL_MODULE = re.compile(r"(?:\bimport|(?<!\S)-m)\s+(mcgyvr(?:\.\w+)*)")

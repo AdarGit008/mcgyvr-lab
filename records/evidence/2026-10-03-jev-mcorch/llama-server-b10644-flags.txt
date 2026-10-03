@@ -1,0 +1,18 @@
+-cram, --cache-ram N                    set the maximum cache size in MiB (default: 8192, -1 - no limit, 0 -
+                                        using unified KV (default: enabled, requires cache-ram)
+--cache-reuse N                         min chunk size to attempt reusing from the cache via KV shifting,
+--jinja, --no-jinja                     whether to use jinja template engine for chat (default: enabled)
+--reasoning-format FORMAT               controls whether thought tags are allowed and/or extracted from the
+                                        - deepseek: puts thoughts in `message.reasoning_content`
+                                        also populating `message.reasoning_content`
+-rea,  --reasoning [on|off|auto]        Use reasoning/thinking in the chat ('on', 'off', or 'auto', default:
+--reasoning-effort LEVEL                reasoning effort level given to the chat template: 'default' to keep
+--reasoning-budget N                    token budget for thinking: -1 for unrestricted, 0 for immediate end,
+--reasoning-budget-message MESSAGE      message injected before the end-of-thinking tag when reasoning budget
+--reasoning-preserve, --no-reasoning-preserve
+                                        preserve reasoning trace in the full history, not just the last
+                                        compatible with certain templates having 'supports_preserve_reasoning'
+                                        only commonly used templates are accepted (unless --jinja is set
+                                        only commonly used templates are accepted (unless --jinja is set
+                                        reasoning and/or tool calls (default: disabled)
+-sps,  --slot-prompt-similarity SIMILARITY
