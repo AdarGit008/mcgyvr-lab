@@ -276,3 +276,16 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   ``REVIEW_OUTPUT_TOKENS``) is deferred to P4 — those are internal structured
   dispatches, not the chat/agent prose path. Reviewed
   (`records/review-p3-prose-no-cap.md`).
+- P3 third increment (the prose-aware serving path, done — product `b8c33827`):
+  a raw-text reply (`prose` / `media_artifact`) is the answer handed back to
+  the harness, not a file to be gated, committed and delivered. The drive
+  reuses `best_of` unchanged — it stages the parsed prose at `contract.target`
+  and binds it — but the gate callback is now `gate_prose_workspace`, which
+  runs only the output checks the contract declares (grounded / safety for
+  agent, nothing for chat) and never scope/adapters/typecheck/acceptance, and
+  the judgement is never handed a verifier, since there is no file change to
+  review. The climb report skips `_commit` for raw text and writes the answer
+  into the result file (`RunResult.answer`). Reviewed
+  (`records/review-p3-prose-serving.md`). This closes the prose half of P3; the
+  remaining P3 items are the agent gate (already wired for grounded + safety
+  via `gate_prose_workspace`) and P4 packaging.
