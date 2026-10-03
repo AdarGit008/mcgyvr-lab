@@ -1,0 +1,7 @@
+signin 303 /
+POST /me/rigs/<worker-rig>/crew crew_id=<default> -> 303 /me/rigs 
+POST /me/rigs/<worker-rig>/crew crew_id=<live-b-crew> -> 303 /me/rigs 
+POST /me/rigs/<worker-rig>/crew crew_id=<a crew id that does not exist> -> 404  Error · mcgyvr-hub   mcgyvr hub   Network   Rigs   Pool   Feed   Profile   My rigs   Crews   Hitchhike   W @worker-owner   Settings   Sign out   That didn't work   No such crew.   Back to the network   mcgyvr-hub 0.1.0   Status   API   Theme: auto
+now: [" crew Lent to your crews, whole cards. While it is online you may use your crewmates' crew rigs. ", " pool Lent to the general pool, whole cards. While it is online you may use other people's pool rigs. ", ' Sharing: crew: live-b-crew ', " crew Lent to your crews, whole cards. While it is online you may use your crewmates' crew rigs. ", " pool Lent to the general pool, whole cards. While it is online you may use other people's pool rigs. ", ' Lent to live-b-crew. ']
+POST /me/hitchhike/ride ride=off -> 303 /me/hitchhike
+POST /me/hitchhike/ride ride=on -> 303 /me/hitchhike

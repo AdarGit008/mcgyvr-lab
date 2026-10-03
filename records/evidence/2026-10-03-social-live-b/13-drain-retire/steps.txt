@@ -1,0 +1,11 @@
+08:55:10.932 $ mcgyvr-hub models set Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf --max 0
+max copies (0) cannot be below min copies (1)
+exit 1
+08:55:12.594 $ mcgyvr-hub models set Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf --copies 0 --max 0
+exit 0
+08:55:14.171 $ mcgyvr-hub fleet replan
+asked the running hub to apply the fleet policies once: it does within 5 s
+08:55:21.368 in-flight finished
+priority	name	min	max	state	in/1k	out/1k
+1	Qwen3-8B-Q4_K_M.gguf	0	0	enabled	1	2
+2	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	0	0	enabled	2	4

@@ -1,0 +1,2 @@
+08:48:39Z start who=head-owner model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf stream=False max=64 scope=None
+08:49:06Z HTTP 502 after 27.81s retry-after=None body={"error":{"message":"the pool session failed (agent_gone)","type":"server_error","code":"session_failed","param":null}}

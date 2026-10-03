@@ -1,0 +1,107 @@
+# step 2 watcher (as requester, who lends nothing: /v1/models stays empty by design)
+08:15:52Z models: [] | rigs: [["head-rig", "online", "pool", [11909, 11909]], ["worker-rig", "online", "pool", [5729]]]
+08:16:59Z models: [] | rigs: [["head-rig", "online", "pool", [9173, 8674]], ["worker-rig", "online", "pool", [5729]]]
+08:17:30Z models: [] | rigs: [["head-rig", "online", "pool", [9171, 8656]], ["worker-rig", "online", "pool", [5729]]]
+08:17:46Z models: [] | rigs: [["head-rig", "online", "pool", [9169, 8656]], ["worker-rig", "online", "pool", [5729]]]
+08:18:00Z models: [] | rigs: [["head-rig", "online", "pool", [9163, 8650]], ["worker-rig", "online", "pool", [5729]]]
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/urllib/request.py", line 1344, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.12/http/client.py", line 1365, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.12/http/client.py", line 1411, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.12/http/client.py", line 1360, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.12/http/client.py", line 1120, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.12/http/client.py", line 1064, in send
+    self.connect()
+  File "/usr/lib/python3.12/http/client.py", line 1030, in connect
+    self.sock = self._create_connection(
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 852, in create_connection
+    raise exceptions[0]
+  File "/usr/lib/python3.12/socket.py", line 837, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/adaramir/claude/mcgyvr-lab-live-b/records/evidence/2026-10-03-social-live-b/instruments/watch.py", line 19, in <module>
+    c1, models, _ = call("GET", "/v1/models", who)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adaramir/claude/mcgyvr-lab-live-b/records/evidence/2026-10-03-social-live-b/instruments/hub.py", line 46, in call
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 515, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 532, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 1373, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 1347, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+# rig watchers
+08:15:53Z srv1 | vram_used: 1 1
+08:16:50Z srv1 :Up :Up Less than a second | vram_used: 2 1
+08:16:53Z srv1 :Up :Up | vram_used: 113 113
+08:16:56Z srv1 :Up :Up | vram_used: 2723 3237
+08:16:59Z srv1 :Up :Up | vram_used: 2737 3237
+08:17:23Z srv1 :Up :Up | vram_used: 2739 3255
+08:17:38Z srv1 :Up :Up | vram_used: 2741 3255
+08:17:43Z srv1 :Up :Up | vram_used: 2743 3261
+08:17:49Z srv1 :Up :Up About a minute | vram_used: 2747 3261
+08:17:52Z srv1 :Up About a minute :Up About a minute | vram_used: 2747 3261
+08:18:49Z srv1 :Up :Up About a minute | vram_used: 2747 3261
+08:18:52Z srv1 :Up :Up | vram_used: 2747 3261
+08:27:08Z srv1 | vram_used: 1 1
+08:29:07Z srv1 :Up 1 second | vram_used: 1 1
+08:29:10Z srv1 :Up :Up | vram_used: 2727 3237
+08:29:13Z srv1 :Up :Up | vram_used: 2737 3237
+08:29:36Z srv1 :Up :Up | vram_used: 2739 3255
+08:29:51Z srv1 :Up :Up | vram_used: 2741 3255
+08:29:59Z srv1 :Up :Up | vram_used: 2743 3261
+08:30:03Z srv1 :Up :Up | vram_used: 2747 3261
+08:30:06Z srv1 :Up :Up About a minute | vram_used: 2747 3261
+08:30:09Z srv1 :Up About a minute :Up About a minute | vram_used: 2747 3261
+08:31:08Z srv1 :Up :Up | vram_used: 2747 3261
+08:31:41Z srv1 | vram_used: 1 1
+08:33:44Z srv1 :Up | vram_used: 1 1
+08:33:51Z srv1 :Up :Up | vram_used: 113 113
+08:33:54Z srv1 :Up :Up | vram_used: 9007 8595
+08:34:06Z srv1 :Up :Up | vram_used: 9993 9541
+08:34:27Z srv1 :Up :Up | vram_used: 9993 9555
+08:34:45Z srv1 :Up :Up About a minute | vram_used: 9995 9555
+08:34:50Z srv1 :Up About a minute :Up About a minute | vram_used: 9995 9555
+08:34:59Z srv1 :Up About a minute :Up About a minute | vram_used: 9997 9555
+08:35:05Z srv1 :Up About a minute :Up About a minute | vram_used: 10007 9569
+08:35:17Z srv1 :Up About a minute :Up About a minute | vram_used: 10013 9575
+08:35:44Z srv1 :Up :Up About a minute | vram_used: 10013 9575
+08:35:49Z srv1 :Up :Up | vram_used: 10013 9575
+08:15:53Z srv2 | vram_used: 17
+08:31:40Z srv2 :Up Less than a second | vram_used: 17
+08:31:43Z srv2 | vram_used: 17
+08:33:44Z srv2 :Up 1 second | vram_used: 17
+08:33:47Z srv2 :Up :Up Less than a second | vram_used: 88
+08:33:50Z srv2 :Up :Up | vram_used: 88
+08:33:53Z srv2 :Up :Up | vram_used: 4382
+08:34:04Z srv2 :Up :Up | vram_used: 4946
+08:34:28Z srv2 :Up :Up | vram_used: 4954
+08:34:42Z srv2 :Up :Up About a minute | vram_used: 4954
+08:34:48Z srv2 :Up About a minute :Up About a minute | vram_used: 4954
+08:35:05Z srv2 :Up About a minute :Up About a minute | vram_used: 4956
+08:35:08Z srv2 :Up About a minute :Up About a minute | vram_used: 4968
+08:35:42Z srv2 :Up :Up About a minute | vram_used: 4968
+08:35:48Z srv2 :Up :Up | vram_used: 4968

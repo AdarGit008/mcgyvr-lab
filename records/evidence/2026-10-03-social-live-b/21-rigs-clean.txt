@@ -1,0 +1,85 @@
+# 09:01:46 rigs after tear-down vs baseline
+== srv1
+images: identical to baseline
+docker ps -a:
+5187217a5efd ghcr.io/ggml-org/llama.cpp:server-cuda-b10481 mcgyvr-lcpp Exited (255) 4 weeks ago
+18ed1a47afa7 vllm/vllm-openai:latest vllm-nemotron-4b Exited (1) 7 weeks ago
+pooled containers (label mcgyvr.pool=1): 0
+agents: 0
+llama/rpc processes: 1
+gpu compute apps: 0
+vram used: 1 MiB 1 MiB 
+forwarded port 18765 listening: 0
+product checkout: 12fa907c1 feat(rig): a sync reports the rider's ladder to the hub, and nothing else [ladder-relief-rungs]
+/home/adaramir/mcgyvr-pool-tmp:
+data
+e2e
+guard.sh
+home
+open_head.sh
+product
+product-live-b.bundle
+product.bundle
+sidecar.sh
+up.sh
+uv-cache
+uv-python
+
+/home/adaramir/mcgyvr-pool-tmp/e2e:
+agent.log
+agent.log.2026-10-02-aside
+data
+home
+
+/home/adaramir/mcgyvr-pool-tmp/e2e/home:
+rig-credentials.json
+rig-credentials.json.2026-10-02-aside
+rig-sharing.json
+ls: cannot access '/home/adaramir/agent.pid': No such file or directory
+== srv2
+images: identical to baseline
+docker ps -a:
+26d51cc18607 vllm/vllm-openai:v0.26.0 vllm-7b-coder Exited (0) 6 weeks ago
+90d4db5ec53e vllm/vllm-openai:latest vllm-nemotron-30b Exited (0) 7 weeks ago
+c5355959a8e5 vllm/vllm-openai:latest vllm-nemotron-4b Exited (1) 7 weeks ago
+pooled containers (label mcgyvr.pool=1): 0
+agents: 0
+llama/rpc processes: 1
+gpu compute apps: 0
+vram used: 17 MiB 
+forwarded port 18765 listening: 0
+product checkout: 12fa907c1 feat(rig): a sync reports the rider's ladder to the hub, and nothing else [ladder-relief-rungs]
+/home/adaramir/mcgyvr-pool-tmp:
+data
+e2e
+guard.sh
+home
+product
+product-live-b.bundle
+product.bundle
+rpc-cache
+sidecar.sh
+up.sh
+uv-cache
+uv-python
+
+/home/adaramir/mcgyvr-pool-tmp/e2e:
+agent.log
+agent.log.2026-10-02-aside
+data
+home
+rider-setup
+
+/home/adaramir/mcgyvr-pool-tmp/e2e/home:
+rig-credentials.json
+rig-credentials.json.2026-10-02-aside
+rig-sharing.json
+ls: cannot access '/home/adaramir/agent.pid': No such file or directory
+== VPS
+no tunnels
+    PID                  STARTED COMMAND
+1977235 Sat Oct  3 11:27:00 2026 /home/adaramir/claude/mcgyvr-hub-live/.venv/bin/python /home/adaramir/claude/mcgyvr-hub-live/.venv/bin/mcgyvr-hub serve --host 100.119.117.59 --port 18765 --db /home/adaramir/.local/state/mcgyvr-demo/hub.db
+{"status":"ok","version":"0.1.0"}
+# correction: the 'llama/rpc processes: 1' above is the check's own command line (its [r]pc-server pattern matches the text [g]gml-rpc-server); a plain ps listing:
+== srv1: none
+== srv2: none

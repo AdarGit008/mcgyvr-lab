@@ -1,0 +1,120 @@
+# rig baseline before phase B, 2026-10-03T08:11:12Z
+=== srv1
+0, NVIDIA GeForce RTX 3060, 1 MiB, 12288 MiB
+1, NVIDIA GeForce RTX 3060, 1 MiB, 12288 MiB
+-- compute apps:
+-- docker ps -a:
+5187217a5efd ghcr.io/ggml-org/llama.cpp:server-cuda-b10481 mcgyvr-lcpp Exited (255) 4 weeks ago
+18ed1a47afa7 vllm/vllm-openai:latest vllm-nemotron-4b Exited (1) 7 weeks ago
+-- docker images:
+diag-vk:strace 9b9977cc5340
+ghcr.io/ggml-org/llama.cpp:full-b10644 182a14ae5c20
+ghcr.io/ggml-org/llama.cpp:full-cuda 25fa0eeadbd0
+ghcr.io/ggml-org/llama.cpp:full-cuda-b10644 3db42a30a901
+ghcr.io/ggml-org/llama.cpp:full fa675d6665e0
+ghcr.io/ggml-org/llama.cpp:server-cuda 9f0a986a78ab
+ghcr.io/ggml-org/llama.cpp:server-cuda-b10481 b2497f8834f5
+ghcr.io/ggml-org/llama.cpp:server-cuda-b10644 9f0a986a78ab
+llamacpp:b10644-A3 64f74adbf42f
+llamacpp:b10644-A3-spirvfix 6f84d77b65c1
+llamacpp:b10644-L0 e755dd07a106
+llamacpp:b10644-L1 0494a6bae82f
+llamacpp:b10644-L2 a77621c171aa
+llamacpp:b10644-L3 d869b98f2b7b
+llamacpp:b10644-L3-rpc c49d9cd3e2d6
+llamacpp:b10644-L4 9aec7cb55718
+llamacpp:b10644-nomma-dp4a e48510bfd22c
+llamacpp:b10644-nomma-dp4a-v2 1d5191061db7
+llamacpp:b10644-nomma-dp4a-v3 aa269ef1546e
+mcgyvr-tunnel:f6dec4a3b3a0 e51b2605a3ef
+openmmlab/lmdeploy:v0.16.0-cu12.8 0fd7426f7633
+ubuntu:24.04 4fbb8e6a8395
+ubuntu:26.04 2260313b31c8
+vllm/vllm-openai:latest ffb2d59b1c05
+vllm/vllm-openai:v0.26.0 ffb2d59b1c05
+-- llama/rpc/mcgyvr processes:
+none
+-- ~/mcgyvr-pool-tmp:
+data
+e2e
+guard.sh
+home
+open_head.sh
+product
+product.bundle
+sidecar.sh
+up.sh
+uv-cache
+uv-python
+total 16
+drwx------ 2 adaramir adaramir 4096 Oct  2 05:40 .
+drwx------ 4 adaramir adaramir 4096 Oct  2 08:30 ..
+-rw------- 1 adaramir adaramir  111 Oct  2 05:40 rig-credentials.json
+-rw------- 1 adaramir adaramir  367 Oct  2 05:40 rig-sharing.json
+-- product checkout:
+5cb7910b2 fix(sandbox): the tunnel's WireGuard is not killed for memory mid-transfer
+=== srv2
+0, NVIDIA GeForce GTX 1660 SUPER, 17 MiB, 6144 MiB
+-- compute apps:
+-- docker ps -a:
+26d51cc18607 vllm/vllm-openai:v0.26.0 vllm-7b-coder Exited (0) 6 weeks ago
+90d4db5ec53e vllm/vllm-openai:latest vllm-nemotron-30b Exited (0) 7 weeks ago
+c5355959a8e5 vllm/vllm-openai:latest vllm-nemotron-4b Exited (1) 7 weeks ago
+-- docker images:
+alpine:3.22 5291449c3df7
+diag-vk:bisect1 92f03ee961bf
+diag-vk:bisect2 231c9b443446
+diag-vk:bisect3 5db9e907e127
+diag-vk:bisect4 e81c87bad63a
+diag-vk:bisect5 efb6ddae7df5
+diag-vk:mesa 66a8e46343f9
+diag-vk:nvidia_cuda_12_8_0-runtime-ubuntu24_04 9cec6d3ca8f5
+diag-vk:strace a704ce85ede7
+diag-vk:ubuntu_24_04 c26b8f7bd8ea
+diag-vk:ubuntu_26_04 a2029429e6bb
+ghcr.io/ggml-org/llama.cpp:full-cuda-b10481 f960e6dad3c3
+ghcr.io/ggml-org/llama.cpp:full-cuda-b10644 3db42a30a901
+ghcr.io/ggml-org/llama.cpp:server-cuda 9f0a986a78ab
+ghcr.io/ggml-org/llama.cpp:server-cuda-b10481 b2497f8834f5
+ghcr.io/ggml-org/llama.cpp:server-cuda-b10644 9f0a986a78ab
+ghcr.io/ggml-org/llama.cpp:server-vulkan a07daf5557d8
+llamacpp:b10644-A3 64f74adbf42f
+llamacpp:b10644-A3-spirvfix 6f84d77b65c1
+llamacpp:b10644-L0 e755dd07a106
+llamacpp:b10644-L1 0494a6bae82f
+llamacpp:b10644-L2 a77621c171aa
+llamacpp:b10644-L3 d869b98f2b7b
+llamacpp:b10644-L3-rpc c49d9cd3e2d6
+llamacpp:b10644-L4 9aec7cb55718
+llamacpp:b10644-nomma-dp4a e48510bfd22c
+llamacpp:b10644-nomma-dp4a-v2 1d5191061db7
+llamacpp:b10644-nomma-dp4a-v3 aa269ef1546e
+llamacpp:b10644-vulkan 5c1b3f51e398
+llamacpp-lidenburg:e85e4d9 9a6182326691
+mcgyvr-tunnel:f6dec4a3b3a0 1de233a5c656
+nvidia/cuda:12.8.0-devel-ubuntu24.04 9a8fffc32a95
+openmmlab/lmdeploy:v0.16.0-cu12.8 0fd7426f7633
+ubuntu:24.04 4fbb8e6a8395
+vllm/vllm-openai:latest ffb2d59b1c05
+vllm/vllm-openai:v0.26.0 ffb2d59b1c05
+-- llama/rpc/mcgyvr processes:
+none
+-- ~/mcgyvr-pool-tmp:
+data
+e2e
+guard.sh
+home
+product
+product.bundle
+rpc-cache
+sidecar.sh
+up.sh
+uv-cache
+uv-python
+total 16
+drwx------ 2 adaramir adaramir 4096 Oct  2 05:40 .
+drwx------ 4 adaramir adaramir 4096 Oct  2 08:30 ..
+-rw------- 1 adaramir adaramir  111 Oct  2 05:40 rig-credentials.json
+-rw------- 1 adaramir adaramir  340 Oct  2 05:40 rig-sharing.json
+-- product checkout:
+5cb7910b2 fix(sandbox): the tunnel's WireGuard is not killed for memory mid-transfer

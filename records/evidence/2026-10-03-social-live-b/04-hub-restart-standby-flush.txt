@@ -1,0 +1,40 @@
+08:26:59
+[demo-down] hub stopped
+[demo-down] down: hub stopped (rigs not touched)
+[demo-up] hub up on 100.119.117.59:18765 (pid 1977235, default ctx 12288)
+already bootstrapped
+[demo-up] hub only: rigs not touched
+08:27:02
+INFO:     Shutting down
+INFO:     rig left rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 why=closed
+INFO:     rig left rig=0385c97b274149b4b01961f87ae596a8 why=closed
+INFO:     fleet unit held unit=a87e761d06494a1fb810a72717ea77fd model='Qwen3-8B-Q4_K_M.gguf' waiting=0 why=rig_away
+INFO:     hitchhike matched offers=0 riders=0 matches=0
+INFO:     hitchhike matched offers=0 riders=0 matches=0
+INFO:     Waiting for application shutdown.
+INFO:     fleet unit stopped unit=a87e761d06494a1fb810a72717ea77fd model='Qwen3-8B-Q4_K_M.gguf' reason=hub_shutdown
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1883068]
+INFO:     Started server process [1977235]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://100.119.117.59:18765 (Press CTRL+C to quit)
+INFO:     hitchhike matched offers=0 riders=0 matches=0
+INFO:     100.119.117.59:33004 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     rig joined rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 remote=100.119.117.59 cards=1 models=0 again=False
+INFO:     hitchhike matched offers=0 riders=0 matches=0
+INFO:     100.119.117.59:33006 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     rig joined rig=0385c97b274149b4b01961f87ae596a8 remote=100.119.117.59 cards=2 models=10 again=False
+INFO:     fleet unit started unit=548dffe37af348dda89d1f108525a663 model='Qwen3-8B-Q4_K_M.gguf' rigs=0385c97b274149b4b01961f87ae596a8 why=below_min scope=pool
+INFO:     hitchhike matched offers=0 riders=0 matches=0
+INFO:     fleet unit failed unit=548dffe37af348dda89d1f108525a663 model='Qwen3-8B-Q4_K_M.gguf' code=busy served=False
+INFO:     hitchhike matched offers=0 riders=0 matches=0
+INFO:     hitchhike matched offers=0 riders=0 matches=0
+INFO:     fleet unit started unit=1f51750841eb4c28b915b851d699147d model='Qwen3-8B-Q4_K_M.gguf' rigs=0385c97b274149b4b01961f87ae596a8 why=below_min scope=pool
+INFO:     hitchhike matched offers=0 riders=0 matches=0
+INFO:     fleet unit ready unit=1f51750841eb4c28b915b851d699147d model='Qwen3-8B-Q4_K_M.gguf' waiting=0
+INFO:     hitchhike matched offers=0 riders=0 matches=0
+2026-10-03T08:29:08.2035228Z
+2026-10-03T08:29:36.145642793Z 0.27.798.533 I srv  llama_server: model loaded

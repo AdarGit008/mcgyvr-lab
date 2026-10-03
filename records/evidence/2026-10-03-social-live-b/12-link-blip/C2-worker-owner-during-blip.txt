@@ -1,0 +1,2 @@
+08:54:41Z start who=worker-owner model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf stream=False max=32 scope=None
+08:54:41Z HTTP 404 after 0.04s retry-after=None body={"error":{"message":"Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf is not running in the general pool, and the hub does not start models on request. Running now: nothing you can use.","type":"invalid_request_error","code":"model_not_found","param":null}}

@@ -1,0 +1,3 @@
+08:54:41Z start who=head-owner model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf stream=False max=32 scope=None
+08:54:57Z HTTP 200 wall=16.64s prompt_tok=44 completion_tok=32 tok/s(wall)=1.9 timings={"cache_n": 43, "prompt_n": 1, "prompt_ms": 88.507, "prompt_per_token_ms": 88.507, "prompt_per_second": 11.298541358310642, "predicted_n": 32, "predicted_ms": 2673.449, "predicted_per_token_ms": 86.24029032258065, "predicted_per_second": 11.595508274143251}
+answer: "```python\ndef is_prime(n):\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    if"

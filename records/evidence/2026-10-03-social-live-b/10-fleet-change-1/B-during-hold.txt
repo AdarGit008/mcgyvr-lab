@@ -1,0 +1,2 @@
+08:37:25Z start who=head-owner model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf stream=False max=64 scope=None
+08:37:30Z HTTP 502 after 5.53s retry-after=None body={"error":{"message":"the pool session failed (busy)","type":"server_error","code":"session_failed","param":null}}

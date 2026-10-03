@@ -1,0 +1,30 @@
+Feed · mcgyvr-hub 
+ mcgyvr hub 
+ Network 
+ Rigs 
+ Pool 
+ Feed 
+ Profile 
+ My rigs 
+ Crews 
+ Hitchhike 
+ H @head-owner 
+ Settings 
+ Sign out 
+ Feed 
+ Share a setup 
+ What happened on the network: your crews, ride offers, setups people shared, and the pool's units starting and stopping. Your endpoint, keys and balance are on your profile . 
+ All 
+ Crews 
+ Hitchhike 
+ Setups 
+ @head-owner added Qwen3-8B-Q4_K_M.gguf to the model list of live-b-crew (place 1, 1 to 1 copies).
+ 4 min ago 
+ @worker-owner joined live-b-crew.
+ 4 min ago 
+ @head-owner started the crew live-b-crew.
+ 4 min ago 
+ mcgyvr-hub 0.1.0 
+ Status 
+ API 
+ Theme: auto

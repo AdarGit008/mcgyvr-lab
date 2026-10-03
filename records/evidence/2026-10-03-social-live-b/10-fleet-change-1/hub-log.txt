@@ -1,0 +1,14 @@
+08:37:16.579 INFO:     100.119.117.59:38070 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+08:37:22.357 INFO:     rig left rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 why=closed
+08:37:22.363 INFO:     fleet unit held unit=5567168cc3ff433090e00c0955ca4c68 model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=0 why=rig_away
+08:37:28.543 INFO:     100.119.117.59:36270 - "WebSocket /api/v1/agent" [accepted]
+08:37:28.546 INFO:     connection open
+08:37:28.614 INFO:     rig joined rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 remote=100.119.117.59 cards=1 models=0 again=False
+08:37:28.617 INFO:     fleet unit failed unit=5567168cc3ff433090e00c0955ca4c68 model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' code=member_lost_session served=True
+08:37:28.710 INFO:     fleet unit started unit=ae22a294f8844b84a661b2c99fb5166c model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' rigs=0385c97b274149b4b01961f87ae596a8,98eaf6d3cb2c4f79a1840b8725c8d0f8 why=reload_of:5567168cc3ff433090e00c0955ca4c68
+08:37:28.715 INFO:     fleet unit replaced unit=5567168cc3ff433090e00c0955ca4c68 by=ae22a294f8844b84a661b2c99fb5166c model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=1 why=reload
+08:37:30.782 INFO:     fleet unit failed unit=ae22a294f8844b84a661b2c99fb5166c model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' code=busy served=False
+08:37:30.789 INFO:     request refused user=191786e5a64d48059f86e7bb42c7ae49 model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' status=502 code=session_failed
+08:37:30.791 INFO:     100.119.117.59:36260 - "POST /v1/chat/completions HTTP/1.1" 502 Bad Gateway
+08:39:30.866 INFO:     fleet unit started unit=8a58430415ec4b57b1989ca92d319eec model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' rigs=0385c97b274149b4b01961f87ae596a8,98eaf6d3cb2c4f79a1840b8725c8d0f8 why=below_min scope=pool
+08:41:08.361 INFO:     fleet unit ready unit=8a58430415ec4b57b1989ca92d319eec model='Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf' waiting=0

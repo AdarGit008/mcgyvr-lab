@@ -1,0 +1,37 @@
+$ mcgyvr-hub models set Qwen3-8B-Q4_K_M.gguf --price-in 1 --price-out 2
+priority	name	min	max	state	in/1k	out/1k
+1	Qwen3-8B-Q4_K_M.gguf	1	1	enabled	1	2
+2	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	1	1	enabled	0	0
+$ GET /v1/models (worker-owner)
+200 {"object": "list", "data": [{"id": "Qwen3-8B-Q4_K_M.gguf", "object": "model", "created": 0, "owned_by": "pool", "pricing": {"currency": "credits", "per_tokens": 1000, "input": "1", "output": "2"}}]}
+$ chat.py worker-owner 8B (non-stream, then stream)
+08:30:54Z start who=worker-owner model=Qwen3-8B-Q4_K_M.gguf stream=False max=128 scope=None
+08:30:57Z HTTP 200 wall=3.11s prompt_tok=23 completion_tok=128 tok/s(wall)=41.1 timings={"cache_n": 3, "prompt_n": 20, "prompt_ms": 31.056, "prompt_per_token_ms": 1.5528, "prompt_per_second": 643.9979392065945, "predicted_n": 128, "predicted_ms": 2076.614, "predicted_per_token_ms": 16.351291338582676, "predicted_per_second": 61.157249252870294}
+answer: "Okay, I need to write a Python function to check if a number is prime. Let me think about how to approach this.\n\nFirst, what's a prime number? A prime number is"
+08:30:57Z start who=worker-owner model=Qwen3-8B-Q4_K_M.gguf stream=True max=200 scope=None
+08:31:03Z HTTP 200 headers=1.10s first_token=1.1s wall=5.52s chunks=198 completion_tok=200 decode tok/s=45.1 done=True error=null
+answer: "Okay, I need to write a Python function to check if a number is prime. Let me think about how to approach this.\n\nFirst, what's a prime number? A prime number is" | last line: data: [DONE]
+$ refusal: model on the list but not running (32B)
+08:31:03Z start who=worker-owner model=Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf stream=False max=128 scope=None
+08:31:03Z HTTP 404 after 0.03s retry-after=None body={"error":{"message":"Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf is not running in the general pool, and the hub does not start models on request. Running now: Qwen3-8B-Q4_K_M.gguf.","type":"invalid_request_error","code":"model_not_found","param":null}}
+$ refusal: model not on the list
+08:31:03Z start who=worker-owner model=Qwen3-4B-Q4_K_M.gguf stream=False max=128 scope=None
+08:31:03Z HTTP 404 after 0.03s retry-after=None body={"error":{"message":"Qwen3-4B-Q4_K_M.gguf is not running in the general pool, and the hub does not start models on request. Running now: Qwen3-8B-Q4_K_M.gguf.","type":"invalid_request_error","code":"model_not_found","param":null}}
+$ requester (lends nothing)
+08:31:03Z start who=requester model=Qwen3-8B-Q4_K_M.gguf stream=False max=128 scope=None
+08:31:03Z HTTP 403 after 0.04s retry-after=None body={"error":{"message":"Other people's rigs can run this model, but you can use them only while you lend too: put one of your rigs online lending to the pool (pool mode). Right now you have no rig online.","type":"permission_error","code":"not_giving","param":null}}
+$ mcgyvr-hub credits ledger worker-owner
+when	kind	credits	model	in	out	rig	request	reason	estimated
+2026-10-03 08:31:03	spend	-0.423	Qwen3-8B-Q4_K_M.gguf	23	200	-	72ee8b9cc98143fba22f7e21765fdd0d	-	no
+2026-10-03 08:30:57	spend	-0.279	Qwen3-8B-Q4_K_M.gguf	23	128	-	6c8ff9040be24518b5385d594217ca10	-	no
+2026-10-03 08:29:05	earn_standby	0.003333	-	-	-	98eaf6d3cb2c4f79a1840b8725c8d0f8	-	-	no
+2026-10-03 08:26:59	earn_standby	0.02	-	-	-	98eaf6d3cb2c4f79a1840b8725c8d0f8	-	-	no
+2026-10-03 08:14:48	starter	100	-	-	-	-	-	-	no
+$ mcgyvr-hub credits ledger head-owner
+when	kind	credits	model	in	out	rig	request	reason	estimated
+2026-10-03 08:31:05	earn_standby	0.006666	-	-	-	0385c97b274149b4b01961f87ae596a8	-	-	no
+2026-10-03 08:31:03	earn_work	0.423	Qwen3-8B-Q4_K_M.gguf	23	200	0385c97b274149b4b01961f87ae596a8	72ee8b9cc98143fba22f7e21765fdd0d	-	no
+2026-10-03 08:30:57	earn_work	0.279	Qwen3-8B-Q4_K_M.gguf	23	128	0385c97b274149b4b01961f87ae596a8	6c8ff9040be24518b5385d594217ca10	-	no
+2026-10-03 08:29:05	earn_standby	0.006666	-	-	-	0385c97b274149b4b01961f87ae596a8	-	-	no
+2026-10-03 08:26:59	earn_standby	0.040277	-	-	-	0385c97b274149b4b01961f87ae596a8	-	-	no
+2026-10-03 08:14:43	starter	100	-	-	-	-	-	-	no

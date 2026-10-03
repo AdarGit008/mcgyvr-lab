@@ -1,0 +1,15 @@
+08:54:12.034 closing srv2's ssh -R tunnel (pid 1883427)
+08:54:24.048 reopening it (demo-up: hub and agents already running)
+[demo-up] hub already running (pid 1977235)
+already bootstrapped
+[demo-up] tunnel to srv1 already up
+[demo-up] tunnel to srv2 up (pid 2181821)
+[demo-up] agent on srv1 already running
+[demo-up] agent on srv2 already running
+[demo-up] up
+08:54:28.179 done
+# run 2: B from head-owner (whose own rig stays online)
+08:54:38.950 closing srv2's ssh -R tunnel (pid 2181821)
+08:54:52.964 reopening it
+[demo-up] tunnel to srv2 up (pid 2182230)
+08:54:57.685 done

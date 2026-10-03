@@ -1,0 +1,16 @@
+== srv1
+tag mcgyvr-tunnel:e072940be18f
+sha256:8ea8e4569c2d4b16e6c95623f8e5fb8cdf853ba98cbcd1e94f4e4b5ca5caef4f
+build 9 s
+Python 3.12.15
+wireguard-tools v1.0.20250521 - https://git.zx2c4.com/wireguard-tools/
+nftables v1.1.3 (Commodore Bullmoose #4)
+/usr/bin/wireguard-go
+== srv2
+tag mcgyvr-tunnel:e072940be18f
+sha256:0e7afa394453c4d30e5da92ae382c223069988346c6991454b523274eea1fb57
+build 6 s
+Python 3.12.15
+wireguard-tools v1.0.20250521 - https://git.zx2c4.com/wireguard-tools/
+nftables v1.1.3 (Commodore Bullmoose #4)
+/usr/bin/wireguard-go

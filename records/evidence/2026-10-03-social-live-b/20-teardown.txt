@@ -1,0 +1,35 @@
+# 09:01:15 tear-down: agents (SIGTERM), leftover pooled containers, tunnels; hub stays up
+== srv1
+agent pid 734531: /home/adaramir/mcgyvr-pool-tmp/product/.venv/bin/python3 ../product/.venv/bin/mcgyvr rig join http://127.0.0.1:18765 --token -
+agent exited after ~2 s
+pooled containers left: none
+online as 0385c97b274149b4b01961f87ae596a8: 2 card(s), 47104 MiB RAM; a heartbeat every 15 s
+stopped
+== srv2
+agent pid 418743: /home/adaramir/mcgyvr-pool-tmp/product/.venv/bin/python3 ../product/.venv/bin/mcgyvr rig run
+agent exited after ~3 s
+pooled containers left: none
+online as 98eaf6d3cb2c4f79a1840b8725c8d0f8: 1 card(s), 46797 MiB RAM; a heartbeat every 15 s
+stopped
+closing tunnel to srv1: pid 1883369 (ssh -N -o BatchMode=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -R 127.0.0.1:18765:100.119.117.59:18765 srv1)
+closing tunnel to srv2: pid 2182230 (ssh -N -o BatchMode=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -R 127.0.0.1:18765:100.119.117.59:18765 srv2)
+# 09:01:22 done
+09:00:59.099 INFO:     100.119.117.59:43762 - "PATCH /api/v1/rigs/0385c97b274149b4b01961f87ae596a8 HTTP/1.1" 200 OK
+09:00:59.212 INFO:     100.119.117.59:43772 - "PATCH /api/v1/rigs/98eaf6d3cb2c4f79a1840b8725c8d0f8 HTTP/1.1" 200 OK
+09:01:17.015 INFO:     rig left rig=0385c97b274149b4b01961f87ae596a8 why=closed
+09:01:19.400 INFO:     rig left rig=98eaf6d3cb2c4f79a1840b8725c8d0f8 why=closed
+# restore srv2's tensor cache: drop the one this run re-filled (created 08:49:48Z), put the 2026-10-02 one back
+total 20
+drwx------ 3 adaramir adaramir 4096 2026-10-03T09:01:36 .
+drwx------ 5 adaramir adaramir 4096 2026-10-03T09:01:20 ..
+-rw-rw-r-- 1 adaramir adaramir  161 2026-10-03T09:01:19 rig-state.json
+-rw-rw-r-- 1 adaramir adaramir  161 2026-10-02T08:30:44 rig-state.json.2026-10-02-aside
+drwx------ 3 adaramir adaramir 4096 2026-10-02T05:40:34 rpc-cache
+4.2G	rpc-cache
+# remove the tunnel image this run built (rebuilt in ~9 s on the first session; the 2026-10-01 tag stays)
+0
+Untagged: mcgyvr-tunnel:e072940be18f
+Deleted: sha256:8ea8e4569c2d4b16e6c95623f8e5fb8cdf853ba98cbcd1e94f4e4b5ca5caef4f
+0
+Untagged: mcgyvr-tunnel:e072940be18f
+Deleted: sha256:0e7afa394453c4d30e5da92ae382c223069988346c6991454b523274eea1fb57
