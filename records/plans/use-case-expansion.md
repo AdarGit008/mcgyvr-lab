@@ -70,7 +70,12 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
 - **P3** chat + agent verticals → done: chat + agent task types, prose carries
   no output cap, and the prose-aware serving path (raw-text replies are the
   answer, gated only by the output checks the contract declares).
-- **P4** packaging (`mcgyvr init --use-case` + the deployment choice)
+- **P4** packaging → done: `mcgyvr init --use-case` + `--deployment`, the
+  `use_case`/`deployment` config fields, the local-orchestrator decision wired
+  into the serving plan (chat/hybrid provision nothing), the
+  orchestrator/verifier no-cap half, and the agent tool-calling capability
+  recorded as data. **Seam 5** worker bundle per use case → done (chat none,
+  agent/media-gen one unmeasured bundle each, coding per-language).
 
 ## Rulings
 
@@ -291,3 +296,43 @@ Permissive-only by default; non-commercial opt-in. The ladders are in
   (`records/review-p3-prose-serving.md`). This closes the prose half of P3; the
   remaining P3 items are the agent gate (already wired for grounded + safety
   via `gate_prose_workspace`) and P4 packaging.
+- P4 (packaging, done — product `a87a42f3`, `59ac4ca6`, `cb510076`, then the
+  review-fix `2007dd0f`): the config gains two policy keys. `use_case` (enum
+  coding/chat/agent/media-gen, default coding) and `deployment` (enum
+  hybrid/local-only, default hybrid). `mcgyvr init` gains `--use-case` and
+  `--deployment`; the deployment default is the plan's — chat is local-only,
+  everything else hybrid — and init writes the choice into the file rather than
+  leaving the schema's `hybrid` default to fill it silently. The
+  `mcgyvr.orchestrator.local` decision moves into `config.py` (a shared module)
+  so the seam lets `serving.units_for`, `capacity.py` and `pool.py` agree on it
+  without any of them importing `orchestrator/`; `orchestrator/local.py` is
+  deleted. The three consumers all gate the local orchestrator's serve/reserve
+  and its `users` width fallback on `Config.provisions_local_orchestrator` —
+  chat and hybrid provision nothing, so a bound local orchestrator unit is an
+  ordinary width-1 rung under either. The single-user half of the ruling is
+  surfaced by `init` (a decision line warns, never refuses) instead of computed
+  and dropped. This closes review finding #7 of
+  `records/review-p1-5a-5c.md`.
+- P4 no-cap half (done — product `59ac4ca6`): the ruling "prose (chat/agent)
+  and the orchestrator carry no output cap" now reaches the two internal
+  structured dispatches deferred from P3-2. `delegate.py` `proposer_for` and
+  `verify.py` `reviewer_for` default `max_output_tokens` to ``None`` (uncapped),
+  ``ORCHESTRATOR_OUTPUT_TOKENS`` and ``REVIEW_OUTPUT_TOKENS`` are removed with
+  their ``numbers.json`` entries, and the stale "Request refuses an uncapped
+  dispatch" comment is gone. The verifier's verdict is still the first word, so
+  an uncapped review cannot hide it.
+- P4 tool-calling capability (done — product `cb510076`): tool-calling is a
+  backend capability of the agent use case, recorded as data in the catalog's
+  `agent` use-case doc (llama.cpp / vLLM with tool-calling), not a gate rung and
+  not a config knob. Enforcement waits for a serving-layer tool-calling
+  dispatch path; there is nothing for a capability field to bind to yet, and an
+  unread knob is worse than a recorded ruling.
+- Seam 5 (worker bundle per use case, done — product `c47c3a01`): the worker
+  bundle is selected by use case, not by language alone. Chat gets none — a raw
+  un-gated endpoint, and a system prompt would bias a pass-through. Agent and
+  media-gen each carry one bundle (`prompts/agent.md`, `prompts/media-gen.md`),
+  both `UNMEASURED` (no sweep has run), both under the measured byte ceiling.
+  Coding keeps its per-language bundles resolved by the gate's adapters.
+  `Bundle.language` is `Bundle.key`, `load_bundle` reads one registry, and
+  `build_prompt` passes `contract.type.use_case.name`.
+  Reviewed (`records/review-p4-seam5.md`).
