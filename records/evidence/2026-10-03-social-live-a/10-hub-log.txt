@@ -1,0 +1,156 @@
+# hub.log of the live demo hub (run 1 = first fresh start, run 2 = the one left running)
+# captured 2026-10-03T02:06:38Z; health polls kept; tokens redacted (none were found)
+$ grep -ciE "traceback|error|exception|warning|critical" hub.log
+0
+$ ps (hub)
+    PID     ELAPSED   RSS %CPU COMMAND
+3415513       22:57 49272  0.5 /home/adaramir/claude/mcgyvr-hub-live/.venv/bin/python /home/adaramir/claude/mcgyvr-hub-live/.venv/bin/mcgyvr-hub serve --host 100.119.117.59 --port 18765 --db /home/adaramir/.local/state/mcgyvr-demo/hub.db
+$ last line before the idle window: line 141 at 01:53:22Z; lines now:
+142
+$ curl health
+{"status":"ok","version":"0.1.0"}
+
+## full hub.log
+INFO:     Started server process [3395711]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://100.119.117.59:18765 (Press CTRL+C to quit)
+INFO:     100.119.117.59:48506 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     100.119.117.59:48508 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     100.119.117.59:48514 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     100.119.117.59:48516 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     100.119.117.59:48532 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     100.119.117.59:48540 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     100.119.117.59:48552 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     100.119.117.59:55574 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     100.119.117.59:55576 - "GET /health HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42416 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42424 - "GET /pool/plan HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:42428 - "GET /signup HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42438 - "POST /signup HTTP/1.1" 201 Created
+INFO:     100.119.117.59:42444 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42458 - "POST /me/tokens HTTP/1.1" 201 Created
+INFO:     100.119.117.59:42468 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42472 - "GET /network HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42486 - "GET /network HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42502 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42514 - "GET /pool HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42516 - "GET /network HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42530 - "POST /pool/try HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:42542 - "GET /pool/plan HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:42546 - "GET /signup HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42554 - "POST /signup HTTP/1.1" 201 Created
+INFO:     100.119.117.59:42568 - "GET /pool/plan HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42570 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:42582 - "POST /signout HTTP/1.1" 303 See Other
+INFO:     100.119.117.59:42586 - "GET / HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3395711]
+INFO:     Started server process [3415513]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://100.119.117.59:18765 (Press CTRL+C to quit)
+INFO:     100.119.117.59:40318 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     100.119.117.59:40324 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     100.119.117.59:40338 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     100.119.117.59:40352 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     100.119.117.59:40366 - "POST /api/v1/users HTTP/1.1" 201 Created
+INFO:     100.119.117.59:40378 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     100.119.117.59:40386 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     100.119.117.59:60592 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60604 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60610 - "GET /pool/plan HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:60620 - "GET /signup HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60634 - "POST /signup HTTP/1.1" 201 Created
+INFO:     100.119.117.59:60638 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60650 - "POST /me/tokens HTTP/1.1" 201 Created
+INFO:     100.119.117.59:60662 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60670 - "GET /network HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60686 - "GET /network HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60694 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60698 - "GET /pool HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60700 - "GET /network HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60706 - "POST /pool/try HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:60710 - "GET /pool/plan HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:60726 - "GET /signup HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60728 - "POST /signup HTTP/1.1" 201 Created
+INFO:     100.119.117.59:60732 - "GET /pool/plan HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60734 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:60750 - "POST /signout HTTP/1.1" 303 See Other
+INFO:     100.119.117.59:60764 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:43030 - "GET /v1/models HTTP/1.1" 401 Unauthorized
+INFO:     100.119.117.59:43044 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     100.119.117.59:43060 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     100.119.117.59:43070 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     100.119.117.59:43078 - "GET /v1/models HTTP/1.1" 400 Bad Request
+INFO:     100.119.117.59:43094 - "POST /v1/chat/completions HTTP/1.1" 401 Unauthorized
+INFO:     100.119.117.59:43110 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+INFO:     100.119.117.59:43124 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43140 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43156 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43164 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43166 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43182 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43196 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43210 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43214 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43248 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43230 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43246 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43282 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43278 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:43262 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:57946 - "GET /v1/models HTTP/1.1" 401 Unauthorized
+INFO:     100.119.117.59:57950 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     100.119.117.59:57952 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     100.119.117.59:57966 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     100.119.117.59:57972 - "GET /v1/models HTTP/1.1" 400 Bad Request
+INFO:     100.119.117.59:57980 - "POST /v1/chat/completions HTTP/1.1" 401 Unauthorized
+INFO:     100.119.117.59:57986 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+INFO:     100.119.117.59:57996 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58008 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58024 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58040 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58056 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58060 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58062 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58074 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58076 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58078 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58090 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58100 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58110 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58120 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:58116 - "POST /v1/chat/completions HTTP/1.1" 404 Not Found
+INFO:     100.119.117.59:51650 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     100.119.117.59:51660 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     185.245.183.242:43987 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     100.119.117.59:38097 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     100.119.117.59:51676 - "GET /api/v1/rigs/mine HTTP/1.1" 200 OK
+INFO:     100.119.117.59:51682 - "GET /signin HTTP/1.1" 200 OK
+INFO:     100.119.117.59:51688 - "POST /signin HTTP/1.1" 303 See Other
+INFO:     100.119.117.59:51700 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:51702 - "GET /pool/plan?model=live-a-lab.gguf HTTP/1.1" 200 OK
+INFO:     100.119.117.59:51716 - "GET /pool/plan?model=live-a-lab.gguf HTTP/1.1" 200 OK
+INFO:     100.119.117.59:48980 - "DELETE /api/v1/rigs/bb93d9dd66274fcda127f2028efd41e6 HTTP/1.1" 204 No Content
+INFO:     100.119.117.59:48990 - "DELETE /api/v1/rigs/184428200fbb482ab4aa61dec623677a HTTP/1.1" 204 No Content
+INFO:     100.119.117.59:59854 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     100.119.117.59:59868 - "POST /api/v1/rigs HTTP/1.1" 201 Created
+INFO:     185.245.183.242:53977 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     100.119.117.59:35805 - "WebSocket /api/v1/agent" [accepted]
+INFO:     connection open
+INFO:     100.119.117.59:59874 - "GET /api/v1/rigs/mine HTTP/1.1" 200 OK
+INFO:     100.119.117.59:59880 - "GET /signin HTTP/1.1" 200 OK
+INFO:     100.119.117.59:59886 - "POST /signin HTTP/1.1" 303 See Other
+INFO:     100.119.117.59:59898 - "GET / HTTP/1.1" 200 OK
+INFO:     100.119.117.59:59904 - "GET /pool/plan?model=live-a-lab.gguf HTTP/1.1" 200 OK
+INFO:     100.119.117.59:47870 - "GET /pool/plan?model=live-a-lab.gguf HTTP/1.1" 200 OK
+INFO:     100.119.117.59:47876 - "DELETE /api/v1/rigs/42156c412a4145979562b790f25bea89 HTTP/1.1" 204 No Content
+INFO:     100.119.117.59:47888 - "DELETE /api/v1/rigs/6e178b560edb4dd98fbcedd0ce1facf6 HTTP/1.1" 204 No Content
+INFO:     100.119.117.59:43332 - "PATCH /api/v1/rigs/98c3779683fc47179ce7cf77d00a7c0b HTTP/1.1" 200 OK
+INFO:     100.119.117.59:54138 - "GET /api/v1/health HTTP/1.1" 200 OK

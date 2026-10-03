@@ -1,0 +1,65 @@
+$ git -C mcgyvr-hub fetch origin --prune   (2026-10-03 ~04:33 local)
+$ heads used
+  origin/connect                          1d59722e6901c21427011fa1990c91f44eb7777c
+  origin/pool-wait-queue                  d389c2090f2b8f85172ee432866268bdfa58a9f2
+  origin/pool-fair-order                  dc9d6262b71925aafd18311ff43946850c09c7f7
+  origin/pool-session-width               275cb5c45b48838fe65bcba31e15442b6794ab48
+  origin/pool-fleets                      d90d4b44ef0a0d449d1108349eeb9a540cc23c2d
+  origin/pool-fleet-change                a4c643769791b9fec601145e2e46b4be72517369
+  origin/fix/single-rig-session-connect   f6299e493f06d55934009af1742fb03cc1fba17b
+  origin/web-home                         48ca04cecbf27e482cc023159f154edb2befde72
+$ git worktree add -b live-validation /home/adaramir/claude/mcgyvr-hub-live a4c643769791b9fec601145e2e46b4be72517369
+$ git merge --no-ff 48ca04cecbf27e482cc023159f154edb2befde72   (origin/web-home)
+CONFLICT (content): Merge conflict in src/mcgyvr_hub/completions.py
+CONFLICT (content): Merge conflict in tests/test_web_pool.py
+  resolved minimally (see commit message below); branch is local only, never pushed
+$ git log -1 --format="%H%n%B" live-validation
+ec0f2201bf1da308cdea96de0212a7b298d33ddb
+Merge web-home into live-validation (local only, never pushed)
+
+Conflicts resolved minimally: completions.py keeps the fleet-change
+resend path and drops sse_text (its only user, Try-it, is removed by
+web-home); test_web_pool.py keeps two_rigs(approved=) plus web-home's
+use_pool helper and drops the Try-it tests.
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+
+$ git diff --stat a4c6437 live-validation | tail -1
+ 25 files changed, 602 insertions(+), 557 deletions(-)
+$ git diff --stat a4c6437 live-validation -- src/mcgyvr_hub/completions.py tests/test_web_pool.py
+ src/mcgyvr_hub/completions.py |  51 +-----------   (docstring + sse_text/_event_text/_MAX_SSE_EVENT gone)
+ tests/test_web_pool.py        | 180 ++++++++----------------------------------   (Try-it tests gone)
+(first lines of that completions.py diff:)
+index 60acabd..4146dfe 100644
+--- a/src/mcgyvr_hub/completions.py
++++ b/src/mcgyvr_hub/completions.py
+@@ -1,7 +1,7 @@
+ """One chat completion on the pool: limits, a ready session, the relay.
+ 
+-Shared by the OpenAI-compatible API and the pool page's Try-it box, so both
+-count against the same per-user limits and classify failures the same way.
++Used by the OpenAI-compatible API (``/v1``), the only way to send prompts to
++the pool: it applies the per-user limits and classifies failures.
+ 
+ Only the fields of ``ChatRequest`` reach the head (rig owners are protected
+ from runtime knobs the hub does not vouch for) and ``max_tokens`` is capped.
+@@ -41,7 +41,6 @@ EVENT_STREAM = "text/event-stream"
+ _PASSED_CONTENT_TYPES = frozenset({"application/json", EVENT_STREAM})
+ _MAX_MESSAGES = 1024
+ _MAX_TOOLS = 128
+-_MAX_SSE_EVENT = 64 * 1024
+ _RESENDS = 2  # times a request is sent again after its unit was lost
+
+$ make check   (hub gate on live-validation: ruff, ruff format, mypy --strict, pytest, uv build)
+ + uvloop==0.23.0
+ + watchfiles==1.3.0
+ + websockets==17.1
+uv run --no-sync ruff check .
+All checks passed!
+uv run --no-sync ruff format --check .
+108 files already formatted
+uv run --no-sync mypy
+Success: no issues found in 107 source files
+uv run --no-sync pytest
+1577 passed in 205.15s (0:03:25)
+uv build --quiet

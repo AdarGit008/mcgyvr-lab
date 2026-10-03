@@ -1,0 +1,82 @@
+$ python3 instruments/udp_checks.py --env $STATE/hub.env --target 185.245.183.242 --target 100.119.117.59 --source 185.245.183.242 --source 100.119.117.59 --source 127.0.0.1 --rate-source 127.0.0.9
+PASS  stun 185.245.183.242->185.245.183.242:3478 unissued token: no answer answer=None
+PASS  stun 185.245.183.242->185.245.183.242:3478 malformed: no answer  answer=None
+PASS  stun 185.245.183.242->185.245.183.242:3479 unissued token: no answer answer=None
+PASS  stun 185.245.183.242->185.245.183.242:3479 malformed: no answer  answer=None
+PASS  relay 185.245.183.242->185.245.183.242 bad-MAC ticket: no answer answer=None
+PASS  relay 185.245.183.242->185.245.183.242 expired ticket: refused(expired) refused reason=2 (expired)
+PASS  relay 185.245.183.242->185.245.183.242 malformed bind: no answer answer=None
+PASS  relay 185.245.183.242->185.245.183.242 valid tickets: both sides bound in 3481-3496 side0=bound port=3481 side1=bound port=3482
+PASS  relay 185.245.183.242->185.245.183.242 A->side0 forwarded to B from side1 port B got 48 bytes from port 3482
+PASS  relay 185.245.183.242->185.245.183.242 B->side1 forwarded to A from side0 port A got 12 bytes from port 3481
+PASS  relay 185.245.183.242->185.245.183.242 third party ->side0: dropped B got None
+PASS  relay 185.245.183.242->185.245.183.242 3000-byte packet: dropped (cap 2048) B got 0 bytes
+PASS  relay 185.245.183.242->185.245.183.242 max_mb=0 allocation: nothing forwarded B got None
+PASS  stun 100.119.117.59->185.245.183.242:3478 unissued token: no answer answer=None
+PASS  stun 100.119.117.59->185.245.183.242:3478 malformed: no answer   answer=None
+PASS  stun 100.119.117.59->185.245.183.242:3479 unissued token: no answer answer=None
+PASS  stun 100.119.117.59->185.245.183.242:3479 malformed: no answer   answer=None
+PASS  relay 100.119.117.59->185.245.183.242 bad-MAC ticket: no answer  answer=None
+PASS  relay 100.119.117.59->185.245.183.242 expired ticket: refused(expired) refused reason=2 (expired)
+PASS  relay 100.119.117.59->185.245.183.242 malformed bind: no answer  answer=None
+PASS  relay 100.119.117.59->185.245.183.242 valid tickets: both sides bound in 3481-3496 side0=bound port=3483 side1=bound port=3484
+PASS  relay 100.119.117.59->185.245.183.242 A->side0 forwarded to B from side1 port B got 48 bytes from port 3484
+PASS  relay 100.119.117.59->185.245.183.242 B->side1 forwarded to A from side0 port A got 12 bytes from port 3483
+PASS  relay 100.119.117.59->185.245.183.242 third party ->side0: dropped B got None
+PASS  relay 100.119.117.59->185.245.183.242 3000-byte packet: dropped (cap 2048) B got 0 bytes
+PASS  relay 100.119.117.59->185.245.183.242 max_mb=0 allocation: nothing forwarded B got None
+PASS  stun 127.0.0.1->185.245.183.242:3478 unissued token: no answer   answer=None
+PASS  stun 127.0.0.1->185.245.183.242:3478 malformed: no answer        answer=None
+PASS  stun 127.0.0.1->185.245.183.242:3479 unissued token: no answer   answer=None
+PASS  stun 127.0.0.1->185.245.183.242:3479 malformed: no answer        answer=None
+PASS  relay 127.0.0.1->185.245.183.242 bad-MAC ticket: no answer       answer=None
+PASS  relay 127.0.0.1->185.245.183.242 expired ticket: refused(expired) refused reason=2 (expired)
+PASS  relay 127.0.0.1->185.245.183.242 malformed bind: no answer       answer=None
+PASS  relay 127.0.0.1->185.245.183.242 valid tickets: both sides bound in 3481-3496 side0=bound port=3485 side1=bound port=3486
+PASS  relay 127.0.0.1->185.245.183.242 A->side0 forwarded to B from side1 port B got 48 bytes from port 3486
+PASS  relay 127.0.0.1->185.245.183.242 B->side1 forwarded to A from side0 port A got 12 bytes from port 3485
+PASS  relay 127.0.0.1->185.245.183.242 third party ->side0: dropped    B got None
+PASS  relay 127.0.0.1->185.245.183.242 3000-byte packet: dropped (cap 2048) B got 0 bytes
+PASS  relay 127.0.0.1->185.245.183.242 max_mb=0 allocation: nothing forwarded B got None
+PASS  stun 185.245.183.242->100.119.117.59:3478 unissued token: no answer answer=None
+PASS  stun 185.245.183.242->100.119.117.59:3478 malformed: no answer   answer=None
+PASS  stun 185.245.183.242->100.119.117.59:3479 unissued token: no answer answer=None
+PASS  stun 185.245.183.242->100.119.117.59:3479 malformed: no answer   answer=None
+PASS  relay 185.245.183.242->100.119.117.59 bad-MAC ticket: no answer  answer=None
+PASS  relay 185.245.183.242->100.119.117.59 expired ticket: refused(expired) refused reason=2 (expired)
+PASS  relay 185.245.183.242->100.119.117.59 malformed bind: no answer  answer=None
+PASS  relay 185.245.183.242->100.119.117.59 valid tickets: both sides bound in 3481-3496 side0=bound port=3487 side1=bound port=3488
+PASS  relay 185.245.183.242->100.119.117.59 A->side0 forwarded to B from side1 port B got 48 bytes from port 3488
+PASS  relay 185.245.183.242->100.119.117.59 B->side1 forwarded to A from side0 port A got 12 bytes from port 3487
+PASS  relay 185.245.183.242->100.119.117.59 third party ->side0: dropped B got None
+PASS  relay 185.245.183.242->100.119.117.59 3000-byte packet: dropped (cap 2048) B got 0 bytes
+PASS  relay 185.245.183.242->100.119.117.59 max_mb=0 allocation: nothing forwarded B got None
+PASS  stun 100.119.117.59->100.119.117.59:3478 unissued token: no answer answer=None
+PASS  stun 100.119.117.59->100.119.117.59:3478 malformed: no answer    answer=None
+PASS  stun 100.119.117.59->100.119.117.59:3479 unissued token: no answer answer=None
+PASS  stun 100.119.117.59->100.119.117.59:3479 malformed: no answer    answer=None
+PASS  relay 100.119.117.59->100.119.117.59 bad-MAC ticket: no answer   answer=None
+PASS  relay 100.119.117.59->100.119.117.59 expired ticket: refused(expired) refused reason=2 (expired)
+PASS  relay 100.119.117.59->100.119.117.59 malformed bind: no answer   answer=None
+PASS  relay 100.119.117.59->100.119.117.59 valid tickets: both sides bound in 3481-3496 side0=bound port=3489 side1=bound port=3490
+PASS  relay 100.119.117.59->100.119.117.59 A->side0 forwarded to B from side1 port B got 48 bytes from port 3490
+PASS  relay 100.119.117.59->100.119.117.59 B->side1 forwarded to A from side0 port A got 12 bytes from port 3489
+PASS  relay 100.119.117.59->100.119.117.59 third party ->side0: dropped B got None
+PASS  relay 100.119.117.59->100.119.117.59 3000-byte packet: dropped (cap 2048) B got 0 bytes
+PASS  relay 100.119.117.59->100.119.117.59 max_mb=0 allocation: nothing forwarded B got None
+PASS  stun 127.0.0.1->100.119.117.59:3478 unissued token: no answer    answer=None
+PASS  stun 127.0.0.1->100.119.117.59:3478 malformed: no answer         answer=None
+PASS  stun 127.0.0.1->100.119.117.59:3479 unissued token: no answer    answer=None
+PASS  stun 127.0.0.1->100.119.117.59:3479 malformed: no answer         answer=None
+PASS  relay 127.0.0.1->100.119.117.59 bad-MAC ticket: no answer        answer=None
+PASS  relay 127.0.0.1->100.119.117.59 expired ticket: refused(expired) refused reason=2 (expired)
+PASS  relay 127.0.0.1->100.119.117.59 malformed bind: no answer        answer=None
+PASS  relay 127.0.0.1->100.119.117.59 valid tickets: both sides bound in 3481-3496 side0=bound port=3491 side1=bound port=3492
+PASS  relay 127.0.0.1->100.119.117.59 A->side0 forwarded to B from side1 port B got 48 bytes from port 3492
+PASS  relay 127.0.0.1->100.119.117.59 B->side1 forwarded to A from side0 port A got 12 bytes from port 3491
+PASS  relay 127.0.0.1->100.119.117.59 third party ->side0: dropped     B got None
+PASS  relay 127.0.0.1->100.119.117.59 3000-byte packet: dropped (cap 2048) B got 0 bytes
+PASS  relay 127.0.0.1->100.119.117.59 max_mb=0 allocation: nothing forwarded B got None
+PASS  relay binds from 127.0.0.9: rate-limited (burst 10, 2/s)         10/16 burst binds answered
+ALL PASS
+exit=0

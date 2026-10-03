@@ -1,0 +1,61 @@
+$ mcgyvr-hub models list --db $STATE/hub.db
+no models on the list: the general pool runs nothing
+[exit 0]
+$ mcgyvr-hub models add Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf --db $STATE/hub.db
+[exit 0]
+$ mcgyvr-hub models add live-a-second.gguf --copies 2 --max 3 --priority 1 --db $STATE/hub.db
+[exit 0]
+$ mcgyvr-hub models add live-a-second.gguf --db $STATE/hub.db
+live-a-second.gguf is already on the list
+[exit 1]
+$ mcgyvr-hub models add ../evil.gguf --db $STATE/hub.db
+'../evil.gguf' is not a model file name (letters, digits and ._+=@-)
+[exit 1]
+$ mcgyvr-hub models list --db $STATE/hub.db
+priority	name	min	max	state
+1	live-a-second.gguf	2	3	enabled
+2	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	1	1	enabled
+[exit 0]
+$ mcgyvr-hub models set Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf --priority 1 --db $STATE/hub.db
+[exit 0]
+$ mcgyvr-hub models set live-a-second.gguf --disable --db $STATE/hub.db
+[exit 0]
+$ mcgyvr-hub models set live-a-second.gguf --copies 4 --db $STATE/hub.db
+max copies (3) cannot be below min copies (4)
+[exit 1]
+$ mcgyvr-hub models set live-a-second.gguf --db $STATE/hub.db
+usage: mcgyvr-hub models set [-h] [--copies COPIES] [--max MAX]
+                             [--priority PRIORITY] [--enable | --disable]
+                             [--db DB] [--database-url DATABASE_URL]
+                             name
+mcgyvr-hub models set: error: give --copies, --max, --priority, --enable or --disable
+[exit 2]
+$ mcgyvr-hub models set no-such.gguf --copies 1 --db $STATE/hub.db
+no-such.gguf is not on the list
+[exit 1]
+$ mcgyvr-hub models list --db $STATE/hub.db
+priority	name	min	max	state
+1	Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf	1	1	enabled
+2	live-a-second.gguf	2	3	disabled
+[exit 0]
+$ mcgyvr-hub fleet replan --db $STATE/hub.db
+asked the running hub to apply the fleet policies once: it does within 5 s
+[exit 0]
+$ sleep 7; fleet_replans rows
+  replan bf0aed9c… created 2026-10-03 01:45:19.903256 applied 2026-10-03 01:45:21.554942
+$ mcgyvr-hub models remove live-a-second.gguf --db $STATE/hub.db
+[exit 0]
+$ mcgyvr-hub models remove Qwen2.5-Coder-32B-Instruct-Q5_K_M.gguf --db $STATE/hub.db
+[exit 0]
+$ mcgyvr-hub models remove no-such.gguf --db $STATE/hub.db
+no-such.gguf is not on the list
+[exit 1]
+$ mcgyvr-hub models list --db $STATE/hub.db
+no models on the list: the general pool runs nothing
+[exit 0]
+$ mcgyvr-hub fleet replan --db $STATE/hub.db
+asked the running hub to apply the fleet policies once: it does within 5 s
+[exit 0]
+$ sleep 7; fleet_replans rows
+  replan bf0aed9c… created 2026-10-03 01:45:19.903256 applied 2026-10-03 01:45:21.554942
+  replan 83c7d474… created 2026-10-03 01:45:44.520376 applied 2026-10-03 01:45:46.641354

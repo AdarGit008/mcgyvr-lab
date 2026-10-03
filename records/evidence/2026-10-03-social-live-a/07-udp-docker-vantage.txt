@@ -1,0 +1,33 @@
+$ docker run --rm -v udp_checks.py:/c/udp_checks.py:ro -v $STATE/hub.env:/c/hub.env:ro python:3.12-slim sh -c "hostname -I; python /c/udp_checks.py --env /c/hub.env --target 185.245.183.242 --target 100.119.117.59"
+container address: 172.17.0.3
+PASS  stun 0.0.0.0->185.245.183.242:3478 unissued token: no answer     answer=None
+PASS  stun 0.0.0.0->185.245.183.242:3478 malformed: no answer          answer=None
+PASS  stun 0.0.0.0->185.245.183.242:3479 unissued token: no answer     answer=None
+PASS  stun 0.0.0.0->185.245.183.242:3479 malformed: no answer          answer=None
+PASS  relay 0.0.0.0->185.245.183.242 bad-MAC ticket: no answer         answer=None
+FAIL  relay 0.0.0.0->185.245.183.242 expired ticket: refused(expired)  no answer
+PASS  relay 0.0.0.0->185.245.183.242 malformed bind: no answer         answer=None
+FAIL  relay 0.0.0.0->185.245.183.242 valid tickets: both sides bound in 3481-3496 side0=None side1=None
+PASS  stun 0.0.0.0->100.119.117.59:3478 unissued token: no answer      answer=None
+PASS  stun 0.0.0.0->100.119.117.59:3478 malformed: no answer           answer=None
+PASS  stun 0.0.0.0->100.119.117.59:3479 unissued token: no answer      answer=None
+PASS  stun 0.0.0.0->100.119.117.59:3479 malformed: no answer           answer=None
+PASS  relay 0.0.0.0->100.119.117.59 bad-MAC ticket: no answer          answer=None
+FAIL  relay 0.0.0.0->100.119.117.59 expired ticket: refused(expired)   no answer
+PASS  relay 0.0.0.0->100.119.117.59 malformed bind: no answer          answer=None
+FAIL  relay 0.0.0.0->100.119.117.59 valid tickets: both sides bound in 3481-3496 side0=None side1=None
+SOME FAILED
+exit=1
+
+## control: does any UDP from the container reach this host?
+$ python3 udp echo server on 0.0.0.0:39999 (host), then from python:3.12-slim:
+$   sendto(b'ping', (t, 39999)) for t in 185.245.183.242, 100.119.117.59, 172.17.0.1
+185.245.183.242 no reply TimeoutError
+100.119.117.59 no reply TimeoutError
+172.17.0.1 no reply TimeoutError
+echo server done: TimeoutError   (it received nothing)
+
+=> the host firewall drops all UDP from the docker bridge to the host, so the
+   container is NOT a usable vantage point: the "no answer" PASS lines above
+   prove nothing and the relay FAIL lines are the firewall, not the relay.
+   (No sudo here to read or change the rules.) INCONCLUSIVE, not a hub failure.

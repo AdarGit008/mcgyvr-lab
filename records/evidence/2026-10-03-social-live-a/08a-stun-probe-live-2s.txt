@@ -1,0 +1,19 @@
+$ STATE=... HUB=http://100.119.117.59:18765 HUB_REPO=/home/adaramir/claude/mcgyvr-hub-live $HUB_REPO/.venv/bin/python instruments/agents_probe.py LOGDIR
+rig live-a-fake-pub created: HTTP 201, id bb93d9dd…
+rig live-a-fake-ts created: HTTP 201, id 18442820…
+rig live-a-fake-pub: online, pool, cards [6000]
+rig live-a-fake-ts: online, pool, cards [22000]
+GET /pool/plan?model=live-a-lab.gguf as admin: HTTP 200 in 0.05 s
+plan page text: Model live-a-lab.gguf Context 12,288 tokens (these cards could hold up to 32,768) Rigs 2 Layers 32 Expect about 8.2 tokens/s when generating. A 2,048-token prompt takes about 34.9 s to read. The first load takes about 1 h 36 min . The first load will take long (1 h 36 min): the model's weights are shipped to the workers. Some links are estimates and are being measured now; refresh shortly for a firmer figure. Worker Round trip Rate Path live-a-fake-ts · @live-a-admin 20.0 ms 20 Mbit/s estimated estimated Rig Card Role Layers Expected VRAM live-a-fake-pub · @live-a-admin lab-gpu head 6 layers (19%) 3.6 GB of 5.9 GB free live-a-fake-ts · @live-a-admin lab-gpu worker 26 layers (81%) 15 GB of 21 GB free The head, live-a-fake-pub , belongs to @live-a-admin , who can technically see the prompts and answers it serves.
+plan page again (links now measured): Model live-a-lab.gguf Context 12,288 tokens (these cards could hold up to 32,768) Rigs 2 Layers 32 Expect about 9.5 tokens/s when generating. A 2,048-token prompt takes about 34.9 s to read. The first load takes about 1 h 36 min . The first load will take long (1 h 36 min): the model's weights are shipped to the workers. Some links are estimates and are being measured now; refresh shortly for a firmer figure. Worker Round trip Rate Path live-a-fake-ts · @live-a-admin 4.0 ms 20 Mbit/s estimated estimated Rig Card Role Layers Expected VRAM live-a-fake-pub · @live-a-admin lab-gpu head 6 layers (19%) 3.6 GB of 5.9 GB free live-a-fake-ts · @live-a-admin lab-gpu worker 26 layers (81%) 15 GB of 21 GB free The head, live-a-fake-pub , belongs to @live-a-admin , who can technically see the prompts and answers it serves.
+rig live-a-fake-pub deleted: HTTP 204
+rig live-a-fake-ts deleted: HTTP 204
+--- live-a-fake-pub.log
+[04:52:35] live-a-fake-pub: hello accepted as <hex>
+[04:52:39] probe: binding requests to [('185.245.183.242', 3478), ('185.245.183.242', 3479)] -> responder saw us as [('185.245.183.242', 55851), ('185.245.183.242', 55851)] rtt_us 2222
+
+--- live-a-fake-ts.log
+[04:52:35] live-a-fake-ts: hello accepted as <hex>
+[04:52:39] probe: binding requests to [('185.245.183.242', 3478), ('185.245.183.242', 3479)] -> responder saw us as [('100.119.117.59', 45066), ('100.119.117.59', 45066)] rtt_us 1769
+
+exit=0

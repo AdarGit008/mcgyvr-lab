@@ -4,6 +4,7 @@
 #   containers), remove any pooled container still there, close the ssh
 #   tunnels, stop the hub, then check both rigs are idle.
 # --purge also removes the demo's state here and ~/mcgyvr-pool-tmp/e2e on the rigs.
+# HUB_ONLY=1 stops only the hub here (no ssh to the rigs; --purge refused).
 set -uo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -14,6 +15,7 @@ WORKER_HOST="${WORKER_HOST:-srv2}"
 REMOTE_DIR='mcgyvr-pool-tmp/e2e'
 
 say() { printf '[demo-down] %s\n' "$*"; }
+HUB_ONLY="${HUB_ONLY:-0}"
 stop_pid() {  # pidfile, seconds
   local f="$1" t="$2" p
   [ -f "$f" ] || return 0
@@ -25,6 +27,15 @@ stop_pid() {  # pidfile, seconds
   fi
   rm -f "$f"
 }
+
+if [ "$HUB_ONLY" = 1 ]; then
+  [ "${1:-}" = "--purge" ] && { say "HUB_ONLY=1 does not purge"; exit 2; }
+  stop_pid "$STATE/hub.pid" 20 && say "hub stopped"
+  if pgrep -af "[m]cgyvr-hub serve --host [^ ]* --port $PORT" >/dev/null; then
+    say "hub still running"; exit 1
+  fi
+  say "down: hub stopped (rigs not touched)"; exit 0
+fi
 
 for host in "$HEAD_HOST" "$WORKER_HOST"; do
   ssh -o BatchMode=yes "$host" "cd ~/$REMOTE_DIR 2>/dev/null || exit 0
