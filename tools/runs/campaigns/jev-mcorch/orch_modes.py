@@ -88,6 +88,8 @@ from mcgyvr.pool import source_map  # noqa: E402
 
 REPO = Path(os.environ.get("RUN_ROOT") or Path(__file__).resolve().parents[4])
 SKILL = REPO / "product/skills/mcgyvr/SKILL.md"
+#: D's write -> validate -> fix rounds (mcorch's own path; owner, 2026-10-03).
+D_ATTEMPTS = 3
 
 
 def tok(value: object) -> str:
@@ -234,54 +236,79 @@ def mode_d(
         f"REPOSITORY FILES:\n\n{repo_listing(repo)}\n\nREQUEST:\n{prompt}"
         "\n\nWrite the contract."
     )
-    if api == "anthropic":
-        doc, wall = api_post(
-            {
-                "model": model,
-                "max_tokens": 16000,
-                "system": system,
-                "fallbacks": "default",
-                "messages": [{"role": "user", "content": user}],
-            },
-            key_env,
-        )
-        text = "".join(
-            b.get("text", "")
-            for b in doc.get("content") or []
-            if b.get("type") == "text"
-        )
-        usage = {
-            "prompt_tokens": (doc.get("usage") or {}).get("input_tokens"),
-            "completion_tokens": (doc.get("usage") or {}).get("output_tokens"),
-        }
-    else:
-        body = {
-            "model": model,
-            "messages": [
-                {"role": "system", "content": system},
-                {"role": "user", "content": user},
-            ],
-            "temperature": 0.0,
-            "max_tokens": 2048,
-            "stream": False,
-        }
-        req = urllib.request.Request(
-            url + "/v1/chat/completions",
-            data=json.dumps(body).encode(),
-            headers={"Content-Type": "application/json"},
-        )
-        t0 = time.perf_counter()
-        with urllib.request.urlopen(req, timeout=3600) as resp:
-            doc = json.loads(resp.read())
-        wall = time.perf_counter() - t0
-        text = doc["choices"][0]["message"].get("content") or ""
-        usage = doc.get("usage") or {}
-    m = re.search(r"```(?:yaml|yml)?\s*\n(.*?)```", text, re.S)
+    # mcorch writes contracts the way a pi agent does (owner, 2026-10-03):
+    # write, `mcgyvr contract`, fix what it names, run. D gets the same
+    # validate->fix path: up to D_ATTEMPTS completions, the validator's words
+    # fed back between them.
+    convo: list[dict[str, Any]] = [{"role": "user", "content": user}]
+    wall = 0.0
+    ptok_sum = ctok_sum = 0
+    text = ""
+    attempts = 0
+    v = subprocess.CompletedProcess(args=[], returncode=1, stdout="", stderr="")
     path = out / "D-contract.yaml"
-    path.write_text(m.group(1) if m else text)
-    v = mcgyvr(["contract", str(path)], cfg)
+    while attempts < D_ATTEMPTS:
+        attempts += 1
+        if api == "anthropic":
+            doc, w = api_post(
+                {
+                    "model": model,
+                    "max_tokens": 16000,
+                    "system": system,
+                    "fallbacks": "default",
+                    "messages": convo,
+                },
+                key_env,
+            )
+            text = "".join(
+                b.get("text", "")
+                for b in doc.get("content") or []
+                if b.get("type") == "text"
+            )
+            u = doc.get("usage") or {}
+            ptok_sum += int(u.get("input_tokens") or 0)
+            ctok_sum += int(u.get("output_tokens") or 0)
+        else:
+            body = {
+                "model": model,
+                "messages": [{"role": "system", "content": system}, *convo],
+                "temperature": 0.0,
+                "max_tokens": 2048,
+                "stream": False,
+            }
+            req = urllib.request.Request(
+                url + "/v1/chat/completions",
+                data=json.dumps(body).encode(),
+                headers={"Content-Type": "application/json"},
+            )
+            t0 = time.perf_counter()
+            with urllib.request.urlopen(req, timeout=3600) as resp:
+                doc = json.loads(resp.read())
+            w = time.perf_counter() - t0
+            text = doc["choices"][0]["message"].get("content") or ""
+            u = doc.get("usage") or {}
+            ptok_sum += int(u.get("prompt_tokens") or 0)
+            ctok_sum += int(u.get("completion_tokens") or 0)
+        wall += w
+        m = re.search(r"```(?:yaml|yml)?\s*\n(.*?)```", text, re.S)
+        path.write_text(m.group(1) if m else text)
+        v = mcgyvr(["contract", str(path)], cfg)
+        if v.returncode == 0:
+            break
+        convo.append({"role": "assistant", "content": text})
+        convo.append(
+            {
+                "role": "user",
+                "content": "`mcgyvr contract contract.yaml` refused it:\n\n"
+                + (v.stderr or v.stdout)[-1500:]
+                + "\n\nFix the contract. Reply with the full corrected ```yaml "
+                "block and nothing else.",
+            }
+        )
+    usage = {"prompt_tokens": ptok_sum, "completion_tokens": ctok_sum}
     rec: dict[str, Any] = {
         "wall_s": wall,
+        "d_attempts": attempts,
         "prompt_tokens": usage.get("prompt_tokens"),
         "completion_tokens": usage.get("completion_tokens"),
         "valid": v.returncode == 0,
@@ -478,6 +505,7 @@ def main() -> int:
                 f"prompt_tokens={rec.get('prompt_tokens', 'na')}",
                 f"completion_tokens={rec.get('completion_tokens', 'na')}",
                 f"refused={int(bool(rec.get('refused')))}",
+                f"d_attempts={rec.get('d_attempts', 'na')}",
                 f"cost_usd={cost:.4f}",
                 free=rec.get("error", ""),
             )

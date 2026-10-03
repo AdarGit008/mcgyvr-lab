@@ -46,6 +46,8 @@ the rung still has to author a contract inside the loop.
 | 6 | jail | mcorch relies on harness permissions; the campaign's harness player keeps its path jail (test safety) | `tool_loop.py:run_tool` |
 | 7 | corpus | bench repos fixed: green `acceptance`, tests moved to `demonstration`, `__pycache__` ignored; the mcgyvr repo itself added as a real repo from a read-only clone in scratch (never a user checkout) | `make_repos.py`, `real-tasks.json` (two `docstring` tasks on `fleet/linkread.py` and `rename.py`), `ORCH_REAL_REPO` |
 | 8 | slice | 400 rows | `slice-400.jsonl` |
+| 9 (post-freeze, 2026-10-03 19:05 UTC, before step 4/6's first measurement) | mcorch writes contracts the pi way: read, write contract.yaml, `mcgyvr contract`, fix what it names, `mcgyvr run` | the tool loop already offers that path (its system prompt, steps 2–4); D gets the same write → validate → fix rounds (`orch_modes.py:D_ATTEMPTS = 3`, `d_attempts` on MODE rows) | `orch_modes.py:mode_d`, `tool_loop.py:SYSTEM` |
+| 10 (2026-10-03 19:05 UTC) | srv2 PL1 mismatch | re-declare the rig as it is: `hosts.json[srv2].rig.pl1_uw = 65000000`, `read_on 2026-10-03`; step 2 runs | `tools/runs/hosts.json` |
 
 ## 1. What exists (read from code and records, 2026-10-03)
 
